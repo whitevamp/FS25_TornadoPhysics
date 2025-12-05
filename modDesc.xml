@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<modDesc xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" descVersion="105" xsi:noNamespaceSchemaLocation="https://validation.gdn.giants-software.com/xml/fs25/modDesc.xsd">
+    <author>whitevamp</author>
+    <version>1.0.0.0</version>
+    <title>
+        <en>Tornado Physics</en>
+        <de>Tornado Physik</de>
+        <fr>Physique de Tornade</fr>
+    </title>
+    <description>
+        <en><![CDATA[Makes the FS25 Tornado dangerous! Vehicles can now be lifted, thrown, and destroyed by the wind.
+
+            Features:
+            - Suction: Vehicles are dragged towards the funnel.
+            - Lift: Vehicles are lifted into the air and spun around.
+            - Destruction: Vehicles take 100% damage, wear, and dirt if they get caught in the eye.
+            - Mass Calculation: Heavy tractors stay lower; light vehicles fly higher.]]></en>
+        <de><![CDATA[Macht den FS25-Tornado gefährlich! Fahrzeuge können jetzt vom Wind angehoben, geworfen und zerstört werden.]]></de>
+        <fr><![CDATA[Rend la tornade FS25 dangereuse! Les véhicules peuvent désormais être soulevés, projetés et détruits par le vent.]]></fr>
+    </description>
+    <iconFilename>icon_TornadoPhysics.dds</iconFilename>
+    <multiplayer supported="true"/>
+
+    <extraSourceFiles>
+        <sourceFile filename="TornadoPhysics.lua"/>
+    </extraSourceFiles>
+</modDesc>
