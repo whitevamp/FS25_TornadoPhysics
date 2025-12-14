@@ -8,8 +8,8 @@ TornadoSettings.DIR = getUserProfileAppPath() .. "modSettings/"
 TornadoSettings.FILE = TornadoSettings.DIR .. "TornadoPhysics_Config.xml"
 
 function TornadoSettings:loadMap(name)
-    print("--------------------------------------------------")
-    print("TORNADO SETTINGS: INITIALIZING...")
+-- print("--------------------------------------------------")
+-- print("TORNADO SETTINGS: INITIALIZING...")
     
     createFolder(self.DIR)
     
@@ -27,7 +27,7 @@ function TornadoSettings:deleteMap()
 end
 
 function TornadoSettings:createDefaultXML()
-    print("TORNADO SETTINGS: Creating new config file...")
+    -- print("TORNADO SETTINGS: Creating new config file...")
     local xmlId = createXMLFile("TornadoConfig", self.FILE, "TornadoPhysics")
     
     -- 1. GENERAL
@@ -66,7 +66,7 @@ function TornadoSettings:createDefaultXML()
 end
 
 function TornadoSettings:loadFromXML()
-    print("TORNADO SETTINGS: Loading preferences...")
+    -- print("TORNADO SETTINGS: Loading preferences...")
     local xmlId = loadXMLFile("TornadoConfig", self.FILE)
     
     if xmlId ~= 0 then

@@ -24,15 +24,15 @@ function TornadoHusbandry:loadMap(name)
     self.victimCache = {}
     self.scanTimer = 0
 
-    print("--------------------------------------------------")
-    print("TORNADO HUSBANDRY V1.9: DYNAMIC TIMER")
-    print("--------------------------------------------------")
+-- print("--------------------------------------------------")
+-- print("TORNADO HUSBANDRY V1.9: DYNAMIC TIMER")
+-- print("--------------------------------------------------")
     
     -- NEW: Get the dynamically calculated immunity, but only if user hasn't set a custom value
     if TornadoPhysics and TornadoPhysics.dynamicImmunityMS and not self.customImmunitySet then
         -- This only runs once at map load if no custom setting was loaded from XML.
         self.IMMUNITY_DURATION = TornadoPhysics.dynamicImmunityMS
-        print(string.format("TORNADO HUSBANDRY: Using dynamic base immunity of %.1fs", self.IMMUNITY_DURATION / 1000))
+        -- print(string.format("TORNADO HUSBANDRY: Using dynamic base immunity of %.1fs", self.IMMUNITY_DURATION / 1000))
     end
 
     addConsoleCommand("t_immunity", "Set Pasture Immunity Time", "consoleImmunity", self)
@@ -89,7 +89,7 @@ function TornadoHusbandry:checkPasture(placeable, tX, tZ, radiusSq, currentTime)
                 local name = placeable:getName() or "Livestock Pen"
                 local msg = string.format("STORM DAMAGE: %s lost %d animals! (Structure Safe for %.0fs)", name, lostCount, self.IMMUNITY_DURATION/1000)
                 g_currentMission:showBlinkingWarning(msg, 5000)
-                print("TORNADO HUSBANDRY: " .. msg)
+                -- print("TORNADO HUSBANDRY: " .. msg)
             end
         end
     end

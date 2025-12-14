@@ -74,9 +74,9 @@ function TornadoPhysics:loadMap(name)
 
     mapInitialized = false 
 
-    print("--------------------------------------------------")
-    print("TORNADO PHYSICS V107.0: GOLD MASTER")
-    print("--------------------------------------------------")
+-- print("--------------------------------------------------")
+-- print("TORNADO PHYSICS V107.0: GOLD MASTER")
+-- print("--------------------------------------------------")
 
     addConsoleCommand("t_status", "Check Status", "consoleStatus", self)
     addConsoleCommand("t_set", "Set Radius", "consoleSet", self)
@@ -639,7 +639,7 @@ function TornadoPhysics:randomizeTornado()
         if scale > 4.8 then rating = "EF-5" end
         
         local msg = string.format("ALERT: TORNADO TOUCHDOWN! (%s | Radius: %dm)", rating, math.floor(currentOuterRadius))
-        print(">>> " .. msg)
+        -- print(">>> " .. msg)
         
         if g_currentMission then
             g_currentMission:showBlinkingWarning(msg, 5000)
