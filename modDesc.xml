@@ -1,27 +1,50 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <modDesc xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" descVersion="105" xsi:noNamespaceSchemaLocation="https://validation.gdn.giants-software.com/xml/fs25/modDesc.xsd">
     <author>whitevamp</author>
-    <version>2.0.0.0</version>
+    <version>3.0.0.0</version>
     <title>
         <en>Tornado Physics</en>
         <de>Tornado Physik</de>
         <fr>Physique de Tornade</fr>
     </title>
     <description>
-        <en><![CDATA[Makes the FS25 Tornado dangerous! Vehicles can now be lifted, thrown, and destroyed by the wind.
+        <en><![CDATA[Experience a true destructive weather event! This mod adds a high-performance tornado capable of interacting with the game's physics engine based on mass.
 
             Features:
-            - Suction: Vehicles are dragged towards the funnel.
-            - Lift: Vehicles are lifted into the air and spun around.
-            - Destruction: Vehicles take 100% damage, wear, and dirt if they get caught in the eye.
-            - Mass Calculation: Heavy tractors stay lower; light vehicles fly higher.]]></en>
-        <de><![CDATA[Macht den FS25-Tornado gefährlich! Fahrzeuge können jetzt vom Wind angehoben, geworfen und zerstört werden.]]></de>
-        <fr><![CDATA[Rend la tornade FS25 dangereuse! Les véhicules peuvent désormais être soulevés, projetés et détruits par le vent.]]></fr>
+            - Powerful Lift: Capable of lifting heavy tractors and fully loaded trailers
+            - Livestock Danger: Tornadoes can kill animals in pastures (Configurable)
+            - Geo-Fencing: Prevents vehicles from being thrown off the map
+            - Map Support: Auto-scales radius for 4x, 16x, and 64x maps
+            - Safety: Player ejection system and indoor safe zones (Barns)
+
+            For bug reports and updates, visit: https://github.com/whitevamp/FS25_TornadoPhysics]]></en>
+        <de><![CDATA[Erleben Sie ein echtes zerstörerisches Wetterereignis! Dieser Mod fügt einen leistungsstarken Tornado hinzu, der basierend auf der Masse mit der Physik-Engine des Spiels interagiert.
+
+            Funktionen:
+            - Starker Sog: Kann schwere Traktoren und voll beladene Anhänger anheben
+            - Viehbestand-Gefahr: Tornados können Tiere auf Weiden töten (Konfigurierbar)
+            - Geo-Fencing: Verhindert, dass Fahrzeuge von der Karte fliegen
+            - Karten-Support: Automatische Skalierung für 4x-, 16x- und 64x-Karten
+            - Sicherheit: Spielerauswurf und sichere Innenbereiche (Scheunen)
+
+            Für Fehlerberichte und Updates besuchen Sie: https://github.com/whitevamp/FS25_TornadoPhysics]]></de>
+        <fr><![CDATA[Vivez un véritable événement météorologique destructeur ! Ce mod ajoute une tornade capable d'interagir avec le moteur physique du jeu en fonction de la masse.
+
+            Caractéristiques:
+            - Puissance de levage : Capable de soulever des tracteurs lourds et des remorques chargées
+            - Danger bétail : Les tornades peuvent tuer les animaux dans les pâturages (Configurable)
+            - Géo-clôture : Empêche les véhicules de sortir de la carte
+            - Support de carte : Mise à l'échelle auto pour cartes 4x, 16x et 64x
+            - Sécurité : Éjection du joueur et zones de sécurité intérieures (Granges)
+            ]]></fr>
     </description>
     <iconFilename>icon_TornadoPhysics.dds</iconFilename>
     <multiplayer supported="true"/>
 
     <extraSourceFiles>
-        <sourceFile filename="TornadoPhysics.lua"/>
+        <sourceFile filename="scripts/TornadoPhysics.lua"/>
+        <sourceFile filename="scripts/TornadoHusbandry.lua"/>
+        <sourceFile filename="scripts/TornadoSettings.lua"/>
     </extraSourceFiles>
+
 </modDesc>

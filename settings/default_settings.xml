@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<TornadoPhysics>
+    <general>
+        <radius>35.0</radius>
+    </general>
+
+    <objects>
+        <liftBales>true</liftBales>
+        <liftLogs>true</liftLogs>
+    </objects>
+
+    <safety>
+        <borderProtection>true</borderProtection>
+        <geoFenceBuffer>40.0</geoFenceBuffer>
+    </safety>
+
+    <damage>
+        <indoor>false</indoor>
+        <outdoor>true</outdoor>
+    </damage>
+
+    <husbandry>
+        <enabled>false</enabled>
+        <immunitySeconds>120.0</immunitySeconds>
+        <lossMin>2</lossMin>
+        <lossMax>5</lossMax>
+    </husbandry>
+    <advanced>
+        <ejectionPower>20.0</ejectionPower>
+        <heavyThreshold>3.0</heavyThreshold>
+
+        <damageCenter>0.25</damageCenter>
+        <damageOuter>0.08</damageOuter>
+    </advanced>
+</TornadoPhysics>

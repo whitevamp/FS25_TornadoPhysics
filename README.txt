@@ -1,94 +1,109 @@
-TORNADO PHYSICS MOD (FS25)
+========================================================================
+                     TORNADO PHYSICS V3 (Release 107)
+                   Advanced Weather Destruction Engine
+                            by whitevamp
+========================================================================
 
-Version: 2.0
-Author: whitevamp
-🌪️ Tornado Physics Mod - Update 2.0.0.0
+VERSION: 3.0 (Internal Build 107)
+GAME:    Farming Simulator 25
+DATE:    December 2025
 
-Summary: This update is a complete rewrite of the physics engine. It addresses performance issues (FPS drops), adds realistic indoor safety checks, and introduces new gameplay mechanics like player ejection and distance-based damage scaling.
-Changelog 2.0.0.0
+------------------------------------------------------------------------
+[1] OVERVIEW
+------------------------------------------------------------------------
+This is not just a script—it is a full physics overhaul for the in-game
+tornado. Tornado Physics V3 takes the standard visual effect and gives
+it real teeth.
 
-🚀 Performance & Optimization
+Standard game tornadoes pass through objects like ghosts. With this mod,
+the storm becomes a dynamic vortex that calculates lift, drag, and mass
+resistance. Vehicles are lifted, spun Counter-Clockwise (matching the
+visuals), and thrown based on their weight.
 
-    Target List System: Replaced the global vehicle loop with a "Target List." The script now only calculates physics for objects actually near the tornado, eliminating FPS lag on maps with high vehicle counts.
-    Chunked Searching: The tornado searcher now scans the map in small batches (chunks) rather than all at once, preventing game freezes when the tornado spawns.
-    Smart Caching: Roof detection checks are now cached for 1 second, significantly reducing CPU usage during storms.
+NEW IN V3:
+- Livestock Destruction (Husbandry)
+- Intelligent Map Scaling (Support for 4x, 16x, 64x maps)
+- Full In-Game Configuration (Console Commands & XML)
+- Geo-Fencing (Prevents vehicles from flying off the map)
 
-🛡️ Indoor Safety System (New)
+------------------------------------------------------------------------
+[2] INSTALLATION
+------------------------------------------------------------------------
+1. Place the "FS25_TornadoPhysics.zip" into your "mods" folder.
+   (Usually: Documents/My Games/FarmingSimulator2025/mods)
+2. Activate the mod in the game menu.
+3. No new save game required.
 
-    5-Point Roof Scanner: Implemented a multi-point laser scan (Center, Front, Back, Left, Right) to detect building roofs. Vehicles inside barns are now safe from suction.
-    High-Clearance Scanning: Scanners now start 2.5m above the object to prevent large machines (like Combines) from blocking their own safety checks.
-    Safety Buffer: Newly detected objects have a 2.0-second "Safety Lock" to ensure the script confirms they are outdoors before applying any lift forces. Fixes the "floating tractor" bug inside sheds.
+------------------------------------------------------------------------
+[3] KEY FEATURES
+------------------------------------------------------------------------
+>> TRUE PHYSICS ENGINE
+   Vehicles are no longer just "deleted." They are physically lifted,
+   orbited, and ejected. Heavier tractors resist suction longer than
+   light balers or pallets.
 
-⚙️ Physics & Gameplay Improvements
+>> HUSBANDRY & LIVESTOCK (Disabled by Default)
+   If enabled, tornadoes passing over pastures will kill animals.
+   Includes "Dynamic Immunity": After a strike, the pasture is safe for
+   a set time. On large maps (4x, 16x), this timer automatically
+   increases (up to 30+ mins) to account for the storm's travel time.
 
-    Player Ejection: Added a safety system that automatically kicks the player out of the vehicle if it gets sucked into the tornado core (< 35m) to prevent motion sickness.
-    Distance-Based Damage: Damage now scales with proximity.
-        Outer Zone (80-100%): Wind only, no damage.
-        Mid Zone (50-80%): Light paint scratches.
-        Eye (0-50%): Heavy damage and mechanical failure.
-    Engine Kill: Vehicles with >90% damage now have their engines stalled continuously, simulating a "totaled" state, but can still be repaired/reset properly.
-    Log "Tractor Beam": Added specific logic for logs to rotate and lift them realistically within the funnel. ( Do note that if this feature is enable you have a hi chance of losing the logs permanently, you have been warned.)
-    Spawn Immunity: Added a 3-second grace period for vehicles bought from the shop to prevent instant damage if the shop is near a storm.
+>> GEO-FENCING
+   The mod detects the map size automatically. If a vehicle is about to
+   be thrown into the "void" (map edge), the physics engine cuts power
+   and drops it safely within the map boundary.
 
-🐛 Bug Fixes
+>> COMPATIBILITY
+   - AutoRepair: Automatically pauses "AutoRepair" mods during storms
+     so mechanics don't try to repair flying vehicles.
+   - Multiplayer: Fully synced. All clients see the same destruction.
 
-    Fixed "Bouncing Bales" where objects would repeatedly drop and catch.
-    Fixed an issue where resetting a "Broken" vehicle would leave it permanently bricked.
-    Fixed vehicles detecting their own cabs as "Roofs" and disabling physics outdoors.
+------------------------------------------------------------------------
+[4] CONFIGURATION & COMMANDS
+------------------------------------------------------------------------
+You can tune the mod live using the console (~).
+Settings are saved to: "modSettings/TornadoPhysics_Config.xml"
 
-🛠️ How to Enable Developer Mode (FS25)
+=== STANDARD COMMANDS ===
+t_save             Save current settings to XML.
+t_status           Check active storms and map scale.
+t_husbandry        Toggle Animal Death ON/OFF.
+t_immunity [sec]   Set how long pastures are safe after a strike.
+t_toggle [option]  Toggle features (lift_bales, lift_logs, indoor_damage).
 
-To use the new console commands included in this mod (like t_set radius or t_status), you must enable the developer console in Farming Simulator 25.
+=== ADVANCED TUNING ===
+t_set radius [x]   Set Base Radius (See Map Scaling below).
+t_set power [x]    Set Ejection Power (Default: 20).
+t_set heavy [x]    Set Heavy Mass Threshold (Default: 3.0 tons).
+t_set dmg_in [x]   Damage per second inside the funnel (Default: 0.25).
+t_debug            Toggle text labels above flying objects.
+t_ring             Toggle the red debug ring showing the suction zone.
 
-    Navigate to your FS25 settings folder:
-        Windows: Documents\My Games\FarmingSimulator2025\
-        Steam (Linux/Proton): ~/.steam/steam/steamapps/compatdata/[AppID]/pfx/drive_c/users/steamuser/Documents/My Games/FarmingSimulator2025/
-    Open the file game.xml with a text editor (Notepad, VS Code, etc.).
-    Scroll to the very bottom and look for the <development> tag.
-    Change <controls>false</controls> to <controls>true</controls>.
-    Save the file and launch the game.
+------------------------------------------------------------------------
+[5] MAP SCALING GUIDE
+------------------------------------------------------------------------
+The mod attempts to auto-detect map size, but you can manually tune the
+Base Radius to make the storm fit your map better.
 
-How to use:
+Recommended "t_set radius" values:
+- Standard Map (2km):  Radius 35  (Max EF-5 size: 175m)
+- 4x Map       (4km):  Radius 70  (Max EF-5 size: 350m)
+- 16x Map      (8km):  Radius 140 (Max EF-5 size: 700m)
+- 64x Map      (16km): Radius 280 (Max EF-5 size: 1400m)
 
-    Press the Tilde (~) or Backtick (`) key (usually under ESC) once to open the log.
-    Press it a second time to open the command input line.
-    Press Tab to cycle through available commands.
+------------------------------------------------------------------------
+[6] BUG FIXES IN V3
+------------------------------------------------------------------------
+- Fixed: Physics rotation now matches visual cloud spin (Counter-Clockwise).
+- Fixed: Vehicles taking damage/dirt while inside the Store menu.
+- Fixed: Borrowed Mission Vehicles taking storm damage.
+- Fixed: "Infinite Repair Loop" when used with AutoRepair mods.
 
-Mod Commands:
-    indoor_damage - vehicles inside buildings will take damage (though physics are disabled).  (Default off)
-    outdoor_damage - vehicles outside will take damage and physics forces.  (Default on)
-    random_size - the tornado scale is randomized upon spawning.   (Default on) (note: default set in the script is 0.5% min to 5.0% max size increase. so 1/2 of original (game default size.) to 5x larger.)
-    t_toggle lift_bales - Turns bale physics on/off on the fly. (Default is on.)
-    t_toggle  lift_logs - Turns logs physics on/off on the fly. (Default is off.) ( Do note that if this feature is enable you have a hi chance of losing the logs permanently, you have been warned.)
+------------------------------------------------------------------------
+[7] CREDITS
+------------------------------------------------------------------------
+Scripting & Physics Engine: whitevamp
+Testing & Feedback: Community
 
-
-
-
-Version: 1.0
-Author: whitevamp
-
-DESCRIPTION:
-This mod adds real physics to the Farming Simulator 25 Tornado.
-By default, the game's tornado is just a visual effect. This mod makes it dangerous.
-
-FEATURES:
-- Suction: Drag force pulls vehicles toward the funnel.
-- Lift: Vehicles will be lifted into the air based on their mass.
-- Destruction: If a vehicle hits the "Eye" of the storm, it will take 100% Damage, 100% Wear, and 100% Dirt instantly. The engine will break.
-- Physics Tuning: Heavy vehicles (30t+) will struggle to lift, while light vehicles (<6t) will fly easily.
-
-HOW TO TEST (CONSOLE COMMANDS):
-This mod works with natural weather, but you can force a tornado for testing:
-1. Enable Developer Console in game settings.
-2. Press '~' to open the console.
-3. Type: gsWeatherTwisterSpawn
-   (This spawns a tornado directly in front of you).
-
-DEBUG COMMANDS:
-If the physics do not seem to engage, you can use these commands in the console:
-- t_status       : Shows if the script has found the tornado object.
-- t_scan_root    : Forces the script to re-scan the engine for the tornado.
-- t_lock <ID>    : Manually locks physics to a specific Node ID (advanced users).
-
-INSTALLATION:
-Place the FS25_TornadoPhysics.zip into your mods folder.
+You are free to use this mod in videos/streams.
+Please do not re-upload to other sites without permission.
