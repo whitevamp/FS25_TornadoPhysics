@@ -20,7 +20,7 @@ function TornadoMain:loadMap(name)
     source(Utils.getFilename("scripts/TornadoConsole.lua", modDir))
     
     -- [NEW] Load Destruction Module
-    --source(Utils.getFilename("scripts/TornadoDestruction.lua", modDir))
+    source(Utils.getFilename("scripts/TornadoDestruction.lua", modDir))
 
     source(Utils.getFilename("scripts/TornadoHotspot.lua", modDir))
     source(Utils.getFilename("scripts/TornadoMapUI.lua", modDir))
@@ -36,7 +36,7 @@ function TornadoMain:loadMap(name)
     if TornadoADS then TornadoADS:loadMap() end
     
     -- [NEW] Initialize Destruction (Before Physics uses it)
-    --if TornadoDestruction then TornadoDestruction:loadMap(name, modDir) end
+    if TornadoDestruction then TornadoDestruction:loadMap(name, modDir) end
 
     if TornadoPhysics then TornadoPhysics:loadMap(name, modDir) end
     if TornadoConsole then TornadoConsole:loadMap() end

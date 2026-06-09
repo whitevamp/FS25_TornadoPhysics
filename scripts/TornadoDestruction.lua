@@ -1,6 +1,6 @@
 ---@class TornadoDestruction
----@version 3.1 (VERBOSE + LOGIC FIX)
----@description Restored detailed print logs and increased destruction limits.
+---@version 3.2 (VEHICLES ONLY)
+---@description Restored detailed print logs and limited destruction strictly to vehicles.
 
 TornadoDestruction = {}
 
@@ -11,7 +11,7 @@ TornadoDestruction.REPAIR_COOLDOWN_HOURS = 24
 TornadoDestruction.DESTRUCTION_XML_FILE = "TornadoDestructionState.xml"
 TornadoDestruction.SEARCH_BUDGET = 1000 
 
--- SAFETY LIMITS (Increased Max to 6 to handle larger buildings/vehicles)
+-- SAFETY LIMITS (Limits for vehicle parts)
 TornadoDestruction.MIN_STRUCT_TO_DESTROY = 2
 TornadoDestruction.MAX_STRUCT_TO_DESTROY = 6
 
@@ -45,14 +45,13 @@ function TornadoDestruction:loadMap(name, baseDir)
     if self.isInitialized then return end
     if not g_currentMission then return end
     
-    --self._savegameDir = g_currentMission.missionInfo.savegameDirectory .. "/"
     self._destroyedObjects = {}
     self._pendingLoad = {}
 
     local dir = baseDir or g_currentModDirectory
     if not dir then print("TornadoDestruction: ERROR - No Mod Dir") return end
 
-    print("TornadoDestruction: V3.1 Initializing (Verbose Logging)...")
+    print("TornadoDestruction: V3.2 Initializing (Vehicles Only)...")
 
     local dbPath = Utils.getFilename("DB/TornadoMod_GlobalDatabase.lua", dir)
     if fileExists(dbPath) then
@@ -115,7 +114,16 @@ function TornadoDestruction:destroyTarget(target)
     local objectId = target.rootNode
     if self._destroyedObjects[objectId] ~= nil then return end 
 
-    local filename = self:_cleanFilename(target.i3dFilename)
+    -- Get filename to check if it's a vehicle or placeable
+    local rawFilename = target.i3dFilename or ""
+    local lowerRawFilename = string.lower(rawFilename)
+    
+    -- ONLY allow vehicles to be destroyed. Reject placeables/buildings entirely.
+    if string.find(lowerRawFilename, "placeables/") or not string.find(lowerRawFilename, "vehicles/") then
+        return 
+    end
+
+    local filename = self:_cleanFilename(rawFilename)
     
     -- [CHECK] File-level Ignore with DEBUG LOGGING
     local filenameLower = string.lower(filename)
@@ -130,7 +138,7 @@ function TornadoDestruction:destroyTarget(target)
     
     if TornadoDebug and TornadoDebug.verboseMode then
         print("--------------------------------------------------")
-        print("TornadoDestruction: Processing -> " .. tostring(filename))
+        print("TornadoDestruction: Processing Vehicle -> " .. tostring(filename))
     end
 
     -- 1. IDENTIFY TARGETS
@@ -194,7 +202,7 @@ function TornadoDestruction:destroyTarget(target)
             repairTime = repairTime
         }
     else
-        if TornadoDebug and TornadoDebug.verboseMode then print("TornadoDestruction: FAILED. No suitable parts found.") end
+        if TornadoDebug and TornadoDebug.verboseMode then print("TornadoDestruction: FAILED. No suitable vehicle parts found.") end
     end
 end
 
@@ -303,22 +311,29 @@ function TornadoDestruction:_updateRepairs(dt)
         self._destroyedObjects[id] = nil
     end
 end
+
 function TornadoDestruction:_cleanFilename(path)
     if path == nil or path == "" then return "unknown" end
     path = string.gsub(path, "\\", "/")
     local vPos = string.find(path, "vehicles/")
-    local pPos = string.find(path, "placeables/")
-    local startPos = vPos or pPos
-    if startPos then return string.sub(path, startPos) end
+    -- Placeables string find removed
+    if vPos then return string.sub(path, vPos) end
     return path
 end
+
 function TornadoDestruction:_linkPendingObjects()
     if g_currentMission == nil then return end
     local stillPending = {}
     local searchRadiusSq = 1.0
     local searchTargets = {}
-    if g_currentMission.vehicles then for _, v in pairs(g_currentMission.vehicles) do table.insert(searchTargets, v) end end
-    if g_currentMission.placeableSystem and g_currentMission.placeableSystem.placeables then for _, p in pairs(g_currentMission.placeableSystem.placeables) do table.insert(searchTargets, p) end end
+    
+    -- ONLY collect vehicles for pending destruction loads
+    if g_currentMission.vehicles then 
+        for _, v in pairs(g_currentMission.vehicles) do table.insert(searchTargets, v) end 
+    end
+    
+    -- Placeables iteration loop completely removed
+    
     for _, pending in ipairs(self._pendingLoad) do
         local found = false
         for _, obj in ipairs(searchTargets) do
@@ -327,7 +342,7 @@ function TornadoDestruction:_linkPendingObjects()
                 local x, y, z = getWorldTranslation(obj.rootNode)
                 local dx, dy, dz = x - pending.x, y - pending.y, z - pending.z
                 if (dx*dx + dy*dy + dz*dz) < searchRadiusSq then
-                    if TornadoDebug and TornadoDebug.verboseMode then print("TornadoDestruction: RELINKING saved -> " .. filename) end
+                    if TornadoDebug and TornadoDebug.verboseMode then print("TornadoDestruction: RELINKING saved vehicle -> " .. filename) end
                     for _, nodeInfo in ipairs(pending.nodes) do
                         local foundNode = I3DUtil.findNode(obj.rootNode, nodeInfo.name, true)
                         if foundNode and foundNode ~= 0 then setVisibility(foundNode, false) nodeInfo.id = foundNode end
@@ -342,6 +357,7 @@ function TornadoDestruction:_linkPendingObjects()
     end
     self._pendingLoad = stillPending
 end
+
 function TornadoDestruction:_saveToXML()
     if self._savegameDir == nil then return end
     local filepath = self._savegameDir .. self.DESTRUCTION_XML_FILE
@@ -364,8 +380,9 @@ function TornadoDestruction:_saveToXML()
     for _, pending in ipairs(self._pendingLoad) do writeEntry(pending, pending.x, pending.y, pending.z) end
     saveXMLFile(xmlId)
     delete(xmlId)
-    print("TornadoDestruction: Saved " .. i .. " objects.")
+    print("TornadoDestruction: Saved " .. i .. " vehicle objects.")
 end
+
 function TornadoDestruction:_loadFromXML()
     if self._savegameDir == nil then return end
     local filepath = self._savegameDir .. self.DESTRUCTION_XML_FILE
@@ -385,20 +402,7 @@ function TornadoDestruction:_loadFromXML()
         i = i + 1
     end
     delete(xmlId)
-    print("TornadoDestruction: Loaded " .. i .. " pending objects.")
+    print("TornadoDestruction: Loaded " .. i .. " pending vehicle objects.")
 end
-
--- function TornadoDestruction.getXmlFilePath()
--- 	if g_currentMission.missionInfo then
--- 		local savegameDirectory = g_currentMission.missionInfo.savegameDirectory
--- 		if savegameDirectory ~= nil then
--- 			return ("%s/%s.xml"):format(savegameDirectory, self.DESTRUCTION_XML_FILE) --MOD_NAME)
--- 		-- else: Save game directory is nil if this is a brand new save
--- 		end
--- 	else
--- 		Logging.warning(MOD_NAME .. ": Could not get path to TornadoDestruction.xml settings file since g_currentMission.missionInfo is nil.")
--- 	end
--- 	return nil
--- end
 
 return TornadoDestruction
