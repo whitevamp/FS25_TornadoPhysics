@@ -54,7 +54,7 @@ end
 
 function TornadoMain:deleteMap()
     if TornadoPhysics then TornadoPhysics:deleteMap() end
-    --if TornadoDestruction then TornadoDestruction:deleteMap() end -- [NEW] Save data on exit
+    if TornadoDestruction then TornadoDestruction:deleteMap() end -- [NEW] Save data on exit
     if TornadoHusbandry then TornadoHusbandry:deleteMap() end
     if TornadoEffects then TornadoEffects:deleteMap() end
     if TornadoDebug then TornadoDebug:deleteMap() end

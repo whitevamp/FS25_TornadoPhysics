@@ -86,6 +86,10 @@ function TornadoDestruction:loadMap(name, baseDir)
         _G.TornadoMod_IgnoreList = nil
     end
 
+    if g_currentMission.missionInfo ~= nil and g_currentMission.missionInfo.savegameDirectory ~= nil then
+        self._savegameDir = g_currentMission.missionInfo.savegameDirectory .. "/"
+    end
+    
     self:_loadFromXML()
     self.isInitialized = true
 end
