@@ -64,7 +64,7 @@ end
 
 function TornadoMain:update(dt)
     if TornadoPhysics then TornadoPhysics:update(dt) end
-    --if TornadoDestruction then TornadoDestruction:update(dt) end -- [NEW] Update repair timers
+    if TornadoDestruction then TornadoDestruction:update(dt) end -- [NEW] Update repair timers
     if TornadoEffects then TornadoEffects:update(dt) end
     if TornadoSFX then TornadoSFX:update(dt) end
 
