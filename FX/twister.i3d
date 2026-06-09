@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="twister" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+
+  <Files>
+    <File fileId="10" filename="$data/effects/weeder/particle/grass32x4_diffuse.png" />
+    <File fileId="11" filename="$data/effects/weeder/particle/grass32x4_normal.png" />
+    <File fileId="3" filename="$data/shaders/vtxAnimationBillboardShader.xml" />
+    <File fileId="1" filename="$data/sky/smoke16x8_diffuse.png" />
+    <File fileId="2" filename="$data/sky/smoke16x8_normal.png" />
+    <File fileId="4" filename="$data/sky/twisterMain1Array.png" />
+    <File fileId="5" filename="$data/sky/twisterMain2Array.png" />
+    <File fileId="6" filename="$data/sky/twisterMain3Array.png" />
+    <File fileId="7" filename="$data/sky/twisterMain4Array.png" />
+    <File fileId="8" filename="$data/sky/twisterSide1Array.png" />
+    <File fileId="9" filename="$data/sky/twisterSide2Array.png" />
+  </Files>
+
+  <Materials>
+    <Material name="twisterMain1_mat" materialId="1" specularColor="0 0 0" alphaBlending="true" customShaderId="3" customShaderVariation="subUV">
+      <CustomParameter name="blendFactorInTimeOutTime" value="1 0.1 0.9"/>
+      <CustomParameter name="colorAlpha" value="0.5 0.5 0.5 0.5"/>
+      <CustomParameter name="density" value="1 0.5 100 300"/>
+      <CustomParameter name="depthFadeScale" value="0.25"/>
+      <CustomParameter name="isSubUVHorizontal" value="1"/>
+      <CustomParameter name="isZaligned" value="1"/>
+      <CustomParameter name="playScale" value="8 16 16 8"/>
+      <CustomParameter name="randomSeed" value="100"/>
+      <CustomParameter name="scaleInOutTimeMinMax" value="1 1 3 6"/>
+      <CustomParameter name="scaleInitRandom" value="1 2 0.1"/>
+      <CustomParameter name="speed" value="0.4 0.05"/>
+      <Custommap name="animationArray" fileId="4"/>
+      <Texture fileId="1"/>
+      <Normalmap fileId="2"/>
+    </Material>
+    <Material name="twisterMain2_mat" materialId="2" specularColor="0 0 0" alphaBlending="true" customShaderId="3" customShaderVariation="subUV">
+      <CustomParameter name="blendFactorInTimeOutTime" value="1 0.2 0.8"/>
+      <CustomParameter name="colorAlpha" value="0.5 0.5 0.5 0.5"/>
+      <CustomParameter name="density" value="1 0.5 100 300"/>
+      <CustomParameter name="depthFadeScale" value="0.25"/>
+      <CustomParameter name="isSubUVHorizontal" value="1"/>
+      <CustomParameter name="isZaligned" value="1"/>
+      <CustomParameter name="playScale" value="8 16 16 8"/>
+      <CustomParameter name="randomSeed" value="100"/>
+      <CustomParameter name="scaleInOutTimeMinMax" value="1 1 4 6"/>
+      <CustomParameter name="scaleInitRandom" value="1 2 0.1"/>
+      <CustomParameter name="speed" value="0.405 0.05"/>
+      <Custommap name="animationArray" fileId="5"/>
+      <Texture fileId="1"/>
+      <Normalmap fileId="2"/>
+    </Material>
+    <Material name="twisterMain3_mat" materialId="3" specularColor="0 0 0" alphaBlending="true" customShaderId="3" customShaderVariation="subUV">
+      <CustomParameter name="blendFactorInTimeOutTime" value="1 0.1 0.8"/>
+      <CustomParameter name="colorAlpha" value="0.5 0.5 0.5 0.5"/>
+      <CustomParameter name="density" value="1 0.5 100 300"/>
+      <CustomParameter name="depthFadeScale" value="0.25"/>
+      <CustomParameter name="isSubUVHorizontal" value="1"/>
+      <CustomParameter name="isZaligned" value="1"/>
+      <CustomParameter name="playScale" value="8 16 16 8"/>
+      <CustomParameter name="randomSeed" value="100"/>
+      <CustomParameter name="scaleInOutTimeMinMax" value="1 1 4 6"/>
+      <CustomParameter name="scaleInitRandom" value="1 2.5 0.1"/>
+      <CustomParameter name="speed" value="0.41 0.05"/>
+      <Custommap name="animationArray" fileId="6"/>
+      <Texture fileId="1"/>
+      <Normalmap fileId="2"/>
+    </Material>
+    <Material name="twisterMain4_mat" materialId="4" specularColor="0 0 0" alphaBlending="true" customShaderId="3" customShaderVariation="subUV">
+      <CustomParameter name="blendFactorInTimeOutTime" value="1 0.1 0.8"/>
+      <CustomParameter name="colorAlpha" value="0.5 0.5 0.5 0.5"/>
+      <CustomParameter name="density" value="1 0.5 100 300"/>
+      <CustomParameter name="depthFadeScale" value="0.25"/>
+      <CustomParameter name="isSubUVHorizontal" value="1"/>
+      <CustomParameter name="isZaligned" value="1"/>
+      <CustomParameter name="playScale" value="8 16 16 8"/>
+      <CustomParameter name="randomSeed" value="100"/>
+      <CustomParameter name="scaleInOutTimeMinMax" value="1 1 4 6"/>
+      <CustomParameter name="scaleInitRandom" value="1 2.5 0.1"/>
+      <CustomParameter name="speed" value="0.415 0.05"/>
+      <Custommap name="animationArray" fileId="7"/>
+      <Texture fileId="1"/>
+      <Normalmap fileId="2"/>
+    </Material>
+    <Material name="twisterSide1_mat" materialId="5" specularColor="0 0 0" alphaBlending="true" customShaderId="3" customShaderVariation="subUV">
+      <CustomParameter name="blendFactorInTimeOutTime" value="1 0.1 0.75"/>
+      <CustomParameter name="colorAlpha" value="0.5 0.5 0.5 0.5"/>
+      <CustomParameter name="density" value="1 0.5 100 300"/>
+      <CustomParameter name="depthFadeScale" value="2"/>
+      <CustomParameter name="fadeProgress" value="0.5 0 1 0"/>
+      <CustomParameter name="fadeProgressSharpness" value="1 0 0 0"/>
+      <CustomParameter name="isSubUVHorizontal" value="1"/>
+      <CustomParameter name="isZaligned" value="1"/>
+      <CustomParameter name="playScale" value="8 16 16 8"/>
+      <CustomParameter name="randomSeed" value="100"/>
+      <CustomParameter name="scaleInOutTimeMinMax" value="1 1 5 8"/>
+      <CustomParameter name="scaleInitRandom" value="1 2.5 0.1"/>
+      <CustomParameter name="speed" value="0.3 0.1"/>
+      <Custommap name="animationArray" fileId="8"/>
+      <Texture fileId="1"/>
+      <Normalmap fileId="2"/>
+    </Material>
+    <Material name="twisterSide2_mat" materialId="6" specularColor="0 0 0" alphaBlending="true" customShaderId="3" customShaderVariation="subUV">
+      <CustomParameter name="blendFactorInTimeOutTime" value="0.75 0.25 0.75"/>
+      <CustomParameter name="colorAlpha" value="0.5 0.5 0.5 0.25"/>
+      <CustomParameter name="density" value="1 0.5 100 300"/>
+      <CustomParameter name="depthFadeScale" value="2"/>
+      <CustomParameter name="isAlphaErosionSharpness" value="1 0.5"/>
+      <CustomParameter name="isSubUVHorizontal" value="1"/>
+      <CustomParameter name="playScale" value="8 16 16 8"/>
+      <CustomParameter name="randomSeed" value="100"/>
+      <CustomParameter name="rotationInitMinMaxSpeed" value="1 0.5 1 0.5"/>
+      <CustomParameter name="scaleInOutTimeMinMax" value="1 1 10 20"/>
+      <CustomParameter name="scaleInitRandom" value="1 1 0.1"/>
+      <CustomParameter name="speed" value="0.2 0.1"/>
+      <Custommap name="animationArray" fileId="9"/>
+      <Texture fileId="1"/>
+      <Normalmap fileId="2"/>
+    </Material>
+    <Material name="twisterSideDust2_mat" materialId="9" specularColor="0 0 0" customShaderId="3" customShaderVariation="subUV">
+      <CustomParameter name="blendFactorInTimeOutTime" value="1 0.25 0.75"/>
+      <CustomParameter name="colorAlpha" value="0.2 0.2 0.2 1"/>
+      <CustomParameter name="isAlphaErosionSharpness" value="1 0.5"/>
+      <CustomParameter name="isSubUVHorizontal" value="1"/>
+      <CustomParameter name="playScale" value="16 32 32 4"/>
+      <CustomParameter name="rotationInitMinMaxSpeed" value="1 0.5 1 0.5"/>
+      <CustomParameter name="scaleInitRandom" value="0.25 0.25 0.2"/>
+      <CustomParameter name="speed" value="0.2 0.1"/>
+      <Custommap name="animationArray" fileId="9"/>
+      <Texture fileId="10"/>
+      <Normalmap fileId="11"/>
+    </Material>
+    <Material name="twisterSideDust1_mat" materialId="8" specularColor="0 0 0" customShaderId="3" customShaderVariation="subUV">
+      <CustomParameter name="blendFactorInTimeOutTime" value="1 0.25 0.75"/>
+      <CustomParameter name="colorAlpha" value="0.2 0.2 0.2 1"/>
+      <CustomParameter name="isAlphaErosionSharpness" value="1 0.5"/>
+      <CustomParameter name="isSubUVHorizontal" value="1"/>
+      <CustomParameter name="playScale" value="16 32 32 4"/>
+      <CustomParameter name="rotationInitMinMaxSpeed" value="1 0.5 1 0.5"/>
+      <CustomParameter name="scaleInitRandom" value="0.25 0.25 0.2"/>
+      <CustomParameter name="speed" value="0.2 0.1"/>
+      <Custommap name="animationArray" fileId="8"/>
+      <Texture fileId="10"/>
+      <Normalmap fileId="11"/>
+    </Material>
+    <Material name="twisterSide3_mat" materialId="7" specularColor="0 0 0" alphaBlending="true" customShaderId="3" customShaderVariation="subUV">
+      <CustomParameter name="blendFactorInTimeOutTime" value="1 0.1 0.75"/>
+      <CustomParameter name="colorAlpha" value="0.5 0.5 0.5 0.5"/>
+      <CustomParameter name="density" value="1 0.5 100 300"/>
+      <CustomParameter name="depthFadeScale" value="2"/>
+      <CustomParameter name="fadeProgress" value="0.5 0 1 0"/>
+      <CustomParameter name="fadeProgressSharpness" value="1 0 0 0"/>
+      <CustomParameter name="isSubUVHorizontal" value="1"/>
+      <CustomParameter name="isZaligned" value="1"/>
+      <CustomParameter name="playScale" value="8 16 16 8"/>
+      <CustomParameter name="randomSeed" value="50"/>
+      <CustomParameter name="scaleInOutTimeMinMax" value="1 1 5 8"/>
+      <CustomParameter name="scaleInitRandom" value="1 2.5 0.1"/>
+      <CustomParameter name="speed" value="0.3 0.1"/>
+      <Custommap name="animationArray" fileId="8"/>
+      <Texture fileId="1"/>
+      <Normalmap fileId="2"/>
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="twister.i3d.shapes">
+  </Shapes>
+
+  <Scene>
+    <TransformGroup name="twister" nodeId="1">
+      <TransformGroup name="destructionAreas" nodeId="2">
+        <TransformGroup name="innerArea" nodeId="3">
+          <TransformGroup name="innerPolygonPoint1" translation="-7.5 0 10" nodeId="4"/>
+          <TransformGroup name="innerPolygonPoint2" translation="-7.5 0 9.5" nodeId="5"/>
+          <TransformGroup name="innerPolygonPoint3" translation="7.5 0 9.5" nodeId="6"/>
+          <TransformGroup name="innerPolygonPoint4" translation="7.5 0 10" nodeId="7"/>
+        </TransformGroup>
+        <TransformGroup name="middleRing" nodeId="8">
+          <TransformGroup name="middleRing1" nodeId="9">
+            <TransformGroup name="middleRing1Point1" translation="20 0 0" nodeId="10"/>
+            <TransformGroup name="middleRing1Point2" translation="10 0 17.320509" nodeId="11"/>
+            <TransformGroup name="middleRing1Point3" translation="9.5 0 16.454483" nodeId="12"/>
+            <TransformGroup name="middleRing1Point4" translation="19 0 0" nodeId="13"/>
+          </TransformGroup>
+          <TransformGroup name="middleRing2" nodeId="14">
+            <TransformGroup name="middleRing2Point1" translation="10 0 17.320509" nodeId="15"/>
+            <TransformGroup name="middleRing2Point2" translation="-10 0 17.320509" nodeId="16"/>
+            <TransformGroup name="middleRing2Point3" translation="-9.5 0 16.454483" nodeId="17"/>
+            <TransformGroup name="middleRing2Point4" translation="9.5 0 16.454483" nodeId="18"/>
+          </TransformGroup>
+          <TransformGroup name="middleRing3" nodeId="19">
+            <TransformGroup name="middleRing3Point1" translation="-10 0 17.320509" nodeId="20"/>
+            <TransformGroup name="middleRing3Point2" translation="-30 0 0" nodeId="21"/>
+            <TransformGroup name="middleRing3Point3" translation="-29 0 0" nodeId="22"/>
+            <TransformGroup name="middleRing3Point4" translation="-9.5 0 16.454483" nodeId="23"/>
+          </TransformGroup>
+        </TransformGroup>
+        <TransformGroup name="outerRing" nodeId="24">
+          <TransformGroup name="outerRing1" nodeId="25">
+            <TransformGroup name="outerRing1Point1" translation="35 0 0" nodeId="26"/>
+            <TransformGroup name="outerRing1Point2" translation="17.5 0 30.310888" nodeId="27"/>
+            <TransformGroup name="outerRing1Point3" translation="17 0 29.444864" nodeId="28"/>
+            <TransformGroup name="outerRing1Point4" translation="34 0 0" nodeId="29"/>
+          </TransformGroup>
+          <TransformGroup name="outerRing2" nodeId="30">
+            <TransformGroup name="outerRing2Point1" translation="17.5 0 30.310888" nodeId="31"/>
+            <TransformGroup name="outerRing2Point2" translation="-17.5 0 30.310888" nodeId="32"/>
+            <TransformGroup name="outerRing2Point3" translation="-17 0 29.444864" nodeId="33"/>
+            <TransformGroup name="outerRing2Point4" translation="17 0 29.444864" nodeId="34"/>
+          </TransformGroup>
+          <TransformGroup name="outerRing3" nodeId="35">
+            <TransformGroup name="outerRing3Point1" translation="-17.5 0 30.310888" nodeId="36"/>
+            <TransformGroup name="outerRing3Point2" translation="-35 0 0" nodeId="37"/>
+            <TransformGroup name="outerRing3Point3" translation="-34 0 0" nodeId="38"/>
+            <TransformGroup name="outerRing3Point4" translation="-17 0 29.444864" nodeId="39"/>
+          </TransformGroup>
+        </TransformGroup>
+      </TransformGroup>
+ <TransformGroup name="billboards" nodeId="41">
+
+  <TransformGroup name="twisterMain" nodeId="42">
+    <Shape name="twisterMain1" shapeId="1" castsShadows="false" receiveShadows="false" materialIds="1" objectMask="0xff007f" clipDistance="5000" nodeId="43"/>
+    <Shape name="twisterMain2" shapeId="2" castsShadows="false" receiveShadows="false" materialIds="2" objectMask="0xff007f" clipDistance="5000" nodeId="44"/>
+    <Shape name="twisterMain3" shapeId="3" castsShadows="false" receiveShadows="false" materialIds="3" objectMask="0xff007f" clipDistance="5000" nodeId="45"/>
+    <Shape name="twisterMain4" shapeId="4" castsShadows="false" receiveShadows="false" materialIds="4" objectMask="0xff007f" clipDistance="5000" nodeId="46"/>
+
+    <Shape name="twisterMain1_COPY" rotation="0 45 0" shapeId="1" castsShadows="false" receiveShadows="false" materialIds="1" objectMask="0xff007f" clipDistance="5000"/>
+    <Shape name="twisterMain2_COPY" rotation="0 45 0" shapeId="2" castsShadows="false" receiveShadows="false" materialIds="2" objectMask="0xff007f" clipDistance="5000"/>
+    <Shape name="twisterMain3_COPY" rotation="0 45 0" shapeId="3" castsShadows="false" receiveShadows="false" materialIds="3" objectMask="0xff007f" clipDistance="5000"/>
+    <Shape name="twisterMain4_COPY" rotation="0 45 0" shapeId="4" castsShadows="false" receiveShadows="false" materialIds="4" objectMask="0xff007f" clipDistance="5000"/>
+  </TransformGroup>
+
+  <TransformGroup name="twisterSide" nodeId="47">
+    <Shape name="twisterSide1" shapeId="5" castsShadows="false" receiveShadows="false" materialIds="5" objectMask="0xff007f" clipDistance="3000" nodeId="48"/>
+    <Shape name="twisterSide2" scale="1 0.25 1" shapeId="6" castsShadows="false" receiveShadows="false" materialIds="6" objectMask="0xff007f" clipDistance="3000" nodeId="49"/>
+    <Shape name="twisterSide3" scale="0.7 1.65 0.7" shapeId="7" castsShadows="false" receiveShadows="false" materialIds="7" objectMask="0xff007f" clipDistance="3000" nodeId="50"/>
+    <Shape name="twisterSideDust1" shapeId="8" castsShadows="false" receiveShadows="false" materialIds="8" objectMask="0xff007f" clipDistance="5000" nodeId="51"/>
+    <Shape name="twisterSideDust2" shapeId="9" castsShadows="false" receiveShadows="false" materialIds="9" objectMask="0xff007f" clipDistance="5000" nodeId="52"/>
+  </TransformGroup>
+
+</TransformGroup>
+    </TransformGroup>
+    <TransformGroup name="gradmInus60" rotation="0 -60 0" nodeId="53"/>
+    <TransformGroup name="grad60" rotation="0 60 0" nodeId="54"/>
+  </Scene>
+
+  <UserAttributes>
+  </UserAttributes>
+</i3D>
