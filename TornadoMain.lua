@@ -90,4 +90,33 @@ function TornadoMain:draw()
     if TornadoPhysics and TornadoPhysics.draw then TornadoPhysics:draw() end
 end
 
+-- ---------------------------------------------------------------------------
+-- Helpers
+-- ---------------------------------------------------------------------------
+
+-- function TornadoMain:getSavePath()
+--     local info = g_currentMission.missionInfo
+--     if info == nil then return nil end
+--     local path = info.savegameDirectory
+--     if path == nil then
+--         path = ('%ssavegame%d'):format(getUserProfileAppPath(), info.savegameIndex)
+--     end
+--     return path .. "/"
+-- end
+
+FSBaseMission.saveSavegame = Utils.appendedFunction(FSBaseMission.saveSavegame, function(...)
+    if TornadoDestruction and TornadoDestruction._saveToXML then
+        -- Keep our pcall firewall so we never corrupt the weather files
+        local success, err = pcall(function()
+            TornadoDestruction:_saveToXML()
+        end)
+        
+        if not success then
+            print("TORNADO DESTRUCTION SAVE ERROR: " .. tostring(err))
+        end
+    end
+end)
+
+
+
 addModEventListener(TornadoMain)

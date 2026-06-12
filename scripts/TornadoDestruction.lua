@@ -85,10 +85,6 @@ function TornadoDestruction:loadMap(name, baseDir)
         _G.TornadoMod_IgnoreList = nil
     end
 
-    if g_currentMission.missionInfo ~= nil and g_currentMission.missionInfo.savegameDirectory ~= nil then
-        self._savegameDir = g_currentMission.missionInfo.savegameDirectory .. "/"
-    end
-    
     self:_loadFromXML()
     self.isInitialized = true
 end
@@ -358,12 +354,133 @@ function TornadoDestruction:_linkPendingObjects()
     self._pendingLoad = stillPending
 end
 
+function TornadoDestruction:_resolveSavegamePath()
+    if not g_currentMission or not g_currentMission.missionInfo then return nil end
+    
+    local dir = g_currentMission.missionInfo.savegameDirectory
+    -- If dir is nil, fallback to user profile path (common on new saves)
+    if dir == nil then
+        if g_currentMission.missionInfo.savegameIndex ~= nil then
+            dir = string.format('%ssavegame%d', getUserProfileAppPath(), g_currentMission.missionInfo.savegameIndex)
+        end
+    end
+    
+    if dir ~= nil then
+        return dir .. "/"
+    end
+    return nil
+end
+
+-- function TornadoDestruction:_saveToXML()
+--     -- CRITICAL: Only the server handles saving
+--     if not g_currentMission:getIsServer() then return end
+
+--     local saveDir = self:_resolveSavegamePath()
+--     if saveDir == nil then return end
+
+--     local filepath = saveDir .. self.DESTRUCTION_XML_FILE
+--     local xmlId = createXMLFile("TornadoDestruction", filepath, "TornadoDestruction")
+--     local key = "TornadoDestruction.destroyed.object"
+--     local i = 0
+    
+--     local function writeEntry(data, x, y, z)
+--         local objKey = string.format("%s(%d)", key, i)
+--         setXMLString(xmlId, objKey .. ".filename", data.filename)
+--         setXMLFloat(xmlId, objKey .. ".posX", x)
+--         setXMLFloat(xmlId, objKey .. ".posY", y)
+--         setXMLFloat(xmlId, objKey .. ".posZ", z)
+--         setXMLFloat(xmlId, objKey .. ".repairTime", data.repairTime)
+--         local nodesStr = ""
+--         for _, nodeInfo in ipairs(data.nodes) do nodesStr = nodesStr .. nodeInfo.name .. ";" end
+--         setXMLString(xmlId, objKey .. ".nodes", nodesStr)
+--         i = i + 1
+--     end
+    
+--     for _, data in pairs(self._destroyedObjects) do 
+--         local x, y, z = getWorldTranslation(data.obj.rootNode) 
+--         if x then writeEntry(data, x, y, z) end 
+--     end
+    
+--     for _, pending in ipairs(self._pendingLoad) do 
+--         writeEntry(pending, pending.x, pending.y, pending.z) 
+--     end
+    
+--     saveXMLFile(xmlId)
+--     delete(xmlId)
+--     print("TornadoDestruction: Saved " .. i .. " vehicle objects.")
+-- end
+
+-- function TornadoDestruction:_loadFromXML()
+--     -- CRITICAL: Only the server handles loading
+--     if not g_currentMission:getIsServer() then return end
+
+--     local saveDir = self:_resolveSavegamePath()
+--     if saveDir == nil then return end
+
+--     local filepath = saveDir .. self.DESTRUCTION_XML_FILE
+--     if not fileExists(filepath) then return end
+    
+--     local xmlId = loadXMLFile("TornadoDestruction", filepath)
+--     if xmlId == 0 then return end
+    
+--     self._pendingLoad = {}
+--     local i = 0
+--     while true do
+--         local key = string.format("TornadoDestruction.destroyed.object(%d)", i)
+--         local filename = getXMLString(xmlId, key .. ".filename")
+--         if filename == nil then break end
+        
+--         local nodesStr = getXMLString(xmlId, key .. ".nodes") or ""
+--         local nodes = {}
+--         for nodeName in string.gmatch(nodesStr, "([^;]+)") do table.insert(nodes, {id = 0, name = nodeName}) end
+        
+--         table.insert(self._pendingLoad, { 
+--             filename = filename, 
+--             x = getXMLFloat(xmlId, key .. ".posX"), 
+--             y = getXMLFloat(xmlId, key .. ".posY"), 
+--             z = getXMLFloat(xmlId, key .. ".posZ"), 
+--             repairTime = getXMLFloat(xmlId, key .. ".repairTime"), 
+--             nodes = nodes 
+--         })
+--         i = i + 1
+--     end
+    
+--     delete(xmlId)
+--     print("TornadoDestruction: Loaded " .. i .. " pending vehicle objects.")
+-- end
+
 function TornadoDestruction:_saveToXML()
-    if self._savegameDir == nil then return end
-    local filepath = self._savegameDir .. self.DESTRUCTION_XML_FILE
-    local xmlId = createXMLFile("TornadoDestruction", filepath)
+    print("TornadoDestruction TRACE: _saveToXML triggered.")
+
+    -- 1. Check Server
+    if g_server == nil then 
+        print("TornadoDestruction TRACE: FAILED g_server check. Aborting save.")
+        return 
+    end
+    print("TornadoDestruction TRACE: g_server check passed.")
+
+    -- 2. Resolve Path
+    local saveDir = self:_resolveSavegamePath()
+    if saveDir == nil then 
+        print("TornadoDestruction TRACE: FAILED to resolve savegame path. Aborting save.")
+        return 
+    end
+    print("TornadoDestruction TRACE: Save path resolved to -> " .. tostring(saveDir))
+
+    -- 3. Create XML
+    local filepath = saveDir .. self.DESTRUCTION_XML_FILE
+    print("TornadoDestruction TRACE: Attempting to create XML at -> " .. tostring(filepath))
+    
+    local xmlId = createXMLFile("TornadoDestruction", filepath, "TornadoDestruction")
+    if xmlId == 0 then 
+        print("TornadoDestruction TRACE: FAILED to create XML file. xmlId is 0. Aborting.")
+        return 
+    end
+    print("TornadoDestruction TRACE: XML file created successfully. ID: " .. tostring(xmlId))
+
     local key = "TornadoDestruction.destroyed.object"
     local i = 0
+    
     local function writeEntry(data, x, y, z)
         local objKey = string.format("%s(%d)", key, i)
         setXMLString(xmlId, objKey .. ".filename", data.filename)
@@ -371,38 +488,110 @@ function TornadoDestruction:_saveToXML()
         setXMLFloat(xmlId, objKey .. ".posY", y)
         setXMLFloat(xmlId, objKey .. ".posZ", z)
         setXMLFloat(xmlId, objKey .. ".repairTime", data.repairTime)
+        
         local nodesStr = ""
-        for _, nodeInfo in ipairs(data.nodes) do nodesStr = nodesStr .. nodeInfo.name .. ";" end
+        if data.nodes then
+            for _, nodeInfo in ipairs(data.nodes) do nodesStr = nodesStr .. nodeInfo.name .. ";" end
+        end
         setXMLString(xmlId, objKey .. ".nodes", nodesStr)
         i = i + 1
     end
-    for _, data in pairs(self._destroyedObjects) do local x, y, z = getWorldTranslation(data.obj.rootNode) if x then writeEntry(data, x, y, z) end end
-    for _, pending in ipairs(self._pendingLoad) do writeEntry(pending, pending.x, pending.y, pending.z) end
+    
+    -- 4. Process Destroyed Objects
+    if self._destroyedObjects then
+        local count = 0
+        for _, data in pairs(self._destroyedObjects) do count = count + 1 end
+        print("TornadoDestruction TRACE: Found " .. count .. " items in _destroyedObjects table.")
+
+        for _, data in pairs(self._destroyedObjects) do 
+            if data and data.obj and data.obj.rootNode then
+                if entityExists(data.obj.rootNode) then
+                    local x, y, z = getWorldTranslation(data.obj.rootNode) 
+                    if x then 
+                        writeEntry(data, x, y, z) 
+                        print("TornadoDestruction TRACE: Wrote entry for -> " .. tostring(data.filename))
+                    else
+                        print("TornadoDestruction TRACE: Warning - getWorldTranslation failed for -> " .. tostring(data.filename))
+                    end
+                else
+                    print("TornadoDestruction TRACE: Warning - Entity no longer exists for -> " .. tostring(data.filename))
+                end
+            else
+                print("TornadoDestruction TRACE: Warning - Invalid data structure in _destroyedObjects.")
+            end
+        end
+    else
+        print("TornadoDestruction TRACE: _destroyedObjects table is nil.")
+    end
+    
+    -- 5. Process Pending Loads
+    if self._pendingLoad then
+        for _, pending in ipairs(self._pendingLoad) do 
+            if pending then
+                writeEntry(pending, pending.x or 0, pending.y or 0, pending.z or 0) 
+                print("TornadoDestruction TRACE: Wrote pending entry for -> " .. tostring(pending.filename))
+            end
+        end
+    end
+    
     saveXMLFile(xmlId)
     delete(xmlId)
-    print("TornadoDestruction: Saved " .. i .. " vehicle objects.")
+    print("TornadoDestruction: SUCCESS. Saved " .. i .. " vehicle objects to XML.")
 end
 
 function TornadoDestruction:_loadFromXML()
-    if self._savegameDir == nil then return end
-    local filepath = self._savegameDir .. self.DESTRUCTION_XML_FILE
-    if not fileExists(filepath) then return end
+    print("TornadoDestruction TRACE: _loadFromXML triggered.")
+
+    if g_server == nil then 
+        print("TornadoDestruction TRACE: FAILED g_server check. Aborting load.")
+        return 
+    end
+
+    local saveDir = self:_resolveSavegamePath()
+    if saveDir == nil then 
+        print("TornadoDestruction TRACE: FAILED to resolve savegame path. Aborting load.")
+        return 
+    end
+
+    local filepath = saveDir .. self.DESTRUCTION_XML_FILE
+    print("TornadoDestruction TRACE: Looking for XML at -> " .. tostring(filepath))
+    
+    if not fileExists(filepath) then 
+        print("TornadoDestruction TRACE: No save XML found. This is normal for a fresh save.")
+        return 
+    end
+    
     local xmlId = loadXMLFile("TornadoDestruction", filepath)
-    if xmlId == 0 then return end
+    if xmlId == 0 then 
+        print("TornadoDestruction TRACE: FAILED to load XML file. xmlId is 0.")
+        return 
+    end
+    print("TornadoDestruction TRACE: XML loaded successfully.")
+    
     self._pendingLoad = {}
     local i = 0
     while true do
         local key = string.format("TornadoDestruction.destroyed.object(%d)", i)
         local filename = getXMLString(xmlId, key .. ".filename")
         if filename == nil then break end
+        
         local nodesStr = getXMLString(xmlId, key .. ".nodes") or ""
         local nodes = {}
         for nodeName in string.gmatch(nodesStr, "([^;]+)") do table.insert(nodes, {id = 0, name = nodeName}) end
-        table.insert(self._pendingLoad, { filename = filename, x = getXMLFloat(xmlId, key .. ".posX"), y = getXMLFloat(xmlId, key .. ".posY"), z = getXMLFloat(xmlId, key .. ".posZ"), repairTime = getXMLFloat(xmlId, key .. ".repairTime"), nodes = nodes })
+        
+        table.insert(self._pendingLoad, { 
+            filename = filename, 
+            x = getXMLFloat(xmlId, key .. ".posX"), 
+            y = getXMLFloat(xmlId, key .. ".posY"), 
+            z = getXMLFloat(xmlId, key .. ".posZ"), 
+            repairTime = getXMLFloat(xmlId, key .. ".repairTime"), 
+            nodes = nodes 
+        })
         i = i + 1
     end
+    
     delete(xmlId)
-    print("TornadoDestruction: Loaded " .. i .. " pending vehicle objects.")
+    print("TornadoDestruction: SUCCESS. Loaded " .. i .. " pending vehicle objects.")
 end
 
 return TornadoDestruction
