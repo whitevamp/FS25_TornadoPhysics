@@ -3,8 +3,11 @@
 ---@description Added specific flag for position tracking to reduce console spam.
 
 TornadoDebug = {}
-TornadoDebug.verboseMode = false
-TornadoDebug.showPosition = false -- [NEW] Separate flag for coordinate spam
+--TornadoDebug.verboseMode = false
+TornadoDebug.verboseMode = false -- The global master switch
+TornadoDebug.verboseDestruction = false -- Specifically for save/load/repair
+TornadoDebug.verbosePhysics = false -- Specifically for suction/ejection
+TornadoDebug.showPosition = false -- Separate flag for coordinate spam
 
 function TornadoDebug:loadMap()
     print("--------------------------------------------------")
@@ -24,7 +27,7 @@ function TornadoDebug:info(tag, msg)
     print(string.format("[%s] %s", tag, msg))
 end
 
--- [NEW] Dedicated Position Logger
+-- Dedicated Position Logger
 function TornadoDebug:logPos(msg)
     if self.showPosition then
         print(string.format("[POS] %s", msg))

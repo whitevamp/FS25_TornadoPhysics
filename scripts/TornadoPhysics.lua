@@ -179,27 +179,54 @@ function TornadoPhysics:update(dt)
     end
 
     -- 1. DETECT TORNADO (Siren Logic)
-    local tornadoIsValid = self.tornadoNode and entityExists(self.tornadoNode)
+    -- ============================================================================
+    -- WATCHDOG: Validate the Tornado Node
+    -- ============================================================================
+    local tornadoIsValid = false
+    
+    if self.tornadoNode ~= nil then
+        -- Check if it exists AND is still visible (engine hides it when despawning)
+        if entityExists(self.tornadoNode) and getVisibility(self.tornadoNode) then
+            tornadoIsValid = true
+        else
+            -- The engine has culled or hidden the tornado! Trigger the cleanup.
+            self:clearTornadoState()
+            return -- Abort the rest of the update loop for this frame
+        end
+    end
+
     if tornadoIsValid then
-        -- Siren can be client-side too
         if TornadoSFX then TornadoSFX:playSiren() end
     else
         if TornadoSFX then TornadoSFX.sirenLoopCount = 0 end
-        --#region
-        -- Only server should run expensive searches / authoritative spawning logic
+        
+        -- Only server should run authoritative spawning logic
         if g_currentMission:getIsServer() then
-        --endregion 
-        self.tornadoSearchTimer = self.tornadoSearchTimer + dt
+            self.tornadoSearchTimer = self.tornadoSearchTimer + dt
             if self.tornadoSearchTimer > 2000 then
                 self:findTornadoSimple()
                 self.tornadoSearchTimer = 0
             end
-        --#region
         end
-        --#endregion
 
-        if not self.tornadoNode then return end
+        -- If no valid tornado, we DO NOT run physics
+        return 
     end
+    -- --#region
+    --     -- Only server should run expensive searches / authoritative spawning logic
+    --     if g_currentMission:getIsServer() then
+    --     --endregion 
+    --     self.tornadoSearchTimer = self.tornadoSearchTimer + dt
+    --         if self.tornadoSearchTimer > 2000 then
+    --             self:findTornadoSimple()
+    --             self.tornadoSearchTimer = 0
+    --         end
+    --     --#region
+    --     end
+    --     --#endregion
+
+    --     if not self.tornadoNode then return end
+    -- end
 
  --#region
     -- Read tornado position for BOTH server + client (for hotspot + distance)
@@ -950,4 +977,41 @@ function TornadoPhysics:getVehicleTotalMass(vehicle)
     if totalMass < 0.05 then totalMass = 0.05 end
     
     return totalMass
+end
+
+function TornadoPhysics:clearTornadoState()
+    print("TornadoPhysics: WATCHDOG TRIGGERED! Cleaning up despawned tornado.")
+    
+    -- 1. Clear internal script variables
+    self.tornadoNode = nil
+    self.lastTornadoPos = nil
+    self.activeNodes = {}
+    self.safetyCache = {}
+    self.isPurging = false
+    self.purgeTimer = 0
+    self.foundCandidate = nil
+    self.confirmTimer = 0
+    
+    -- 2. Clear HUD / Hotspot
+    if TornadoHotspot ~= nil and TornadoHotspot.deleteMap ~= nil then
+        TornadoHotspot:deleteMap()
+    end
+    
+    -- 3. Stop Siren
+    if TornadoSFX then 
+        TornadoSFX.sirenLoopCount = 0 
+        -- If you have a specific stopSiren() function, call it here
+    end
+    
+    -- 4. Force Weather Manager Reset (Crucial for the spawn bug)
+    if g_currentMission and g_currentMission.environment and g_currentMission.environment.weather then
+        local weather = g_currentMission.environment.weather
+        if weather.twister ~= nil then
+            print("TornadoPhysics: Forcing game engine weather cleanup.")
+            -- We manually trick the engine into thinking the weather event is fully over
+            weather.twister = nil
+        end
+    end
+    
+    print("TornadoPhysics: Cleanup complete. Ready for new spawn.")
 end
