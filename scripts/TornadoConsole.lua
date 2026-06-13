@@ -371,50 +371,6 @@ end
     return "Unknown Set CMD. Try: save, cargo, husbandry, destruction"
 end
 
--- -- =========================================================================
--- -- 4. DEV COMMANDS
--- -- =========================================================================
--- function TornadoConsole:cmdDev(tool, arg1)
---     if tool == "verbose" then
---         if TornadoDebug then
---             TornadoDebug.verboseMode = not TornadoDebug.verboseMode
---             return "DEV: Global Verbose Logging = " .. tostring(TornadoDebug.verboseMode)
-
---     elseif arg == "pos" then -- [NEW COMMAND]
---         TornadoDebug.showPosition = not TornadoDebug.showPosition
---         return "Position Tracking: " .. tostring(TornadoDebug.showPosition)
---         end
---     elseif tool == "hud" then
---         if TornadoPhysics then
---             TornadoPhysics.debugMode = not TornadoPhysics.debugMode
---             return "DEV: Physics Telemetry HUD = " .. tostring(TornadoPhysics.debugMode)
---         end
---     elseif tool == "status" then
---         if TornadoPhysics then
---             local c = 0
---             for _ in pairs(TornadoPhysics.activeNodes) do c = c + 1 end
---             print(string.format("[STATUS] Active Nodes: %d | Purge: %.1f/%.1f",
---                 c, TornadoPhysics.purgeTimer / 1000, TornadoPhysics.purgeInterval / 1000))
---             return "Check Console for Status."
---         end
---     elseif tool == "hotspotdump" then
---         if TornadoHotspot and TornadoHotspot.dumpState ~= nil then
---             TornadoHotspot:dumpState()
---             return "DEV: Hotspot dump printed."
---         elseif TornadoMapUI and TornadoMapUI.dumpState ~= nil then
---             TornadoMapUI:dumpState()
---             return "DEV: MapUI dump printed."
---         end
---         return "DEV: Hotspot/MapUI dump not available."
---     elseif tool == "kill_test" then
---         if TornadoHusbandry then
---             TornadoHusbandry:debugKillTest()
---             return "DEV: Kill Test Triggered (Check Logs)"
---         end
---     else
---         return "Unknown Dev CMD. Try: verbose, hud, pos, status, kill_test"
---     end
--- end
 -- =========================================================================
 -- 4. DEV COMMANDS
 -- =========================================================================
@@ -445,7 +401,7 @@ function TornadoConsole:cmdDev(tool, arg1)
         end
         return "TornadoDebug not found."
 
-    elseif tool == "pos" then -- [FIXED: Was previously 'elseif arg == "pos"']
+    elseif tool == "pos" then 
         if TornadoDebug then
             TornadoDebug.showPosition = not TornadoDebug.showPosition
             return "Position Tracking: " .. tostring(TornadoDebug.showPosition)

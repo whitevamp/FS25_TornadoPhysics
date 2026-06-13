@@ -52,14 +52,6 @@ local mapInitialized = false
 local LOG_MASK = 8192 + 32 + 2
 local ROOF_MASK = 1 + 2048 + 1048576 + 32
 
--- Runtime State
--- TornadoPhysics.isActive = false
--- TornadoPhysics.tornadoNode = nil
--- TornadoPhysics.foundCandidate = nil
--- TornadoPhysics.confirmTimer = 0
--- TornadoPhysics.sizeMultiplier = 1.0
--- TornadoPhysics.mapSize = 2048
-
 function TornadoPhysics:loadMap(name)
     self.isActive = true
     self.tornadoNode = nil
@@ -80,14 +72,6 @@ function TornadoPhysics:loadMap(name)
     self.confirmTimer = 0
     self.CONFIRM_THRESHOLD = 150 -- Frames to wait (approx 2.5s)
 
-    --#region
-    -- [ANNOUNCEMENT] Calculate Map Size on Load
-    -- if g_currentMission and g_currentMission.terrainSize then
-    --     self.mapSize = g_currentMission.terrainSize
-    --     print(string.format("TORNADO PHYSICS: Map Detected. Size: %dm (Geo-Fence: %dm)", 
-    --         self.mapSize, self.settings.geo_fence))
-    -- end
---#endregion
 
     mapInitialized = false
 
@@ -157,10 +141,39 @@ function TornadoPhysics:update(dt)
         if self.tornadoNode == nil then return end
     end
     -- ============================================================================
+--#region
+    -- ============================================================================
+    -- WATCHDOG: Validate the Tornado Node FIRST
+    -- ============================================================================
+    local tornadoIsValid = false
+    
+    if self.tornadoNode ~= nil then
+        if entityExists(self.tornadoNode) and getVisibility(self.tornadoNode) then
+            tornadoIsValid = true
+        else
+            self:clearTornadoState()
+            return -- Abort immediately before running ANY physics!
+        end
+    end
 
-    -- Get Position (Safe now because we checked nil above)
+    if tornadoIsValid then
+        if TornadoSFX then TornadoSFX:playSiren() end
+    else
+        if TornadoSFX then TornadoSFX.sirenLoopCount = 0 end
+        if g_currentMission:getIsServer() then
+            self.tornadoSearchTimer = self.tornadoSearchTimer + dt
+            if self.tornadoSearchTimer > 2000 then
+                self:findTornadoSimple()
+                self.tornadoSearchTimer = 0
+            end
+        end
+        return 
+    end
+
+    -- NOW it is 100% safe to get position and run physics
     local x, y, z = getWorldTranslation(self.tornadoNode)
-    self.tornadoY = y -- Update stored height
+    self.tornadoY = y
+--#endregion
 
     -- Log Position (using your separate command t_dev pos)
     if TornadoDebug and TornadoDebug.showPosition then 
@@ -179,74 +192,23 @@ function TornadoPhysics:update(dt)
     end
 
     -- 1. DETECT TORNADO (Siren Logic)
-    -- ============================================================================
-    -- WATCHDOG: Validate the Tornado Node
-    -- ============================================================================
-    local tornadoIsValid = false
-    
-    if self.tornadoNode ~= nil then
-        -- Check if it exists AND is still visible (engine hides it when despawning)
-        if entityExists(self.tornadoNode) and getVisibility(self.tornadoNode) then
-            tornadoIsValid = true
-        else
-            -- The engine has culled or hidden the tornado! Trigger the cleanup.
-            self:clearTornadoState()
-            return -- Abort the rest of the update loop for this frame
-        end
-    end
-
-    if tornadoIsValid then
-        if TornadoSFX then TornadoSFX:playSiren() end
-    else
-        if TornadoSFX then TornadoSFX.sirenLoopCount = 0 end
-        
-        -- Only server should run authoritative spawning logic
-        if g_currentMission:getIsServer() then
-            self.tornadoSearchTimer = self.tornadoSearchTimer + dt
-            if self.tornadoSearchTimer > 2000 then
-                self:findTornadoSimple()
-                self.tornadoSearchTimer = 0
-            end
-        end
-
-        -- If no valid tornado, we DO NOT run physics
-        return 
-    end
-    -- --#region
-    --     -- Only server should run expensive searches / authoritative spawning logic
-    --     if g_currentMission:getIsServer() then
-    --     --endregion 
-    --     self.tornadoSearchTimer = self.tornadoSearchTimer + dt
-    --         if self.tornadoSearchTimer > 2000 then
-    --             self:findTornadoSimple()
-    --             self.tornadoSearchTimer = 0
-    --         end
-    --     --#region
-    --     end
-    --     --#endregion
-
-    --     if not self.tornadoNode then return end
-    -- end
-
- --#region
     -- Read tornado position for BOTH server + client (for hotspot + distance)
     local tX, tY, tZ = getWorldTranslation(self.tornadoNode)
     if tX == nil then return end
     local _, rotY, _ = getWorldRotation(self.tornadoNode)
 
-    -- ✅ UI/Hotspot updates run on BOTH sides (distance requires client)
+    -- UI/Hotspot updates run on BOTH sides (distance requires client)
     if TornadoHotspot then
         TornadoHotspot:updatePosition(tX, tZ, rotY)
     end
 
-    -- ✅ From here down: SERVER-ONLY physics/gameplay
+    -- From here down: SERVER-ONLY physics/gameplay
     if not self.isActive or not g_currentMission:getIsServer() then return end
 
     if not mapInitialized then
         self:calculateMapScale()
         mapInitialized = true
     end
---#endregion
 
     -- 2. PURGE LOGIC (Scaled by Size)
     self.purgeTimer = self.purgeTimer + dt
@@ -327,8 +289,8 @@ end
 --#region
 function TornadoPhysics:processNearbyObjects(dt, tX, tY, tZ)
     -- 1. Scan Vehicles
-    if g_currentMission.vehicles then
-        for _, vehicle in pairs(g_currentMission.vehicles) do
+    if g_currentMission.vehicleSystem and g_currentMission.vehicleSystem.vehicles then
+        for _, vehicle in pairs(g_currentMission.vehicleSystem.vehicles) do
             if vehicle ~= nil and vehicle.rootNode ~= nil then
                 local vx, vy, vz = getWorldTranslation(vehicle.rootNode)
                 local dist = MathUtil.vector3Length(vx-tX, vy-tY, vz-tZ)

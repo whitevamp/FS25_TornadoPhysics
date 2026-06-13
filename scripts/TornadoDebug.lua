@@ -17,11 +17,6 @@ end
 function TornadoDebug:deleteMap()
 end
 
--- function TornadoDebug:log(tag, msg)
---     if self.verboseMode then
---         print(string.format("[%s] %s", tag, msg))
---     end
--- end
 function TornadoDebug:log(tag, msg)
     -- 1. If the master switch is on, everything prints
     local shouldLog = self.verboseMode 

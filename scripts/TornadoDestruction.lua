@@ -328,9 +328,11 @@ function TornadoDestruction:_linkPendingObjects()
     local stillPending = {}
     local searchRadiusSq = 1.0
     local searchTargets = {}
-    
-    if g_currentMission.vehicles then 
-        for _, v in pairs(g_currentMission.vehicles) do table.insert(searchTargets, v) end 
+
+    if g_currentMission.vehicleSystem and g_currentMission.vehicleSystem.vehicles then 
+        for _, v in pairs(g_currentMission.vehicleSystem.vehicles) do 
+            table.insert(searchTargets, v) 
+        end 
     end
     
     for _, pending in ipairs(self._pendingLoad) do

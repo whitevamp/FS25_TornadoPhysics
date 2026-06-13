@@ -250,19 +250,6 @@ function TornadoMapUI:drawOverlay()
         TornadoHotspot:updateStats(efNum, windMin, windMax, radiusM, distM)
     end
 
-    -- -- Draw icon (optional)
-    -- local x = self.anchorX
-    -- local y = self.anchorY
-
-    -- -- Avoid the top-right \"BALANCE\" overlay if we're anchored up there
-    -- if self.avoidBalanceOverlay and x > 0.6 and y > 0.78 then
-    --     y = y - (self.avoidBalanceNudgeY or 0.07)
-    -- end
-    -- if self._imgOverlay ~= nil then
-    --     self._imgOverlay:setPosition(x, y + (self.iconYOffset or 0.004))
-    --     self._imgOverlay:render()
-    --     x = x + (self.iconSize or 0.045) + (self.iconPadding or 0.008)
-    -- end
     -- Draw icon (optional)
     local x = self.anchorX
     local y = self.anchorY
