@@ -125,16 +125,14 @@ function TornadoDestruction:destroyTarget(target)
     local filenameLower = string.lower(filename)
     for _, keyword in ipairs(self.IgnoreList) do
         if string.find(filenameLower, keyword, 1, true) then 
-            if TornadoDebug and TornadoDebug.verboseMode then
-                print("TornadoDestruction: IGNORED FILE -> " .. filename .. " (Matches: '" .. keyword .. "')")
-            end
+            if TornadoDebug then TornadoDebug:log("DESTRUCTION", "IGNORED FILE -> " .. filename .. " (Matches: '" .. keyword .. "')") end
             return 
         end
     end
     
-    if TornadoDebug and TornadoDebug.verboseMode then
-        print("--------------------------------------------------")
-        print("TornadoDestruction: Processing Vehicle -> " .. tostring(filename))
+    if TornadoDebug then 
+        TornadoDebug:log("DESTRUCTION", "--------------------------------------------------")
+        TornadoDebug:log("DESTRUCTION", "Processing Vehicle -> " .. tostring(filename))
     end
 
     -- 1. IDENTIFY TARGETS
@@ -159,8 +157,8 @@ function TornadoDestruction:destroyTarget(target)
     
     -- A. Hide ALL Trash
     for _, nodeData in ipairs(foundTrash) do
-        if TornadoDebug and TornadoDebug.verboseMode then
-             print("   >> HIDING (Trash): " .. nodeData.name)
+        if TornadoDebug and TornadoDebug.verboseDestruction then
+             TornadoDebug:log("DESTRUCTION", "   >> HIDING (Trash): " .. nodeData.name)
         end
         setVisibility(nodeData.id, false)
         table.insert(finalHiddenNodes, nodeData)
@@ -175,8 +173,8 @@ function TornadoDestruction:destroyTarget(target)
     for _, nodeData in ipairs(foundStructure) do
         if structCount >= structLimit then break end
         
-        if TornadoDebug and TornadoDebug.verboseMode then
-             print("   >> HIDING (Struct): " .. nodeData.name)
+        if TornadoDebug and TornadoDebug.verboseDestruction then
+             TornadoDebug:log("DESTRUCTION", "   >> HIDING (Struct): " .. nodeData.name)
         end
         setVisibility(nodeData.id, false)
         table.insert(finalHiddenNodes, nodeData)
@@ -185,9 +183,8 @@ function TornadoDestruction:destroyTarget(target)
 
     -- 4. SAVE RESULT
     if #finalHiddenNodes > 0 then
-        if TornadoDebug and TornadoDebug.verboseMode then
-            print(string.format("TornadoDestruction: RESULT -> Hid %d Trash, %d/%d Structure.", 
-                #foundTrash, structCount, structLimit))
+        if TornadoDebug and TornadoDebug.verboseDestruction then
+            TornadoDebug:log("DESTRUCTION", string.format("RESULT -> Hid %d Trash, %d/%d Structure.", #foundTrash, structCount, structLimit))
         end
         
         local repairTime = g_currentMission.time + (self.REPAIR_COOLDOWN_HOURS * 3600 * 1000)
@@ -198,7 +195,7 @@ function TornadoDestruction:destroyTarget(target)
             repairTime = repairTime
         }
     else
-        if TornadoDebug and TornadoDebug.verboseMode then print("TornadoDestruction: FAILED. No suitable vehicle parts found.") end
+       if TornadoDebug then TornadoDebug:log("DESTRUCTION", "FAILED. No suitable vehicle parts found.") end
     end
 end
 
@@ -299,11 +296,21 @@ end
 function TornadoDestruction:_updateRepairs(dt)
     local currentTime = g_currentMission.time
     local objectsToRepair = {}
-    for id, data in pairs(self._destroyedObjects) do if currentTime >= data.repairTime then table.insert(objectsToRepair, id) end end
+    
+    for id, data in pairs(self._destroyedObjects) do 
+        if currentTime >= data.repairTime then table.insert(objectsToRepair, id) end 
+    end
+    
     for _, id in ipairs(objectsToRepair) do
         local data = self._destroyedObjects[id]
-        if TornadoDebug and TornadoDebug.verboseMode then print("TornadoDestruction: REPAIRING -> " .. data.filename) end
-        for _, nodeInfo in ipairs(data.nodes) do if entityExists(nodeInfo.id) then setVisibility(nodeInfo.id, true) end end
+        
+        if TornadoDebug then 
+            TornadoDebug:log("DESTRUCTION", string.format("REPAIR TRACE: Timer expired for %s. Restoring %d parts.", tostring(data.filename), #data.nodes))
+        end
+        
+        for _, nodeInfo in ipairs(data.nodes) do 
+            if entityExists(nodeInfo.id) then setVisibility(nodeInfo.id, true) end 
+        end
         self._destroyedObjects[id] = nil
     end
 end
@@ -312,7 +319,6 @@ function TornadoDestruction:_cleanFilename(path)
     if path == nil or path == "" then return "unknown" end
     path = string.gsub(path, "\\", "/")
     local vPos = string.find(path, "vehicles/")
-    -- Placeables string find removed
     if vPos then return string.sub(path, vPos) end
     return path
 end
@@ -323,12 +329,9 @@ function TornadoDestruction:_linkPendingObjects()
     local searchRadiusSq = 1.0
     local searchTargets = {}
     
-    -- ONLY collect vehicles for pending destruction loads
     if g_currentMission.vehicles then 
         for _, v in pairs(g_currentMission.vehicles) do table.insert(searchTargets, v) end 
     end
-    
-    -- Placeables iteration loop completely removed
     
     for _, pending in ipairs(self._pendingLoad) do
         local found = false
@@ -338,7 +341,7 @@ function TornadoDestruction:_linkPendingObjects()
                 local x, y, z = getWorldTranslation(obj.rootNode)
                 local dx, dy, dz = x - pending.x, y - pending.y, z - pending.z
                 if (dx*dx + dy*dy + dz*dz) < searchRadiusSq then
-                    if TornadoDebug and TornadoDebug.verboseMode then print("TornadoDestruction: RELINKING saved vehicle -> " .. filename) end
+                    if TornadoDebug then TornadoDebug:log("DESTRUCTION", "RELINKING saved vehicle -> " .. filename) end
                     for _, nodeInfo in ipairs(pending.nodes) do
                         local foundNode = I3DUtil.findNode(obj.rootNode, nodeInfo.name, true)
                         if foundNode and foundNode ~= 0 then setVisibility(foundNode, false) nodeInfo.id = foundNode end
@@ -358,7 +361,6 @@ function TornadoDestruction:_resolveSavegamePath()
     if not g_currentMission or not g_currentMission.missionInfo then return nil end
     
     local dir = g_currentMission.missionInfo.savegameDirectory
-    -- If dir is nil, fallback to user profile path (common on new saves)
     if dir == nil then
         if g_currentMission.missionInfo.savegameIndex ~= nil then
             dir = string.format('%ssavegame%d', getUserProfileAppPath(), g_currentMission.missionInfo.savegameIndex)
@@ -371,112 +373,34 @@ function TornadoDestruction:_resolveSavegamePath()
     return nil
 end
 
--- function TornadoDestruction:_saveToXML()
---     -- CRITICAL: Only the server handles saving
---     if not g_currentMission:getIsServer() then return end
-
---     local saveDir = self:_resolveSavegamePath()
---     if saveDir == nil then return end
-
---     local filepath = saveDir .. self.DESTRUCTION_XML_FILE
---     local xmlId = createXMLFile("TornadoDestruction", filepath, "TornadoDestruction")
---     local key = "TornadoDestruction.destroyed.object"
---     local i = 0
-    
---     local function writeEntry(data, x, y, z)
---         local objKey = string.format("%s(%d)", key, i)
---         setXMLString(xmlId, objKey .. ".filename", data.filename)
---         setXMLFloat(xmlId, objKey .. ".posX", x)
---         setXMLFloat(xmlId, objKey .. ".posY", y)
---         setXMLFloat(xmlId, objKey .. ".posZ", z)
---         setXMLFloat(xmlId, objKey .. ".repairTime", data.repairTime)
---         local nodesStr = ""
---         for _, nodeInfo in ipairs(data.nodes) do nodesStr = nodesStr .. nodeInfo.name .. ";" end
---         setXMLString(xmlId, objKey .. ".nodes", nodesStr)
---         i = i + 1
---     end
-    
---     for _, data in pairs(self._destroyedObjects) do 
---         local x, y, z = getWorldTranslation(data.obj.rootNode) 
---         if x then writeEntry(data, x, y, z) end 
---     end
-    
---     for _, pending in ipairs(self._pendingLoad) do 
---         writeEntry(pending, pending.x, pending.y, pending.z) 
---     end
-    
---     saveXMLFile(xmlId)
---     delete(xmlId)
---     print("TornadoDestruction: Saved " .. i .. " vehicle objects.")
--- end
-
--- function TornadoDestruction:_loadFromXML()
---     -- CRITICAL: Only the server handles loading
---     if not g_currentMission:getIsServer() then return end
-
---     local saveDir = self:_resolveSavegamePath()
---     if saveDir == nil then return end
-
---     local filepath = saveDir .. self.DESTRUCTION_XML_FILE
---     if not fileExists(filepath) then return end
-    
---     local xmlId = loadXMLFile("TornadoDestruction", filepath)
---     if xmlId == 0 then return end
-    
---     self._pendingLoad = {}
---     local i = 0
---     while true do
---         local key = string.format("TornadoDestruction.destroyed.object(%d)", i)
---         local filename = getXMLString(xmlId, key .. ".filename")
---         if filename == nil then break end
-        
---         local nodesStr = getXMLString(xmlId, key .. ".nodes") or ""
---         local nodes = {}
---         for nodeName in string.gmatch(nodesStr, "([^;]+)") do table.insert(nodes, {id = 0, name = nodeName}) end
-        
---         table.insert(self._pendingLoad, { 
---             filename = filename, 
---             x = getXMLFloat(xmlId, key .. ".posX"), 
---             y = getXMLFloat(xmlId, key .. ".posY"), 
---             z = getXMLFloat(xmlId, key .. ".posZ"), 
---             repairTime = getXMLFloat(xmlId, key .. ".repairTime"), 
---             nodes = nodes 
---         })
---         i = i + 1
---     end
-    
---     delete(xmlId)
---     print("TornadoDestruction: Loaded " .. i .. " pending vehicle objects.")
--- end
-
 function TornadoDestruction:_saveToXML()
-    print("TornadoDestruction TRACE: _saveToXML triggered.")
+    if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: _saveToXML triggered.") end
 
     -- 1. Check Server
     if g_server == nil then 
-        print("TornadoDestruction TRACE: FAILED g_server check. Aborting save.")
+        if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: FAILED g_server check. Aborting save.") end
         return 
     end
-    print("TornadoDestruction TRACE: g_server check passed.")
+    if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: g_server check passed.") end
 
     -- 2. Resolve Path
     local saveDir = self:_resolveSavegamePath()
     if saveDir == nil then 
-        print("TornadoDestruction TRACE: FAILED to resolve savegame path. Aborting save.")
+        if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: FAILED to resolve savegame path. Aborting save.") end
         return 
     end
-    print("TornadoDestruction TRACE: Save path resolved to -> " .. tostring(saveDir))
+    if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: Save path resolved to -> " .. tostring(saveDir)) end
 
     -- 3. Create XML
     local filepath = saveDir .. self.DESTRUCTION_XML_FILE
-    print("TornadoDestruction TRACE: Attempting to create XML at -> " .. tostring(filepath))
+    if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: Attempting to create XML at -> " .. tostring(filepath)) end
     
     local xmlId = createXMLFile("TornadoDestruction", filepath, "TornadoDestruction")
     if xmlId == 0 then 
-        print("TornadoDestruction TRACE: FAILED to create XML file. xmlId is 0. Aborting.")
+        if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: FAILED to create XML file. xmlId is 0. Aborting.") end
         return 
     end
-    print("TornadoDestruction TRACE: XML file created successfully. ID: " .. tostring(xmlId))
+    if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: XML file created successfully. ID: " .. tostring(xmlId)) end
 
     local key = "TornadoDestruction.destroyed.object"
     local i = 0
@@ -501,7 +425,7 @@ function TornadoDestruction:_saveToXML()
     if self._destroyedObjects then
         local count = 0
         for _, data in pairs(self._destroyedObjects) do count = count + 1 end
-        print("TornadoDestruction TRACE: Found " .. count .. " items in _destroyedObjects table.")
+        if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: Found " .. count .. " items in _destroyedObjects table.") end
 
         for _, data in pairs(self._destroyedObjects) do 
             if data and data.obj and data.obj.rootNode then
@@ -509,19 +433,19 @@ function TornadoDestruction:_saveToXML()
                     local x, y, z = getWorldTranslation(data.obj.rootNode) 
                     if x then 
                         writeEntry(data, x, y, z) 
-                        print("TornadoDestruction TRACE: Wrote entry for -> " .. tostring(data.filename))
+                        if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: Wrote entry for -> " .. tostring(data.filename)) end
                     else
-                        print("TornadoDestruction TRACE: Warning - getWorldTranslation failed for -> " .. tostring(data.filename))
+                        if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: Warning - getWorldTranslation failed for -> " .. tostring(data.filename)) end
                     end
                 else
-                    print("TornadoDestruction TRACE: Warning - Entity no longer exists for -> " .. tostring(data.filename))
+                    if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: Warning - Entity no longer exists for -> " .. tostring(data.filename)) end
                 end
             else
-                print("TornadoDestruction TRACE: Warning - Invalid data structure in _destroyedObjects.")
+                if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: Warning - Invalid data structure in _destroyedObjects.") end
             end
         end
     else
-        print("TornadoDestruction TRACE: _destroyedObjects table is nil.")
+        if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: _destroyedObjects table is nil.") end
     end
     
     -- 5. Process Pending Loads
@@ -529,44 +453,44 @@ function TornadoDestruction:_saveToXML()
         for _, pending in ipairs(self._pendingLoad) do 
             if pending then
                 writeEntry(pending, pending.x or 0, pending.y or 0, pending.z or 0) 
-                print("TornadoDestruction TRACE: Wrote pending entry for -> " .. tostring(pending.filename))
+                if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: Wrote pending entry for -> " .. tostring(pending.filename)) end
             end
         end
     end
     
     saveXMLFile(xmlId)
     delete(xmlId)
-    print("TornadoDestruction: SUCCESS. Saved " .. i .. " vehicle objects to XML.")
+    if TornadoDebug then TornadoDebug:log("DESTRUCTION", "SUCCESS. Saved " .. i .. " vehicle objects to XML.") end
 end
 
 function TornadoDestruction:_loadFromXML()
-    print("TornadoDestruction TRACE: _loadFromXML triggered.")
+    if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: _loadFromXML triggered.") end
 
     if g_server == nil then 
-        print("TornadoDestruction TRACE: FAILED g_server check. Aborting load.")
+        if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: FAILED g_server check. Aborting load.") end
         return 
     end
 
     local saveDir = self:_resolveSavegamePath()
     if saveDir == nil then 
-        print("TornadoDestruction TRACE: FAILED to resolve savegame path. Aborting load.")
+        if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: FAILED to resolve savegame path. Aborting load.") end
         return 
     end
 
     local filepath = saveDir .. self.DESTRUCTION_XML_FILE
-    print("TornadoDestruction TRACE: Looking for XML at -> " .. tostring(filepath))
+    if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: Looking for XML at -> " .. tostring(filepath)) end
     
     if not fileExists(filepath) then 
-        print("TornadoDestruction TRACE: No save XML found. This is normal for a fresh save.")
+        if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: No save XML found. This is normal for a fresh save.") end
         return 
     end
     
     local xmlId = loadXMLFile("TornadoDestruction", filepath)
     if xmlId == 0 then 
-        print("TornadoDestruction TRACE: FAILED to load XML file. xmlId is 0.")
+        if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: FAILED to load XML file. xmlId is 0.") end
         return 
     end
-    print("TornadoDestruction TRACE: XML loaded successfully.")
+    if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: XML loaded successfully.") end
     
     self._pendingLoad = {}
     local i = 0
@@ -591,7 +515,7 @@ function TornadoDestruction:_loadFromXML()
     end
     
     delete(xmlId)
-    print("TornadoDestruction: SUCCESS. Loaded " .. i .. " pending vehicle objects.")
+    if TornadoDebug then TornadoDebug:log("DESTRUCTION", "SUCCESS. Loaded " .. i .. " pending vehicle objects.") end
 end
 
 return TornadoDestruction

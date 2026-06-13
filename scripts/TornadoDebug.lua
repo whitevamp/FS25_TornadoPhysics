@@ -17,8 +17,23 @@ end
 function TornadoDebug:deleteMap()
 end
 
+-- function TornadoDebug:log(tag, msg)
+--     if self.verboseMode then
+--         print(string.format("[%s] %s", tag, msg))
+--     end
+-- end
 function TornadoDebug:log(tag, msg)
-    if self.verboseMode then
+    -- 1. If the master switch is on, everything prints
+    local shouldLog = self.verboseMode 
+
+    -- 2. If the master switch is off, check the specific channels
+    if not shouldLog then
+        if tag == "DESTRUCTION" and self.verboseDestruction then shouldLog = true end
+        if tag == "PHYSICS" and self.verbosePhysics then shouldLog = true end
+    end
+
+    -- 3. Print if a switch was active
+    if shouldLog then
         print(string.format("[%s] %s", tag, msg))
     end
 end
@@ -33,3 +48,4 @@ function TornadoDebug:logPos(msg)
         print(string.format("[POS] %s", msg))
     end
 end
+
