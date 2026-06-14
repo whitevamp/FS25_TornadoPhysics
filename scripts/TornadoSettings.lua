@@ -1,5 +1,5 @@
 ---@class TornadoSettings
----@version 2.1 (MASTER RESET)
+---@version 2.2 (MASTER RESET + RECOVERY)
 ---@description Handles Saving/Loading and Resetting of preferences.
 
 TornadoSettings = {}
@@ -7,8 +7,11 @@ TornadoSettings.MOD_NAME = g_currentModName
 TornadoSettings.DIR = getUserProfileAppPath() .. "modSettings/"
 TornadoSettings.FILE = TornadoSettings.DIR .. "TornadoPhysics_Config.xml"
 
+-- [NEW] Master Gatekeeper for Recovery Bill
+TornadoSettings.recoveryEnabled = false 
+
 function TornadoSettings:loadMap(name)
-    if TornadoDebug then TornadoDebug:info("SETTINGS", "V2.1 Initialized") end
+    if TornadoDebug then TornadoDebug:info("SETTINGS", "V2.2 Initialized") end
     createFolder(self.DIR)
 
     if fileExists(self.FILE) then
@@ -22,7 +25,7 @@ function TornadoSettings:deleteMap()
     -- Managed by Console
 end
 
--- [NEW] Master Reset Function
+-- Master Reset Function
 function TornadoSettings:resetToDefaults(category)
     if TornadoPhysics and TornadoPhysics.settings then
         local s = TornadoPhysics.settings
@@ -40,7 +43,10 @@ function TornadoSettings:resetToDefaults(category)
             s.border_safety = true
             s.indoor_damage = false
             s.outdoor_damage = true
-            s.destructionEnabled = false -- RESET DESTRUCTION
+            s.destructionEnabled = false 
+            
+            self.recoveryEnabled = false -- [NEW] RESET RECOVERY
+            
             print("TORNADO RESET: Physics defaults restored.")
         end
 
@@ -56,6 +62,8 @@ function TornadoSettings:resetToDefaults(category)
             s.max_safe_speed = 35.0
             s.destruction_ratio = 0.2
             s.mass_penalty = 0.8
+            s.purge_duration = 5000
+            s.purge_interval = 45000
             print("TORNADO RESET: Tuning defaults restored.")
         end
     end
@@ -69,7 +77,6 @@ function TornadoSettings:resetToDefaults(category)
             cs.drainRate = 0.10
             cs.spreadRadius = 4.0
             cs.coverLeakChance = 0.25
-            -- Ensure system is enabled by default on reset
             TornadoCargo.isEnabled = true
             TornadoCargo.isVerbose = false
             print("TORNADO RESET: Cargo defaults restored.")
@@ -84,10 +91,6 @@ function TornadoSettings:resetToDefaults(category)
         end
     end
 
-    if category == "all" or category == "tuning" then
-        self.recoveryEnabled = false
-    end
-
     -- AUTO-SAVE immediately so the reset sticks
     self:saveToXML()
 end
@@ -95,12 +98,10 @@ end
 function TornadoSettings:createDefaultXML()
     local xmlId = createXMLFile("TornadoConfig", self.FILE, "TornadoPhysics")
     
-    -- (Same default creation logic as before, just calling reset implicitly by saving empty file structure first)
-    -- But since we have the values here, we write them out.
-    
     -- 1. GENERAL
     setXMLFloat(xmlId, "TornadoPhysics.general.radius", 35.0)
-    setXMLBool(xmlId, "TornadoPhysics.general.destruction", false) -- ADD DESTRUCTION
+    setXMLBool(xmlId, "TornadoPhysics.general.destruction", false) 
+    setXMLBool(xmlId, "TornadoPhysics.general.recovery", false) -- [NEW] ADD RECOVERY
 
     -- 2. OBJECTS
     setXMLBool(xmlId, "TornadoPhysics.objects.liftBales", true)
@@ -135,8 +136,8 @@ function TornadoSettings:createDefaultXML()
     setXMLFloat(xmlId, "TornadoPhysics.tuning.maxSafeSpeed", 35.0)
     setXMLFloat(xmlId, "TornadoPhysics.tuning.destructionRatio", 0.2)
     setXMLFloat(xmlId, "TornadoPhysics.tuning.massPenalty", 0.8)
-    setXMLFloat(xmlId, "TornadoPhysics.tuning.purgeDuration", 5.0)
-    setXMLFloat(xmlId, "TornadoPhysics.tuning.purgeInterval", 20.0)
+    setXMLFloat(xmlId, "TornadoPhysics.tuning.purgeDuration", 5000.0)
+    setXMLFloat(xmlId, "TornadoPhysics.tuning.purgeInterval", 45000.0)
 
     -- 8. DEBUG
     setXMLBool(xmlId, "TornadoPhysics.debug.showRing", false)
@@ -159,9 +160,6 @@ function TornadoSettings:createDefaultXML()
     -- 12. EFFECTS
     setXMLBool(xmlId, "TornadoPhysics.effects.fireRandom", false)
 
-    -- 13. vehicle recovery
-    setXMLBool(xmlId, "TornadoPhysics.general.recovery", self.recoveryEnabled)
-
     saveXMLFile(xmlId)
     delete(xmlId)
 end
@@ -175,7 +173,10 @@ function TornadoSettings:loadFromXML()
     if TornadoPhysics and TornadoPhysics.settings then
         local s = TornadoPhysics.settings
         s.base_radius = getXMLFloat(xmlId, "TornadoPhysics.general.radius") or s.base_radius
-        s.destructionEnabled = Utils.getNoNil(getXMLBool(xmlId, "TornadoPhysics.general.destruction"), false) -- LOAD DESTRUCTION
+        s.destructionEnabled = Utils.getNoNil(getXMLBool(xmlId, "TornadoPhysics.general.destruction"), false) 
+        
+        -- [NEW] LOAD RECOVERY
+        self.recoveryEnabled = Utils.getNoNil(getXMLBool(xmlId, "TornadoPhysics.general.recovery"), false) 
         
         local lb = getXMLBool(xmlId, "TornadoPhysics.objects.liftBales")
         if lb ~= nil then s.lift_bales = lb end
@@ -254,9 +255,6 @@ function TornadoSettings:loadFromXML()
         if fireRandom ~= nil then TornadoEffects.CONFIG.RANDOM_FIRE_MODE = fireRandom end
     end
 
-    -- recovery
-    self.recoveryEnabled = Utils.getNoNil(getXMLBool(xmlId, "TornadoPhysics.general.recovery"), false)
-
     delete(xmlId)
     if TornadoDebug then TornadoDebug:log("SETTINGS", "Preferences Loaded Successfully.") end
 end
@@ -268,7 +266,11 @@ function TornadoSettings:saveToXML()
     if TornadoPhysics and TornadoPhysics.settings then
         local s = TornadoPhysics.settings
         setXMLFloat(xmlId, "TornadoPhysics.general.radius", s.base_radius)
-        setXMLBool(xmlId, "TornadoPhysics.general.destruction", s.destructionEnabled) -- SAVE DESTRUCTION
+        setXMLBool(xmlId, "TornadoPhysics.general.destruction", s.destructionEnabled) 
+        
+        -- [NEW] SAVE RECOVERY
+        setXMLBool(xmlId, "TornadoPhysics.general.recovery", self.recoveryEnabled) 
+        
         setXMLBool(xmlId, "TornadoPhysics.objects.liftBales", s.lift_bales)
         setXMLBool(xmlId, "TornadoPhysics.objects.liftLogs", s.lift_logs)
         setXMLBool(xmlId, "TornadoPhysics.safety.borderProtection", s.border_safety)
@@ -292,7 +294,6 @@ function TornadoSettings:saveToXML()
         setXMLFloat(xmlId, "TornadoPhysics.tuning.purgeDuration", s.purge_duration)
         setXMLFloat(xmlId, "TornadoPhysics.tuning.purgeInterval", s.purge_interval)
         setXMLBool(xmlId, "TornadoPhysics.debug.showRing", TornadoPhysics.showRing)
-        setXMLBool(xmlId, "TornadoPhysics.general.recovery", self.recoveryEnabled)
     end
 
     if TornadoHusbandry then

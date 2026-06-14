@@ -93,6 +93,8 @@ function TornadoConsole:cmdHelp(command)
         print(" ")
         print("  destruction [on|off]  - Toggles the visual destruction system.")
         print(" ")
+        print("  recovery              - Toggles the hardcore emergency tow bill ON/OFF.")
+        print(" ")
         print("  mapui [sub-command]   - Controls the map overlay.")
         print("    (no sub-command)    - Toggles the overlay ON/OFF.")
         print("    on|off              - Explicitly turns the overlay ON or OFF.")
@@ -314,6 +316,23 @@ end
         return "Destruction: System Enabled = " .. tostring(s.destructionEnabled)
     end
 
+    if module == "recovery" then
+        if TornadoSettings then
+            -- Flip the master flag
+            TornadoSettings.recoveryEnabled = not TornadoSettings.recoveryEnabled
+            
+            -- Auto-save it to XML so it persists between sessions!
+            TornadoSettings:saveToXML()
+            
+            if TornadoSettings.recoveryEnabled then
+                return "ECONOMY: Hardcore Recovery Bill ENABLED."
+            else
+                return "ECONOMY: Hardcore Recovery Bill DISABLED."
+            end
+        end
+        return "Error: Settings Module missing."
+    end
+
     if module == "cargo" then
         if not TornadoCargo then return "Error: Cargo Module missing." end
 
@@ -368,7 +387,7 @@ end
         end
     end
 
-    return "Unknown Set CMD. Try: save, cargo, husbandry, destruction"
+   return "Unknown Set CMD. Try: save, cargo, husbandry, destruction, recovery"
 end
 
 -- =========================================================================
