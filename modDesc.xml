@@ -58,19 +58,33 @@ This update introduces a centralized command system. You no longer need to remem
 - t_help             : list all of the main commands.
 - t_help [command]   : Give help on the specified command.
 
+6. Debug logging (t_dev)
+- t_dev verbose destruction       : Tracks XML saves, relinking, and 24-hour repair timers.
+- t_dev verbose physics           : Tracks suction, mass calculation, and ejection forces.
+- t_dev verbose all               : Enables master logging.
+- t_dev pos                       : Toggles real-time coordinate tracking for the tornado node.
+
+7. MapUI overlay controls
+-  t_set mapui            : toggle enable
+-  t_set mapui on|off     : explicit
+-  t_set mapui sel        : toggle only-when-selected
+-  t_set mapui dump       : print MapUI state
+
 
 ------------------------------------------------------------------------
 CHANGELOG
 ------------------------------------------------------------------------
-v3.0.0.1
+v4.0.0.0
 - [SYSTEM] Complete Code Rewrite: Moved to a modular architecture for better stability and performance.
-- [CONSOLE] New Master Command System: Replaced fragmented commands with t_physics, t_set, t_sfx, and t_tune.
-- [GAMEPLAY] Added Cargo Spilling: Trailers caught in the storm will now dump their contents (uncovered: 100% loss, covered: chance to leak/pop open).
+- [CONSOLE] New Master Command System: Replaced fragmented commands with t_help, t_physics, t_set, t_sfx, and t_tune.
+- [GAMEPLAY] Added Cargo Spilling: Trailers caught in the storm will now dump their contents (uncovered: 100% loss, covered: chance to leak/pop open). (**Default is off**)
 - [GAMEPLAY] Added ADS Support: Integration with "Advanced Damage System" (Minor damage at 15s, Moderate at 30s, Total Destruction at 50s).
-- [GAMEPLAY] Added Siren Warning: A tornado siren will now loop for 3 minutes when a storm spawns.
+- [GAMEPLAY] Added Siren Warning: A tornado siren will now loop for 3 minutes when a storm spawns.  (**Default is off**)
+- [GAMEPLAY] Added Vehicle Destruction: vehicles, trailers, impliments caught in the storm will now suffer damage, with an ingame 24hr auto repair function, saved to the save folder.(**Default is off**)
 - [VISUALS] Added Smoke Effects: Vehicles now emit smoke/particles when being damaged by the storm.
 - [VISUALS] Improved Debug Ring: Added a secondary ring for better visibility in valleys.
 - [VISUALS] Added Shader Mesh Support: Now supports "smokeTrailSubUV" for advanced volumetric effects.
+- [VISUALS] Added Map Hotspot, you can teleport to/visit the tornado. (found on the 'ESC' main map.) also when in the main map, in the upper right corner youll now see the tornado stats, or you may click on the hotspot. 
 ]]>
         </en>
         <de>

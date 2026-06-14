@@ -3,9 +3,9 @@
 ---@description Added specific flag for position tracking to reduce console spam.
 
 TornadoDebug = {}
---TornadoDebug.verboseMode = false
 TornadoDebug.verboseMode = false -- The global master switch
 TornadoDebug.verboseDestruction = false -- Specifically for save/load/repair
+TornadoDebug.verboseRecovery = false --
 TornadoDebug.verbosePhysics = false -- Specifically for suction/ejection
 TornadoDebug.showPosition = false -- Separate flag for coordinate spam
 
@@ -25,6 +25,7 @@ function TornadoDebug:log(tag, msg)
     if not shouldLog then
         if tag == "DESTRUCTION" and self.verboseDestruction then shouldLog = true end
         if tag == "PHYSICS" and self.verbosePhysics then shouldLog = true end
+        if tag == "RECOVERY" and self.verboseRecovery then shouldLog = true end
     end
 
     -- 3. Print if a switch was active

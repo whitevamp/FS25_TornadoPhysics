@@ -18,10 +18,14 @@ function TornadoMain:loadMap(name)
     source(Utils.getFilename("scripts/TornadoADS.lua", modDir))
     source(Utils.getFilename("scripts/TornadoPhysics.lua", modDir))
     source(Utils.getFilename("scripts/TornadoConsole.lua", modDir))
+
+    -- Load the vehicle reset/recovery script.
+    source(Utils.getFilename("scripts/TornadoRecovery.lua", modDir))
     
-    -- [NEW] Load Destruction Module
+    -- Load Destruction Module
     source(Utils.getFilename("scripts/TornadoDestruction.lua", modDir))
 
+    -- Load the mapui
     source(Utils.getFilename("scripts/TornadoHotspot.lua", modDir))
     source(Utils.getFilename("scripts/TornadoMapUI.lua", modDir))
 
@@ -35,8 +39,11 @@ function TornadoMain:loadMap(name)
     if TornadoCargo then TornadoCargo:loadMap() end
     if TornadoADS then TornadoADS:loadMap() end
     
-    -- [NEW] Initialize Destruction (Before Physics uses it)
+    -- Initialize Destruction (Before Physics uses it)
     if TornadoDestruction then TornadoDestruction:loadMap(name, modDir) end
+
+    -- Install Recovery/Insurance Hooks ONCE during startup
+    if TornadoRecovery then TornadoRecovery:installHooks() end
 
     if TornadoPhysics then TornadoPhysics:loadMap(name, modDir) end
     if TornadoConsole then TornadoConsole:loadMap() end
@@ -54,7 +61,8 @@ end
 
 function TornadoMain:deleteMap()
     if TornadoPhysics then TornadoPhysics:deleteMap() end
-    if TornadoDestruction then TornadoDestruction:deleteMap() end -- [NEW] Save data on exit
+    if TornadoDestruction then TornadoDestruction:deleteMap() end
+    if TornadoRecovery and TornadoRecovery.deleteMap then TornadoRecovery:deleteMap() end
     if TornadoHusbandry then TornadoHusbandry:deleteMap() end
     if TornadoEffects then TornadoEffects:deleteMap() end
     if TornadoDebug then TornadoDebug:deleteMap() end
@@ -64,7 +72,7 @@ end
 
 function TornadoMain:update(dt)
     if TornadoPhysics then TornadoPhysics:update(dt) end
-    if TornadoDestruction then TornadoDestruction:update(dt) end -- [NEW] Update repair timers
+    if TornadoDestruction then TornadoDestruction:update(dt) end
     if TornadoEffects then TornadoEffects:update(dt) end
     if TornadoSFX then TornadoSFX:update(dt) end
 
@@ -93,16 +101,6 @@ end
 -- ---------------------------------------------------------------------------
 -- Helpers
 -- ---------------------------------------------------------------------------
-
--- function TornadoMain:getSavePath()
---     local info = g_currentMission.missionInfo
---     if info == nil then return nil end
---     local path = info.savegameDirectory
---     if path == nil then
---         path = ('%ssavegame%d'):format(getUserProfileAppPath(), info.savegameIndex)
---     end
---     return path .. "/"
--- end
 
 FSBaseMission.saveSavegame = Utils.appendedFunction(FSBaseMission.saveSavegame, function(...)
     if TornadoDestruction and TornadoDestruction._saveToXML then

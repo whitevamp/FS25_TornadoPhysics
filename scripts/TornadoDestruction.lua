@@ -94,10 +94,62 @@ function TornadoDestruction:deleteMap()
     self.isInitialized = false
 end
 
+--#region
+-- function TornadoDestruction:update(dt)
+--     if #self._pendingLoad > 0 then self:_linkPendingObjects() end
+--     if #self._destroyedObjects > 0 then self:_updateRepairs(dt) end
+-- end
+-- function TornadoDestruction:update(dt)
+--     if #self._pendingLoad > 0 then self:_linkPendingObjects() end
+    
+--     local hasDestroyed = false
+--     for id, data in pairs(self._destroyedObjects) do 
+--         hasDestroyed = true
+        
+--         -- [CACHE FIX] Continuously cache the position to survive the shutdown race condition
+--         if data.obj and data.obj.rootNode and entityExists(data.obj.rootNode) then
+--             local x, y, z = getWorldTranslation(data.obj.rootNode)
+--             if x then
+--                 data.lastX, data.lastY, data.lastZ = x, y, z
+--             end
+--         end
+--     end
+    
+--     -- [TIMER FIX] Now correctly triggers the repair logic!
+--     if hasDestroyed then self:_updateRepairs(dt) end
+-- end
 function TornadoDestruction:update(dt)
     if #self._pendingLoad > 0 then self:_linkPendingObjects() end
-    if #self._destroyedObjects > 0 then self:_updateRepairs(dt) end
+    
+    local hasDestroyed = false
+    
+    -- Calculate scaled time so 120x fast-forward actually works!
+    local timeScale = 1
+    if g_currentMission and g_currentMission.missionInfo then
+        timeScale = g_currentMission.missionInfo.timeScale or 1
+    end
+    local scaledDt = dt * timeScale
+
+    for id, data in pairs(self._destroyedObjects) do 
+        hasDestroyed = true
+        
+        -- [THE COUNTDOWN] Subtract the scaled time from the timer
+        if data.repairTimer then
+            data.repairTimer = data.repairTimer - scaledDt
+        end
+        
+        -- [CACHE] Continuously cache the position
+        if data.obj and data.obj.rootNode and entityExists(data.obj.rootNode) then
+            local x, y, z = getWorldTranslation(data.obj.rootNode)
+            if x then
+                data.lastX, data.lastY, data.lastZ = x, y, z
+            end
+        end
+    end
+    
+    if hasDestroyed then self:_updateRepairs(dt) end
 end
+--#endregion
 
 -- ============================================================================ 
 -- Main Destruction Logic
@@ -180,23 +232,67 @@ function TornadoDestruction:destroyTarget(target)
         table.insert(finalHiddenNodes, nodeData)
         structCount = structCount + 1
     end
-
+--#region
+    -- 4. SAVE RESULT
+    -- if #finalHiddenNodes > 0 then
+    --     if TornadoDebug and TornadoDebug.verboseDestruction then
+    --         TornadoDebug:log("DESTRUCTION", string.format("RESULT -> Hid %d Trash, %d/%d Structure.", #foundTrash, structCount, structLimit))
+    --     end
+        
+    --     local repairTime = g_currentMission.time + (self.REPAIR_COOLDOWN_HOURS * 3600 * 1000)
+    --     self._destroyedObjects[objectId] = {
+    --         obj = target,
+    --         filename = filename,
+    --         nodes = finalHiddenNodes,
+    --         repairTime = repairTime
+    --     }
+    -- else
+    --    if TornadoDebug then TornadoDebug:log("DESTRUCTION", "FAILED. No suitable vehicle parts found.") end
+    -- end
+    -- 4. SAVE RESULT
+    -- if #finalHiddenNodes > 0 then
+    --     if TornadoDebug and TornadoDebug.verboseDestruction then
+    --         TornadoDebug:log("DESTRUCTION", string.format("RESULT -> Hid %d Trash, %d/%d Structure.", #foundTrash, structCount, structLimit))
+    --     end
+        
+    --     local repairTime = g_currentMission.time + (self.REPAIR_COOLDOWN_HOURS * 3600 * 1000)
+    --     local x, y, z = getWorldTranslation(target.rootNode)
+        
+    --     self._destroyedObjects[objectId] = {
+    --         obj = target,
+    --         filename = filename,
+    --         nodes = finalHiddenNodes,
+    --         repairTime = repairTime,
+    --         lastX = x or 0,    -- Initialize cache
+    --         lastY = y or 0,    -- Initialize cache
+    --         lastZ = z or 0     -- Initialize cache
+    --     }
+    -- else
+    --    if TornadoDebug then TornadoDebug:log("DESTRUCTION", "FAILED. No suitable vehicle parts found.") end
+    -- end
     -- 4. SAVE RESULT
     if #finalHiddenNodes > 0 then
         if TornadoDebug and TornadoDebug.verboseDestruction then
             TornadoDebug:log("DESTRUCTION", string.format("RESULT -> Hid %d Trash, %d/%d Structure.", #foundTrash, structCount, structLimit))
         end
         
-        local repairTime = g_currentMission.time + (self.REPAIR_COOLDOWN_HOURS * 3600 * 1000)
+        -- Just set the countdown total (24 hours in milliseconds)
+        local totalTimerMs = self.REPAIR_COOLDOWN_HOURS * 3600 * 1000
+        local x, y, z = getWorldTranslation(target.rootNode)
+        
         self._destroyedObjects[objectId] = {
             obj = target,
             filename = filename,
             nodes = finalHiddenNodes,
-            repairTime = repairTime
+            repairTimer = totalTimerMs, -- [FIXED]
+            lastX = x or 0,    
+            lastY = y or 0,    
+            lastZ = z or 0     
         }
     else
        if TornadoDebug then TornadoDebug:log("DESTRUCTION", "FAILED. No suitable vehicle parts found.") end
     end
+    --#endregion
 end
 
 function TornadoDestruction:_scanForCandidates(rootNode, namesToHide, budget, isSpecificDB, outTrash, outStructure)
@@ -234,7 +330,37 @@ function TornadoDestruction:_scanForCandidates(rootNode, namesToHide, budget, is
                 else 
                     matched = string.find(nodeNameLower, string.lower(targetName), 1, true) ~= nil 
                 end
+                --#region
+                -- if matched then
+                --     -- CLASSIFY
+                --     local isTrash = false
+                --     for _, trashKey in ipairs(self.TRASH_KEYWORDS) do
+                --         if string.find(nodeNameLower, trashKey, 1, true) then
+                --             isTrash = true
+                --             break
+                --         end
+                --     end
+                    
+                --     -- Check LOD parent
+                --     local finalNode = currentNode
+                --     local finalName = nodeName
+                --     local parent = getParent(currentNode)
+                --     if parent and parent ~= 0 then
+                --         local parentName = getName(parent) or ""
+                --         if string.find(string.lower(parentName), "lod", 1, true) then
+                --             finalNode = parent
+                --             finalName = parentName
+                --         end
+                --     end
 
+                --     if isTrash then
+                --         table.insert(outTrash, {id = finalNode, name = finalName})
+                --     else
+                --         table.insert(outStructure, {id = finalNode, name = finalName})
+                --     end
+                    
+                --     break 
+                -- end
                 if matched then
                     -- CLASSIFY
                     local isTrash = false
@@ -257,14 +383,23 @@ function TornadoDestruction:_scanForCandidates(rootNode, namesToHide, budget, is
                         end
                     end
 
-                    if isTrash then
-                        table.insert(outTrash, {id = finalNode, name = finalName})
+                    -- Check if the node is already invisible (Unbought Configurations)
+                    if getVisibility(finalNode) then
+                        if isTrash then
+                            table.insert(outTrash, {id = finalNode, name = finalName})
+                        else
+                            table.insert(outStructure, {id = finalNode, name = finalName})
+                        end
                     else
-                        table.insert(outStructure, {id = finalNode, name = finalName})
+                        -- Optional: See exactly what configurations are being skipped
+                        if TornadoDebug and TornadoDebug.verboseDestruction then
+                               TornadoDebug:log("DESTRUCTION", "   >> IGNORING (Unbought Config): " .. finalName)
+                         end
                     end
                     
-                    break 
+                    break
                 end
+                --#endregion
             end
             
             -- Recurse children
@@ -293,12 +428,36 @@ function TornadoDestruction:_shuffleTable(t)
     end
 end
 
+--#region
+-- function TornadoDestruction:_updateRepairs(dt)
+--     local currentTime = g_currentMission.time
+--     local objectsToRepair = {}
+    
+--     for id, data in pairs(self._destroyedObjects) do 
+--         if currentTime >= data.repairTime then table.insert(objectsToRepair, id) end 
+--     end
+    
+--     for _, id in ipairs(objectsToRepair) do
+--         local data = self._destroyedObjects[id]
+        
+--         if TornadoDebug then 
+--             TornadoDebug:log("DESTRUCTION", string.format("REPAIR TRACE: Timer expired for %s. Restoring %d parts.", tostring(data.filename), #data.nodes))
+--         end
+        
+--         for _, nodeInfo in ipairs(data.nodes) do 
+--             if entityExists(nodeInfo.id) then setVisibility(nodeInfo.id, true) end 
+--         end
+--         self._destroyedObjects[id] = nil
+--     end
+-- end
 function TornadoDestruction:_updateRepairs(dt)
-    local currentTime = g_currentMission.time
     local objectsToRepair = {}
     
     for id, data in pairs(self._destroyedObjects) do 
-        if currentTime >= data.repairTime then table.insert(objectsToRepair, id) end 
+        -- Check if the countdown has hit zero!
+        if data.repairTimer and data.repairTimer <= 0 then 
+            table.insert(objectsToRepair, id) 
+        end 
     end
     
     for _, id in ipairs(objectsToRepair) do
@@ -315,6 +474,8 @@ function TornadoDestruction:_updateRepairs(dt)
     end
 end
 
+--#endregion
+
 function TornadoDestruction:_cleanFilename(path)
     if path == nil or path == "" then return "unknown" end
     path = string.gsub(path, "\\", "/")
@@ -323,16 +484,77 @@ function TornadoDestruction:_cleanFilename(path)
     return path
 end
 
+--#region
+function TornadoDestruction:_findNodeByName(rootNode, targetName)
+    if rootNode == nil or rootNode == 0 then return 0 end
+    local nodesToProcess = {rootNode}
+    local maxSearch = 2000
+    local count = 0
+
+    while #nodesToProcess > 0 do
+        if count > maxSearch then break end
+        local currentNode = table.remove(nodesToProcess, 1)
+        count = count + 1
+
+        if getName(currentNode) == targetName then
+            return currentNode
+        end
+
+        local numChildren = getNumOfChildren(currentNode)
+        if numChildren > 0 then
+            for i = 0, numChildren - 1 do
+                table.insert(nodesToProcess, getChildAt(currentNode, i))
+            end
+        end
+    end
+    return 0
+end
+--#endregion
+
+-- function TornadoDestruction:_linkPendingObjects()
+--     if g_currentMission == nil then return end
+--     local stillPending = {}
+--     local searchRadiusSq = 1.0
+--     local searchTargets = {}
+
+--     if g_currentMission.vehicleSystem and g_currentMission.vehicleSystem.vehicles then 
+--         for _, v in pairs(g_currentMission.vehicleSystem.vehicles) do 
+--             table.insert(searchTargets, v) 
+--         end 
+--     end
+    
+--     for _, pending in ipairs(self._pendingLoad) do
+--         local found = false
+--         for _, obj in ipairs(searchTargets) do
+--             local filename = self:_cleanFilename(obj.i3dFilename)
+--             if filename == pending.filename then
+--                 local x, y, z = getWorldTranslation(obj.rootNode)
+--                 local dx, dy, dz = x - pending.x, y - pending.y, z - pending.z
+--                 if (dx*dx + dy*dy + dz*dz) < searchRadiusSq then
+--                     if TornadoDebug then TornadoDebug:log("DESTRUCTION", "RELINKING saved vehicle -> " .. filename) end
+--                     for _, nodeInfo in ipairs(pending.nodes) do
+--                         local foundNode = I3DUtil.findNode(obj.rootNode, nodeInfo.name, true)
+--                         if foundNode and foundNode ~= 0 then setVisibility(foundNode, false) nodeInfo.id = foundNode end
+--                     end
+--                     self._destroyedObjects[obj.rootNode] = { obj = obj, filename = filename, nodes = pending.nodes, repairTime = pending.repairTime }
+--                     found = true
+--                     break
+--                 end
+--             end
+--         end
+--         if not found then table.insert(stillPending, pending) end
+--     end
+--     self._pendingLoad = stillPending
+-- end
+--#region
 function TornadoDestruction:_linkPendingObjects()
     if g_currentMission == nil then return end
     local stillPending = {}
     local searchRadiusSq = 1.0
     local searchTargets = {}
-
+    
     if g_currentMission.vehicleSystem and g_currentMission.vehicleSystem.vehicles then 
-        for _, v in pairs(g_currentMission.vehicleSystem.vehicles) do 
-            table.insert(searchTargets, v) 
-        end 
+        for _, v in pairs(g_currentMission.vehicleSystem.vehicles) do table.insert(searchTargets, v) end 
     end
     
     for _, pending in ipairs(self._pendingLoad) do
@@ -341,16 +563,45 @@ function TornadoDestruction:_linkPendingObjects()
             local filename = self:_cleanFilename(obj.i3dFilename)
             if filename == pending.filename then
                 local x, y, z = getWorldTranslation(obj.rootNode)
-                local dx, dy, dz = x - pending.x, y - pending.y, z - pending.z
-                if (dx*dx + dy*dy + dz*dz) < searchRadiusSq then
-                    if TornadoDebug then TornadoDebug:log("DESTRUCTION", "RELINKING saved vehicle -> " .. filename) end
-                    for _, nodeInfo in ipairs(pending.nodes) do
-                        local foundNode = I3DUtil.findNode(obj.rootNode, nodeInfo.name, true)
-                        if foundNode and foundNode ~= 0 then setVisibility(foundNode, false) nodeInfo.id = foundNode end
+                if x ~= nil then
+                    local dx, dy, dz = x - pending.x, y - pending.y, z - pending.z
+                    if (dx*dx + dy*dy + dz*dz) < searchRadiusSq then
+                        if TornadoDebug then TornadoDebug:log("DESTRUCTION", "RELINKING saved vehicle -> " .. filename) end
+                        
+                        -- [THE FIX] Use our custom scanner instead of the broken I3DUtil command
+                        for _, nodeInfo in ipairs(pending.nodes) do
+                            local foundNode = self:_findNodeByName(obj.rootNode, nodeInfo.name)
+                            if foundNode and foundNode ~= 0 then 
+                                setVisibility(foundNode, false) 
+                                nodeInfo.id = foundNode 
+                            end
+                        end
+                        --#region
+                        -- self._destroyedObjects[obj.rootNode] = { obj = obj, filename = filename, nodes = pending.nodes, repairTime = pending.repairTime }
+                        -- found = true
+                        -- break
+                        -- self._destroyedObjects[obj.rootNode] = { 
+                        --     obj = obj, 
+                        --     filename = filename, 
+                        --     nodes = pending.nodes, 
+                        --     repairTime = pending.repairTime,
+                        --     lastX = x,     -- Initialize cache
+                        --     lastY = y,     -- Initialize cache
+                        --     lastZ = z      -- Initialize cache
+                        -- }
+                        self._destroyedObjects[obj.rootNode] = { 
+                            obj = obj, 
+                            filename = filename, 
+                            nodes = pending.nodes, 
+                            repairTimer = pending.repairTimer, -- [FIXED]
+                            lastX = x, 
+                            lastY = y, 
+                            lastZ = z 
+                        }
+                        found = true
+                        break
+                        --#endregion
                     end
-                    self._destroyedObjects[obj.rootNode] = { obj = obj, filename = filename, nodes = pending.nodes, repairTime = pending.repairTime }
-                    found = true
-                    break
                 end
             end
         end
@@ -358,6 +609,7 @@ function TornadoDestruction:_linkPendingObjects()
     end
     self._pendingLoad = stillPending
 end
+--#endregion
 
 function TornadoDestruction:_resolveSavegamePath()
     if not g_currentMission or not g_currentMission.missionInfo then return nil end
@@ -413,7 +665,8 @@ function TornadoDestruction:_saveToXML()
         setXMLFloat(xmlId, objKey .. ".posX", x)
         setXMLFloat(xmlId, objKey .. ".posY", y)
         setXMLFloat(xmlId, objKey .. ".posZ", z)
-        setXMLFloat(xmlId, objKey .. ".repairTime", data.repairTime)
+        --setXMLFloat(xmlId, objKey .. ".repairTime", data.repairTime)
+        setXMLFloat(xmlId, objKey .. ".repairTimer", data.repairTimer)
         
         local nodesStr = ""
         if data.nodes then
@@ -422,33 +675,56 @@ function TornadoDestruction:_saveToXML()
         setXMLString(xmlId, objKey .. ".nodes", nodesStr)
         i = i + 1
     end
-    
+    --#region
+    -- 4. Process Destroyed Objects
+    -- if self._destroyedObjects then
+    --     local count = 0
+    --     for _, data in pairs(self._destroyedObjects) do count = count + 1 end
+    --     if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: Found " .. count .. " items in _destroyedObjects table.") end
+
+    --     for _, data in pairs(self._destroyedObjects) do 
+    --         if data and data.obj and data.obj.rootNode then
+    --             if entityExists(data.obj.rootNode) then
+    --                 local x, y, z = getWorldTranslation(data.obj.rootNode) 
+    --                 if x then 
+    --                     writeEntry(data, x, y, z) 
+    --                     if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: Wrote entry for -> " .. tostring(data.filename)) end
+    --                 else
+    --                     if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: Warning - getWorldTranslation failed for -> " .. tostring(data.filename)) end
+    --                 end
+    --             else
+    --                 if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: Warning - Entity no longer exists for -> " .. tostring(data.filename)) end
+    --             end
+    --         else
+    --             if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: Warning - Invalid data structure in _destroyedObjects.") end
+    --         end
+    --     end
+    -- else
+    --     if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: _destroyedObjects table is nil.") end
+    -- end
     -- 4. Process Destroyed Objects
     if self._destroyedObjects then
         local count = 0
         for _, data in pairs(self._destroyedObjects) do count = count + 1 end
         if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: Found " .. count .. " items in _destroyedObjects table.") end
 
-        for _, data in pairs(self._destroyedObjects) do 
-            if data and data.obj and data.obj.rootNode then
-                if entityExists(data.obj.rootNode) then
-                    local x, y, z = getWorldTranslation(data.obj.rootNode) 
-                    if x then 
-                        writeEntry(data, x, y, z) 
-                        if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: Wrote entry for -> " .. tostring(data.filename)) end
-                    else
-                        if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: Warning - getWorldTranslation failed for -> " .. tostring(data.filename)) end
-                    end
-                else
-                    if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: Warning - Entity no longer exists for -> " .. tostring(data.filename)) end
-                end
+        for id, data in pairs(self._destroyedObjects) do 
+            -- [RACE CONDITION FIX] We no longer check for rootNode. We just use our cached data!
+            if data and data.filename then
+                local x = data.lastX or 0
+                local y = data.lastY or 0
+                local z = data.lastZ or 0
+                
+                writeEntry(data, x, y, z) 
+                if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: Wrote entry for -> " .. tostring(data.filename)) end
             else
-                if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: Warning - Invalid data structure in _destroyedObjects.") end
+                if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: Warning - Invalid data structure for ID: " .. tostring(id)) end
             end
         end
     else
         if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: _destroyedObjects table is nil.") end
     end
+    --#endregion
     
     -- 5. Process Pending Loads
     if self._pendingLoad then
@@ -504,15 +780,30 @@ function TornadoDestruction:_loadFromXML()
         local nodesStr = getXMLString(xmlId, key .. ".nodes") or ""
         local nodes = {}
         for nodeName in string.gmatch(nodesStr, "([^;]+)") do table.insert(nodes, {id = 0, name = nodeName}) end
-        
+        --#region
+        -- table.insert(self._pendingLoad, { 
+        --     filename = filename, 
+        --     x = getXMLFloat(xmlId, key .. ".posX"), 
+        --     y = getXMLFloat(xmlId, key .. ".posY"), 
+        --     z = getXMLFloat(xmlId, key .. ".posZ"), 
+        --     repairTime = getXMLFloat(xmlId, key .. ".repairTime"),
+        --         nodes = nodes
+        -- })
+        local savedTimer = getXMLFloat(xmlId, key .. ".repairTimer")
+        if savedTimer == nil then
+            savedTimer = getXMLFloat(xmlId, key .. ".repairTime") or (24 * 3600 * 1000)
+        end
+
         table.insert(self._pendingLoad, { 
             filename = filename, 
             x = getXMLFloat(xmlId, key .. ".posX"), 
             y = getXMLFloat(xmlId, key .. ".posY"), 
             z = getXMLFloat(xmlId, key .. ".posZ"), 
-            repairTime = getXMLFloat(xmlId, key .. ".repairTime"), 
-            nodes = nodes 
+            repairTimer = savedTimer,
+            nodes = nodes
         })
+            --#endregion
+
         i = i + 1
     end
     

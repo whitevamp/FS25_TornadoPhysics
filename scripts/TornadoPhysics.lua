@@ -296,7 +296,7 @@ function TornadoPhysics:processNearbyObjects(dt, tX, tY, tZ)
                 local dist = MathUtil.vector3Length(vx-tX, vy-tY, vz-tZ)
                 
                 if dist < self.settings.base_radius then
-                    self:applyTornadoForces(vehicle, dist, dt)
+                    --self:applyTornadoForces(vehicle, dist, dt)
                     
                     -- Trigger Destruction
                     if TornadoDestruction then

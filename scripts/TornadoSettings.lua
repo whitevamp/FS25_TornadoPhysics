@@ -84,6 +84,10 @@ function TornadoSettings:resetToDefaults(category)
         end
     end
 
+    if category == "all" or category == "tuning" then
+        self.recoveryEnabled = false
+    end
+
     -- AUTO-SAVE immediately so the reset sticks
     self:saveToXML()
 end
@@ -154,6 +158,9 @@ function TornadoSettings:createDefaultXML()
     
     -- 12. EFFECTS
     setXMLBool(xmlId, "TornadoPhysics.effects.fireRandom", false)
+
+    -- 13. vehicle recovery
+    setXMLBool(xmlId, "TornadoPhysics.general.recovery", self.recoveryEnabled)
 
     saveXMLFile(xmlId)
     delete(xmlId)
@@ -247,6 +254,9 @@ function TornadoSettings:loadFromXML()
         if fireRandom ~= nil then TornadoEffects.CONFIG.RANDOM_FIRE_MODE = fireRandom end
     end
 
+    -- recovery
+    self.recoveryEnabled = Utils.getNoNil(getXMLBool(xmlId, "TornadoPhysics.general.recovery"), false)
+
     delete(xmlId)
     if TornadoDebug then TornadoDebug:log("SETTINGS", "Preferences Loaded Successfully.") end
 end
@@ -282,6 +292,7 @@ function TornadoSettings:saveToXML()
         setXMLFloat(xmlId, "TornadoPhysics.tuning.purgeDuration", s.purge_duration)
         setXMLFloat(xmlId, "TornadoPhysics.tuning.purgeInterval", s.purge_interval)
         setXMLBool(xmlId, "TornadoPhysics.debug.showRing", TornadoPhysics.showRing)
+        setXMLBool(xmlId, "TornadoPhysics.general.recovery", self.recoveryEnabled)
     end
 
     if TornadoHusbandry then
