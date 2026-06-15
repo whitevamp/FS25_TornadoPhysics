@@ -402,6 +402,10 @@ function TornadoConsole:cmdDev(tool, arg1)
             if target == "destruction" then
                 TornadoDebug.verboseDestruction = not TornadoDebug.verboseDestruction
                 return "DEV: Destruction Verbose = " .. tostring(TornadoDebug.verboseDestruction)
+            
+            elseif target == "destruction_indoor_bypass" then
+                TornadoDebug.verboseIndoorBypass = not TornadoDebug.verboseIndoorBypass
+                return "DEV: Indoor Bypass Verbose = " .. tostring(TornadoDebug.verboseIndoorBypass)
                 
             elseif target == "physics" then
                 TornadoDebug.verbosePhysics = not TornadoDebug.verbosePhysics
@@ -412,10 +416,11 @@ function TornadoConsole:cmdDev(tool, arg1)
                 TornadoDebug.verboseMode = newState
                 TornadoDebug.verboseDestruction = newState
                 TornadoDebug.verbosePhysics = newState
+                TornadoDebug.verboseIndoorBypass = newState
                 return "DEV: ALL Verbose Logging = " .. tostring(newState)
                 
             else
-                return "Unknown verbose target. Use: all, destruction, or physics"
+                return "Unknown verbose target. Use: all, destruction, destruction_indoor_bypass, or physics"
             end
         end
         return "TornadoDebug not found."

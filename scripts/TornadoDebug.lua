@@ -5,6 +5,7 @@
 TornadoDebug = {}
 TornadoDebug.verboseMode = false -- The global master switch
 TornadoDebug.verboseDestruction = false -- Specifically for save/load/repair
+TornadoDebug.verboseIndoorBypass = false
 TornadoDebug.verboseRecovery = false --
 TornadoDebug.verbosePhysics = false -- Specifically for suction/ejection
 TornadoDebug.showPosition = false -- Separate flag for coordinate spam

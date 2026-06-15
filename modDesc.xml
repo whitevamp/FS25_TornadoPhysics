@@ -76,11 +76,12 @@ CHANGELOG
 v4.0.0.0 (The Destruction Update)
 - [SYSTEM] Complete Code Rewrite: Moved to a modular architecture for better stability, save-game safety, and performance.
 - [CONSOLE] New Master Command System: Replaced fragmented commands with t_help, t_physics, t_set, t_sfx, t_tune, and t_reset.
-- [GAMEPLAY] Added Cargo Spilling: Trailers caught in the storm will now dump their contents (Uncovered: 100% loss, Covered: chance to leak/pop open). (Default: ON)
+- [GAMEPLAY] Added Cargo Spilling: Trailers caught in the storm will now dump their contents (Uncovered: 100% loss, Covered: chance to leak/pop open). (Default: Off)
 - [GAMEPLAY] Added Vehicle Destruction: Vehicles, trailers, and implements caught in the storm will now physically lose parts, with an in-game 24hr auto-repair function perfectly synced to your save game. (Default: OFF)
 - [GAMEPLAY] Added Hardcore Recovery: A dynamic vehicle billing system. If you reset a tornado-damaged vehicle to the shop, you will be charged an itemized tow and repair bill based on exactly how much damage the vehicle took! (Default: OFF)
 - [GAMEPLAY] Added ADS Support: Integration with "Advanced Damage System" (Minor damage at 15s, Moderate at 30s, Total Destruction at 50s).
 - [GAMEPLAY] Added Siren Warning: A tornado siren will now loop for 3 minutes when a storm spawns. (Default: ON)
+- [GAMEPLAY] Readjusted husbandry: If enabled, the tornado will detect if a barn has an outdoor pasture. Animals are only safe if the barn is strictly indoors; if an outdoor pasture is detected, they will not be safe. Note: Modded buildings that do not use standard Giants meshes may not be detected correctly.
 - [VISUALS] Added Smoke & Fire Effects: Motorized vehicles can now catch fire and emit smoke when critically damaged by the storm.
 - [VISUALS] Added Shader Mesh Support: Now natively supports "smokeTrailSubUV" for advanced volumetric effects.
 - [VISUALS] Improved Debug Ring: Added a secondary ring for better visibility in valleys.
@@ -155,11 +156,12 @@ Dieses Update führt ein zentrales Befehlssystem ein. Du musst dir keine 20 vers
 v4.0.0.0 (Das Zerstörungs-Update)
 - [SYSTEM] Komplette Code-Überarbeitung: Wechsel zu einer modularen Architektur für bessere Stabilität, Speichersicherheit und Leistung.
 - [KONSOLE] Neues Hauptbefehlssystem: Fragmentierte Befehle durch t_help, t_physics, t_set, t_sfx, t_tune und t_reset ersetzt.
-- [GAMEPLAY] Ladungsverlust hinzugefügt: Anhänger, die in den Sturm geraten, verlieren nun ihren Inhalt (Offen: 100 % Verlust, Abgedeckt: Chance auf Leck/Aufspringen). (Standard: EIN)
+- [GAMEPLAY] Ladungsverlust hinzugefügt: Anhänger, die in den Sturm geraten, verlieren nun ihren Inhalt (Offen: 100 % Verlust, Abgedeckt: Chance auf Leck/Aufspringen). (Standard: AUS)
 - [GAMEPLAY] Fahrzeugzerstörung hinzugefügt: Fahrzeuge, Anhänger und Geräte, die in den Sturm geraten, verlieren nun physisch Teile, mit einer automatischen 24-Stunden-Reparaturfunktion im Spiel, die perfekt mit deinem Spielstand synchronisiert ist. (Standard: AUS)
 - [GAMEPLAY] Hardcore-Rettung hinzugefügt: Ein dynamisches Fahrzeug-Abrechnungssystem. Wenn du ein vom Tornado beschädigtes Fahrzeug zum Shop zurücksetzt, wird dir eine detaillierte Abschlepp- und Reparaturrechnung berechnet, die genau darauf basiert, wie viel Schaden das Fahrzeug genommen hat! (Standard: AUS)
 - [GAMEPLAY] ADS-Unterstützung hinzugefügt: Integration mit dem "Advanced Damage System" (Leichter Schaden bei 15s, Mittlerer bei 30s, Totalschaden bei 50s).
 - [GAMEPLAY] Sirenenwarnung hinzugefügt: Eine Tornado-Sirene läuft nun 3 Minuten lang in Schleife, wenn ein Sturm entsteht. (Standard: EIN)
+- [GAMEPLAY] Anpassung der Tierhaltung: Wenn aktiviert, erkennt der Tornado, ob ein Stall über eine Weide im Freien verfügt. Tiere sind nur sicher, wenn es sich um einen rein geschlossenen Stall handelt; bei vorhandener Weide sind sie nicht sicher. Hinweis: Modifizierte Gebäude, die keine Standard-Meshes von Giants verwenden, werden möglicherweise nicht korrekt erkannt.
 - [OPTIK] Rauch- & Feuereffekte hinzugefügt: Motorisierte Fahrzeuge können nun Feuer fangen und Rauch ausstoßen, wenn sie durch den Sturm kritisch beschädigt werden.
 - [OPTIK] Shader-Mesh-Unterstützung hinzugefügt: Unterstützt nun nativ "smokeTrailSubUV" für erweiterte volumetrische Effekte.
 - [OPTIK] Debug-Ring verbessert: Ein zweiter Ring für bessere Sichtbarkeit in Tälern wurde hinzugefügt.
@@ -234,11 +236,12 @@ JOURNAL DES MODIFICATIONS
 v4.0.0.0 (La Mise à Jour de Destruction)
 - [SYSTÈME] Réécriture complète du code : Passage à une architecture modulaire pour une meilleure stabilité, sécurité des sauvegardes et performance.
 - [CONSOLE] Nouveau système de commandes principales : Remplacement des commandes fragmentées par t_help, t_physics, t_set, t_sfx, t_tune et t_reset.
-- [GAMEPLAY] Déversement de cargaison ajouté : Les remorques prises dans la tempête videront désormais leur contenu (Découvert : 100% de perte, Couvert : chance de fuite/d'ouverture). (Défaut : ACTIVÉ)
+- [GAMEPLAY] Déversement de cargaison ajouté : Les remorques prises dans la tempête videront désormais leur contenu (Découvert : 100% de perte, Couvert : chance de fuite/d'ouverture). (Défaut : DÉSACTIVÉ)
 - [GAMEPLAY] Destruction de véhicules ajoutée : Les véhicules, remorques et outils pris dans la tempête perdront désormais physiquement des pièces, avec une fonction d'auto-réparation en jeu de 24h parfaitement synchronisée avec votre sauvegarde. (Défaut : DÉSACTIVÉ)
 - [GAMEPLAY] Récupération Hardcore ajoutée : Un système de facturation dynamique des véhicules. Si vous réinitialisez un véhicule endommagé par une tornade au magasin, une facture détaillée de remorquage et de réparation vous sera facturée en fonction des dégâts exacts subis par le véhicule ! (Défaut : DÉSACTIVÉ)
 - [GAMEPLAY] Support ADS ajouté : Intégration avec "Advanced Damage System" (Dégâts mineurs à 15s, Modérés à 30s, Destruction totale à 50s).
 - [GAMEPLAY] Avertissement de sirène ajouté : Une sirène de tornade tourne désormais en boucle pendant 3 minutes lorsqu'une tempête se forme. (Défaut : ACTIVÉ)
+- [GAMEPLAY] Réajustement de l'élevage : Si l'option est activée, la tornade détectera si une étable dispose d'un pâturage extérieur. Les animaux ne sont en sécurité que si l'étable est strictement intérieure ; en présence d'un pâturage extérieur, ils ne seront pas protégés. Remarque : Les bâtiments moddés qui n'utilisent pas les meshes standards de Giants peuvent ne pas être détectés correctement.
 - [VISUELS] Effets de fumée et de feu ajoutés : Les véhicules motorisés peuvent désormais prendre feu et émettre de la fumée lorsqu'ils sont gravement endommagés par la tempête.
 - [VISUELS] Support Shader Mesh ajouté : Supporte désormais nativement "smokeTrailSubUV" pour des effets volumétriques avancés.
 - [VISUELS] Anneau de débogage amélioré : Ajout d'un deuxième anneau pour une meilleure visibilité dans les vallées.

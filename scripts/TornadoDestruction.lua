@@ -166,12 +166,44 @@ function TornadoDestruction:destroyTarget(target)
     local rawFilename = target.i3dFilename or ""
     local lowerRawFilename = string.lower(rawFilename)
     
+    --#region
+    -- -- ONLY allow vehicles to be destroyed. Reject placeables/buildings entirely.
+    -- if string.find(lowerRawFilename, "placeables/") or not string.find(lowerRawFilename, "vehicles/") then
+    --     return 
+    -- end
+
+    -- local filename = self:_cleanFilename(rawFilename)
     -- ONLY allow vehicles to be destroyed. Reject placeables/buildings entirely.
     if string.find(lowerRawFilename, "placeables/") or not string.find(lowerRawFilename, "vehicles/") then
         return 
     end
 
+    -- ==========================================================
+    -- INDOOR / COVER PROTECTION CHECK
+    -- ==========================================================
+    local x, y, z = getWorldTranslation(target.rootNode)
+    if x ~= nil and z ~= nil then
+        local isIndoor = false
+        if g_currentMission.indoorMask ~= nil then
+            isIndoor = g_currentMission.indoorMask:getIsIndoorAtWorldPosition(x, z)
+        end
+        
+        local indoorDamageEnabled = TornadoPhysics.settings and TornadoPhysics.settings.indoor_damage
+        
+        -- If the vehicle is under a roof AND indoor damage is disabled, abort destruction!
+        if isIndoor and not indoorDamageEnabled then
+            
+            if TornadoDebug and TornadoDebug.verboseIndoorBypass then 
+                TornadoDebug:log("DESTRUCTION", "SKIPPED -> " .. tostring(filename) .. " (Vehicle is indoors/covered)") 
+            end
+            
+            return 
+        end
+    end
+    -- ==========================================================
+
     local filename = self:_cleanFilename(rawFilename)
+    --#endregion
     
     -- [CHECK] File-level Ignore with DEBUG LOGGING
     local filenameLower = string.lower(filename)
