@@ -7,8 +7,8 @@ TornadoRecovery = {}
 -- Configuration & Pricing
 -- ============================================================================
 TornadoRecovery.BASE_TOW_FEE = 1500        
-TornadoRecovery.COST_STRUCTURAL = 500      -- Glass, mirrors, pipes, etc.
-TornadoRecovery.COST_TRASH = 10            -- Decals, stickers, hoses, etc.
+TornadoRecovery.COST_STRUCTURAL = 500      
+TornadoRecovery.COST_TRASH = 10            
 TornadoRecovery.ENGINE_REPAIR_COST = 3500  
 
 TornadoRecovery.isHooked = false
@@ -16,24 +16,35 @@ TornadoRecovery.isHooked = false
 function TornadoRecovery:installHooks()
     if self.isHooked then return end
 
-    if VehicleSystem ~= nil and VehicleSystem.resetVehicle ~= nil then
-        local oldResetVehicle = VehicleSystem.resetVehicle
+    -- [THE GOLDEN HOOK] 
+    -- Derived directly from ResetVehicleEvent.lua. We hook the native Vehicle class!
+    if Vehicle ~= nil and Vehicle.reset ~= nil then
+        local oldVehicleReset = Vehicle.reset
         
-        VehicleSystem.resetVehicle = function(systemSelf, vehicle, ...)
-            if g_server ~= nil and vehicle ~= nil then
-                TornadoRecovery:processRecovery(vehicle)
+        Vehicle.reset = function(vehicleSelf, clearFarmId, callback, connection)
+            -- Only the server should handle the billing logic
+            if g_server ~= nil then
+                TornadoRecovery:processRecovery(vehicleSelf)
             end
-            return oldResetVehicle(systemSelf, vehicle, ...)
+            
+            -- Continue with the engine's normal reset execution
+            return oldVehicleReset(vehicleSelf, clearFarmId, callback, connection)
         end
         
-        if TornadoDebug then TornadoDebug:log("RECOVERY", "Successfully hooked into VehicleSystem:resetVehicle") end
+        print("TornadoRecovery: SUCCESS - Hooked directly into Vehicle class!")
         self.isHooked = true
+    else
+        print("TORNADO RECOVERY CRITICAL ERROR: Could not find Vehicle class to hook!")
     end
 end
 
 function TornadoRecovery:processRecovery(vehicle)
-    -- [THE GATEKEEPER] Master Opt-In Check
+    if TornadoDebug and TornadoDebug.verboseMode then
+        TornadoDebug:log("RECOVERY", "TRACE: Vehicle reset intercepted for -> " .. tostring(vehicle.configFileName))
+    end
+
     if not (TornadoSettings and TornadoSettings.recoveryEnabled) then
+        if TornadoDebug and TornadoDebug.verboseMode then TornadoDebug:log("RECOVERY", "TRACE: Aborted. Recovery module disabled in settings.") end
         return 
     end
 
@@ -41,9 +52,14 @@ function TornadoRecovery:processRecovery(vehicle)
 
     -- 1. Check if the vehicle is currently on our destroyed list
     local destructionData = TornadoDestruction._destroyedObjects[vehicle.rootNode]
-    if destructionData == nil then return end 
+    if destructionData == nil then 
+        if TornadoDebug and TornadoDebug.verboseMode then TornadoDebug:log("RECOVERY", "TRACE: Aborted. Vehicle is not damaged (Free Reset allowed).") end
+        return 
+    end 
 
-    -- 2. Itemized Damage Calculation (The Text Scanner)
+    if TornadoDebug and TornadoDebug.verboseMode then TornadoDebug:log("RECOVERY", "TRACE: Damaged Vehicle Confirmed! Calculating bill...") end
+
+    -- 2. Itemized Damage Calculation
     local trashCount = 0
     local structCount = 0
     
@@ -52,7 +68,6 @@ function TornadoRecovery:processRecovery(vehicle)
             local isTrash = false
             local nameLower = string.lower(nodeInfo.name)
             
-            -- Scan the name against the Destruction dictionary
             for _, trashKey in ipairs(TornadoDestruction.TRASH_KEYWORDS) do
                 if string.find(nameLower, trashKey, 1, true) then
                     isTrash = true
@@ -64,7 +79,7 @@ function TornadoRecovery:processRecovery(vehicle)
         end
     end
     
-    -- Native Engine Damage Check (Physics script maxes damage at 1.0)
+    -- Native Engine Damage Check
     local isEngineDead = false
     if vehicle.getDamageAmount and vehicle:getDamageAmount() >= 1.0 then
         isEngineDead = true
@@ -77,7 +92,10 @@ function TornadoRecovery:processRecovery(vehicle)
     end
 
     local farmId = vehicle:getOwnerFarmId()
-    if farmId == nil or farmId == 0 then return end 
+    if farmId == nil or farmId == 0 then 
+        if TornadoDebug and TornadoDebug.verboseMode then TornadoDebug:log("RECOVERY", "TRACE: Aborted. Invalid farm ID.") end
+        return 
+    end 
 
     -- 4. Deduct the Money 
     g_currentMission:addMoney(-totalCost, farmId, MoneyType.VEHICLE_REPAIR, true, true)
@@ -93,7 +111,7 @@ function TornadoRecovery:processRecovery(vehicle)
         TornadoDebug:log("RECOVERY", string.format("Charged Farm %d exactly $%d for resetting %s", farmId, totalCost, destructionData.filename))
     end
 
-    -- 6. Clean up the memory so they don't get charged again
+    -- 6. Clean up the memory
     TornadoDestruction._destroyedObjects[vehicle.rootNode] = nil
 end
 

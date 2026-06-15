@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <modDesc xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" descVersion="109" xsi:noNamespaceSchemaLocation="https://validation.gdn.giants-software.com/xml/fs25/modDesc.xsd">
     <author>whitevamp</author>
-    <version>3.0.0.1</version>
+    <version>3.0.0.0</version>
     <title>
         <en>Tornado Physics</en>
         <de>Tornado Physik</de>
@@ -44,6 +44,8 @@ This update introduces a centralized command system. You no longer need to remem
 - t_set cargo            : Toggle Cargo Spilling System
 - t_set husbandry        : Toggle Animal Lethality
 - t_set husbandry immunity [x] : Set safety timer for barns (seconds)
+- t_set destruction        : turns on vehicle destruction.
+- t_set recovery           : turns on builling when you reset a vihicle back to the shop. 
 
 3. VISUALS & AUDIO (t_sfx)
 - t_sfx sound            : Toggle Siren Audio ON/OFF
@@ -81,6 +83,7 @@ v4.0.0.0
 - [GAMEPLAY] Added ADS Support: Integration with "Advanced Damage System" (Minor damage at 15s, Moderate at 30s, Total Destruction at 50s).
 - [GAMEPLAY] Added Siren Warning: A tornado siren will now loop for 3 minutes when a storm spawns.  (**Default is off**)
 - [GAMEPLAY] Added Vehicle Destruction: vehicles, trailers, impliments caught in the storm will now suffer damage, with an ingame 24hr auto repair function, saved to the save folder.(**Default is off**)
+- [GAMEPLAY] Added a dynamic vehicle builling for when you rest a vehicle/ or trailer back to the shop after the tornado has damaged the vehicle, the cost is calculated with how much damage the vehicle has taken.  
 - [VISUALS] Added Smoke Effects: Vehicles now emit smoke/particles when being damaged by the storm.
 - [VISUALS] Improved Debug Ring: Added a secondary ring for better visibility in valleys.
 - [VISUALS] Added Shader Mesh Support: Now supports "smokeTrailSubUV" for advanced volumetric effects.
