@@ -107,13 +107,22 @@ function TornadoRecovery:processRecovery(vehicle)
     if isEngineDead then msg = msg .. " + Engine Overhaul" end
     g_currentMission:addIngameNotification(FSBaseMission.INGAME_NOTIFICATION_CRITICAL, msg)
     
+    -- Detailed Console Audit Logging
     if TornadoDebug then 
-        TornadoDebug:log("RECOVERY", string.format("Charged Farm %d exactly $%d for resetting %s", farmId, totalCost, destructionData.filename))
+        local logBreakdown = string.format("Charged Farm %d exactly $%d for resetting %s | MATH: Base: $%d + (Struct: %d * $%d) + (Trash: %d * $%d)", 
+            farmId, totalCost, destructionData.filename, self.BASE_TOW_FEE, structCount, self.COST_STRUCTURAL, trashCount, self.COST_TRASH)
+            
+        if isEngineDead then
+            logBreakdown = logBreakdown .. string.format(" + (Engine: $%d)", self.ENGINE_REPAIR_COST)
+        end
+        
+        TornadoDebug:log("RECOVERY", logBreakdown)
     end
 
     -- 6. Clean up the memory
     TornadoDestruction._destroyedObjects[vehicle.rootNode] = nil
 end
+
 
 function TornadoRecovery:deleteMap()
     self.isHooked = false
