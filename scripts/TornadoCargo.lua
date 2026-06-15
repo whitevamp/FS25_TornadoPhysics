@@ -4,7 +4,7 @@
 
 TornadoCargo                    = {}
 TornadoCargo.isEnabled          = false --true
-TornadoCargo.isVerbose          = false -- [NEW] Separate logging toggle
+TornadoCargo.isVerbose          = false -- Separate logging toggle
 
 -- TUNING
 TornadoCargo.settings = {

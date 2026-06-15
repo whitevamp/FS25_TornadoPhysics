@@ -77,7 +77,7 @@ function TornadoSettings:resetToDefaults(category)
             cs.drainRate = 0.10
             cs.spreadRadius = 4.0
             cs.coverLeakChance = 0.25
-            TornadoCargo.isEnabled = true
+            TornadoCargo.isEnabled = false
             TornadoCargo.isVerbose = false
             print("TORNADO RESET: Cargo defaults restored.")
         end
@@ -86,6 +86,7 @@ function TornadoSettings:resetToDefaults(category)
     -- RESET HUSBANDRY
     if TornadoHusbandry then
         if category == "all" or category == "husbandry" then
+            TornadoHusbandry.isActive = false
             TornadoHusbandry.IMMUNITY_DURATION = 120000 -- 2 minutes
             print("TORNADO RESET: Husbandry defaults restored.")
         end
@@ -146,7 +147,7 @@ function TornadoSettings:createDefaultXML()
     setXMLBool(xmlId, "TornadoPhysics.audio.enabled", true)
 
     -- 10. CARGO
-    setXMLBool(xmlId, "TornadoPhysics.cargo.enabled", true)
+    setXMLBool(xmlId, "TornadoPhysics.cargo.enabled", false)
     setXMLFloat(xmlId, "TornadoPhysics.cargo.spillHeight", 1.5)
     setXMLFloat(xmlId, "TornadoPhysics.cargo.spillAngle", 0.7)
     setXMLFloat(xmlId, "TornadoPhysics.cargo.drainRate", 0.10)
