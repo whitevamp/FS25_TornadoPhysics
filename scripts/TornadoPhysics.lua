@@ -250,6 +250,7 @@ function TornadoPhysics:update(dt)
 
     if TornadoADS then TornadoADS:update(dt, self.activeNodes) end
     if TornadoCargo then TornadoCargo:update(dt, self.activeNodes) end
+    if TornadoCompass then TornadoCompass:update(dt) end
 
     -- VISUAL DEBUGGER
     if self.showRing or self.debugMode then
@@ -905,6 +906,7 @@ local msg = string.format("ALERT: TORNADO TOUCHDOWN! (%s | Radius: %dm | PwrMult
 
         if TornadoDebug then TornadoDebug:info("EVENT", msg) end
         if g_currentMission then g_currentMission:showBlinkingWarning(msg, 20000) end
+        if TornadoAPI then TornadoAPI:fireTouchdownEvent() end
     end
 end
 
@@ -975,5 +977,7 @@ function TornadoPhysics:clearTornadoState()
         end
     end
     
+    if TornadoAPI then TornadoAPI:fireDespawnEvent() end
+
     print("TornadoPhysics: Cleanup complete. Ready for new spawn.")
 end

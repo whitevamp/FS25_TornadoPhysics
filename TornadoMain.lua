@@ -9,6 +9,9 @@ function TornadoMain:loadMap(name)
     print("TORNADO MOD SYSTEM: INITIALIZING MAIN CONTROLLER")
 
     -- 1. LOAD SCRIPTS
+    -- Load the Public API First
+    source(Utils.getFilename("API/TornadoAPI.lua", modDir))
+
     source(Utils.getFilename("scripts/TornadoDebug.lua", modDir))
     source(Utils.getFilename("scripts/TornadoSettings.lua", modDir))
     source(Utils.getFilename("scripts/TornadoSFX.lua", modDir))
@@ -18,6 +21,9 @@ function TornadoMain:loadMap(name)
     source(Utils.getFilename("scripts/TornadoADS.lua", modDir))
     source(Utils.getFilename("scripts/TornadoPhysics.lua", modDir))
     source(Utils.getFilename("scripts/TornadoConsole.lua", modDir))
+
+    -- Load CompassHeading  mod intergration by RocklandUSA Gaming
+    source(Utils.getFilename("scripts/TornadoCompass.lua", modDir))
 
     -- Load the vehicle reset/recovery script.
     source(Utils.getFilename("scripts/TornadoRecovery.lua", modDir))
@@ -38,6 +44,7 @@ function TornadoMain:loadMap(name)
 
     if TornadoCargo then TornadoCargo:loadMap() end
     if TornadoADS then TornadoADS:loadMap() end
+    if TornadoCompass then TornadoCompass:loadMap(name) end
     
     -- Initialize Destruction (Before Physics uses it)
     if TornadoDestruction then TornadoDestruction:loadMap(name, modDir) end
@@ -66,6 +73,7 @@ function TornadoMain:deleteMap()
     if TornadoHusbandry then TornadoHusbandry:deleteMap() end
     if TornadoEffects then TornadoEffects:deleteMap() end
     if TornadoDebug then TornadoDebug:deleteMap() end
+    if TornadoCompass then TornadoCompass:deleteMap() end
     if TornadoMapUI ~= nil and TornadoMapUI.deleteMap ~= nil then TornadoMapUI:deleteMap() end
     if TornadoHotspot ~= nil and TornadoHotspot.deleteMap ~= nil then TornadoHotspot:deleteMap() end
 end
@@ -75,6 +83,7 @@ function TornadoMain:update(dt)
     if TornadoDestruction then TornadoDestruction:update(dt) end
     if TornadoEffects then TornadoEffects:update(dt) end
     if TornadoSFX then TornadoSFX:update(dt) end
+    if TornadoCompass then TornadoCompass:update(dt) end
 
     -- ---- Map/HUD UI init (needs HUD/map) ----
     if self._pendingMapUiInit then

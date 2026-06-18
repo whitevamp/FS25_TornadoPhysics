@@ -416,7 +416,9 @@ function TornadoConsole:cmdDev(tool, arg1)
                 TornadoDebug.verboseMode = newState
                 TornadoDebug.verboseDestruction = newState
                 TornadoDebug.verbosePhysics = newState
-                TornadoDebug.verboseIndoorBypass = newState
+                -- this one is way to noisy to be included into the all debug channel.
+                -- but left here just for the sake of it.
+                --TornadoDebug.verboseIndoorBypass = newState
                 return "DEV: ALL Verbose Logging = " .. tostring(newState)
                 
             else

@@ -166,16 +166,13 @@ function TornadoDestruction:destroyTarget(target)
     local rawFilename = target.i3dFilename or ""
     local lowerRawFilename = string.lower(rawFilename)
     
-    --#region
-    -- -- ONLY allow vehicles to be destroyed. Reject placeables/buildings entirely.
-    -- if string.find(lowerRawFilename, "placeables/") or not string.find(lowerRawFilename, "vehicles/") then
-    --     return 
-    -- end
-
-    -- local filename = self:_cleanFilename(rawFilename)
     -- ONLY allow vehicles to be destroyed. Reject placeables/buildings entirely.
     if string.find(lowerRawFilename, "placeables/") or not string.find(lowerRawFilename, "vehicles/") then
         return 
+    end
+
+    if target.rootNode and TornadoAPI and TornadoAPI:isNodeProtected(target.rootNode) then
+        return -- The node was protected by another mod, abort destruction!
     end
 
     -- ==========================================================
@@ -203,7 +200,6 @@ function TornadoDestruction:destroyTarget(target)
     -- ==========================================================
 
     local filename = self:_cleanFilename(rawFilename)
-    --#endregion
     
     -- [CHECK] File-level Ignore with DEBUG LOGGING
     local filenameLower = string.lower(filename)
