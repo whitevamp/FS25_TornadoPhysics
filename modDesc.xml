@@ -44,15 +44,15 @@ This update introduces a centralized command system. You no longer need to remem
 
 2. MODULE SETTINGS (t_set)
 - t_set save             : Save your current configuration to XML
-- t_set cargo            : Toggle Cargo Spilling System
-- t_set husbandry        : Toggle Animal Lethality
+- t_set cargo            : Toggle Cargo Spilling System (Default: OFF)
+- t_set husbandry        : Toggle Animal Lethality (Default: OFF)
 - t_set destruction      : Toggle persistent vehicle destruction (Default: OFF)
 - t_set recovery         : Toggle the hardcore Emergency Tow bill when resetting to the shop (Default: OFF)
-- t_set mapui            : Toggle the Map UI overlay ON/OFF
+- t_set mapui            : Toggle the Map UI overlay ON/OFF (Default: OFF)
 
 3. VISUALS & AUDIO (t_sfx)
 - t_sfx sound            : Toggle Siren Audio ON/OFF
-- t_sfx ring             : Toggle Debug Ring (Visual Safety Zone)
+- t_sfx ring             : Toggle Debug Ring (Visual Safety Zone) (Default: OFF)
 - t_sfx fire_random      : Toggle random fire ignition for vehicles
 
 4. HARDCORE TUNING (t_tune)
@@ -74,18 +74,23 @@ This update introduces a centralized command system. You no longer need to remem
 CHANGELOG
 ------------------------------------------------------------------------
 v4.0.0.0 (The Destruction Update)
+
 - [SYSTEM] Complete Code Rewrite: Moved to a modular architecture for better stability, save-game safety, and performance.
+- [SYSTEM] Added API: Allows other mod authors to tie into different aspects of the mod (see the README in the API directory).
 - [CONSOLE] New Master Command System: Replaced fragmented commands with t_help, t_physics, t_set, t_sfx, t_tune, and t_reset.
-- [GAMEPLAY] Added Cargo Spilling: Trailers caught in the storm will now dump their contents (Uncovered: 100% loss, Covered: chance to leak/pop open). (Default: Off)
-- [GAMEPLAY] Added Vehicle Destruction: Vehicles, trailers, and implements caught in the storm will now physically lose parts, with an in-game 24hr auto-repair function perfectly synced to your save game. (Default: OFF)
-- [GAMEPLAY] Added Hardcore Recovery: A dynamic vehicle billing system. If you reset a tornado-damaged vehicle to the shop, you will be charged an itemized tow and repair bill based on exactly how much damage the vehicle took! (Default: OFF)
-- [GAMEPLAY] Added ADS Support: Integration with "Advanced Damage System" (Minor damage at 15s, Moderate at 30s, Total Destruction at 50s).
+- [GAMEPLAY] Added Cargo Spilling: Trailers caught in the storm will now dump their contents (Uncovered: 100% loss; Covered: chance to leak/pop open). (Default: OFF)
+- [GAMEPLAY] Added Vehicle Destruction: Vehicles, trailers, and implements caught in the storm will now physically lose parts, featuring an in-game 24-hour auto-repair function perfectly synced to your save game. (Default: OFF)
+- [GAMEPLAY] Added Hardcore Recovery: A dynamic vehicle billing system. If you reset a tornado-damaged vehicle to the shop, you will be charged an itemized tow and repair bill based on exactly how much damage the vehicle sustained! (Default: OFF)
+- [GAMEPLAY] Added ADS Support: Integration with the "Advanced Damage System" (Minor damage at 15s, Moderate at 30s, Total Destruction at 50s).
 - [GAMEPLAY] Added Siren Warning: A tornado siren will now loop for 3 minutes when a storm spawns. (Default: ON)
-- [GAMEPLAY] Readjusted husbandry: If enabled, the tornado will detect if a barn has an outdoor pasture. Animals are only safe if the barn is strictly indoors; if an outdoor pasture is detected, they will not be safe. Note: Modded buildings that do not use standard Giants meshes may not be detected correctly.
+- [GAMEPLAY] Readjusted Husbandry: If enabled, the tornado will detect if a barn has an outdoor pasture. Animals are only safe if the barn is strictly indoors; if an outdoor pasture is detected, they will not be safe. Note: Modded buildings that do not use standard GIANTS meshes may not be detected correctly.
+- [GAMEPLAY] Added Cross-Mod Support: Integration with CompassHeading by RocklandUSA Gaming. If you have the mod and a tornado spawns, it will show up on the compass along with the tornado rating.
+- [GAMEPLAY] Added Dynamic Weather: When a tornado spawns, the rain and/or hail intensity will now be completely randomized to better reflect real-life tornadoes. The 3 profiles are: 1 = Low-Precipitation (LP) Supercell, 2 = Classic Supercell, 3 = High-Precipitation (HP) Supercell.
 - [VISUALS] Added Smoke & Fire Effects: Motorized vehicles can now catch fire and emit smoke when critically damaged by the storm.
-- [VISUALS] Added Shader Mesh Support: Now natively supports "smokeTrailSubUV" for advanced volumetric effects.
+- [VISUALS] Added Shader Mesh Support: Natively supports "smokeTrailSubUV" for advanced volumetric effects.
 - [VISUALS] Improved Debug Ring: Added a secondary ring for better visibility in valleys.
-- [UI/UX] Added Map Hotspot & UI: You can now teleport to/visit the tornado from the ESC map. A new UI widget in the upper right corner of the map menu displays real-time tornado stats (EF Rating, Wind Speed, Radius).
+- [VISUALS] Enhanced Tornado Ground Debris: The base of the tornado now dynamically multiplies native dirt and debris particles to create a massive, churning wedge.
+- [UI/UX] Added Map Hotspot & UI: You can now teleport to or visit the tornado from the ESC map. A new UI widget in the upper right corner of the map menu displays real-time tornado stats (EF Rating, Wind Speed, Radius).
 ]]>
         </en>
         <de>
@@ -154,18 +159,23 @@ Dieses Update führt ein zentrales Befehlssystem ein. Du musst dir keine 20 vers
 ÄNDERUNGSPROTOKOLL
 ------------------------------------------------------------------------
 v4.0.0.0 (Das Zerstörungs-Update)
+
 - [SYSTEM] Komplette Code-Überarbeitung: Wechsel zu einer modularen Architektur für bessere Stabilität, Speichersicherheit und Leistung.
-- [KONSOLE] Neues Hauptbefehlssystem: Fragmentierte Befehle durch t_help, t_physics, t_set, t_sfx, t_tune und t_reset ersetzt.
-- [GAMEPLAY] Ladungsverlust hinzugefügt: Anhänger, die in den Sturm geraten, verlieren nun ihren Inhalt (Offen: 100 % Verlust, Abgedeckt: Chance auf Leck/Aufspringen). (Standard: AUS)
-- [GAMEPLAY] Fahrzeugzerstörung hinzugefügt: Fahrzeuge, Anhänger und Geräte, die in den Sturm geraten, verlieren nun physisch Teile, mit einer automatischen 24-Stunden-Reparaturfunktion im Spiel, die perfekt mit deinem Spielstand synchronisiert ist. (Standard: AUS)
-- [GAMEPLAY] Hardcore-Rettung hinzugefügt: Ein dynamisches Fahrzeug-Abrechnungssystem. Wenn du ein vom Tornado beschädigtes Fahrzeug zum Shop zurücksetzt, wird dir eine detaillierte Abschlepp- und Reparaturrechnung berechnet, die genau darauf basiert, wie viel Schaden das Fahrzeug genommen hat! (Standard: AUS)
-- [GAMEPLAY] ADS-Unterstützung hinzugefügt: Integration mit dem "Advanced Damage System" (Leichter Schaden bei 15s, Mittlerer bei 30s, Totalschaden bei 50s).
-- [GAMEPLAY] Sirenenwarnung hinzugefügt: Eine Tornado-Sirene läuft nun 3 Minuten lang in Schleife, wenn ein Sturm entsteht. (Standard: EIN)
-- [GAMEPLAY] Anpassung der Tierhaltung: Wenn aktiviert, erkennt der Tornado, ob ein Stall über eine Weide im Freien verfügt. Tiere sind nur sicher, wenn es sich um einen rein geschlossenen Stall handelt; bei vorhandener Weide sind sie nicht sicher. Hinweis: Modifizierte Gebäude, die keine Standard-Meshes von Giants verwenden, werden möglicherweise nicht korrekt erkannt.
-- [OPTIK] Rauch- & Feuereffekte hinzugefügt: Motorisierte Fahrzeuge können nun Feuer fangen und Rauch ausstoßen, wenn sie durch den Sturm kritisch beschädigt werden.
-- [OPTIK] Shader-Mesh-Unterstützung hinzugefügt: Unterstützt nun nativ "smokeTrailSubUV" für erweiterte volumetrische Effekte.
-- [OPTIK] Debug-Ring verbessert: Ein zweiter Ring für bessere Sichtbarkeit in Tälern wurde hinzugefügt.
-- [UI/UX] Karten-Hotspot & UI hinzugefügt: Du kannst nun von der ESC-Karte aus zum Tornado teleportieren/ihn besuchen. Ein neues UI-Widget in der oberen rechten Ecke des Kartenmenüs zeigt Echtzeit-Tornadostatistiken an (EF-Einstufung, Windgeschwindigkeit, Radius).
+- [SYSTEM] API hinzugefügt: Ermöglicht es anderen Mod-Autoren, auf verschiedene Aspekte der Mod zuzugreifen (siehe README im API-Verzeichnis).
+- [KONSOLE] Neues Master-Befehlssystem: Fragmentierte Befehle wurden durch t_help, t_physics, t_set, t_sfx, t_tune und t_reset ersetzt.
+- [GAMEPLAY] Ladungsverlust hinzugefügt: Anhänger, die in den Sturm geraten, verlieren nun ihre Ladung (Ungedeckt: 100% Verlust; Gedeckt: Chance auf Lecks/Aufspringen). (Standard: AUS)
+- [GAMEPLAY] Fahrzeugzerstörung hinzugefügt: Fahrzeuge, Anhänger und Anbaugeräte, die in den Sturm geraten, verlieren nun physisch Teile. Beinhaltet eine 24-Stunden-Autoreparatur-Funktion im Spiel, die perfekt mit dem Spielstand synchronisiert ist. (Standard: AUS)
+- [GAMEPLAY] Hardcore-Bergung hinzugefügt: Ein dynamisches Fahrzeug-Abrechnungssystem. Wenn ein vom Tornado beschädigtes Fahrzeug zum Shop zurückgesetzt wird, wird eine detaillierte Abschlepp- und Reparaturrechnung basierend auf dem genauen Schaden des Fahrzeugs berechnet! (Standard: AUS)
+- [GAMEPLAY] ADS-Unterstützung hinzugefügt: Integration mit dem "Advanced Damage System" (Leichter Schaden nach 15s, Mittlerer nach 30s, Totalschaden nach 50s).
+- [GAMEPLAY] Sirenenwarnung hinzugefügt: Eine Tornadosirene ertönt nun für 3 Minuten in Dauerschleife, wenn ein Sturm entsteht. (Standard: AN)
+- [GAMEPLAY] Tierhaltung angepasst: Wenn aktiviert, erkennt der Tornado nun, ob ein Stall eine Außenweide hat. Tiere sind nur sicher, wenn der Stall strikt im Innenbereich liegt; wird eine Außenweide erkannt, sind sie nicht sicher. Hinweis: Gemoddete Gebäude, die keine Standard-GIANTS-Meshes verwenden, werden möglicherweise nicht korrekt erkannt.
+- [GAMEPLAY] Cross-Mod-Unterstützung hinzugefügt: Integration mit CompassHeading von RocklandUSA Gaming. Wenn diese Mod installiert ist und ein Tornado entsteht, wird dieser samt EF-Kategorie auf dem Kompass angezeigt.
+- [GAMEPLAY] Dynamisches Wetter hinzugefügt: Wenn ein Tornado entsteht, wird die Regen- und/oder Hagelintensität nun komplett zufällig generiert, um echte Tornados besser abzubilden. Die 3 Profile sind: 1 = Low-Precipitation (LP) Superzelle, 2 = Klassische Superzelle, 3 = High-Precipitation (HP) Superzelle.
+- [VISUALS] Rauch- & Feuereffekte hinzugefügt: Motorisierte Fahrzeuge können nun Feuer fangen und Rauch ausstoßen, wenn sie durch den Sturm kritisch beschädigt werden.
+- [VISUALS] Shader-Mesh-Unterstützung hinzugefügt: Unterstützt nun nativ "smokeTrailSubUV" für erweiterte volumetrische Effekte.
+- [VISUALS] Debug-Ring verbessert: Ein zweiter Ring für bessere Sichtbarkeit in Tälern wurde hinzugefügt.
+- [VISUALS] Tornado-Bodentrümmer verbessert: Die Basis des Tornados multipliziert nun dynamisch native Erd- und Trümmerpartikel, um einen massiven, wirbelnden Keil (Wedge) zu erzeugen.
+- [UI/UX] Karten-Hotspot & UI hinzugefügt: Man kann sich nun über die ESC-Karte zum Tornado teleportieren. Ein neues UI-Widget in der oberen rechten Ecke des Kartenmenüs zeigt Echtzeit-Tornado-Statistiken (EF-Kategorie, Windgeschwindigkeit, Radius) an.
 ]]>
         </de>
         <fr>
@@ -233,19 +243,24 @@ Cette mise à jour introduit un système de commandes centralisé. Vous n'avez p
 ------------------------------------------------------------------------
 JOURNAL DES MODIFICATIONS
 ------------------------------------------------------------------------
-v4.0.0.0 (La Mise à Jour de Destruction)
+v4.0.0.0 (La Mise à Jour Destruction)
+
 - [SYSTÈME] Réécriture complète du code : Passage à une architecture modulaire pour une meilleure stabilité, sécurité des sauvegardes et performance.
-- [CONSOLE] Nouveau système de commandes principales : Remplacement des commandes fragmentées par t_help, t_physics, t_set, t_sfx, t_tune et t_reset.
-- [GAMEPLAY] Déversement de cargaison ajouté : Les remorques prises dans la tempête videront désormais leur contenu (Découvert : 100% de perte, Couvert : chance de fuite/d'ouverture). (Défaut : DÉSACTIVÉ)
-- [GAMEPLAY] Destruction de véhicules ajoutée : Les véhicules, remorques et outils pris dans la tempête perdront désormais physiquement des pièces, avec une fonction d'auto-réparation en jeu de 24h parfaitement synchronisée avec votre sauvegarde. (Défaut : DÉSACTIVÉ)
-- [GAMEPLAY] Récupération Hardcore ajoutée : Un système de facturation dynamique des véhicules. Si vous réinitialisez un véhicule endommagé par une tornade au magasin, une facture détaillée de remorquage et de réparation vous sera facturée en fonction des dégâts exacts subis par le véhicule ! (Défaut : DÉSACTIVÉ)
-- [GAMEPLAY] Support ADS ajouté : Intégration avec "Advanced Damage System" (Dégâts mineurs à 15s, Modérés à 30s, Destruction totale à 50s).
-- [GAMEPLAY] Avertissement de sirène ajouté : Une sirène de tornade tourne désormais en boucle pendant 3 minutes lorsqu'une tempête se forme. (Défaut : ACTIVÉ)
-- [GAMEPLAY] Réajustement de l'élevage : Si l'option est activée, la tornade détectera si une étable dispose d'un pâturage extérieur. Les animaux ne sont en sécurité que si l'étable est strictement intérieure ; en présence d'un pâturage extérieur, ils ne seront pas protégés. Remarque : Les bâtiments moddés qui n'utilisent pas les meshes standards de Giants peuvent ne pas être détectés correctement.
-- [VISUELS] Effets de fumée et de feu ajoutés : Les véhicules motorisés peuvent désormais prendre feu et émettre de la fumée lorsqu'ils sont gravement endommagés par la tempête.
+- [SYSTÈME] API ajoutée : Permet aux autres créateurs de mods de se lier aux différents aspects du mod (voir le fichier README dans le répertoire API).
+- [CONSOLE] Nouveau système de commandes maître : Les commandes fragmentées ont été remplacées par t_help, t_physics, t_set, t_sfx, t_tune et t_reset.
+- [JOUABILITÉ] Perte de cargaison ajoutée : Les remorques prises dans la tempête videront désormais leur contenu (Non couvert : 100% de perte ; Couvert : chance de fuite/ouverture). (Défaut : DÉSACTIVÉ)
+- [JOUABILITÉ] Destruction des véhicules ajoutée : Les véhicules, remorques et outils pris dans la tempête perdront désormais physiquement des pièces, avec une fonction d'autoréparation en jeu de 24h parfaitement synchronisée avec votre sauvegarde. (Défaut : DÉSACTIVÉ)
+- [JOUABILITÉ] Récupération Hardcore ajoutée : Un système de facturation dynamique pour les véhicules. Si vous réinitialisez un véhicule endommagé par la tornade au magasin, vous recevrez une facture détaillée de remorquage et de réparation basée sur les dégâts exacts subis par le véhicule ! (Défaut : DÉSACTIVÉ)
+- [JOUABILITÉ] Support ADS ajouté : Intégration avec le système "Advanced Damage System" (Dégâts mineurs à 15s, Modérés à 30s, Destruction totale à 50s).
+- [JOUABILITÉ] Alerte Sirène ajoutée : Une sirène de tornade retentira désormais en boucle pendant 3 minutes lorsqu'une tempête apparaît. (Défaut : ACTIVÉ)
+- [JOUABILITÉ] Élevage réajusté : Si activée, la tornade détectera si une étable possède un pâturage extérieur. Les animaux ne sont en sécurité que si l'étable est strictement en intérieur ; si un pâturage extérieur est détecté, ils ne seront pas en sécurité. Remarque : Les bâtiments moddés qui n'utilisent pas les meshes standard de GIANTS pourraient ne pas être détectés correctement.
+- [JOUABILITÉ] Support Cross-Mod ajouté : Intégration avec CompassHeading par RocklandUSA Gaming. Si vous possédez le mod et qu'une tornade apparaît, elle s'affichera sur la boussole avec sa catégorie EF.
+- [JOUABILITÉ] Météo dynamique ajoutée : Lorsqu'une tornade apparaît, la quantité et/ou l'intensité de la pluie et de la grêle seront désormais entièrement aléatoires pour mieux refléter les tornades réelles. Les 3 profils sont : 1 = Supercellule à faibles précipitations (LP), 2 = Supercellule classique, 3 = Supercellule à fortes précipitations (HP).
+- [VISUELS] Effets de fumée et de feu ajoutés : Les véhicules à moteur peuvent désormais prendre feu et émettre de la fumée s'ils sont gravement endommagés par la tempête.
 - [VISUELS] Support Shader Mesh ajouté : Supporte désormais nativement "smokeTrailSubUV" pour des effets volumétriques avancés.
 - [VISUELS] Anneau de débogage amélioré : Ajout d'un deuxième anneau pour une meilleure visibilité dans les vallées.
-- [UI/UX] Hotspot de carte et interface ajoutés : Vous pouvez désormais vous téléporter vers/visiter la tornade depuis la carte Échap. Un nouveau widget d'interface dans le coin supérieur droit du menu de la carte affiche les statistiques de la tornade en temps réel (Classification EF, Vitesse du vent, Rayon).
+- [VISUELS] Débris au sol de la tornade améliorés : La base de la tornade multiplie désormais dynamiquement les particules de terre et de débris natives pour créer un énorme cône (wedge) tourbillonnant.
+- [UI/UX] Point d'intérêt et interface carte ajoutés : Vous pouvez désormais vous téléporter ou visiter la tornade depuis la carte du menu Échap. Un nouveau widget dans le coin supérieur droit du menu de la carte affiche les statistiques de la tornade en temps réel (Catégorie EF, Vitesse du vent, Rayon).
 ]]>
         </fr>
     </description>

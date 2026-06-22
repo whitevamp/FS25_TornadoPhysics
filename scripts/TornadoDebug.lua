@@ -8,6 +8,7 @@ TornadoDebug.verboseDestruction = false -- Specifically for save/load/repair
 TornadoDebug.verboseIndoorBypass = false
 TornadoDebug.verboseRecovery = false --
 TornadoDebug.verbosePhysics = false -- Specifically for suction/ejection
+TornadoDebug.verboseWeather = false -- Weather system
 TornadoDebug.showPosition = false -- Separate flag for coordinate spam
 
 function TornadoDebug:loadMap()
@@ -27,6 +28,7 @@ function TornadoDebug:log(tag, msg)
         if tag == "DESTRUCTION" and self.verboseDestruction then shouldLog = true end
         if tag == "PHYSICS" and self.verbosePhysics then shouldLog = true end
         if tag == "RECOVERY" and self.verboseRecovery then shouldLog = true end
+        if tag == "WEATHER" and self.verboseWeather then shouldLog = true end
     end
 
     -- 3. Print if a switch was active

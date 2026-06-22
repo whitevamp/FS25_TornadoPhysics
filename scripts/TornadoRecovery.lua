@@ -97,10 +97,37 @@ function TornadoRecovery:processRecovery(vehicle)
         return 
     end 
 
-    -- 4. Deduct the Money 
+    -- 1. Fix the Mechanical Engine Damage (The Wrench Icon)
+    if vehicle.setDamageAmount then
+        vehicle:setDamageAmount(0)
+    end
+
+    -- 2. Fix the Paint and Wear
+    if vehicle.setWearTotalAmount then
+        vehicle:setWearTotalAmount(0)
+    end
+
+    -- 3. Wash the Vehicle (Optional, but expected for an $8,000 bill!)
+    if vehicle.setDirtAmount then
+        vehicle:setDirtAmount(0)
+    end
+
+    -- 4. Extinguish the Fire & Reset FX Logic
+    vehicle.tornadoIsOnFire = false
+    if vehicle.rootNode and TornadoEffects and TornadoEffects.activeEffects[vehicle.rootNode] then
+        TornadoEffects:cleanupEffectNodes(TornadoEffects.activeEffects[vehicle.rootNode])
+        TornadoEffects.activeEffects[vehicle.rootNode] = nil
+    end
+
+    -- 5. Restore the Visual Destruction (Fix missing windows and meshes)
+    if TornadoDestruction and TornadoDestruction.repairTarget then
+        TornadoDestruction:repairTarget(vehicle)
+    end
+
+    -- 6. Deduct the Money 
     g_currentMission:addMoney(-totalCost, farmId, MoneyType.VEHICLE_REPAIR, true, true)
 
-    -- 5. Notify the Player
+    -- 7. Notify the Player
     local msg = string.format("EMERGENCY TOW: Billed $%d (Base: $%d | Struct: %dx | Trash: %dx)", 
                                 totalCost, self.BASE_TOW_FEE, structCount, trashCount)
     
@@ -119,7 +146,7 @@ function TornadoRecovery:processRecovery(vehicle)
         TornadoDebug:log("RECOVERY", logBreakdown)
     end
 
-    -- 6. Clean up the memory
+    -- 8. Clean up the memory
     TornadoDestruction._destroyedObjects[vehicle.rootNode] = nil
 end
 

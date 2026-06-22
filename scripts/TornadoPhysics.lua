@@ -876,11 +876,41 @@ function TornadoPhysics:randomizeTornado()
         local scale = self.settings.min_scale + math.random() * (self.settings.max_scale - self.settings.min_scale)
         setScale(self.tornadoNode, scale, scale, scale)
 
+        -- =========================================================================
+        -- DEBRIS MULTIPLIER LOGIC
+        -- =========================================================================
+        local numChildren = getNumOfChildren(self.tornadoNode)
+        for i = 0, numChildren - 1 do
+            local child = getChildAt(self.tornadoNode, i)
+            local childName = string.lower(getName(child) or "")
+            
+            -- Look for native GIANTS particle/debris nodes attached to the twister
+            if string.find(childName, "debris") or string.find(childName, "dust") or string.find(childName, "particles") then
+                
+                -- We found the debris ring! Let's clone it 3 times for 4x density.
+                for cloneIdx = 1, 3 do
+                    local clonedDebris = clone(child, true, false, false)
+                    link(self.tornadoNode, clonedDebris) -- Attach clone to the main tornado
+                    
+                    -- Offset the rotation so the debris fields interlock instead of overlapping
+                    local rx, ry, rz = getRotation(clonedDebris)
+                    setRotation(clonedDebris, rx, ry + math.rad(cloneIdx * 45), rz)
+                    
+                    -- Make the outer clones slightly wider to thicken the funnel base
+                    setScale(clonedDebris, 1.0 + (cloneIdx * 0.2), 1.0, 1.0 + (cloneIdx * 0.2))
+                end
+                
+                if TornadoDebug then TornadoDebug:log("PHYSICS", "Successfully multiplied native debris/dust nodes.") end
+            end
+        end
+        -- =========================================================================
+
         currentOuterRadius = scaledBase * scale
         currentOuterRadiusSq = currentOuterRadius * currentOuterRadius
 
         self.sizeMultiplier = currentOuterRadius / self.settings.base_radius
         if self.sizeMultiplier < 1.0 then self.sizeMultiplier = 1.0 end
+        
 -- EF scale + NWS 3-second gust ranges (mph)
 local efNum = 0
 local windMin, windMax = 65, 85

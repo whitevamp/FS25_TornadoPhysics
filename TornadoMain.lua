@@ -12,17 +12,35 @@ function TornadoMain:loadMap(name)
     -- Load the Public API First
     source(Utils.getFilename("API/TornadoAPI.lua", modDir))
 
+    -- Load the Debug script.
     source(Utils.getFilename("scripts/TornadoDebug.lua", modDir))
+
+    -- Load the Settings script.
     source(Utils.getFilename("scripts/TornadoSettings.lua", modDir))
+
+     -- Load SFX scripts.
     source(Utils.getFilename("scripts/TornadoSFX.lua", modDir))
     source(Utils.getFilename("scripts/TornadoEffects.lua", modDir))
+
+    -- Load Husbandries script.
     source(Utils.getFilename("scripts/TornadoHusbandry.lua", modDir))
+
+    -- Load Cargo spillage system.
     source(Utils.getFilename("scripts/TornadoCargo.lua", modDir))
+
+    -- Load Advanced Damage System, mod intergration script.
     source(Utils.getFilename("scripts/TornadoADS.lua", modDir))
+
+    -- Load the physics system.
     source(Utils.getFilename("scripts/TornadoPhysics.lua", modDir))
+
+    -- Weather system.
+    source(Utils.getFilename("scripts/TornadoWeather.lua", modDir))
+    
+    -- Load the console commands.
     source(Utils.getFilename("scripts/TornadoConsole.lua", modDir))
 
-    -- Load CompassHeading  mod intergration by RocklandUSA Gaming
+    -- Load CompassHeading mod intergration by RocklandUSA Gaming
     source(Utils.getFilename("scripts/TornadoCompass.lua", modDir))
 
     -- Load the vehicle reset/recovery script.
@@ -53,6 +71,7 @@ function TornadoMain:loadMap(name)
     if TornadoRecovery then TornadoRecovery:installHooks() end
 
     if TornadoPhysics then TornadoPhysics:loadMap(name, modDir) end
+    if TornadoWeather then TornadoWeather:loadMap(name) end
     if TornadoConsole then TornadoConsole:loadMap() end
 
     -- Defer UI until mission + GUI + HUD exist
