@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<modDesc xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" descVersion="109" xsi:noNamespaceSchemaLocation="https://validation.gdn.giants-software.com/xml/fs25/modDesc.xsd">
+<modDesc xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" descVersion="110" xsi:noNamespaceSchemaLocation="https://validation.gdn.giants-software.com/xml/fs25/modDesc.xsd">
     <author>whitevamp</author>
+    <contributors>id577, RocklandUSA Gaming</contributors>
     <version>4.0.0.0</version>
     <title>
         <en>Tornado Physics</en>
@@ -10,6 +11,13 @@
     <description>
         <en>
             <![CDATA[
+*** KNOWN DEVELOPER TOOL LIMITATIONS ***
+1. If you use external developer tools (like EasyDevControls) to fast-forward the game clock by several months in a single frame while a tornado is active, lingering vehicle smoke and fire visual effects may freeze on affected vehicles.
+2. Under the same extreme fast-forward conditions, the 24-hour automatic damage repair countdown will pause. To resume and trigger the repair sequence normally, simply fast-forward time through a standard game mechanic, such as utilizing the in-game sleep timer.
+3. PERFORMANCE NOTICE: If a large number of vehicles are grouped closely together (such as when utilizing vehicle-stacking mods like Used Equipment Yard) and are hit simultaneously by a tornado, you may experience brief periodic screen freezes/stutters while the storm traverses the area due to heavy engine-level structural calculations.
+Note: High-speed time acceleration and baseline simulation gameplay function flawlessly under normal conditions.
+Note: These behaviors only occur when utilizing external developer tool command overrides; normal high-speed time acceleration and baseline simulation gameplay function flawlessly.
+
 Experience a true destructive weather event!
 This mod adds a high-performance tornado capable of interacting with the game's physics engine based on mass. 
 
@@ -81,7 +89,7 @@ v4.0.0.0 (The Destruction Update)
 - [GAMEPLAY] Added Cargo Spilling: Trailers caught in the storm will now dump their contents (Uncovered: 100% loss; Covered: chance to leak/pop open). (Default: OFF)
 - [GAMEPLAY] Added Vehicle Destruction: Vehicles, trailers, and implements caught in the storm will now physically lose parts, featuring an in-game 24-hour auto-repair function perfectly synced to your save game. (Default: OFF)
 - [GAMEPLAY] Added Hardcore Recovery: A dynamic vehicle billing system. If you reset a tornado-damaged vehicle to the shop, you will be charged an itemized tow and repair bill based on exactly how much damage the vehicle sustained! (Default: OFF)
-- [GAMEPLAY] Added ADS Support: Integration with the "Advanced Damage System" (Minor damage at 15s, Moderate at 30s, Total Destruction at 50s).
+- [GAMEPLAY] Added ADS Support: Integration with the "Advanced Damage System" by id577 (Minor damage at 15s, Moderate at 30s, Total Destruction at 50s).
 - [GAMEPLAY] Added Siren Warning: A tornado siren will now loop for 3 minutes when a storm spawns. (Default: ON)
 - [GAMEPLAY] Readjusted Husbandry: If enabled, the tornado will detect if a barn has an outdoor pasture. Animals are only safe if the barn is strictly indoors; if an outdoor pasture is detected, they will not be safe. Note: Modded buildings that do not use standard GIANTS meshes may not be detected correctly.
 - [GAMEPLAY] Added Cross-Mod Support: Integration with CompassHeading by RocklandUSA Gaming. If you have the mod and a tornado spawns, it will show up on the compass along with the tornado rating.
@@ -95,6 +103,13 @@ v4.0.0.0 (The Destruction Update)
         </en>
         <de>
             <![CDATA[
+*** BEKANNTE EINSCHRÄNKUNGEN DURCH ENTWICKLER-TOOLS ***
+1. Wenn Sie externe Entwickler-Tools (wie EasyDevControls) verwenden, um die Uhrzeit im Spiel bei aktivem Tornado um mehrere Monate in einem einzigen Frame vorzuspulen, können verbleibende visuelle Rauch- und Effekte auf den betroffenen Fahrzeugen einfrieren.
+2. Unter denselben extremen Zeitraffer-Bedingungen wird der automatische 24-Stunden-Reparatur-Countdown für Schäden pausiert. Um die Reparatursequenz normal fortzusetzen und auszulösen, spulen Sie die Zeit einfach über eine normale Spielmechanik vor (z. B. durch die Verwendung des Schlaftimers im Spiel).
+Hinweis: Diese Effekte treten nur auf, wenn externe Befehle von Entwickler-Tools verwendet werden; die normale Zeitbeschleunigung im Spiel und das Basis-Gameplay funktionieren einwandfrei.
+3. LEISTUNGSHINWEIS: Wenn eine große Anzahl von Fahrzeugen dicht beieinander steht (z. B. bei der Verwendung von Mods wie Used Equipment Yard) und gleichzeitig von einem Tornado getroffen wird, kann es aufgrund intensiver struktureller Berechnungen auf Engine-Ebene zu kurzen periodischen Standbildern/Rucklern kommen, während der Sturm das Gebiet durchquert.
+Hinweis: Die normale Zeitbeschleunigung im Spiel und das Basis-Gameplay funktionieren unter normalen Bedingungen einwandfrei.
+
 Erlebe ein wirklich zerstörerisches Wetterereignis!
 Dieser Mod fügt einen hochleistungsfähigen Tornado hinzu, der basierend auf der Masse mit der Physik-Engine des Spiels interagiert.
 
@@ -180,6 +195,13 @@ v4.0.0.0 (Das Zerstörungs-Update)
         </de>
         <fr>
             <![CDATA[
+*** LIMITATIONS CONNUES DES OUTILS DE DÉVELOPPEMENT ***
+1. Si vous utilisez des outils de développement externes (comme EasyDevControls) pour avancer l'horloge du jeu de plusieurs mois en une seule image alors qu'une tornade est active, les effets visuels résiduels de fumée et de feu peuvent se figer sur les véhicules concernés.
+2. Dans ces mêmes conditions d'avance rapide extrême, le compte à rebours de 24 heures pour la réparation automatique des dégâts se mettra en pause. Pour reprendre et déclencher la séquence de réparation normalement, il suffit d'avancer le temps via une mécanique de jeu standard, comme l'utilisation du minuteur de sommeil intégré au jeu.
+Remarque : Ces comportements ne se produisent que lors de l'utilisation de commandes d'outils de développement externes ; l'accélération normale du temps et le gameplay de simulation de base fonctionnent parfaitement.
+3. AVIS DE PERFORMANCE : Si un grand nombre de véhicules sont regroupés à proximité les uns des autres (par exemple lors de l'utilisation de mods comme Used Equipment Yard) et sont frappés simultanément par une tornade, vous pouvez rencontrer de brefs gels d'écran/saccades périodiques pendant que la tempête traverse la zone en raison de lourds calculs structurels au niveau du moteur.
+Remarque : L'accélération normale du temps et le gameplay de simulation de base fonctionnent parfaitement dans des conditions normales.
+
 Vivez un véritable événement météorologique destructeur !
 Ce mod ajoute une tornade très performante capable d'interagir avec le moteur physique du jeu en fonction de la masse.
 
@@ -270,6 +292,10 @@ v4.0.0.0 (La Mise à Jour Destruction)
     <extraSourceFiles>
         <sourceFile filename="TornadoMain.lua"/>
     </extraSourceFiles>
+
+    <!-- <emergencyPack version="1">
+        <scenarioDirectory>emergencyScenarios/</scenarioDirectory>
+    </emergencyPack> -->
 
 </modDesc>
 <!-- input="KEY_rctrl KEY_rshift KEY_t" />  -->

@@ -220,7 +220,7 @@ function TornadoHotspot:updatePosition(tX, tZ, rotY)
     end
 end
 
--- Optional CLI dump helper (you already route it via t_dev hotspotdump)
+-- Optional CLI dump helper (already route it via t_dev hotspotdump)
 function TornadoHotspot:dumpState()
     info("dumpState: hotspot=" .. tostring(self.hotspot)
         .. " npc=" .. tostring(self.npc)

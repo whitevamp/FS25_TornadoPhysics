@@ -43,6 +43,9 @@ function TornadoMain:loadMap(name)
     -- Load CompassHeading mod intergration by RocklandUSA Gaming
     source(Utils.getFilename("scripts/TornadoCompass.lua", modDir))
 
+    -- Load the NFW mod intergration script
+    --source(Utils.getFilename("scripts/TornadoNFW.lua", modDir))
+
     -- Load the vehicle reset/recovery script.
     source(Utils.getFilename("scripts/TornadoRecovery.lua", modDir))
     
@@ -52,6 +55,9 @@ function TornadoMain:loadMap(name)
     -- Load the mapui
     source(Utils.getFilename("scripts/TornadoHotspot.lua", modDir))
     source(Utils.getFilename("scripts/TornadoMapUI.lua", modDir))
+
+    -- Source the Emergency Manager using exact pattern
+    -- source(Utils.getFilename("scripts/TornadoEmergencyManager.lua", modDir))
 
     -- 2. INITIALIZE MODULES (non-UI stuff is safe here)
     if TornadoDebug then TornadoDebug:loadMap() end
@@ -63,9 +69,15 @@ function TornadoMain:loadMap(name)
     if TornadoCargo then TornadoCargo:loadMap() end
     if TornadoADS then TornadoADS:loadMap() end
     if TornadoCompass then TornadoCompass:loadMap(name) end
+    --if TornadoNFW then TornadoNFW:loadMap() end
     
     -- Initialize Destruction (Before Physics uses it)
     if TornadoDestruction then TornadoDestruction:loadMap(name, modDir) end
+
+    -- Run map initialization for the emergency system
+    -- if TornadoEmergencyManager and TornadoEmergencyManager.loadMap then
+    --     TornadoEmergencyManager:loadMap(name, modDir)
+    -- end
 
     -- Install Recovery/Insurance Hooks ONCE during startup
     if TornadoRecovery then TornadoRecovery:installHooks() end

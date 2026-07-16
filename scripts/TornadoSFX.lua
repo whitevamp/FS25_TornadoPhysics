@@ -5,7 +5,6 @@ TornadoSFX.sirenLoopCount = 0
 TornadoSFX.SIREN_LENGTH = 56000
 TornadoSFX.isEnabled = true
 
--- We accept 'baseDir' as the second argument now
 function TornadoSFX:loadMap(name, baseDir)
     -- Fallback: If baseDir is missing, try the global
     local dir = baseDir or g_currentModDirectory
@@ -55,7 +54,6 @@ function TornadoSFX:playSiren()
     end
 
     if self.sirenLoopCount < 3 and self.sirenTimer <= 0 then
-        -- TornadoDebug:log("TORNADO SFX:", ">>> PLAYING SIREN! <<<")
         TornadoDebug:log("SFX", ">>> PLAYING SIREN! <<<")
         playSample(self.sirenSoundId, 1, 1.0, 0, 0, 0)
         self.sirenLoopCount = self.sirenLoopCount + 1

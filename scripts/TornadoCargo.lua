@@ -55,7 +55,7 @@ function TornadoCargo:rollChancePerSec(chancePerSec, dt)
 end
 
 function TornadoCargo:processVehicle(vehicle, dt)
-    -- [CHANGED] Use local verbose flag
+    -- Use local verbose flag
     local isVerbose = self.isVerbose 
     
     if vehicle == nil or vehicle.rootNode == nil or vehicle.getFillUnits == nil then return end
@@ -161,7 +161,7 @@ function TornadoCargo:drainCargo(vehicle, dt, worldX, worldZ, drainScale)
                     if dropped <= 0 then
                         vehicle:addFillUnitFillLevel(vehicle:getOwnerFarmId(), i, drainAmount, fillTypeIndex, ToolType.UNDEFINED, nil)
 
-                        -- [CHANGED] Use local verbose flag
+                        -- Use local verbose flag
                         if self.isVerbose then
                             vehicle.tornadoNoDropTimer = (vehicle.tornadoNoDropTimer or 0) + dt
                             if vehicle.tornadoNoDropTimer >= 1000 then
@@ -176,7 +176,7 @@ function TornadoCargo:drainCargo(vehicle, dt, worldX, worldZ, drainScale)
                         local refund = drainAmount - dropped
                         vehicle:addFillUnitFillLevel(vehicle:getOwnerFarmId(), i, refund, fillTypeIndex, ToolType.UNDEFINED, nil)
 
-                        -- [CHANGED] Use local verbose flag
+                        -- Use local verbose flag
                         if self.isVerbose then
                             TornadoDebug:log("CARGO", string.format(
                                 "PARTIAL: Dropped %.1fL of %s, refunded %.1fL", dropped, fillName, refund
@@ -186,7 +186,7 @@ function TornadoCargo:drainCargo(vehicle, dt, worldX, worldZ, drainScale)
                         vehicle.tornadoNoDropTimer = 0
                     end
                 else
-                    -- [CHANGED] Use local verbose flag
+                    -- Use local verbose flag
                     if self.isVerbose then
                         TornadoDebug:log("CARGO", string.format("LEAK: %.1fL of %s drained.", drainAmount, fillName))
                     end

@@ -1,3 +1,11 @@
+-- ==============================================================================
+-- Tornado Physics Mod - Cross-Mod Compatibility Layer
+-- Author: whitevamp
+-- 
+-- Integrates with:
+--   - "Compass Heading" by RocklandUSA Gaming
+-- ==============================================================================
+
 ---@class TornadoCompass
 ---@version 1.2 (Hard Override)
 ---@description Pushes dynamic EF ratings and live coordinates to the RocklandUSA Compass Mod while completely suppressing vanilla trackers.

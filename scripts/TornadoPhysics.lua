@@ -72,6 +72,9 @@ function TornadoPhysics:loadMap(name)
     self.confirmTimer = 0
     self.CONFIRM_THRESHOLD = 150 -- Frames to wait (approx 2.5s)
 
+    if TornadoNFW and TornadoNFW.loadMap then
+        TornadoNFW:loadMap(name)
+    end
 
     mapInitialized = false
 
@@ -139,7 +142,30 @@ function TornadoPhysics:update(dt)
         end
         
         if self.tornadoNode == nil then return end
+
+        -- ==========================================================
+        -- TORNADO IS ACTIVE BEYOND THIS POINT
+        -- ==========================================================
+
+        -- If we passed the watchdog check, the tornado is active and moving.
+        -- [HIGH PRIORITY HOOK] Evacuate AI before physics calculations
+        if TornadoNFW and TornadoNFW.isAvailable then
+            local tX, tY, tZ = getWorldTranslation(self.tornadoNode)
+            -- Using 10.0 multiplier for early detection (roughly 350-500m radius depending on scale)
+            TornadoNFW:evaluateDanger(tX, tY, tZ, self.settings.base_radius)
+        end
+
+            -- 1. Get the exact current position of the active tornado
+            local tX, tY, tZ = getWorldTranslation(self.tornadoNode)
+
+            -- 2. NFW Evacuation Check (Check if AI is in the path)
+            -- if TornadoNFW and TornadoNFW.isInitialized then
+            --     local radius = (self.settings and self.settings.base_radius) or 50 
+            --     TornadoNFW:evaluateDanger(tX, tY, tZ, radius)
+            -- end
+
     end
+
     -- ============================================================================
 --#region
     -- ============================================================================
@@ -289,6 +315,46 @@ end
 
 --#region
 function TornadoPhysics:processNearbyObjects(dt, tX, tY, tZ)
+    --#region
+    -- ============================================================================
+    -- [COMPATIBILITY HOOK] NeighborFieldWorkers Evacuation
+    -- Prevents infinite flip/respawn lag loops by dismissing AI in the tornado's path.
+    -- ============================================================================
+    if _G.NeighborFieldWorkers and _G.NeighborFieldWorkers.activeAssignments then
+        for key, assignment in pairs(_G.NeighborFieldWorkers.activeAssignments) do
+            if assignment and assignment.vehicle and assignment.vehicle.rootNode then
+                local vx, vy, vz = getWorldTranslation(assignment.vehicle.rootNode)
+                local dist = MathUtil.vector2Length(vx - tX, vz - tZ)
+                
+                -- Evacuate if the tornado is within a safe buffer (e.g., 2x the base radius)
+                if dist < (self.settings.base_radius * 2.0) then
+                    local mission = assignment.mission
+                    if mission and mission.status ~= MissionStatus.DISMISSED then
+                        if TornadoDebug then TornadoDebug:log("PHYSICS", "NFW AI detected in tornado path. Evacuating/Despawning!") end
+                        
+                        -- 1. Halt the AI logic
+                        if assignment.vehicle.stopCurrentAIJob then
+                            pcall(assignment.vehicle.stopCurrentAIJob, assignment.vehicle)
+                        end
+                        
+                        -- 2. Dismiss the GIANTS mission to despawn the rented vehicles safely
+                        if g_missionManager then
+                            pcall(g_missionManager.cancelMission, g_missionManager, mission)
+                            pcall(g_missionManager.dismissMission, g_missionManager, mission)
+                        end
+                        
+                        -- 3. Clean up the NFW tracker
+                        if type(_G.NeighborFieldWorkers.removeAssignment) == "function" then
+                            pcall(_G.NeighborFieldWorkers.removeAssignment, _G.NeighborFieldWorkers, assignment)
+                        end
+                    end
+                end
+            end
+        end
+    end
+    -- ============================================================================
+    --#endregion
+
     -- 1. Scan Vehicles
     if g_currentMission.vehicleSystem and g_currentMission.vehicleSystem.vehicles then
         for _, vehicle in pairs(g_currentMission.vehicleSystem.vehicles) do
@@ -975,6 +1041,19 @@ end
 
 function TornadoPhysics:clearTornadoState()
     print("TornadoPhysics: WATCHDOG TRIGGERED! Cleaning up despawned tornado.")
+
+    --#region
+    -- Scan every active entity tracked in the current physics sweep 
+    -- and strip off visual artifacts before clearing the tracking tables.
+    if self.activeNodes ~= nil then
+        for _, data in pairs(self.activeNodes) do
+            -- If it's a vehicle object containing a standard structural root
+            if data.obj ~= nil then
+                self:purgeVehicleVisualArtifacts(data.obj)
+            end
+        end
+    end
+    --#endregion
     
     -- 1. Clear internal script variables
     self.tornadoNode = nil
@@ -996,18 +1075,103 @@ function TornadoPhysics:clearTornadoState()
         TornadoSFX.sirenLoopCount = 0 
         -- If you have a specific stopSiren() function, call it here
     end
-    
-    -- 4. Force Weather Manager Reset (Crucial for the spawn bug)
-    if g_currentMission and g_currentMission.environment and g_currentMission.environment.weather then
-        local weather = g_currentMission.environment.weather
-        if weather.twister ~= nil then
-            print("TornadoPhysics: Forcing game engine weather cleanup.")
-            -- We manually trick the engine into thinking the weather event is fully over
-            weather.twister = nil
+    --#region
+    -- -- 4. Force Weather Manager Reset (Crucial for the spawn bug)
+    -- if g_currentMission and g_currentMission.environment and g_currentMission.environment.weather then
+    --     local weather = g_currentMission.environment.weather
+    --     if weather.twister ~= nil then
+    --         print("TornadoPhysics: Forcing game engine weather cleanup.")
+    --         -- We manually trick the engine into thinking the weather event is fully over
+    --         weather.twister = nil
+    --     end
+
+    --     --#region
+    --     -- Force the engine to execute its full, native environment data reload.
+    --     -- This re-reads the map configurations and restores the twister definition 
+    --     -- table that EDC or Screenshot mode broke!
+    --     if environment.consoleCommandReloadEnvironment ~= nil then
+    --         print("TornadoPhysics: Running consoleCommandReloadEnvironment to restore map definitions...")
+    --         environment:consoleCommandReloadEnvironment()
+    --     else
+    --         print("TornadoPhysics: Warning - consoleCommandReloadEnvironment not found on environment object.")
+    --     end
+        
+    --     -- Optional: Reload ambient sounds just like EDC does to keep everything in sync
+    --     if g_currentMission.ambientSoundSystem ~= nil and g_currentMission.ambientSoundSystem.consoleCommandReload ~= nil then
+    --         g_currentMission.ambientSoundSystem:consoleCommandReload()
+    --     end
+    --     --#endregion
+    -- end
+    -- 4. Force Weather Manager Reset & Auto-Heal Environment
+    if g_currentMission and g_currentMission.environment ~= nil then
+        local environment = g_currentMission.environment
+        
+        -- Safe cleanup of the old twister reference
+        if environment.weather ~= nil then
+            if environment.weather.twister ~= nil then
+                print("TornadoPhysics: Forcing game engine weather cleanup.")
+                environment.weather.twister = nil
+            end
+            
+            -- EDC Trick: Reset the rain updater to avoid log warnings during reload
+            if environment.weather.rainUpdater ~= nil then
+                print("TornadoPhysics: Resetting rainUpdater table...")
+                environment.weather.rainUpdater:reset()
+            end
         end
+
+        -- Force the engine to execute its full, native environment data reload.
+        if environment.consoleCommandReloadEnvironment ~= nil then
+            print("TornadoPhysics: Running consoleCommandReloadEnvironment to restore map definitions...")
+            environment:consoleCommandReloadEnvironment()
+
+            -- Because the engine just destroyed and re-created the environment, 
+            -- your initial loadMap overlays were unhooked. We re-register them now!
+            if TornadoHotspot ~= nil and TornadoHotspot.loadMap ~= nil then
+                print("TornadoPhysics: Restoring MapUI overlay elements and hotspots...")
+                -- Pass the current map filename if needed, or invoke your UI canvas refresh
+                TornadoHotspot:loadMap() 
+            end
+
+        else
+            print("TornadoPhysics: Warning - consoleCommandReloadEnvironment not found on environment object.")
+        end
+        
+        -- Reload ambient sounds just like EDC does to keep everything in sync
+        if g_currentMission.ambientSoundSystem ~= nil and g_currentMission.ambientSoundSystem.consoleCommandReload ~= nil then
+            g_currentMission.ambientSoundSystem:consoleCommandReload()
+        end
+    else
+        -- If environment is nil, the engine is already rebuilding it!
+        print("TornadoPhysics: Environment instance is currently rebuilding (nil). Skipping manual reload invocation.")
     end
+    --#endregion
     
     if TornadoAPI then TornadoAPI:fireDespawnEvent() end
 
     print("TornadoPhysics: Cleanup complete. Ready for new spawn.")
+end
+
+function TornadoPhysics:purgeVehicleVisualArtifacts(vehicle)
+    if not vehicle or not vehicle.rootNode or not entityExists(vehicle.rootNode) then 
+        return 
+    end
+
+    local root = vehicle.rootNode
+    local numChildren = getNumOfChildren(root)
+    
+    -- Loop backwards to safely delete child entries from the engine stack
+    for i = numChildren - 1, 0, -1 do
+        local child = getChildAt(root, i)
+        if child and entityExists(child) then
+            local name = getName(child) or ""
+            local lowerName = string.lower(name)
+            
+            -- Targeted precision sweep for your exact asset footprints
+            if string.find(lowerName, "smoketrail") or string.find(lowerName, "firetrail") then
+                print(string.format("TornadoPhysics: Purging orphaned asset artifact [%s] from vehicle.", name))
+                delete(child)
+            end
+        end
+    end
 end
