@@ -1,5 +1,0 @@
-husbendry now when enabled will only taget husbendrys that have a pasture, so now if you have chicken coop they'll be safe.
-made the main map hotspot icon clickable so now you can click on it to to see the stats of the tornado, and distance from where you are, as well as teleport to the tornado. 
-there is also a new command to go along with this, so that you can have a text overlay on the large map to have enabled all the time or only when the hotspot icon is clicked.
-
-
