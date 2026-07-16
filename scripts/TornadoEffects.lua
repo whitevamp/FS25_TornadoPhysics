@@ -46,6 +46,15 @@ function TornadoEffects:loadMap(name, baseDir)
     self.fireI3dFilename = Utils.getFilename("FX/FireTrailSubUV.i3d", dir)
     self.activeEffects = {}
 
+    -- Baseline the tracking anchors so they are numbers, not nil on frame 1
+    if g_currentMission and g_currentMission.environment then
+        self.lastAbsoluteTime = g_currentMission.environment.dayTime or 0
+        self.lastTrackedDay = g_currentMission.environment.currentDay or 1
+    else
+        self.lastAbsoluteTime = 0
+        self.lastTrackedDay = 1
+    end
+
     if TornadoDebug then TornadoDebug:info("FX", "V33.1 Initialized (Optimized Cinematic)") end
 end
 
@@ -68,6 +77,63 @@ end
 -- =========================
 function TornadoEffects:update(dt)
     local currentTime = g_currentMission.time
+    
+    -- Safety check: Ensure the environment is ready
+    if not g_currentMission or not g_currentMission.environment then
+        return
+    end
+
+    local currentAbsTime = g_currentMission.environment.dayTime
+    local currentDay = g_currentMission.environment.currentDay
+    local timeSkipDetected = false
+
+    -- Detect Day/Month/Season jumps
+    if currentDay ~= self.lastTrackedDay then
+        local daysSkipped = currentDay - self.lastTrackedDay
+        if daysSkipped > 1 or daysSkipped < 0 then
+            timeSkipDetected = true
+        end
+    end
+
+    -- Detect intra-day fast-forward jumps (e.g., changing hour via EDC)
+    local absoluteDelta = currentAbsTime - self.lastAbsoluteTime
+    if absoluteDelta < 0 then
+        absoluteDelta = absoluteDelta + 86400000 -- Account for midnight wrap
+    end
+
+    local expectedMaxDelta = dt * g_currentMission.missionInfo.timeScale * 2
+    if absoluteDelta > expectedMaxDelta then
+        timeSkipDetected = true
+    end
+
+    -- ==========================================================
+    -- THE FLUSH FIX
+    -- ==========================================================
+    if timeSkipDetected then
+        -- Loop through your active tracking tables and kill/fade lingering FX
+        for id, fxInstance in pairs(self.activeEffects or {}) do 
+            -- Option A: Hard cut (Instant delete from scene graph)
+            if fxInstance.node and entityExists(fxInstance.node) then
+                delete(fxInstance.node)
+            end
+            
+            -- Option B: Force immediate fade/dissipation status
+            -- fxInstance.alpha = 0
+            -- fxInstance.lifetime = 0
+            
+            -- Clear the reference tracker
+            self.activeEffects[id] = nil
+        end
+        
+        -- Sync anchors immediately so the rest of the frame processes normally
+        self.lastAbsoluteTime = currentAbsTime
+        self.lastTrackedDay = currentDay
+        return -- Exit early for this frame since everything was flushed
+    end
+
+    -- Update your anchors for normal frame-by-frame progression
+    self.lastAbsoluteTime = currentAbsTime
+    self.lastTrackedDay = currentDay
 
     for vehicleId, effect in pairs(self.activeEffects) do
         -- 1. VEHICLE CHECK
@@ -235,7 +301,7 @@ function TornadoEffects:spawnFX(filename, x, y, z, scale, type)
     return nil
 end
 
--- [NEW] SEPARATE INIT FUNCTION (Optimized)
+-- SEPARATE INIT FUNCTION (Optimized)
 function TornadoEffects:initShaderParams(node, type)
     if not node or not entityExists(node) then return end
     

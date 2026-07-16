@@ -72,7 +72,7 @@ local function pickFirstExisting(baseDir, relList)
 end
 
 local function getPlayerXZ()
-    -- Use the same robust strategy you used in husbandry debugKillTest()
+    -- Use the same robust strategy used in husbandry debugKillTest()
     if g_currentMission == nil then return nil, nil, "no mission" end
 
     if g_currentMission.controlledVehicle ~= nil and g_currentMission.controlledVehicle.rootNode ~= nil then
@@ -191,9 +191,9 @@ end
 function TornadoMapUI:loadMap(modDir)
     self._modDir = modDir or self._modDir or g_currentModDirectory
     self._img = self._img or pickFirstExisting(self._modDir, {
+        "FX/tornadoMapIcon.dds",
         "FX/tornadoCard.dds",
-        "modIcon.dds",
-        "textures/tornadoCard.dds"
+        "modIcon.dds"
     })
     self:installHooks()
 end

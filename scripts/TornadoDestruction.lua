@@ -30,7 +30,8 @@ TornadoDestruction._savegameDir = nil
 TornadoDestruction.GlobalDatabase = {}
 TornadoDestruction.FlatDefaults = {}
 TornadoDestruction.IgnoreList = {} 
-TornadoDestruction.isInitialized = false 
+TornadoDestruction.isInitialized = false
+TornadoDestruction.loggedIgnoredFiles = {}
 
 local function getTableCount(t)
     local count = 0
@@ -47,6 +48,7 @@ function TornadoDestruction:loadMap(name, baseDir)
     
     self._destroyedObjects = {}
     self._pendingLoad = {}
+    self.loggedIgnoredFiles = {}
 
     local dir = baseDir or g_currentModDirectory
     if not dir then print("TornadoDestruction: ERROR - No Mod Dir") return end
@@ -85,6 +87,8 @@ function TornadoDestruction:loadMap(name, baseDir)
         _G.TornadoMod_IgnoreList = nil
     end
 
+    self.lastAbsoluteTime = g_currentMission.environment.dayTime
+
     self:_loadFromXML()
     self.isInitialized = true
 end
@@ -94,30 +98,6 @@ function TornadoDestruction:deleteMap()
     self.isInitialized = false
 end
 
---#region
--- function TornadoDestruction:update(dt)
---     if #self._pendingLoad > 0 then self:_linkPendingObjects() end
---     if #self._destroyedObjects > 0 then self:_updateRepairs(dt) end
--- end
--- function TornadoDestruction:update(dt)
---     if #self._pendingLoad > 0 then self:_linkPendingObjects() end
-    
---     local hasDestroyed = false
---     for id, data in pairs(self._destroyedObjects) do 
---         hasDestroyed = true
-        
---         -- [CACHE FIX] Continuously cache the position to survive the shutdown race condition
---         if data.obj and data.obj.rootNode and entityExists(data.obj.rootNode) then
---             local x, y, z = getWorldTranslation(data.obj.rootNode)
---             if x then
---                 data.lastX, data.lastY, data.lastZ = x, y, z
---             end
---         end
---     end
-    
---     -- [TIMER FIX] Now correctly triggers the repair logic!
---     if hasDestroyed then self:_updateRepairs(dt) end
--- end
 function TornadoDestruction:update(dt)
     if #self._pendingLoad > 0 then self:_linkPendingObjects() end
     
@@ -131,25 +111,54 @@ function TornadoDestruction:update(dt)
     local scaledDt = dt * timeScale
 
     for id, data in pairs(self._destroyedObjects) do 
-        hasDestroyed = true
-        
-        -- [THE COUNTDOWN] Subtract the scaled time from the timer
-        if data.repairTimer then
-            data.repairTimer = data.repairTimer - scaledDt
-        end
-        
-        -- [CACHE] Continuously cache the position
-        if data.obj and data.obj.rootNode and entityExists(data.obj.rootNode) then
+        -- ==========================================================
+        -- [GARBAGE COLLECTION FIX]
+        -- If the vehicle was sold or deleted, wipe it immediately!
+        -- ==========================================================
+        if not data.obj or not data.obj.rootNode or not entityExists(data.obj.rootNode) then
+            self._destroyedObjects[id] = nil
+        else
+            hasDestroyed = true
+            
+            -- [THE COUNTDOWN] Subtract the scaled time from the timer
+            if data.repairTimer then
+                data.repairTimer = data.repairTimer - scaledDt
+            end
+            
+            -- [CACHE] Continuously cache the position
             local x, y, z = getWorldTranslation(data.obj.rootNode)
             if x then
                 data.lastX, data.lastY, data.lastZ = x, y, z
             end
         end
     end
+
+    local currentAbsTime = g_currentMission.environment.dayTime
+    local absoluteDelta = currentAbsTime - self.lastAbsoluteTime
+
+    -- Handle day wrap-around safety (e.g., clock rolls past midnight)
+    if absoluteDelta < 0 then
+        absoluteDelta = absoluteDelta + 86400000 -- Milliseconds in a day
+    end
+
+    -- Threshold check: If the jump is larger than a normal frame delta * timeScale
+    local expectedMaxDelta = dt * g_currentMission.missionInfo.timeScale * 2 -- buffer multiplier
+    if absoluteDelta > expectedMaxDelta then
+        -- A time skip occurred! Force-update all active repair timers instantly
+        for id, data in pairs(self._destroyedObjects) do
+            if data.repairTimer then
+                -- Convert absoluteDelta to the unit your repairTimer uses (e.g., seconds or minutes)
+                local skippedUnits = absoluteDelta / 1000 
+                data.repairTimer = data.repairTimer - skippedUnits
+            end
+        end
+    end
+
+    -- Always update the tracking anchor at the very end of the frame
+    self.lastAbsoluteTime = currentAbsTime
     
     if hasDestroyed then self:_updateRepairs(dt) end
 end
---#endregion
 
 -- ============================================================================ 
 -- Main Destruction Logic
@@ -176,6 +185,16 @@ function TornadoDestruction:destroyTarget(target)
     end
 
     -- ==========================================================
+    -- CACHE CHECK: Did we already scan this target previously?
+    -- SMART CACHE: Prevents the 120ms lag loop while allowing 
+    -- the vehicle to be re-scanned if the player buys new parts later.
+    -- ==========================================================
+    if target.tornadoLastDestructionScan and g_currentMission.time < (target.tornadoLastDestructionScan + 10000) then
+        return 
+    end
+    -- =================================================================================================================
+
+    -- ==========================================================
     -- INDOOR / COVER PROTECTION CHECK
     -- ==========================================================
     local x, y, z = getWorldTranslation(target.rootNode)
@@ -191,7 +210,7 @@ function TornadoDestruction:destroyTarget(target)
         if isIndoor and not indoorDamageEnabled then
             
             if TornadoDebug and TornadoDebug.verboseIndoorBypass then 
-                TornadoDebug:log("DESTRUCTION", "SKIPPED -> " .. tostring(filename) .. " (Vehicle is indoors/covered)") 
+                TornadoDebug:log("DESTRUCTION", "SKIPPED -> " .. tostring(rawFilename) .. " (Vehicle is indoors/covered)") 
             end
             
             return 
@@ -205,7 +224,13 @@ function TornadoDestruction:destroyTarget(target)
     local filenameLower = string.lower(filename)
     for _, keyword in ipairs(self.IgnoreList) do
         if string.find(filenameLower, keyword, 1, true) then 
-            if TornadoDebug then TornadoDebug:log("DESTRUCTION", "IGNORED FILE -> " .. filename .. " (Matches: '" .. keyword .. "')") end
+            -- [THE FIX] Only log this specific file path once per storm cycle
+            if not self.loggedIgnoredFiles[filenameLower] then
+                if TornadoDebug then 
+                    TornadoDebug:log("DESTRUCTION", "IGNORED FILE -> " .. filename .. " (Matches: '" .. keyword .. "')") 
+                end
+                self.loggedIgnoredFiles[filenameLower] = true
+            end
             return 
         end
     end
@@ -260,67 +285,46 @@ function TornadoDestruction:destroyTarget(target)
         table.insert(finalHiddenNodes, nodeData)
         structCount = structCount + 1
     end
---#region
-    -- 4. SAVE RESULT
-    -- if #finalHiddenNodes > 0 then
-    --     if TornadoDebug and TornadoDebug.verboseDestruction then
-    --         TornadoDebug:log("DESTRUCTION", string.format("RESULT -> Hid %d Trash, %d/%d Structure.", #foundTrash, structCount, structLimit))
-    --     end
-        
-    --     local repairTime = g_currentMission.time + (self.REPAIR_COOLDOWN_HOURS * 3600 * 1000)
-    --     self._destroyedObjects[objectId] = {
-    --         obj = target,
-    --         filename = filename,
-    --         nodes = finalHiddenNodes,
-    --         repairTime = repairTime
-    --     }
-    -- else
-    --    if TornadoDebug then TornadoDebug:log("DESTRUCTION", "FAILED. No suitable vehicle parts found.") end
-    -- end
-    -- 4. SAVE RESULT
-    -- if #finalHiddenNodes > 0 then
-    --     if TornadoDebug and TornadoDebug.verboseDestruction then
-    --         TornadoDebug:log("DESTRUCTION", string.format("RESULT -> Hid %d Trash, %d/%d Structure.", #foundTrash, structCount, structLimit))
-    --     end
-        
-    --     local repairTime = g_currentMission.time + (self.REPAIR_COOLDOWN_HOURS * 3600 * 1000)
-    --     local x, y, z = getWorldTranslation(target.rootNode)
-        
-    --     self._destroyedObjects[objectId] = {
-    --         obj = target,
-    --         filename = filename,
-    --         nodes = finalHiddenNodes,
-    --         repairTime = repairTime,
-    --         lastX = x or 0,    -- Initialize cache
-    --         lastY = y or 0,    -- Initialize cache
-    --         lastZ = z or 0     -- Initialize cache
-    --     }
-    -- else
-    --    if TornadoDebug then TornadoDebug:log("DESTRUCTION", "FAILED. No suitable vehicle parts found.") end
-    -- end
+
     -- 4. SAVE RESULT
     if #finalHiddenNodes > 0 then
         if TornadoDebug and TornadoDebug.verboseDestruction then
             TornadoDebug:log("DESTRUCTION", string.format("RESULT -> Hid %d Trash, %d/%d Structure.", #foundTrash, structCount, structLimit))
         end
         
+        -- [SMART CACHE TAG]
+        target.tornadoLastDestructionScan = g_currentMission.time
+        
         -- Just set the countdown total (24 hours in milliseconds)
         local totalTimerMs = self.REPAIR_COOLDOWN_HOURS * 3600 * 1000
-        local x, y, z = getWorldTranslation(target.rootNode)
         
         self._destroyedObjects[objectId] = {
             obj = target,
             filename = filename,
             nodes = finalHiddenNodes,
-            repairTimer = totalTimerMs, -- [FIXED]
+            repairTimer = totalTimerMs,
             lastX = x or 0,    
             lastY = y or 0,    
             lastZ = z or 0     
         }
+
+        -- ==========================================================
+        -- TRIGGER EMERGENCY DLC
+        -- Vehicle has been confirmed destroyed. Dispatch rescue!
+        -- ==========================================================
+        -- if TornadoSettings.enableEmergencyDLC then
+        --     if self.handleVehicleEmergencyTrigger then
+        --         self:handleVehicleEmergencyTrigger(target)
+        --     end
+        -- end
+        -- ==========================================================
+
     else
-       if TornadoDebug then TornadoDebug:log("DESTRUCTION", "FAILED. No suitable vehicle parts found.") end
+        if TornadoDebug then TornadoDebug:log("DESTRUCTION", "FAILED. No suitable vehicle parts found.") end
+       
+        -- [SMART CACHE TAG]
+        target.tornadoLastDestructionScan = g_currentMission.time
     end
-    --#endregion
 end
 
 function TornadoDestruction:_scanForCandidates(rootNode, namesToHide, budget, isSpecificDB, outTrash, outStructure)
@@ -358,37 +362,7 @@ function TornadoDestruction:_scanForCandidates(rootNode, namesToHide, budget, is
                 else 
                     matched = string.find(nodeNameLower, string.lower(targetName), 1, true) ~= nil 
                 end
-                --#region
-                -- if matched then
-                --     -- CLASSIFY
-                --     local isTrash = false
-                --     for _, trashKey in ipairs(self.TRASH_KEYWORDS) do
-                --         if string.find(nodeNameLower, trashKey, 1, true) then
-                --             isTrash = true
-                --             break
-                --         end
-                --     end
-                    
-                --     -- Check LOD parent
-                --     local finalNode = currentNode
-                --     local finalName = nodeName
-                --     local parent = getParent(currentNode)
-                --     if parent and parent ~= 0 then
-                --         local parentName = getName(parent) or ""
-                --         if string.find(string.lower(parentName), "lod", 1, true) then
-                --             finalNode = parent
-                --             finalName = parentName
-                --         end
-                --     end
-
-                --     if isTrash then
-                --         table.insert(outTrash, {id = finalNode, name = finalName})
-                --     else
-                --         table.insert(outStructure, {id = finalNode, name = finalName})
-                --     end
-                    
-                --     break 
-                -- end
+                
                 if matched then
                     -- CLASSIFY
                     local isTrash = false
@@ -427,7 +401,6 @@ function TornadoDestruction:_scanForCandidates(rootNode, namesToHide, budget, is
                     
                     break
                 end
-                --#endregion
             end
             
             -- Recurse children
@@ -456,28 +429,6 @@ function TornadoDestruction:_shuffleTable(t)
     end
 end
 
---#region
--- function TornadoDestruction:_updateRepairs(dt)
---     local currentTime = g_currentMission.time
---     local objectsToRepair = {}
-    
---     for id, data in pairs(self._destroyedObjects) do 
---         if currentTime >= data.repairTime then table.insert(objectsToRepair, id) end 
---     end
-    
---     for _, id in ipairs(objectsToRepair) do
---         local data = self._destroyedObjects[id]
-        
---         if TornadoDebug then 
---             TornadoDebug:log("DESTRUCTION", string.format("REPAIR TRACE: Timer expired for %s. Restoring %d parts.", tostring(data.filename), #data.nodes))
---         end
-        
---         for _, nodeInfo in ipairs(data.nodes) do 
---             if entityExists(nodeInfo.id) then setVisibility(nodeInfo.id, true) end 
---         end
---         self._destroyedObjects[id] = nil
---     end
--- end
 function TornadoDestruction:_updateRepairs(dt)
     local objectsToRepair = {}
     
@@ -487,7 +438,7 @@ function TornadoDestruction:_updateRepairs(dt)
             table.insert(objectsToRepair, id) 
         end 
     end
-    
+
     for _, id in ipairs(objectsToRepair) do
         local data = self._destroyedObjects[id]
         
@@ -495,14 +446,27 @@ function TornadoDestruction:_updateRepairs(dt)
             TornadoDebug:log("DESTRUCTION", string.format("REPAIR TRACE: Timer expired for %s. Restoring %d parts.", tostring(data.filename), #data.nodes))
         end
         
-        for _, nodeInfo in ipairs(data.nodes) do 
-            if entityExists(nodeInfo.id) then setVisibility(nodeInfo.id, true) end 
+        -- [FX CLEANUP LAYER]
+        -- Grab the parent vehicle transform node from the first part in the data array
+        if data.nodes and data.nodes[1] and entityExists(data.nodes[1].id) then
+            local vehicleRoot = getParent(data.nodes[1].id)
+            if vehicleRoot and entityExists(vehicleRoot) then
+                -- Scrub any persistent/orphaned smoke or fire nodes off the vehicle
+                self:purgeOrphanedFX(vehicleRoot)
+            end
         end
+        
+        -- Loop through and turn visibility back on for broken components
+        for _, nodeInfo in ipairs(data.nodes) do 
+            if entityExists(nodeInfo.id) then 
+                setVisibility(nodeInfo.id, true) 
+            end 
+        end
+        
+        -- Clear the object out of the tracking array
         self._destroyedObjects[id] = nil
     end
 end
-
---#endregion
 
 function TornadoDestruction:_cleanFilename(path)
     if path == nil or path == "" then return "unknown" end
@@ -512,7 +476,6 @@ function TornadoDestruction:_cleanFilename(path)
     return path
 end
 
---#region
 function TornadoDestruction:_findNodeByName(rootNode, targetName)
     if rootNode == nil or rootNode == 0 then return 0 end
     local nodesToProcess = {rootNode}
@@ -537,44 +500,7 @@ function TornadoDestruction:_findNodeByName(rootNode, targetName)
     end
     return 0
 end
---#endregion
 
--- function TornadoDestruction:_linkPendingObjects()
---     if g_currentMission == nil then return end
---     local stillPending = {}
---     local searchRadiusSq = 1.0
---     local searchTargets = {}
-
---     if g_currentMission.vehicleSystem and g_currentMission.vehicleSystem.vehicles then 
---         for _, v in pairs(g_currentMission.vehicleSystem.vehicles) do 
---             table.insert(searchTargets, v) 
---         end 
---     end
-    
---     for _, pending in ipairs(self._pendingLoad) do
---         local found = false
---         for _, obj in ipairs(searchTargets) do
---             local filename = self:_cleanFilename(obj.i3dFilename)
---             if filename == pending.filename then
---                 local x, y, z = getWorldTranslation(obj.rootNode)
---                 local dx, dy, dz = x - pending.x, y - pending.y, z - pending.z
---                 if (dx*dx + dy*dy + dz*dz) < searchRadiusSq then
---                     if TornadoDebug then TornadoDebug:log("DESTRUCTION", "RELINKING saved vehicle -> " .. filename) end
---                     for _, nodeInfo in ipairs(pending.nodes) do
---                         local foundNode = I3DUtil.findNode(obj.rootNode, nodeInfo.name, true)
---                         if foundNode and foundNode ~= 0 then setVisibility(foundNode, false) nodeInfo.id = foundNode end
---                     end
---                     self._destroyedObjects[obj.rootNode] = { obj = obj, filename = filename, nodes = pending.nodes, repairTime = pending.repairTime }
---                     found = true
---                     break
---                 end
---             end
---         end
---         if not found then table.insert(stillPending, pending) end
---     end
---     self._pendingLoad = stillPending
--- end
---#region
 function TornadoDestruction:_linkPendingObjects()
     if g_currentMission == nil then return end
     local stillPending = {}
@@ -604,19 +530,7 @@ function TornadoDestruction:_linkPendingObjects()
                                 nodeInfo.id = foundNode 
                             end
                         end
-                        --#region
-                        -- self._destroyedObjects[obj.rootNode] = { obj = obj, filename = filename, nodes = pending.nodes, repairTime = pending.repairTime }
-                        -- found = true
-                        -- break
-                        -- self._destroyedObjects[obj.rootNode] = { 
-                        --     obj = obj, 
-                        --     filename = filename, 
-                        --     nodes = pending.nodes, 
-                        --     repairTime = pending.repairTime,
-                        --     lastX = x,     -- Initialize cache
-                        --     lastY = y,     -- Initialize cache
-                        --     lastZ = z      -- Initialize cache
-                        -- }
+                       
                         self._destroyedObjects[obj.rootNode] = { 
                             obj = obj, 
                             filename = filename, 
@@ -628,7 +542,6 @@ function TornadoDestruction:_linkPendingObjects()
                         }
                         found = true
                         break
-                        --#endregion
                     end
                 end
             end
@@ -637,7 +550,44 @@ function TornadoDestruction:_linkPendingObjects()
     end
     self._pendingLoad = stillPending
 end
---#endregion
+
+---@param vehicle table The GIANTS engine vehicle object that was just destroyed
+function TornadoDestruction:handleVehicleEmergencyTrigger(vehicle)
+    if TornadoDebug then TornadoDebug:log("DESTRUCTION", "[EMERGENCY_HOOK] Vehicle destroyed! Checking emergency criteria...") end
+
+    -- 1. Check if the feature is enabled via settings and the manager exists
+    if not TornadoSettings.enableEmergencyDLC or TornadoEmergencyManager == nil then
+        if TornadoDebug then TornadoDebug:log("DESTRUCTION", "[EMERGENCY_HOOK] ABORT: Integration disabled in settings or manager missing.") end
+        return
+    end
+
+    -- 2. Prevent spam: Ensure this vehicle isn't already tied to an active emergency scene
+    if vehicle.hasActiveEmergencyScenario then
+        if TornadoDebug then TornadoDebug:log("DESTRUCTION", "[EMERGENCY_HOOK] ABORT: Vehicle already has an active disaster scene.") end
+        return
+    end
+
+    -- 3. Flag it so it doesn't execute multiple times concurrently
+    vehicle.hasActiveEmergencyScenario = true
+        
+    -- 4. Get the exact coordinates of the destroyed vehicle
+    local x, y, z = getWorldTranslation(vehicle.rootNode)
+
+    if TornadoDebug then 
+        TornadoDebug:log("DESTRUCTION", string.format("[EMERGENCY_HOOK] PASSED! Handoff to Manager -> Type: carCrash | X:%.2f, Z:%.2f", x, z)) 
+    end
+        
+    -- 5. Hand over coordination to the emergency manager
+    -- TornadoEmergencyManager:triggerDisasterScenario("carCrash", x, z, "tornadoVehicleCrash.xml")
+    -- Randomly decide if the vehicle crash resulted in a fire or trapped passengers
+    if math.random() > 0.5 then
+        if TornadoDebug then TornadoDebug:log("DESTRUCTION", "Vehicle destroyed! Dispatching Car Crash Scenario.") end
+        TornadoEmergencyManager:triggerDisasterScenario("carCrash", x, z, "tornadoVehicleCrash.xml")
+    else
+        if TornadoDebug then TornadoDebug:log("DESTRUCTION", "Vehicle destroyed! Dispatching Car Fire Scenario.") end
+        TornadoEmergencyManager:triggerDisasterScenario("fire", x, z, "tornadoCarFire.xml")
+    end
+end
 
 function TornadoDestruction:_resolveSavegamePath()
     if not g_currentMission or not g_currentMission.missionInfo then return nil end
@@ -703,33 +653,6 @@ function TornadoDestruction:_saveToXML()
         setXMLString(xmlId, objKey .. ".nodes", nodesStr)
         i = i + 1
     end
-    --#region
-    -- 4. Process Destroyed Objects
-    -- if self._destroyedObjects then
-    --     local count = 0
-    --     for _, data in pairs(self._destroyedObjects) do count = count + 1 end
-    --     if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: Found " .. count .. " items in _destroyedObjects table.") end
-
-    --     for _, data in pairs(self._destroyedObjects) do 
-    --         if data and data.obj and data.obj.rootNode then
-    --             if entityExists(data.obj.rootNode) then
-    --                 local x, y, z = getWorldTranslation(data.obj.rootNode) 
-    --                 if x then 
-    --                     writeEntry(data, x, y, z) 
-    --                     if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: Wrote entry for -> " .. tostring(data.filename)) end
-    --                 else
-    --                     if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: Warning - getWorldTranslation failed for -> " .. tostring(data.filename)) end
-    --                 end
-    --             else
-    --                 if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: Warning - Entity no longer exists for -> " .. tostring(data.filename)) end
-    --             end
-    --         else
-    --             if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: Warning - Invalid data structure in _destroyedObjects.") end
-    --         end
-    --     end
-    -- else
-    --     if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: _destroyedObjects table is nil.") end
-    -- end
     -- 4. Process Destroyed Objects
     if self._destroyedObjects then
         local count = 0
@@ -737,7 +660,7 @@ function TornadoDestruction:_saveToXML()
         if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: Found " .. count .. " items in _destroyedObjects table.") end
 
         for id, data in pairs(self._destroyedObjects) do 
-            -- [RACE CONDITION FIX] We no longer check for rootNode. We just use our cached data!
+            -- We no longer check for rootNode. We just use our cached data!
             if data and data.filename then
                 local x = data.lastX or 0
                 local y = data.lastY or 0
@@ -752,7 +675,6 @@ function TornadoDestruction:_saveToXML()
     else
         if TornadoDebug then TornadoDebug:log("DESTRUCTION", "TRACE: _destroyedObjects table is nil.") end
     end
-    --#endregion
     
     -- 5. Process Pending Loads
     if self._pendingLoad then
@@ -808,15 +730,7 @@ function TornadoDestruction:_loadFromXML()
         local nodesStr = getXMLString(xmlId, key .. ".nodes") or ""
         local nodes = {}
         for nodeName in string.gmatch(nodesStr, "([^;]+)") do table.insert(nodes, {id = 0, name = nodeName}) end
-        --#region
-        -- table.insert(self._pendingLoad, { 
-        --     filename = filename, 
-        --     x = getXMLFloat(xmlId, key .. ".posX"), 
-        --     y = getXMLFloat(xmlId, key .. ".posY"), 
-        --     z = getXMLFloat(xmlId, key .. ".posZ"), 
-        --     repairTime = getXMLFloat(xmlId, key .. ".repairTime"),
-        --         nodes = nodes
-        -- })
+        
         local savedTimer = getXMLFloat(xmlId, key .. ".repairTimer")
         if savedTimer == nil then
             savedTimer = getXMLFloat(xmlId, key .. ".repairTime") or (24 * 3600 * 1000)
@@ -830,13 +744,36 @@ function TornadoDestruction:_loadFromXML()
             repairTimer = savedTimer,
             nodes = nodes
         })
-            --#endregion
 
         i = i + 1
     end
     
     delete(xmlId)
     if TornadoDebug then TornadoDebug:log("DESTRUCTION", "SUCCESS. Loaded " .. i .. " pending vehicle objects.") end
+end
+
+function TornadoDestruction:purgeOrphanedFX(vehicleNode)
+    if not vehicleNode or not entityExists(vehicleNode) then return end
+
+    local numChildren = getNumOfChildren(vehicleNode)
+    -- Loop backwards to safely drop child items from the engine stack
+    for i = numChildren - 1, 0, -1 do 
+        local child = getChildAt(vehicleNode, i)
+        if child and entityExists(child) then
+            local name = getName(child) or ""
+            local lowerName = string.lower(name)
+            
+            if string.find(lowerName, "smoketrail") or string.find(lowerName, "firetrail") then
+                if TornadoDebug then 
+                    TornadoDebug:log("DESTRUCTION", string.format("Stripping orphaned visual FX node: %s", name)) 
+                end
+                delete(child)
+            else
+                -- Recurse further down if needed
+                self:purgeOrphanedFX(child)
+            end
+        end
+    end
 end
 
 return TornadoDestruction

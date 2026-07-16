@@ -23,11 +23,14 @@ function TornadoConsole:loadMap()
     -- 5. TUNE
     addConsoleCommand("t_tune", "Fine-tune Physics Constants", "cmdTune", self)
 
-    -- 6. RESET [NEW]
+    -- 6. RESET
     addConsoleCommand("t_reset", "Reset Settings: all, physics, tuning, cargo...", "cmdReset", self)
 
     -- 7. HELP
     addConsoleCommand("t_help", "Lists all commands or shows details for one. Usage: t_help [command]", "cmdHelp", self)
+
+    --8. Toggle for the emergency DLC.
+    -- addConsoleCommand("t_emergency", "Toggle DLC Emergency triggers on vehicle destruction (true/false)", "cmdEmergency", self)
 end
 
 function TornadoConsole:deleteMap()
@@ -36,8 +39,9 @@ function TornadoConsole:deleteMap()
     removeConsoleCommand("t_set")
     removeConsoleCommand("t_dev")
     removeConsoleCommand("t_tune")
-    removeConsoleCommand("t_reset") -- [NEW]
+    removeConsoleCommand("t_reset")
     removeConsoleCommand("t_help")
+    -- removeConsoleCommand("t_emergency")
 end
 
 -- =========================================================================
@@ -340,7 +344,7 @@ end
             TornadoCargo:toggle()
             return "Cargo: System Enabled = " .. tostring(TornadoCargo.isEnabled)
         
-        -- [NEW] Verbose Logging Toggle
+        -- Verbose Logging Toggle
         elseif subCmd == "verbose" then
             TornadoCargo.isVerbose = not TornadoCargo.isVerbose
             return "Cargo: Verbose Logging = " .. tostring(TornadoCargo.isVerbose)
@@ -416,7 +420,8 @@ function TornadoConsole:cmdDev(tool, arg1)
                 TornadoDebug.verboseMode = newState
                 TornadoDebug.verboseDestruction = newState
                 TornadoDebug.verbosePhysics = newState
-                -- this one is way to noisy to be included into the all debug channel.
+                -- this one is way to noisy to be included into the all debug channel. 
+                -- and didnt feal like adding it into a dedicated channel.
                 -- but left here just for the sake of it.
                 --TornadoDebug.verboseIndoorBypass = newState
                 return "DEV: ALL Verbose Logging = " .. tostring(newState)
@@ -506,3 +511,38 @@ function TornadoConsole:cmdReset(category)
         return "Usage: t_reset [all | physics | tuning | cargo | husbandry]"
     end
 end
+
+-- =========================================================================
+-- 7. Emergency COMMANDS
+-- =========================================================================
+-- function TornadoConsole:cmdEmergency(state)
+--     -- If no argument is provided, just report the current status
+--     if state == nil then
+--         local current = TornadoSettings.emergencyScenariosEnabled and "ENABLED" or "DISABLED"
+--         return string.format("Emergency triggers are currently: %s. Use 't_emergency true' or 't_emergency false' to change.", current)
+--     end
+
+--     -- Sanitize input string to boolean
+--     state = string.lower(tostring(state))
+--     local targetState = nil
+--     if state == "true" or state == "1" or state == "on" then
+--         targetState = true
+--     elseif state == "false" or state == "0" or state == "off" then
+--         targetState = false
+--     else
+--         return "Invalid argument. Use: true, false, on, off, 1, or 0."
+--     end
+
+--     -- Apply the state to your settings tracking variable
+--     TornadoSettings.emergencyScenariosEnabled = targetState
+
+--     -- Force a save configuration rewrite so it persists across sessions
+--     if TornadoSettings.saveToXML then
+--         TornadoSettings:saveToXML()
+--     elseif TornadoSettings.createDefaultXML then
+--         TornadoSettings:createDefaultXML() -- Or whichever method writes out TornadoPhysics_Config.xml
+--     end
+
+--     local resultStr = targetState and "ENABLED" or "DISABLED"
+--     return string.format("Tornado Emergency Pack triggers have been %s.", resultStr)
+-- end

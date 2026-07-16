@@ -1,3 +1,11 @@
+-- ==============================================================================
+-- Tornado Physics Mod - Cross-Mod Compatibility Layer
+-- Author: whitevamp
+-- 
+-- Integrates with:
+--   - "Advanced Damage System" by id577
+-- ==============================================================================
+
 ---@class TornadoADS
 ---@version 2.1 (INDOOR SAFEGUARD)
 ---@description Now respects the 'indoor_damage' setting from TornadoPhysics.
@@ -44,7 +52,7 @@ function TornadoADS:processVehicle(vehicle, dt)
     if vehicle == nil then return end
     if not vehicle.getRandomBreakdown or not vehicle.addBreakdown then return end
 
-    -- [FIX] CHECK INDOOR SAFETY
+    -- CHECK INDOOR SAFETY
     if TornadoPhysics and TornadoPhysics.checkIsIndoorsCached then
         -- Check if vehicle is indoors using Physics cache (2.0 height offset)
         local isIndoors = TornadoPhysics:checkIsIndoorsCached(vehicle.rootNode, 2.0)
