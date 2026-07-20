@@ -109,17 +109,42 @@ function TornadoEffects:update(dt)
     -- ==========================================================
     -- THE FLUSH FIX
     -- ==========================================================
-    if timeSkipDetected then
-        -- Loop through your active tracking tables and kill/fade lingering FX
-        for id, fxInstance in pairs(self.activeEffects or {}) do 
-            -- Option A: Hard cut (Instant delete from scene graph)
-            if fxInstance.node and entityExists(fxInstance.node) then
-                delete(fxInstance.node)
-            end
+    --#region
+    -- if timeSkipDetected then
+    --     -- Loop through your active tracking tables and kill/fade lingering FX
+    --     for id, fxInstance in pairs(self.activeEffects or {}) do 
+    --         -- Option A: Hard cut (Instant delete from scene graph)
+    --         if fxInstance.node and entityExists(fxInstance.node) then
+    --             delete(fxInstance.node)
+    --         end
             
-            -- Option B: Force immediate fade/dissipation status
-            -- fxInstance.alpha = 0
-            -- fxInstance.lifetime = 0
+    --         -- Option B: Force immediate fade/dissipation status
+    --         -- fxInstance.alpha = 0
+    --         -- fxInstance.lifetime = 0
+            
+    --         -- Clear the reference tracker
+    --         self.activeEffects[id] = nil
+    --     end
+        
+    --     -- Sync anchors immediately so the rest of the frame processes normally
+    --     self.lastAbsoluteTime = currentAbsTime
+    --     self.lastTrackedDay = currentDay
+    --     return -- Exit early for this frame since everything was flushed
+    -- end
+    -- ==========================================================
+    -- THE FLUSH FIX (Corrected Node Keys)
+    -- ==========================================================
+    if timeSkipDetected then
+        if TornadoDebug then TornadoDebug:log("FX", "[TIME SKIP] Flushing active weather particle nodes...") end
+        
+        for id, fxInstance in pairs(self.activeEffects or {}) do 
+            -- Safely catch and delete both structural visual layers
+            if fxInstance.smokeNode and entityExists(fxInstance.smokeNode) then
+                delete(fxInstance.smokeNode)
+            end
+            if fxInstance.fireNode and entityExists(fxInstance.fireNode) then
+                delete(fxInstance.fireNode)
+            end
             
             -- Clear the reference tracker
             self.activeEffects[id] = nil
@@ -130,6 +155,7 @@ function TornadoEffects:update(dt)
         self.lastTrackedDay = currentDay
         return -- Exit early for this frame since everything was flushed
     end
+    --#endregion
 
     -- Update your anchors for normal frame-by-frame progression
     self.lastAbsoluteTime = currentAbsTime

@@ -23,6 +23,9 @@ TornadoMod_IgnoreList = {
     -- PHYSICS BODIES
     "_col", "_coll", "collision", "rigidBody", "compound", "physics", 
 
+    -- VEHICLE FRAMES / CHASSIS STRUCTS (Prevents chassis splitting)
+    "chassis", "tandem", "tridem",
+
     -- INFRASTRUCTURE
     "road", "street", "path", "walkway", "highway", "asphalt", "concrete", 
     "gravel", "sidewalk", "traffic", "border",
