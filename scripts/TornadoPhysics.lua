@@ -14,6 +14,7 @@ TornadoPhysics.settings = {
     outdoor_damage        = true,
     lift_bales            = true,
     lift_logs             = true,
+    lift_props            = true,
     border_safety         = true,
     ejection_power        = 20.0,
     damage_center         = 0.25,
@@ -27,7 +28,7 @@ TornadoPhysics.settings = {
     destruction_ratio     = 0.2,
     purge_duration        = 5000,
     purge_interval        = 45000,
-    
+
     -- PHYSICS SPEEDS
     suction_speed         = 50.0,
     lift_speed            = 12.0,
@@ -51,6 +52,9 @@ local mapBoundary = 8192.0
 local mapInitialized = false
 local LOG_MASK = 8192 + 32 + 2
 local ROOF_MASK = 1 + 2048 + 1048576 + 32
+-- Includes Bales/Logs (8192), Vehicles (32), Dynamic Props (16), Breakable Signs (4096), and Physics Actors (2)
+-- local OBJECT_MASK = 8192 + 4096 + 32 + 16 + 2 -- Total value: 12338
+local PROP_MASK = 4096 + 16 + 2 -- Scans for breakable signs, fences, and loose map props
 
 function TornadoPhysics:loadMap(name)
     self.isActive = true
@@ -72,9 +76,9 @@ function TornadoPhysics:loadMap(name)
     self.confirmTimer = 0
     self.CONFIRM_THRESHOLD = 150 -- Frames to wait (approx 2.5s)
 
-    if TornadoNFW and TornadoNFW.loadMap then
-        TornadoNFW:loadMap(name)
-    end
+    -- if TornadoNFW and TornadoNFW.loadMap then
+    --     TornadoNFW:loadMap(name)
+    -- end
 
     mapInitialized = false
 
@@ -86,37 +90,36 @@ function TornadoPhysics:deleteMap()
     self.isActive = false
     self.activeNodes = {}
     self.safetyCache = {}
-
 end
 
 function TornadoPhysics:update(dt)
     if TornadoEffects then TornadoEffects:update(dt) end
 
     -- 1. BASIC SERVER CHECKS (Always required)
-    if not self.isActive or g_currentMission == nil or not g_currentMission:getIsServer() then 
-        return 
+    if not self.isActive or g_currentMission == nil or not g_currentMission:getIsServer() then
+        return
     end
 
-   -- ============================================================================
+    -- ============================================================================
     -- 2. SEARCH PHASE (Height + Timer Fix)
     -- ============================================================================
     if self.tornadoNode == nil or not entityExists(self.tornadoNode) then
-        self.tornadoNode = nil 
-        
+        self.tornadoNode = nil
+
         local candidate = self:findTornadoSimple()
-        
+
         if candidate then
             if self.foundCandidate ~= candidate then
                 self.foundCandidate = candidate
                 self.confirmTimer = 0
             else
                 self.confirmTimer = self.confirmTimer + 1
-                
-                -- [CONFIRMATION] 
+
+                -- [CONFIRMATION]
                 -- 1. Must persist for 150 frames
                 -- 2. Must be above ground (Height Check) - Fixes login false alarm
                 local pX, pY, pZ = getWorldTranslation(candidate)
-                
+
                 if self.confirmTimer > 150 then
                     -- The "Cache" tornado is usually at Y = -100 or lower.
                     -- Real tornadoes are usually at Y > -50.
@@ -125,7 +128,7 @@ function TornadoPhysics:update(dt)
                         print("TornadoPhysics: Tornado CONFIRMED! (Timer: OK | Height: " .. math.floor(pY) .. "m)")
                         self.foundCandidate = nil
                         self.confirmTimer = 0
-                        
+
                         -- Announce it
                         print("TornadoPhysics: Tornado ACQUIRED!")
                     else
@@ -140,7 +143,7 @@ function TornadoPhysics:update(dt)
             self.foundCandidate = nil
             self.confirmTimer = 0
         end
-        
+
         if self.tornadoNode == nil then return end
 
         -- ==========================================================
@@ -149,30 +152,29 @@ function TornadoPhysics:update(dt)
 
         -- If we passed the watchdog check, the tornado is active and moving.
         -- [HIGH PRIORITY HOOK] Evacuate AI before physics calculations
-        if TornadoNFW and TornadoNFW.isAvailable then
-            local tX, tY, tZ = getWorldTranslation(self.tornadoNode)
-            -- Using 10.0 multiplier for early detection (roughly 350-500m radius depending on scale)
-            TornadoNFW:evaluateDanger(tX, tY, tZ, self.settings.base_radius)
-        end
+        -- if TornadoNFW and TornadoNFW.isAvailable then
+        --     local tX, tY, tZ = getWorldTranslation(self.tornadoNode)
+        --     -- Using 10.0 multiplier for early detection (roughly 350-500m radius depending on scale)
+        --     TornadoNFW:evaluateDanger(tX, tY, tZ, self.settings.base_radius)
+        -- end
 
-            -- 1. Get the exact current position of the active tornado
-            local tX, tY, tZ = getWorldTranslation(self.tornadoNode)
+        -- 1. Get the exact current position of the active tornado
+        local tX, tY, tZ = getWorldTranslation(self.tornadoNode)
 
-            -- 2. NFW Evacuation Check (Check if AI is in the path)
-            -- if TornadoNFW and TornadoNFW.isInitialized then
-            --     local radius = (self.settings and self.settings.base_radius) or 50 
-            --     TornadoNFW:evaluateDanger(tX, tY, tZ, radius)
-            -- end
-
+        -- 2. NFW Evacuation Check (Check if AI is in the path)
+        -- if TornadoNFW and TornadoNFW.isInitialized then
+        --     local radius = (self.settings and self.settings.base_radius) or 50
+        --     TornadoNFW:evaluateDanger(tX, tY, tZ, radius)
+        -- end
     end
 
     -- ============================================================================
---#region
+    --#region
     -- ============================================================================
     -- WATCHDOG: Validate the Tornado Node FIRST
     -- ============================================================================
     local tornadoIsValid = false
-    
+
     if self.tornadoNode ~= nil then
         if entityExists(self.tornadoNode) and getVisibility(self.tornadoNode) then
             tornadoIsValid = true
@@ -193,22 +195,22 @@ function TornadoPhysics:update(dt)
                 self.tornadoSearchTimer = 0
             end
         end
-        return 
+        return
     end
 
     -- NOW it is 100% safe to get position and run physics
     local x, y, z = getWorldTranslation(self.tornadoNode)
     self.tornadoY = y
---#endregion
+    --#endregion
 
-    -- Log Position (using your separate command t_dev pos)
-    if TornadoDebug and TornadoDebug.showPosition then 
-        TornadoDebug:logPos(string.format("Tornado at %.1f, %.1f, %.1f", x, y, z)) 
+    -- Log Position (using the separate command t_dev pos)
+    if TornadoDebug and TornadoDebug.showPosition then
+        TornadoDebug:logPos(string.format("Tornado at %.1f, %.1f, %.1f", x, y, z))
     end
 
     -- Run the Physics Scan
     self:processNearbyObjects(dt, x, y, z)
-    
+
     -- Update Sub-modules
     if TornadoDestruction then TornadoDestruction:update(dt) end
 
@@ -289,21 +291,20 @@ function TornadoPhysics:update(dt)
     -- Check if we have a visual tornado active
     if g_currentMission.environment.weather.twister ~= nil then
         local twister = g_currentMission.environment.weather.twister
-        
+
         -- Only scale it if we haven't already (optimization)
         if twister.rootNode ~= nil and not twister.isTornadoModScaled then
-            
             -- FIX 1: Use the correct variable name (currentEfNum instead of currentEFRating)
-            local efScale = self.currentEfNum 
+            local efScale = self.currentEfNum
 
             -- FIX 2: Safety Check. If efScale is nil, the physics haven't calculated the size yet.
             -- We simply do nothing this frame and wait for randomizeTornado() to run.
             if efScale ~= nil then
                 local scale = 1.0 + (efScale * 0.8)
-                
+
                 setScale(twister.rootNode, scale, scale, scale)
-                twister.isTornadoModScaled = true 
-                
+                twister.isTornadoModScaled = true
+
                 print(string.format("Tornado Visuals Synced: Scale %.2f (EF-%d)", scale, efScale))
             end
         end
@@ -320,78 +321,138 @@ function TornadoPhysics:processNearbyObjects(dt, tX, tY, tZ)
     -- [COMPATIBILITY HOOK] NeighborFieldWorkers Evacuation
     -- Prevents infinite flip/respawn lag loops by dismissing AI in the tornado's path.
     -- ============================================================================
-    if _G.NeighborFieldWorkers and _G.NeighborFieldWorkers.activeAssignments then
-        for key, assignment in pairs(_G.NeighborFieldWorkers.activeAssignments) do
-            if assignment and assignment.vehicle and assignment.vehicle.rootNode then
-                local vx, vy, vz = getWorldTranslation(assignment.vehicle.rootNode)
-                local dist = MathUtil.vector2Length(vx - tX, vz - tZ)
-                
-                -- Evacuate if the tornado is within a safe buffer (e.g., 2x the base radius)
-                if dist < (self.settings.base_radius * 2.0) then
-                    local mission = assignment.mission
-                    if mission and mission.status ~= MissionStatus.DISMISSED then
-                        if TornadoDebug then TornadoDebug:log("PHYSICS", "NFW AI detected in tornado path. Evacuating/Despawning!") end
-                        
-                        -- 1. Halt the AI logic
-                        if assignment.vehicle.stopCurrentAIJob then
-                            pcall(assignment.vehicle.stopCurrentAIJob, assignment.vehicle)
-                        end
-                        
-                        -- 2. Dismiss the GIANTS mission to despawn the rented vehicles safely
-                        if g_missionManager then
-                            pcall(g_missionManager.cancelMission, g_missionManager, mission)
-                            pcall(g_missionManager.dismissMission, g_missionManager, mission)
-                        end
-                        
-                        -- 3. Clean up the NFW tracker
-                        if type(_G.NeighborFieldWorkers.removeAssignment) == "function" then
-                            pcall(_G.NeighborFieldWorkers.removeAssignment, _G.NeighborFieldWorkers, assignment)
-                        end
-                    end
-                end
-            end
-        end
-    end
+    -- if _G.NeighborFieldWorkers and _G.NeighborFieldWorkers.activeAssignments then
+    --     for key, assignment in pairs(_G.NeighborFieldWorkers.activeAssignments) do
+    --         if assignment and assignment.vehicle and assignment.vehicle.rootNode then
+    --             local vx, vy, vz = getWorldTranslation(assignment.vehicle.rootNode)
+    --             local dist = MathUtil.vector2Length(vx - tX, vz - tZ)
+
+    --             -- Evacuate if the tornado is within a safe buffer (e.g., 2x the base radius)
+    --             if dist < (self.settings.base_radius * 2.0) then
+    --                 local mission = assignment.mission
+    --                 if mission and mission.status ~= MissionStatus.DISMISSED then
+    --                     if TornadoDebug then TornadoDebug:log("PHYSICS", "NFW AI detected in tornado path. Evacuating/Despawning!") end
+
+    --                     -- 1. Halt the AI logic
+    --                     if assignment.vehicle.stopCurrentAIJob then
+    --                         pcall(assignment.vehicle.stopCurrentAIJob, assignment.vehicle)
+    --                     end
+
+    --                     -- 2. Dismiss the GIANTS mission to despawn the rented vehicles safely
+    --                     if g_missionManager then
+    --                         pcall(g_missionManager.cancelMission, g_missionManager, mission)
+    --                         pcall(g_missionManager.dismissMission, g_missionManager, mission)
+    --                     end
+
+    --                     -- 3. Clean up the NFW tracker
+    --                     if type(_G.NeighborFieldWorkers.removeAssignment) == "function" then
+    --                         pcall(_G.NeighborFieldWorkers.removeAssignment, _G.NeighborFieldWorkers, assignment)
+    --                     end
+    --                 end
+    --             end
+    --         end
+    --     end
+    -- end
     -- ============================================================================
     --#endregion
 
     -- 1. Scan Vehicles
+    -- if g_currentMission.vehicleSystem and g_currentMission.vehicleSystem.vehicles then
+    --     for _, vehicle in pairs(g_currentMission.vehicleSystem.vehicles) do
+    --         if vehicle ~= nil and vehicle.rootNode ~= nil then
+    --             local vx, vy, vz = getWorldTranslation(vehicle.rootNode)
+    --             local dist = MathUtil.vector3Length(vx-tX, vy-tY, vz-tZ)
+
+    --             --#region
+    --             if math.abs(vx) < 0.001 and math.abs(vz) < 0.001 then
+    --                 goto continue
+    --             end
+
+    --             -- Also guard against explicit shop property state
+    --             if vehicle.propertyState == Vehicle.PROPERTY_STATE_SHOP then
+    --                 goto continue
+    --             end
+    --             --#endregion
+
+    --             if dist < self.settings.base_radius then
+    --                 --self:applyTornadoForces(vehicle, dist, dt)
+
+    --                 -- Trigger Destruction
+    --                 if TornadoDestruction then
+    --                     TornadoDestruction:destroyTarget(vehicle)
+    --                 end
+    --             end
+    --         end
+    --     end
+    -- end
+
     if g_currentMission.vehicleSystem and g_currentMission.vehicleSystem.vehicles then
         for _, vehicle in pairs(g_currentMission.vehicleSystem.vehicles) do
             if vehicle ~= nil and vehicle.rootNode ~= nil then
                 local vx, vy, vz = getWorldTranslation(vehicle.rootNode)
-                local dist = MathUtil.vector3Length(vx-tX, vy-tY, vz-tZ)
-                
-                if dist < self.settings.base_radius then
-                    --self:applyTornadoForces(vehicle, dist, dt)
-                    
-                    -- Trigger Destruction
-                    if TornadoDestruction then
-                        TornadoDestruction:destroyTarget(vehicle)
+
+                -- 1. Check shop/origin conditions FIRST before doing math
+                local isOrigin = (math.abs(vx) < 0.001 and math.abs(vz) < 0.001)
+                local isShopItem = (vehicle.propertyState == Vehicle.PROPERTY_STATE_SHOP)
+
+                if not isOrigin and not isShopItem then
+                    -- 2. Only calculate distance for valid, in-world vehicles
+                    local dist = MathUtil.vector3Length(vx - tX, vy - tY, vz - tZ)
+
+                    if dist < self.settings.base_radius then
+                        -- self:applyTornadoForces(vehicle, dist, dt)
+
+                        -- Trigger Destruction
+                        if TornadoDestruction then
+                            TornadoDestruction:destroyTarget(vehicle)
+                        end
                     end
                 end
             end
         end
     end
+    --#region
+    -- -- 2. Scan Placeables (Buildings)
+    -- if g_currentMission.placeableSystem and g_currentMission.placeableSystem.placeables then
+    --     for _, placeable in pairs(g_currentMission.placeableSystem.placeables) do
+    --          if placeable ~= nil and placeable.rootNode ~= nil then
+    --             local px, py, pz = getWorldTranslation(placeable.rootNode)
+    --             local dist = MathUtil.vector3Length(px-tX, py-tY, pz-tZ)
 
+    --             if dist < self.settings.base_radius then
+    --                  -- Trigger Destruction
+    --                  if TornadoDestruction then
+    --                     TornadoDestruction:destroyTarget(placeable)
+    --                 end
+    --             end
+    --          end
+    --     end
+    -- end
+    --#endregion
+    --#region
     -- 2. Scan Placeables (Buildings)
     if g_currentMission.placeableSystem and g_currentMission.placeableSystem.placeables then
         for _, placeable in pairs(g_currentMission.placeableSystem.placeables) do
-             if placeable ~= nil and placeable.rootNode ~= nil then
+            if placeable ~= nil and placeable.rootNode ~= nil then
                 local px, py, pz = getWorldTranslation(placeable.rootNode)
-                local dist = MathUtil.vector3Length(px-tX, py-tY, pz-tZ)
-                
-                if dist < self.settings.base_radius then
-                     -- Trigger Destruction
-                     if TornadoDestruction then
-                        TornadoDestruction:destroyTarget(placeable)
+
+                -- 1. Ignore uninitialized / preview placeables sitting at origin (0,0)
+                if not (math.abs(px) < 0.001 and math.abs(pz) < 0.001) then
+                    -- 2. Distance check only runs on valid map placeables
+                    local dist = MathUtil.vector3Length(px - tX, py - tY, pz - tZ)
+
+                    if dist < self.settings.base_radius then
+                        -- Trigger Destruction
+                        if TornadoDestruction then
+                            TornadoDestruction:destroyTarget(placeable)
+                        end
                     end
                 end
-             end
+            end
         end
     end
+    --#endregion
 end
---#endregion
 
 function TornadoPhysics:runPhysicsLoop(dt, tX, tY, tZ)
     local dtSec = dt * 0.001
@@ -451,14 +512,65 @@ function TornadoPhysics:runPhysicsLoop(dt, tX, tY, tZ)
         end
     end
 
+    --#region
+    -- if self.settings.lift_logs then
+    --     self.scanTimer = (self.scanTimer or 0) + dt
+    --     if self.scanTimer > 100 then
+    --         overlapSphere(tX, tY, tZ, currentOuterRadius * 1.2, "objectScanCallback", self, 8192 + 32 + 2, true, true, true, false)
+    --         self.scanTimer = 0
+    --     end
+    -- end
+    -- Sweep for Logs & Environmental Props (Stop Signs, Fences, Loose Items)
+    -- if self.settings.lift_logs then
+    --     self.scanTimer = (self.scanTimer or 0) + dt
+    --     if self.scanTimer > 100 then
+    --         -- Use LOG_MASK + PROP_MASK so objectScanCallback catches both logs and breakable signs!
+    --         local SCAN_MASK = LOG_MASK + PROP_MASK
+    --         overlapSphere(tX, tY, tZ, currentOuterRadius * 1.2, "objectScanCallback", self, SCAN_MASK, true, true, true,
+    --             false)
+    --         self.scanTimer = 0
+    --     end
+    -- end
+    -- ---------------------------------------------------------------------
+    -- SWEEP FOR TIMBER / LOGS
+    -- ---------------------------------------------------------------------
     if self.settings.lift_logs then
-        self.scanTimer = (self.scanTimer or 0) + dt
-        if self.scanTimer > 100 then
-            overlapSphere(tX, tY, tZ, currentOuterRadius * 1.2, "objectScanCallback", self, 8192 + 32 + 2, true, true, true, false)
-            self.scanTimer = 0
+        self.logScanTimer = (self.logScanTimer or 0) + dt
+        if self.logScanTimer > 100 then
+            overlapSphere(tX, tY, tZ, currentOuterRadius * 1.2, "objectScanCallback", self, LOG_MASK, true, true, true, false)
+            self.logScanTimer = 0
         end
     end
 
+    -- ---------------------------------------------------------------------
+    -- SWEEP FOR MAP PROPS (Signs, Cones, Fences, Loose Items)
+    -- ---------------------------------------------------------------------
+    if self.settings.lift_props then
+        self.propScanTimer = (self.propScanTimer or 0) + dt
+        if self.propScanTimer > 100 then
+            overlapSphere(tX, tY, tZ, currentOuterRadius * 1.2, "objectScanCallback", self, PROP_MASK, true, true, true, false)
+            self.propScanTimer = 0
+        end
+    end
+    --#endregion
+    --#region
+    -- for nodeId, data in pairs(self.activeNodes) do
+    --     if entityExists(nodeId) then
+    --         if self.debugMode then self:drawDebugLabel(nodeId, self.isPurging and "EJECT" or data.type) end
+    --         I3DUtil.wakeUpObject(nodeId)
+
+    --         if data.type == "VEHICLE" or data.type == "PLAYER" or data.type == "PALLET" then
+    --             self:applyVehiclePhysics(nodeId, tX, tY, tZ, dtSec, data)
+    --         elseif data.type == "LOG" then
+    --             self:applyLogPhysics(nodeId, tX, tY, tZ, dtSec, data)
+    --         else
+    --             self:applyBalePhysics(nodeId, tX, tY, tZ, dtSec, data)
+    --         end
+    --     end
+    -- end
+    --#endregion
+    --#region
+    -- UPDATED LOOP WITH PROP DISPATCH & CLEANUP:
     for nodeId, data in pairs(self.activeNodes) do
         if entityExists(nodeId) then
             if self.debugMode then self:drawDebugLabel(nodeId, self.isPurging and "EJECT" or data.type) end
@@ -468,11 +580,16 @@ function TornadoPhysics:runPhysicsLoop(dt, tX, tY, tZ)
                 self:applyVehiclePhysics(nodeId, tX, tY, tZ, dtSec, data)
             elseif data.type == "LOG" then
                 self:applyLogPhysics(nodeId, tX, tY, tZ, dtSec, data)
-            else
+            elseif data.type == "PROP" then
+                self:applyPropPhysics(nodeId, tX, tY, tZ, dtSec, data)
+            elseif data.type == "BALE" then
                 self:applyBalePhysics(nodeId, tX, tY, tZ, dtSec, data)
             end
+        else
+            self.activeNodes[nodeId] = nil -- Clean up missing nodes
         end
     end
+    --#endregion
 end
 
 -- =========================================================================
@@ -545,11 +662,11 @@ function TornadoPhysics:applyVehiclePhysics(nodeId, tX, tY, tZ, dtSec, data)
             verticalKick = 6.0
             damping = 0.20
             speedLimit = 30.0
-        
-        -- TIER 2: MIDDLEWEIGHT (0.8t - 2.5t)
+
+            -- TIER 2: MIDDLEWEIGHT (0.8t - 2.5t)
         elseif mass < 2.5 then
             if purgeMult > 1.0 then purgeMult = 1.0 end
-            verticalKick = 6.0 
+            verticalKick = 6.0
             damping = 0.5
         end
 
@@ -560,7 +677,7 @@ function TornadoPhysics:applyVehiclePhysics(nodeId, tX, tY, tZ, dtSec, data)
         -- SPEED LIMITER
         local currentSpeed = MathUtil.vector3Length(lVx, lVy, lVz)
         if currentSpeed > speedLimit then
-            return 
+            return
         end
 
         -- CALCULATE FORCE
@@ -570,7 +687,7 @@ function TornadoPhysics:applyVehiclePhysics(nodeId, tX, tY, tZ, dtSec, data)
         local adjustedPower = (self.settings.ejection_power * purgeMult) / ejectionResistance
         local forceMag = mass * adjustedPower
         local liftKickVal = verticalKick / math.sqrt(massFactor)
-        
+
         addForce(nodeId, pushX * forceMag, mass * liftKickVal, pushZ * forceMag, 0, 0, 0, true)
         return
     end
@@ -644,6 +761,7 @@ end
 -- =========================================================================
 -- LOGS & BALES PHYSICS
 -- =========================================================================
+--#region
 function TornadoPhysics:applyLogPhysics(nodeId, tX, tY, tZ, dtSec, data)
     local mass = getMass(nodeId)
     if mass == nil or mass < 0.001 then return end
@@ -714,6 +832,110 @@ function TornadoPhysics:applyLogPhysics(nodeId, tX, tY, tZ, dtSec, data)
     local newVy = lVy + (targetVy - lVy) * blend
     setLinearVelocity(nodeId, newVx, newVy, newVz)
 end
+
+--#endregion
+--#region
+--old section before adding a dedicated function for props.
+
+-- =========================================================================
+-- LOGS & BALES PHYSICS
+-- =========================================================================
+-- function TornadoPhysics:applyLogPhysics(nodeId, tX, tY, tZ, dtSec, data)
+--     local mass = getMass(nodeId)
+--     if mass == nil or mass < 0.001 then return end
+--     local vX, vY, vZ = getWorldTranslation(nodeId)
+--     if vX == nil then return end
+
+--     local dx = tX - vX
+--     local dz = tZ - vZ
+--     local distSq = dx * dx + dz * dz
+
+--     -- Detect light map props (street signs, cones, small debris)
+--     local isLightProp = (mass < 0.2)
+
+--     local massFactor = 1.0
+--     if mass > self.settings.heavy_threshold then
+--         massFactor = 1.0 + ((mass - self.settings.heavy_threshold) * self.settings.mass_penalty)
+--     end
+--     if massFactor > 4.0 then massFactor = 4.0 end
+
+--     if self.settings.border_safety then
+--         local safeLimit = mapBoundary - self.settings.geo_fence
+--         if math.abs(vX) > safeLimit or math.abs(vZ) > safeLimit then
+--             setLinearVelocity(nodeId, 0, -10.0, 0)
+--             setAngularVelocity(nodeId, 0, 0, 0)
+--             return
+--         end
+--     end
+
+--     if self:checkIsIndoorsCached(nodeId, 1.5) then return end
+
+--     if self.isPurging then
+--         setLinearDamping(nodeId, 0.05)
+--         setAngularDamping(nodeId, 0.05)
+--         local dist = math.sqrt(distSq)
+--         if dist < 1.0 then dist = 1.0 end
+--         local pushX = -dx / dist
+--         local pushZ = -dz / dist
+
+--         -- Light props get an extra ejection burst so they sail away
+--         local ejectionMult = isLightProp and 2.5 or 1.0
+--         local adjustedPower = ((self.settings.ejection_power * self.sizeMultiplier) / massFactor) * ejectionMult
+--         local forceMag = mass * adjustedPower
+--         local liftKick = (isLightProp and 12.0 or 6.0) / math.sqrt(massFactor)
+--         addForce(nodeId, pushX * forceMag, mass * liftKick, pushZ * forceMag, 0, 0, 0, true)
+--         return
+--     end
+
+--     -- Less angular damping for light props so they tumble naturally in the air
+--     setAngularDamping(nodeId, isLightProp and 0.1 or 1.0)
+--     local lVx, lVy, lVz = getLinearVelocity(nodeId)
+--     if lVx == nil then return end
+
+--     local dist = math.sqrt(distSq)
+--     if dist < 0.1 then dist = 0.1 end
+--     local dirX = dx / dist
+--     local dirZ = dz / dist
+
+--     local targetVx, targetVz, targetVy = 0, 0, 0
+
+--     if dist < 20.0 then
+--         -- Light props orbit faster and gain vertical swirl
+--         local orbitSpeed = isLightProp and 25.0 or 15.0
+--         targetVx = -dirX * 5.0 - (dirZ * orbitSpeed)
+--         targetVz = -dirZ * 5.0 + (dirX * orbitSpeed)
+
+--         -- Give light props strong lift inside the core
+--         targetVy = isLightProp and (self.settings.lift_speed * 1.8) or (self.settings.lift_speed / math.sqrt(massFactor))
+--     else
+--         local speed = self.settings.suction_speed * (dist / currentOuterRadius)
+--         targetVx = dirX * speed
+--         targetVz = dirZ * speed
+--         targetVy = isLightProp and 1.5 or 0.5
+--     end
+
+--     -- Height management
+--     local relY = vY - tY
+--     if isLightProp then
+--         -- Allow signs to float higher, and use soft damping instead of hard -5.0 downforce
+--         if relY > (self.settings.hover_height * 1.5) then
+--             targetVy = -1.5
+--         end
+--     else
+--         -- Heavy logs/timber stay locked to low hover ceiling
+--         if relY > self.settings.hover_height then
+--             targetVy = -5.0
+--         end
+--     end
+
+--     -- Velocity blending (Light props blend quicker to stay responsive)
+--     local blend = (isLightProp and 8.0 or 5.0) * dtSec
+--     local newVx = lVx + (targetVx - lVx) * blend
+--     local newVz = lVz + (targetVz - lVz) * blend
+--     local newVy = lVy + (targetVy - lVy) * blend
+--     setLinearVelocity(nodeId, newVx, newVy, newVz)
+-- end
+--#endregion
 
 function TornadoPhysics:applyBalePhysics(nodeId, tX, tY, tZ, dtSec, data)
     local mass = getMass(nodeId)
@@ -831,7 +1053,7 @@ function TornadoPhysics:applyDamage(vehicle, amount, currentOuterRadius)
     end
 
     local igniteThreshold = self.settings.fire_damage_threshold or 0.85
-    
+
     -- [CRITICAL CHECK] Added vehicle.spec_motorized
     if newDmg >= igniteThreshold and not vehicle.tornadoIsOnFire and vehicle.spec_motorized then
         vehicle.tornadoIsOnFire = true
@@ -860,6 +1082,97 @@ function TornadoPhysics:applyDamage(vehicle, amount, currentOuterRadius)
         end
     end
 end
+
+--#region
+-- =========================================================================
+-- PROPS & ENVIRONMENT DEBRIS PHYSICS (Signs, Cones, Fences)
+-- =========================================================================
+function TornadoPhysics:applyPropPhysics(nodeId, tX, tY, tZ, dtSec, data)
+    local mass = getMass(nodeId)
+    if mass == nil or mass < 0.001 then return end
+    local vX, vY, vZ = getWorldTranslation(nodeId)
+    if vX == nil then return end
+
+    -- 1. Break static/kinematic locks on map props
+    if getIsRigidBodyKinematic and getIsRigidBodyKinematic(nodeId) then
+        setRigidBodyType(nodeId, RigidBodyType.DYNAMIC)
+    end
+
+    -- 2. Shock stationary props to snap map joints
+    local lVx, lVy, lVz = getLinearVelocity(nodeId)
+    if lVx ~= nil and (lVx * lVx + lVy * lVy + lVz * lVz) < 0.0001 then
+        addImpulse(nodeId, 0, mass * 10.0, 0, 0, 0, 0, true)
+    end
+
+    local dx = tX - vX
+    local dz = tZ - vZ
+    local distSq = dx * dx + dz * dz
+
+    -- Border safety check
+    if self.settings.border_safety then
+        local safeLimit = mapBoundary - self.settings.geo_fence
+        if math.abs(vX) > safeLimit or math.abs(vZ) > safeLimit then
+            setLinearVelocity(nodeId, 0, -10.0, 0)
+            setAngularVelocity(nodeId, 0, 0, 0)
+            return
+        end
+    end
+
+    if self:checkIsIndoorsCached(nodeId, 1.5) then return end
+
+    -- Purge / Ejection Phase
+    if self.isPurging then
+        setLinearDamping(nodeId, 0.05)
+        setAngularDamping(nodeId, 0.05)
+        local dist = math.sqrt(distSq)
+        if dist < 1.0 then dist = 1.0 end
+        local pushX = -dx / dist
+        local pushZ = -dz / dist
+
+        local forceMag = mass * (self.settings.ejection_power * self.sizeMultiplier * 2.5)
+        addForce(nodeId, pushX * forceMag, mass * 12.0, pushZ * forceMag, 0, 0, 0, true)
+        return
+    end
+
+    -- Low angular damping for active airborne tumbling
+    setAngularDamping(nodeId, 0.1)
+
+    local dist = math.sqrt(distSq)
+    if dist < 0.1 then dist = 0.1 end
+    local dirX = dx / dist
+    local dirZ = dz / dist
+
+    local targetVx, targetVz, targetVy = 0, 0, 0
+
+    if dist < 20.0 then
+        -- Fast, tight orbit in funnel center
+        targetVx = -dirX * 5.0 - (dirZ * 25.0)
+        targetVz = -dirZ * 5.0 + (dirX * 25.0)
+        targetVy = self.settings.lift_speed * 1.8
+    else
+        -- Suction phase
+        local speed = self.settings.suction_speed * (dist / currentOuterRadius)
+        targetVx = dirX * speed
+        targetVz = dirZ * speed
+        targetVy = 1.5
+    end
+
+    -- Soft height ceiling so props float gracefully without slamming down
+    local relY = vY - tY
+    if relY > (self.settings.hover_height * 1.5) then
+        targetVy = -1.5
+    end
+
+    -- Rapid velocity blending
+    local blend = 8.0 * dtSec
+    local newVx = lVx + (targetVx - lVx) * blend
+    local newVz = lVz + (targetVz - lVz) * blend
+    local newVy = lVy + (targetVy - lVy) * blend
+
+    setLinearVelocity(nodeId, newVx, newVy, newVz)
+end
+
+--#endregion
 
 -- =========================================================================
 -- HELPERS
@@ -890,12 +1203,50 @@ function TornadoPhysics:raycastCallback(hitObjectId)
     return true
 end
 
+--#region
+-- function TornadoPhysics:objectScanCallback(nodeId)
+--     if not entityExists(nodeId) then return true end
+--     if self.activeNodes[nodeId] then return true end
+--     if ClassIds and getHasClassId(nodeId, ClassIds.MESH_SPLIT_SHAPE) then self.activeNodes[nodeId] = { type = "LOG" } end
+--     return true
+-- end
+-- function TornadoPhysics:objectScanCallback(nodeId)
+--     if not entityExists(nodeId) then return true end
+--     if self.activeNodes[nodeId] then return true end
+
+--     -- Pick up split logs
+--     if ClassIds and getHasClassId(nodeId, ClassIds.MESH_SPLIT_SHAPE) then
+--         self.activeNodes[nodeId] = { type = "LOG" }
+--     -- Pick up dynamic street signs and map props
+--     elseif getRigidBodyType(nodeId) ~= RigidBodyType.STATIC then
+--         self.activeNodes[nodeId] = { type = "LOG" } -- Flings them using log/bale physics!
+--     end
+--     return true
+-- end
 function TornadoPhysics:objectScanCallback(nodeId)
     if not entityExists(nodeId) then return true end
     if self.activeNodes[nodeId] then return true end
-    if ClassIds and getHasClassId(nodeId, ClassIds.MESH_SPLIT_SHAPE) then self.activeNodes[nodeId] = { type = "LOG" } end
+
+    local mass = getMass(nodeId) or 0.0
+
+    -- 1. Split timber / logs
+    if ClassIds and getHasClassId(nodeId, ClassIds.MESH_SPLIT_SHAPE) then
+        self.activeNodes[nodeId] = { type = "LOG" }
+
+        -- 2. Non-static map props (Signs, cones, light debris)
+    elseif getRigidBodyType(nodeId) ~= RigidBodyType.STATIC then
+        -- If it's light, tag it as PROP, otherwise leave heavy debris as LOG
+        if mass > 0 and mass < 0.2 then
+            self.activeNodes[nodeId] = { type = "PROP" }
+        else
+            self.activeNodes[nodeId] = { type = "LOG" }
+        end
+    end
+
     return true
 end
+
+--#endregion
 
 function TornadoPhysics:drawDebugLabel(nodeId, type)
     local x, y, z = getWorldTranslation(nodeId)
@@ -908,7 +1259,8 @@ function TornadoPhysics:drawDebugLabel(nodeId, type)
 end
 
 function TornadoPhysics:drawDebugRing(x, y, z, r)
-    local steps = 40; local hLow = y + 2.0; local hHigh = y + 40.0; local g = self.isPurging and 1.0 or 0.0; local r_col = self.isPurging and 0.0 or 1.0
+    local steps = 40; local hLow = y + 2.0; local hHigh = y + 40.0; local g = self.isPurging and 1.0 or 0.0; local r_col =
+    self.isPurging and 0.0 or 1.0
     for i = 1, steps do
         local a1 = (i - 1) / (steps) * 6.28; local a2 = i / steps * 6.28
         local x1, z1 = x + math.cos(a1) * r, z + math.sin(a1) * r
@@ -923,17 +1275,20 @@ function TornadoPhysics:calculateMapScale()
     if g_currentMission and g_currentMission.terrainSize then
         local size = g_currentMission.terrainSize
         mapScaleFactor = size / 2048.0; if mapScaleFactor < 1.0 then mapScaleFactor = 1.0 end
-        mapBoundary = size * 0.5; currentOuterRadius = self.settings.base_radius * mapScaleFactor; currentOuterRadiusSq = currentOuterRadius * currentOuterRadius
+        mapBoundary = size * 0.5; currentOuterRadius = self.settings.base_radius * mapScaleFactor; currentOuterRadiusSq =
+        currentOuterRadius * currentOuterRadius
         self.purgeInterval = self.settings.purge_interval + ((mapScaleFactor - 1.0) * 20000)
         self.dynamicImmunityMS = (240.0 + ((mapScaleFactor - 1.0) * 300.0)) * 1000
-        if TornadoDebug then TornadoDebug:info("SETUP", string.format("MapSize=%.0f | Radius=%.1fm | Purge=%.1fs", size, currentOuterRadius, self.purgeInterval / 1000)) end
+        if TornadoDebug then TornadoDebug:info("SETUP",
+                string.format("MapSize=%.0f | Radius=%.1fm | Purge=%.1fs", size, currentOuterRadius,
+                    self.purgeInterval / 1000)) end
     end
 
--- Export for other modules (MapUI, etc.)
-self.mapScaleFactor = mapScaleFactor
-TornadoPhysics.mapScaleFactor = mapScaleFactor
-self.mapBoundary = mapBoundary
-TornadoPhysics.mapBoundary = mapBoundary
+    -- Export for other modules (MapUI, etc.)
+    self.mapScaleFactor = mapScaleFactor
+    TornadoPhysics.mapScaleFactor = mapScaleFactor
+    self.mapBoundary = mapBoundary
+    TornadoPhysics.mapBoundary = mapBoundary
 end
 
 function TornadoPhysics:randomizeTornado()
@@ -949,23 +1304,22 @@ function TornadoPhysics:randomizeTornado()
         for i = 0, numChildren - 1 do
             local child = getChildAt(self.tornadoNode, i)
             local childName = string.lower(getName(child) or "")
-            
+
             -- Look for native GIANTS particle/debris nodes attached to the twister
             if string.find(childName, "debris") or string.find(childName, "dust") or string.find(childName, "particles") then
-                
                 -- We found the debris ring! Let's clone it 3 times for 4x density.
                 for cloneIdx = 1, 3 do
                     local clonedDebris = clone(child, true, false, false)
                     link(self.tornadoNode, clonedDebris) -- Attach clone to the main tornado
-                    
+
                     -- Offset the rotation so the debris fields interlock instead of overlapping
                     local rx, ry, rz = getRotation(clonedDebris)
                     setRotation(clonedDebris, rx, ry + math.rad(cloneIdx * 45), rz)
-                    
+
                     -- Make the outer clones slightly wider to thicken the funnel base
                     setScale(clonedDebris, 1.0 + (cloneIdx * 0.2), 1.0, 1.0 + (cloneIdx * 0.2))
                 end
-                
+
                 if TornadoDebug then TornadoDebug:log("PHYSICS", "Successfully multiplied native debris/dust nodes.") end
             end
         end
@@ -976,29 +1330,40 @@ function TornadoPhysics:randomizeTornado()
 
         self.sizeMultiplier = currentOuterRadius / self.settings.base_radius
         if self.sizeMultiplier < 1.0 then self.sizeMultiplier = 1.0 end
-        
--- EF scale + NWS 3-second gust ranges (mph)
-local efNum = 0
-local windMin, windMax = 65, 85
-if scale > 1.0 then efNum = 1; windMin, windMax = 86, 110 end
-if scale > 2.0 then efNum = 2; windMin, windMax = 111, 135 end
-if scale > 3.0 then efNum = 3; windMin, windMax = 136, 165 end
-if scale > 4.0 then efNum = 4; windMin, windMax = 166, 200 end
-if scale > 4.8 then efNum = 5; windMin, windMax = 201, 250 end
 
-local rating = "EF-" .. tostring(efNum)
+        -- EF scale + NWS 3-second gust ranges (mph)
+        local efNum = 0
+        local windMin, windMax = 65, 85
+        if scale > 1.0 then
+            efNum = 1; windMin, windMax = 86, 110
+        end
+        if scale > 2.0 then
+            efNum = 2; windMin, windMax = 111, 135
+        end
+        if scale > 3.0 then
+            efNum = 3; windMin, windMax = 136, 165
+        end
+        if scale > 4.0 then
+            efNum = 4; windMin, windMax = 166, 200
+        end
+        if scale > 4.8 then
+            efNum = 5; windMin, windMax = 201, 250
+        end
 
--- Export stats for MapUI (and other modules)
-self.currentEfNum = efNum; TornadoPhysics.currentEfNum = efNum
-self.currentWindMin = windMin; TornadoPhysics.currentWindMin = windMin
-self.currentWindMax = windMax; TornadoPhysics.currentWindMax = windMax
-self.currentRadiusM = math.floor(currentOuterRadius + 0.5); TornadoPhysics.currentRadiusM = self.currentRadiusM
+        local rating = "EF-" .. tostring(efNum)
 
-if TornadoHotspot ~= nil and TornadoHotspot.updateStats ~= nil then
-    TornadoHotspot:updateStats(efNum, windMin, windMax, self.currentRadiusM)
-end
+        -- Export stats for MapUI (and other modules)
+        self.currentEfNum = efNum; TornadoPhysics.currentEfNum = efNum
+        self.currentWindMin = windMin; TornadoPhysics.currentWindMin = windMin
+        self.currentWindMax = windMax; TornadoPhysics.currentWindMax = windMax
+        self.currentRadiusM = math.floor(currentOuterRadius + 0.5); TornadoPhysics.currentRadiusM = self.currentRadiusM
 
-local msg = string.format("ALERT: TORNADO TOUCHDOWN! (%s | Radius: %dm | PwrMult: x%.1f)", rating, math.floor(currentOuterRadius), self.sizeMultiplier)
+        if TornadoHotspot ~= nil and TornadoHotspot.updateStats ~= nil then
+            TornadoHotspot:updateStats(efNum, windMin, windMax, self.currentRadiusM)
+        end
+
+        local msg = string.format("ALERT: TORNADO TOUCHDOWN! (%s | Radius: %dm | PwrMult: x%.1f)", rating,
+            math.floor(currentOuterRadius), self.sizeMultiplier)
 
         if TornadoDebug then TornadoDebug:info("EVENT", msg) end
         if g_currentMission then g_currentMission:showBlinkingWarning(msg, 20000) end
@@ -1032,10 +1397,10 @@ function TornadoPhysics:getVehicleTotalMass(vehicle)
             end
         end
     end
-    
+
     -- SAFETY ONLY (Prevent divide-by-zero, but DO NOT fake the weight)
     if totalMass < 0.05 then totalMass = 0.05 end
-    
+
     return totalMass
 end
 
@@ -1043,7 +1408,7 @@ function TornadoPhysics:clearTornadoState()
     print("TornadoPhysics: WATCHDOG TRIGGERED! Cleaning up despawned tornado.")
 
     --#region
-    -- Scan every active entity tracked in the current physics sweep 
+    -- Scan every active entity tracked in the current physics sweep
     -- and strip off visual artifacts before clearing the tracking tables.
     if self.activeNodes ~= nil then
         for _, data in pairs(self.activeNodes) do
@@ -1054,7 +1419,7 @@ function TornadoPhysics:clearTornadoState()
         end
     end
     --#endregion
-    
+
     -- 1. Clear internal script variables
     self.tornadoNode = nil
     self.lastTornadoPos = nil
@@ -1064,15 +1429,15 @@ function TornadoPhysics:clearTornadoState()
     self.purgeTimer = 0
     self.foundCandidate = nil
     self.confirmTimer = 0
-    
+
     -- 2. Clear HUD / Hotspot
     if TornadoHotspot ~= nil and TornadoHotspot.deleteMap ~= nil then
         TornadoHotspot:deleteMap()
     end
-    
+
     -- 3. Stop Siren
-    if TornadoSFX then 
-        TornadoSFX.sirenLoopCount = 0 
+    if TornadoSFX then
+        TornadoSFX.sirenLoopCount = 0
         -- If you have a specific stopSiren() function, call it here
     end
     --#region
@@ -1087,7 +1452,7 @@ function TornadoPhysics:clearTornadoState()
 
     --     --#region
     --     -- Force the engine to execute its full, native environment data reload.
-    --     -- This re-reads the map configurations and restores the twister definition 
+    --     -- This re-reads the map configurations and restores the twister definition
     --     -- table that EDC or Screenshot mode broke!
     --     if environment.consoleCommandReloadEnvironment ~= nil then
     --         print("TornadoPhysics: Running consoleCommandReloadEnvironment to restore map definitions...")
@@ -1095,7 +1460,7 @@ function TornadoPhysics:clearTornadoState()
     --     else
     --         print("TornadoPhysics: Warning - consoleCommandReloadEnvironment not found on environment object.")
     --     end
-        
+
     --     -- Optional: Reload ambient sounds just like EDC does to keep everything in sync
     --     if g_currentMission.ambientSoundSystem ~= nil and g_currentMission.ambientSoundSystem.consoleCommandReload ~= nil then
     --         g_currentMission.ambientSoundSystem:consoleCommandReload()
@@ -1105,14 +1470,14 @@ function TornadoPhysics:clearTornadoState()
     -- 4. Force Weather Manager Reset & Auto-Heal Environment
     if g_currentMission and g_currentMission.environment ~= nil then
         local environment = g_currentMission.environment
-        
+
         -- Safe cleanup of the old twister reference
         if environment.weather ~= nil then
             if environment.weather.twister ~= nil then
                 print("TornadoPhysics: Forcing game engine weather cleanup.")
                 environment.weather.twister = nil
             end
-            
+
             -- EDC Trick: Reset the rain updater to avoid log warnings during reload
             if environment.weather.rainUpdater ~= nil then
                 print("TornadoPhysics: Resetting rainUpdater table...")
@@ -1125,18 +1490,17 @@ function TornadoPhysics:clearTornadoState()
             print("TornadoPhysics: Running consoleCommandReloadEnvironment to restore map definitions...")
             environment:consoleCommandReloadEnvironment()
 
-            -- Because the engine just destroyed and re-created the environment, 
+            -- Because the engine just destroyed and re-created the environment,
             -- your initial loadMap overlays were unhooked. We re-register them now!
             if TornadoHotspot ~= nil and TornadoHotspot.loadMap ~= nil then
                 print("TornadoPhysics: Restoring MapUI overlay elements and hotspots...")
                 -- Pass the current map filename if needed, or invoke your UI canvas refresh
-                TornadoHotspot:loadMap() 
+                TornadoHotspot:loadMap()
             end
-
         else
             print("TornadoPhysics: Warning - consoleCommandReloadEnvironment not found on environment object.")
         end
-        
+
         -- Reload ambient sounds just like EDC does to keep everything in sync
         if g_currentMission.ambientSoundSystem ~= nil and g_currentMission.ambientSoundSystem.consoleCommandReload ~= nil then
             g_currentMission.ambientSoundSystem:consoleCommandReload()
@@ -1146,27 +1510,27 @@ function TornadoPhysics:clearTornadoState()
         print("TornadoPhysics: Environment instance is currently rebuilding (nil). Skipping manual reload invocation.")
     end
     --#endregion
-    
+
     if TornadoAPI then TornadoAPI:fireDespawnEvent() end
 
     print("TornadoPhysics: Cleanup complete. Ready for new spawn.")
 end
 
 function TornadoPhysics:purgeVehicleVisualArtifacts(vehicle)
-    if not vehicle or not vehicle.rootNode or not entityExists(vehicle.rootNode) then 
-        return 
+    if not vehicle or not vehicle.rootNode or not entityExists(vehicle.rootNode) then
+        return
     end
 
     local root = vehicle.rootNode
     local numChildren = getNumOfChildren(root)
-    
+
     -- Loop backwards to safely delete child entries from the engine stack
     for i = numChildren - 1, 0, -1 do
         local child = getChildAt(root, i)
         if child and entityExists(child) then
             local name = getName(child) or ""
             local lowerName = string.lower(name)
-            
+
             -- Targeted precision sweep for your exact asset footprints
             if string.find(lowerName, "smoketrail") or string.find(lowerName, "firetrail") then
                 print(string.format("TornadoPhysics: Purging orphaned asset artifact [%s] from vehicle.", name))
