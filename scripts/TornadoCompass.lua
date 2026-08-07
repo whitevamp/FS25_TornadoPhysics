@@ -62,12 +62,7 @@ function TornadoCompass:update(dt)
                             {
                                 x = tX,
                                 z = tZ,
-                                -- orignal 14 characters long : too long for the hard coded 8 charicter limit of compassheading.lua
-                                --label = string.format("TORNADO (EF-%d)", efRating),
-                                -- EF-(n)
-                                --label = string.format("EF-%d", efRating),
-                                -- EF-(n) ALRT
-                                label = string.format("EF%d ALRT", efRating),
+                                label = string.format("EF%d TORNADO", efRating),
                                 color = {r=1.0, g=0.15, b=0.15, a=1.0},
                                 style = "diamond",
                                 scale = 1.3,
