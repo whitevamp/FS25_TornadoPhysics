@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="FireTrailSubUV.i3d" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+  <Asset>
+    <Export program="GIANTS Editor 64bit" version="10.0.12"/>
+  </Asset>
+
+  <Files>
+    <File fileId="4" filename="$data/shaders/smokeTrailSubUVShader.xml"/>
+    <File fileId="2" filename="$data/shared/default_normal.png"/>
+    <File fileId="3" filename="$data/shared/default_specular.png"/>
+    <File fileId="1" filename="fire1_64_8x8_512.dds"/>
+  </Files>
+
+
+  <Materials>
+    <Material name="fire_mat1" materialId="5" alphaBlending="true" customShaderId="4">
+      <Texture fileId="1"/>
+      <Normalmap fileId="2"/>
+      <Glossmap fileId="3"/>
+      <CustomParameter name="widthScale" value="3 4 1.25"/>
+      <CustomParameter name="playScale" value="30 40 10 6"/>
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="FireTrailSubUV.i3d.shapes">
+  </Shapes>
+
+  <Scene>
+    <Shape name="trail1" shapeId="1" clipDistance="200" objectMask="0xff007f" nodeId="9" castsShadows="false" receiveShadows="false" doubleSided="true" materialIds="5"/>
+    <TransformGroup name="trail2" clipDistance="200" objectMask="0xff007f" nodeId="10"/>
+  </Scene>
+
+</i3D>

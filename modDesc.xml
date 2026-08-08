@@ -1,50 +1,301 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<modDesc xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" descVersion="105" xsi:noNamespaceSchemaLocation="https://validation.gdn.giants-software.com/xml/fs25/modDesc.xsd">
+<modDesc xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" descVersion="111" xsi:noNamespaceSchemaLocation="https://validation.gdn.giants-software.com/xml/fs25/modDesc.xsd">
     <author>whitevamp</author>
-    <version>3.0.0.0</version>
+    <contributors>id577, RocklandUSA Gaming</contributors>
+    <version>4.0.0.0</version>
     <title>
         <en>Tornado Physics</en>
         <de>Tornado Physik</de>
-        <fr>Physique de Tornade</fr>
+        <fr>Physique Tornade</fr>
     </title>
     <description>
-        <en><![CDATA[Experience a true destructive weather event! This mod adds a high-performance tornado capable of interacting with the game's physics engine based on mass.
+        <en>
+            <![CDATA[
+*** KNOWN DEVELOPER TOOL LIMITATIONS ***
+1. If you use external developer tools (like EasyDevControls) to fast-forward the game clock by several months in a single frame while a tornado is active, lingering vehicle smoke and fire visual effects may freeze on affected vehicles.
+2. Under the same extreme fast-forward conditions, the 24-hour automatic damage repair countdown will pause. To resume and trigger the repair sequence normally, simply fast-forward time through a standard game mechanic, such as utilizing the in-game sleep timer.
+3. PERFORMANCE NOTICE: If a large number of vehicles are grouped closely together (such as when utilizing vehicle-stacking mods like Used Equipment Yard) and are hit simultaneously by a tornado, you may experience brief periodic screen freezes/stutters while the storm traverses the area due to heavy engine-level structural calculations.
+Note: High-speed time acceleration and baseline simulation gameplay function flawlessly under normal conditions.
+Note: These behaviors only occur when utilizing external developer tool command overrides; normal high-speed time acceleration and baseline simulation gameplay function flawlessly.
 
-            Features:
-            - Powerful Lift: Capable of lifting heavy tractors and fully loaded trailers
-            - Livestock Danger: Tornadoes can kill animals in pastures (Configurable)
-            - Geo-Fencing: Prevents vehicles from being thrown off the map
-            - Map Support: Auto-scales radius for 4x, 16x, and 64x maps
-            - Safety: Player ejection system and indoor safe zones (Barns)
+Experience a true destructive weather event!
+This mod adds a high-performance tornado capable of interacting with the game's physics engine based on mass. 
 
-            For bug reports and updates, visit: https://github.com/whitevamp/FS25_TornadoPhysics]]></en>
-        <de><![CDATA[Erleben Sie ein echtes zerstörerisches Wetterereignis! Dieser Mod fügt einen leistungsstarken Tornado hinzu, der basierend auf der Masse mit der Physik-Engine des Spiels interagiert.
+FEATURES:
+- Powerful Lift: Capable of lifting heavy tractors and fully loaded trailers
+- Livestock Danger: Tornadoes can kill animals in pastures (Configurable)
+- Geo-Fencing: Prevents vehicles from being thrown off the map
+- Map Support: Auto-scales radius for 4x, 16x, and 64x maps
+- Safety: Player ejection system and indoor safe zones (Barns)
+- Custom Particle Effects & Audio
 
-            Funktionen:
-            - Starker Sog: Kann schwere Traktoren und voll beladene Anhänger anheben
-            - Viehbestand-Gefahr: Tornados können Tiere auf Weiden töten (Konfigurierbar)
-            - Geo-Fencing: Verhindert, dass Fahrzeuge von der Karte fliegen
-            - Karten-Support: Automatische Skalierung für 4x-, 16x- und 64x-Karten
-            - Sicherheit: Spielerauswurf und sichere Innenbereiche (Scheunen)
+For bug reports and updates, visit: https://github.com/whitevamp/FS25_TornadoPhysics
 
-            Für Fehlerberichte und Updates besuchen Sie: https://github.com/whitevamp/FS25_TornadoPhysics]]></de>
-        <fr><![CDATA[Vivez un véritable événement météorologique destructeur ! Ce mod ajoute une tornade capable d'interagir avec le moteur physique du jeu en fonction de la masse.
+------------------------------------------------------------------------
+ADVANCED TUNING (NEW CONSOLE SYSTEM)
+------------------------------------------------------------------------
+For power users who want a specific experience, you can override the auto-settings using the console (~).
+Settings are automatically saved to: "modSettings/TornadoPhysics_Config.xml"
 
-            Caractéristiques:
-            - Puissance de levage : Capable de soulever des tracteurs lourds et des remorques chargées
-            - Danger bétail : Les tornades peuvent tuer les animaux dans les pâturages (Configurable)
-            - Géo-clôture : Empêche les véhicules de sortir de la carte
-            - Support de carte : Mise à l'échelle auto pour cartes 4x, 16x et 64x
-            - Sécurité : Éjection du joueur et zones de sécurité intérieures (Granges)
-            ]]></fr>
+MASTER COMMANDS:
+This update introduces a centralized command system. You no longer need to remember 20 different commands! Use 't_help [command]' in-game for full details on sub-commands.
+
+1. PHYSICS CONTROL (t_physics)
+- t_physics radius [x]   : Manually override storm size (Default: 35)
+- t_physics power [x]    : Change ejection strength (Default: 20)
+- t_physics heavy [x]    : Set mass threshold for heavy vehicles
+- t_physics fence [x]    : Set distance from map edge where physics stop
+- t_physics lift_bales   : Toggle handling of bales/pallets
+- t_physics lift_logs    : Toggle handling of logs
+- t_physics indoor_damage: Toggle damage to vehicles inside sheds
+- t_physics randomize    : Force a new random Tornado size and EF rating
+
+2. MODULE SETTINGS (t_set)
+- t_set save             : Save your current configuration to XML
+- t_set cargo            : Toggle Cargo Spilling System (Default: OFF)
+- t_set husbandry        : Toggle Animal Lethality (Default: OFF)
+- t_set destruction      : Toggle persistent vehicle destruction (Default: OFF)
+- t_set recovery         : Toggle the hardcore Emergency Tow bill when resetting to the shop (Default: OFF)
+- t_set mapui            : Toggle the Map UI overlay ON/OFF (Default: OFF)
+
+3. VISUALS & AUDIO (t_sfx)
+- t_sfx sound            : Toggle Siren Audio ON/OFF
+- t_sfx ring             : Toggle Debug Ring (Visual Safety Zone) (Default: OFF)
+- t_sfx fire_random      : Toggle random fire ignition for vehicles
+
+4. HARDCORE TUNING (t_tune)
+- Fine-tune the simulation constants live. 
+- Commands: suction, lift, chaos, bale_orbit, hover, max_speed, purge_time
+- Example: "t_tune chaos 20" (Makes the tornado incredibly violent)
+
+5. MASTER RESET (t_reset)
+- Factory reset your settings if things get out of hand.
+- Commands: all, physics, tuning, cargo, husbandry
+- Example: "t_reset all"
+
+6. DEVELOPER TOOLS (t_dev)
+- t_dev hud              : Toggles the on-screen Physics Telemetry UI over nodes
+- t_dev verbose all      : Enables master logging
+- t_dev pos              : Toggles real-time coordinate tracking for the tornado node
+
+------------------------------------------------------------------------
+CHANGELOG
+------------------------------------------------------------------------
+v4.0.0.0 (The Destruction Update)
+
+- [SYSTEM] Complete Code Rewrite: Moved to a modular architecture for better stability, save-game safety, and performance.
+- [SYSTEM] Added API: Allows other mod authors to tie into different aspects of the mod (see the README in the API directory).
+- [CONSOLE] New Master Command System: Replaced fragmented commands with t_help, t_physics, t_set, t_sfx, t_tune, and t_reset.
+- [GAMEPLAY] Added Cargo Spilling: Trailers caught in the storm will now dump their contents (Uncovered: 100% loss; Covered: chance to leak/pop open). (Default: OFF)
+- [GAMEPLAY] Added Vehicle Destruction: Vehicles, trailers, and implements caught in the storm will now physically lose parts, featuring an in-game 24-hour auto-repair function perfectly synced to your save game. (Default: OFF)
+- [GAMEPLAY] Added Hardcore Recovery: A dynamic vehicle billing system. If you reset a tornado-damaged vehicle to the shop, you will be charged an itemized tow and repair bill based on exactly how much damage the vehicle sustained! (Default: OFF)
+- [GAMEPLAY] Added ADS Support: Integration with the "Advanced Damage System" by id577 (Minor damage at 15s, Moderate at 30s, Total Destruction at 50s).
+- [GAMEPLAY] Added Siren Warning: A tornado siren will now loop for 3 minutes when a storm spawns. (Default: ON)
+- [GAMEPLAY] Readjusted Husbandry: If enabled, the tornado will detect if a barn has an outdoor pasture. Animals are only safe if the barn is strictly indoors; if an outdoor pasture is detected, they will not be safe. Note: Modded buildings that do not use standard GIANTS meshes may not be detected correctly.
+- [GAMEPLAY] Added Cross-Mod Support: Integration with CompassHeading by RocklandUSA Gaming. If you have the mod and a tornado spawns, it will show up on the compass along with the tornado rating.
+- [GAMEPLAY] Added Dynamic Weather: When a tornado spawns, the rain and/or hail intensity will now be completely randomized to better reflect real-life tornadoes. The 3 profiles are: 1 = Low-Precipitation (LP) Supercell, 2 = Classic Supercell, 3 = High-Precipitation (HP) Supercell.
+- [VISUALS] Added Smoke & Fire Effects: Motorized vehicles can now catch fire and emit smoke when critically damaged by the storm.
+- [VISUALS] Added Shader Mesh Support: Natively supports "smokeTrailSubUV" for advanced volumetric effects.
+- [VISUALS] Improved Debug Ring: Added a secondary ring for better visibility in valleys.
+- [VISUALS] Enhanced Tornado Ground Debris: The base of the tornado now dynamically multiplies native dirt and debris particles to create a massive, churning wedge.
+- [UI/UX] Added Map Hotspot & UI: You can now teleport to or visit the tornado from the ESC map. A new UI widget in the upper right corner of the map menu displays real-time tornado stats (EF Rating, Wind Speed, Radius).
+]]>
+        </en>
+        <de>
+            <![CDATA[
+*** BEKANNTE EINSCHRÄNKUNGEN DURCH ENTWICKLER-TOOLS ***
+1. Wenn Sie externe Entwickler-Tools (wie EasyDevControls) verwenden, um die Uhrzeit im Spiel bei aktivem Tornado um mehrere Monate in einem einzigen Frame vorzuspulen, können verbleibende visuelle Rauch- und Effekte auf den betroffenen Fahrzeugen einfrieren.
+2. Unter denselben extremen Zeitraffer-Bedingungen wird der automatische 24-Stunden-Reparatur-Countdown für Schäden pausiert. Um die Reparatursequenz normal fortzusetzen und auszulösen, spulen Sie die Zeit einfach über eine normale Spielmechanik vor (z. B. durch die Verwendung des Schlaftimers im Spiel).
+Hinweis: Diese Effekte treten nur auf, wenn externe Befehle von Entwickler-Tools verwendet werden; die normale Zeitbeschleunigung im Spiel und das Basis-Gameplay funktionieren einwandfrei.
+3. LEISTUNGSHINWEIS: Wenn eine große Anzahl von Fahrzeugen dicht beieinander steht (z. B. bei der Verwendung von Mods wie Used Equipment Yard) und gleichzeitig von einem Tornado getroffen wird, kann es aufgrund intensiver struktureller Berechnungen auf Engine-Ebene zu kurzen periodischen Standbildern/Rucklern kommen, während der Sturm das Gebiet durchquert.
+Hinweis: Die normale Zeitbeschleunigung im Spiel und das Basis-Gameplay funktionieren unter normalen Bedingungen einwandfrei.
+
+Erlebe ein wirklich zerstörerisches Wetterereignis!
+Dieser Mod fügt einen hochleistungsfähigen Tornado hinzu, der basierend auf der Masse mit der Physik-Engine des Spiels interagiert.
+
+EIGENSCHAFTEN:
+- Starker Auftrieb: Kann schwere Traktoren und voll beladene Anhänger anheben
+- Gefahr für Vieh: Tornados können Tiere auf Weiden töten (Konfigurierbar)
+- Geo-Fencing: Verhindert, dass Fahrzeuge von der Karte geschleudert werden
+- Kartenunterstützung: Automatische Skalierung des Radius für 4x-, 16x- und 64x-Karten
+- Sicherheit: Spielerauswurfsystem und sichere Zonen in Gebäuden (Scheunen)
+- Benutzerdefinierte Partikeleffekte & Audio
+
+Für Fehlerberichte und Updates besuche: https://github.com/whitevamp/FS25_TornadoPhysics
+
+------------------------------------------------------------------------
+ERWEITERTES TUNING (NEUES KONSOLENSYSTEM)
+------------------------------------------------------------------------
+Für erfahrene Benutzer, die ein spezifisches Erlebnis wünschen, können die automatischen Einstellungen über die Konsole (~) überschrieben werden.
+Die Einstellungen werden automatisch gespeichert in: "modSettings/TornadoPhysics_Config.xml"
+
+HAUPTBEFEHLE:
+Dieses Update führt ein zentrales Befehlssystem ein. Du musst dir keine 20 verschiedenen Befehle mehr merken! Verwende 't_help [Befehl]' im Spiel für vollständige Details zu Unterbefehlen.
+
+1. PHYSIK-STEUERUNG (t_physics)
+- t_physics radius [x]   : Sturmgröße manuell überschreiben (Standard: 35)
+- t_physics power [x]    : Auswurfkraft ändern (Standard: 20)
+- t_physics heavy [x]    : Massenschwellenwert für schwere Fahrzeuge festlegen
+- t_physics fence [x]    : Entfernung vom Kartenrand festlegen, an der die Physik stoppt
+- t_physics lift_bales   : Anheben von Ballen/Paletten umschalten
+- t_physics lift_logs    : Anheben von Baumstämmen umschalten
+- t_physics indoor_damage: Schaden an Fahrzeugen in Hallen umschalten
+- t_physics randomize    : Erzwingt sofort eine neue zufällige Tornadogröße und EF-Einstufung
+
+2. MODUL-EINSTELLUNGEN (t_set)
+- t_set save             : Aktuelle Konfiguration in XML speichern
+- t_set cargo            : Ladungsverlust-System umschalten
+- t_set husbandry        : Tödlichkeit für Tiere umschalten
+- t_set destruction      : Dauerhafte Fahrzeugzerstörung umschalten (Standard: AUS)
+- t_set recovery         : Die harte Notfall-Abschlepprechnung beim Zurücksetzen zum Shop umschalten (Standard: AUS)
+- t_set mapui            : Map-UI-Overlay EIN-/AUSSCHALTEN
+
+3. OPTIK & AUDIO (t_sfx)
+- t_sfx sound            : Tornado-Sirene EIN-/AUSSCHALTEN
+- t_sfx ring             : Debug-Ring umschalten (Visuelle Sicherheitszone)
+- t_sfx fire_random      : Zufällige Brandentzündung für Fahrzeuge umschalten
+
+4. HARDCORE TUNING (t_tune)
+- Feineinstellung der Simulationskonstanten in Echtzeit.
+- Befehle: suction, lift, chaos, bale_orbit, hover, max_speed, purge_time
+- Beispiel: "t_tune chaos 20" (Macht den Tornado unglaublich gewalttätig)
+
+5. MASTER RESET (t_reset)
+- Setze deine Einstellungen auf die Werkseinstellungen zurück, falls die Dinge außer Kontrolle geraten.
+- Befehle: all, physics, tuning, cargo, husbandry
+- Beispiel: "t_reset all"
+
+6. ENTWICKLERWERKZEUGE (t_dev)
+- t_dev hud              : Schaltet die Physik-Telemetrie-UI über Knoten auf dem Bildschirm um
+- t_dev verbose all      : Aktiviert die Hauptprotokollierung
+- t_dev pos              : Schaltet die Echtzeit-Koordinatenverfolgung für den Tornado-Knoten um
+
+------------------------------------------------------------------------
+ÄNDERUNGSPROTOKOLL
+------------------------------------------------------------------------
+v4.0.0.0 (Das Zerstörungs-Update)
+
+- [SYSTEM] Komplette Code-Überarbeitung: Wechsel zu einer modularen Architektur für bessere Stabilität, Speichersicherheit und Leistung.
+- [SYSTEM] API hinzugefügt: Ermöglicht es anderen Mod-Autoren, auf verschiedene Aspekte der Mod zuzugreifen (siehe README im API-Verzeichnis).
+- [KONSOLE] Neues Master-Befehlssystem: Fragmentierte Befehle wurden durch t_help, t_physics, t_set, t_sfx, t_tune und t_reset ersetzt.
+- [GAMEPLAY] Ladungsverlust hinzugefügt: Anhänger, die in den Sturm geraten, verlieren nun ihre Ladung (Ungedeckt: 100% Verlust; Gedeckt: Chance auf Lecks/Aufspringen). (Standard: AUS)
+- [GAMEPLAY] Fahrzeugzerstörung hinzugefügt: Fahrzeuge, Anhänger und Anbaugeräte, die in den Sturm geraten, verlieren nun physisch Teile. Beinhaltet eine 24-Stunden-Autoreparatur-Funktion im Spiel, die perfekt mit dem Spielstand synchronisiert ist. (Standard: AUS)
+- [GAMEPLAY] Hardcore-Bergung hinzugefügt: Ein dynamisches Fahrzeug-Abrechnungssystem. Wenn ein vom Tornado beschädigtes Fahrzeug zum Shop zurückgesetzt wird, wird eine detaillierte Abschlepp- und Reparaturrechnung basierend auf dem genauen Schaden des Fahrzeugs berechnet! (Standard: AUS)
+- [GAMEPLAY] ADS-Unterstützung hinzugefügt: Integration mit dem "Advanced Damage System" (Leichter Schaden nach 15s, Mittlerer nach 30s, Totalschaden nach 50s).
+- [GAMEPLAY] Sirenenwarnung hinzugefügt: Eine Tornadosirene ertönt nun für 3 Minuten in Dauerschleife, wenn ein Sturm entsteht. (Standard: AN)
+- [GAMEPLAY] Tierhaltung angepasst: Wenn aktiviert, erkennt der Tornado nun, ob ein Stall eine Außenweide hat. Tiere sind nur sicher, wenn der Stall strikt im Innenbereich liegt; wird eine Außenweide erkannt, sind sie nicht sicher. Hinweis: Gemoddete Gebäude, die keine Standard-GIANTS-Meshes verwenden, werden möglicherweise nicht korrekt erkannt.
+- [GAMEPLAY] Cross-Mod-Unterstützung hinzugefügt: Integration mit CompassHeading von RocklandUSA Gaming. Wenn diese Mod installiert ist und ein Tornado entsteht, wird dieser samt EF-Kategorie auf dem Kompass angezeigt.
+- [GAMEPLAY] Dynamisches Wetter hinzugefügt: Wenn ein Tornado entsteht, wird die Regen- und/oder Hagelintensität nun komplett zufällig generiert, um echte Tornados besser abzubilden. Die 3 Profile sind: 1 = Low-Precipitation (LP) Superzelle, 2 = Klassische Superzelle, 3 = High-Precipitation (HP) Superzelle.
+- [VISUALS] Rauch- & Feuereffekte hinzugefügt: Motorisierte Fahrzeuge können nun Feuer fangen und Rauch ausstoßen, wenn sie durch den Sturm kritisch beschädigt werden.
+- [VISUALS] Shader-Mesh-Unterstützung hinzugefügt: Unterstützt nun nativ "smokeTrailSubUV" für erweiterte volumetrische Effekte.
+- [VISUALS] Debug-Ring verbessert: Ein zweiter Ring für bessere Sichtbarkeit in Tälern wurde hinzugefügt.
+- [VISUALS] Tornado-Bodentrümmer verbessert: Die Basis des Tornados multipliziert nun dynamisch native Erd- und Trümmerpartikel, um einen massiven, wirbelnden Keil (Wedge) zu erzeugen.
+- [UI/UX] Karten-Hotspot & UI hinzugefügt: Man kann sich nun über die ESC-Karte zum Tornado teleportieren. Ein neues UI-Widget in der oberen rechten Ecke des Kartenmenüs zeigt Echtzeit-Tornado-Statistiken (EF-Kategorie, Windgeschwindigkeit, Radius) an.
+]]>
+        </de>
+        <fr>
+            <![CDATA[
+*** LIMITATIONS CONNUES DES OUTILS DE DÉVELOPPEMENT ***
+1. Si vous utilisez des outils de développement externes (comme EasyDevControls) pour avancer l'horloge du jeu de plusieurs mois en une seule image alors qu'une tornade est active, les effets visuels résiduels de fumée et de feu peuvent se figer sur les véhicules concernés.
+2. Dans ces mêmes conditions d'avance rapide extrême, le compte à rebours de 24 heures pour la réparation automatique des dégâts se mettra en pause. Pour reprendre et déclencher la séquence de réparation normalement, il suffit d'avancer le temps via une mécanique de jeu standard, comme l'utilisation du minuteur de sommeil intégré au jeu.
+Remarque : Ces comportements ne se produisent que lors de l'utilisation de commandes d'outils de développement externes ; l'accélération normale du temps et le gameplay de simulation de base fonctionnent parfaitement.
+3. AVIS DE PERFORMANCE : Si un grand nombre de véhicules sont regroupés à proximité les uns des autres (par exemple lors de l'utilisation de mods comme Used Equipment Yard) et sont frappés simultanément par une tornade, vous pouvez rencontrer de brefs gels d'écran/saccades périodiques pendant que la tempête traverse la zone en raison de lourds calculs structurels au niveau du moteur.
+Remarque : L'accélération normale du temps et le gameplay de simulation de base fonctionnent parfaitement dans des conditions normales.
+
+Vivez un véritable événement météorologique destructeur !
+Ce mod ajoute une tornade très performante capable d'interagir avec le moteur physique du jeu en fonction de la masse.
+
+CARACTÉRISTIQUES :
+- Puissance de levage : Capable de soulever de lourds tracteurs et des remorques entièrement chargées
+- Danger pour le bétail : Les tornades peuvent tuer les animaux dans les pâturages (Configurable)
+- Géo-clôture : Empêche les véhicules d'être projetés hors de la carte
+- Support de carte : Mise à l'échelle automatique du rayon pour les cartes 4x, 16x et 64x
+- Sécurité : Système d'éjection du joueur et zones de sécurité en intérieur (Granges)
+- Effets de particules et audio personnalisés
+
+Pour les rapports de bugs et les mises à jour, visitez : https://github.com/whitevamp/FS25_TornadoPhysics
+
+------------------------------------------------------------------------
+RÉGLAGES AVANCÉS (NOUVEAU SYSTÈME DE CONSOLE)
+------------------------------------------------------------------------
+Pour les utilisateurs avancés qui souhaitent une expérience spécifique, vous pouvez remplacer les paramètres automatiques à l'aide de la console (~).
+Les paramètres sont automatiquement sauvegardés dans : "modSettings/TornadoPhysics_Config.xml"
+
+COMMANDES PRINCIPALES :
+Cette mise à jour introduit un système de commandes centralisé. Vous n'avez plus besoin de retenir 20 commandes différentes ! Utilisez 't_help [commande]' en jeu pour obtenir tous les détails sur les sous-commandes.
+
+1. CONTRÔLE PHYSIQUE (t_physics)
+- t_physics radius [x]   : Remplacer manuellement la taille de la tempête (Défaut : 35)
+- t_physics power [x]    : Modifier la force d'éjection (Défaut : 20)
+- t_physics heavy [x]    : Définir le seuil de masse pour les véhicules lourds
+- t_physics fence [x]    : Définir la distance du bord de la carte où la physique s'arrête
+- t_physics lift_bales   : Activer/Désactiver la manipulation des balles/palettes
+- t_physics lift_logs    : Activer/Désactiver la manipulation des troncs
+- t_physics indoor_damage: Activer/Désactiver les dégâts aux véhicules à l'intérieur des hangars
+- t_physics randomize    : Forcer immédiatement une nouvelle taille de tornade et une nouvelle classification EF
+
+2. PARAMÈTRES DES MODULES (t_set)
+- t_set save             : Sauvegarder votre configuration actuelle en XML
+- t_set cargo            : Activer/Désactiver le système de déversement de cargaison
+- t_set husbandry        : Activer/Désactiver la létalité pour les animaux
+- t_set destruction      : Activer/Désactiver la destruction persistante des véhicules (Défaut : DÉSACTIVÉ)
+- t_set recovery         : Activer/Désactiver la facture de remorquage d'urgence hardcore lors de la réinitialisation au magasin (Défaut : DÉSACTIVÉ)
+- t_set mapui            : Activer/Désactiver la superposition de l'interface de la carte
+
+3. VISUELS ET AUDIO (t_sfx)
+- t_sfx sound            : Activer/Désactiver la sirène de tornade
+- t_sfx ring             : Activer/Désactiver l'anneau de débogage (Zone de sécurité visuelle)
+- t_sfx fire_random      : Activer/Désactiver l'inflammation aléatoire des véhicules
+
+4. RÉGLAGES HARDCORE (t_tune)
+- Ajustez les constantes de simulation en temps réel.
+- Commandes : suction, lift, chaos, bale_orbit, hover, max_speed, purge_time
+- Exemple : "t_tune chaos 20" (Rend la tornade incroyablement violente)
+
+5. RÉINITIALISATION COMPLÈTE (t_reset)
+- Réinitialisez vos paramètres aux valeurs d'usine si les choses dégénèrent.
+- Commandes : all, physics, tuning, cargo, husbandry
+- Exemple : "t_reset all"
+
+6. OUTILS DE DÉVELOPPEMENT (t_dev)
+- t_dev hud              : Active/Désactive l'interface de télémétrie physique à l'écran sur les nœuds
+- t_dev verbose all      : Active la journalisation principale
+- t_dev pos              : Active/Désactive le suivi des coordonnées en temps réel pour le nœud de la tornade
+
+------------------------------------------------------------------------
+JOURNAL DES MODIFICATIONS
+------------------------------------------------------------------------
+v4.0.0.0 (La Mise à Jour Destruction)
+
+- [SYSTÈME] Réécriture complète du code : Passage à une architecture modulaire pour une meilleure stabilité, sécurité des sauvegardes et performance.
+- [SYSTÈME] API ajoutée : Permet aux autres créateurs de mods de se lier aux différents aspects du mod (voir le fichier README dans le répertoire API).
+- [CONSOLE] Nouveau système de commandes maître : Les commandes fragmentées ont été remplacées par t_help, t_physics, t_set, t_sfx, t_tune et t_reset.
+- [JOUABILITÉ] Perte de cargaison ajoutée : Les remorques prises dans la tempête videront désormais leur contenu (Non couvert : 100% de perte ; Couvert : chance de fuite/ouverture). (Défaut : DÉSACTIVÉ)
+- [JOUABILITÉ] Destruction des véhicules ajoutée : Les véhicules, remorques et outils pris dans la tempête perdront désormais physiquement des pièces, avec une fonction d'autoréparation en jeu de 24h parfaitement synchronisée avec votre sauvegarde. (Défaut : DÉSACTIVÉ)
+- [JOUABILITÉ] Récupération Hardcore ajoutée : Un système de facturation dynamique pour les véhicules. Si vous réinitialisez un véhicule endommagé par la tornade au magasin, vous recevrez une facture détaillée de remorquage et de réparation basée sur les dégâts exacts subis par le véhicule ! (Défaut : DÉSACTIVÉ)
+- [JOUABILITÉ] Support ADS ajouté : Intégration avec le système "Advanced Damage System" (Dégâts mineurs à 15s, Modérés à 30s, Destruction totale à 50s).
+- [JOUABILITÉ] Alerte Sirène ajoutée : Une sirène de tornade retentira désormais en boucle pendant 3 minutes lorsqu'une tempête apparaît. (Défaut : ACTIVÉ)
+- [JOUABILITÉ] Élevage réajusté : Si activée, la tornade détectera si une étable possède un pâturage extérieur. Les animaux ne sont en sécurité que si l'étable est strictement en intérieur ; si un pâturage extérieur est détecté, ils ne seront pas en sécurité. Remarque : Les bâtiments moddés qui n'utilisent pas les meshes standard de GIANTS pourraient ne pas être détectés correctement.
+- [JOUABILITÉ] Support Cross-Mod ajouté : Intégration avec CompassHeading par RocklandUSA Gaming. Si vous possédez le mod et qu'une tornade apparaît, elle s'affichera sur la boussole avec sa catégorie EF.
+- [JOUABILITÉ] Météo dynamique ajoutée : Lorsqu'une tornade apparaît, la quantité et/ou l'intensité de la pluie et de la grêle seront désormais entièrement aléatoires pour mieux refléter les tornades réelles. Les 3 profils sont : 1 = Supercellule à faibles précipitations (LP), 2 = Supercellule classique, 3 = Supercellule à fortes précipitations (HP).
+- [VISUELS] Effets de fumée et de feu ajoutés : Les véhicules à moteur peuvent désormais prendre feu et émettre de la fumée s'ils sont gravement endommagés par la tempête.
+- [VISUELS] Support Shader Mesh ajouté : Supporte désormais nativement "smokeTrailSubUV" pour des effets volumétriques avancés.
+- [VISUELS] Anneau de débogage amélioré : Ajout d'un deuxième anneau pour une meilleure visibilité dans les vallées.
+- [VISUELS] Débris au sol de la tornade améliorés : La base de la tornade multiplie désormais dynamiquement les particules de terre et de débris natives pour créer un énorme cône (wedge) tourbillonnant.
+- [UI/UX] Point d'intérêt et interface carte ajoutés : Vous pouvez désormais vous téléporter ou visiter la tornade depuis la carte du menu Échap. Un nouveau widget dans le coin supérieur droit du menu de la carte affiche les statistiques de la tornade en temps réel (Catégorie EF, Vitesse du vent, Rayon).
+]]>
+        </fr>
     </description>
     <iconFilename>icon_TornadoPhysics.dds</iconFilename>
     <multiplayer supported="true"/>
 
     <extraSourceFiles>
-        <sourceFile filename="scripts/TornadoPhysics.lua"/>
-        <sourceFile filename="scripts/TornadoHusbandry.lua"/>
-        <sourceFile filename="scripts/TornadoSettings.lua"/>
+        <sourceFile filename="TornadoMain.lua"/>
     </extraSourceFiles>
 
+    <!-- <emergencyPack version="1">
+        <scenarioDirectory>emergencyScenarios/</scenarioDirectory>
+    </emergencyPack> -->
+
 </modDesc>
+<!-- input="KEY_rctrl KEY_rshift KEY_t" />  -->

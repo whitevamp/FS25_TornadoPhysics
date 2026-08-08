@@ -1,0 +1,60 @@
+================================================================================
+FS25 Tornado Physics
+Copyright (C) 2026 whitevamp. All rights reserved.
+================================================================================
+
+================================================================================
+MOD SOFTWARE LICENSE (Proprietary)
+================================================================================
+
+The Tornado Physics mod software (compiled and source code in any form, including
+custom physics and destruction logic) is proprietary to whitevamp. It is licensed
+only for personal, non-commercial use within an authorized installation of
+Farming Simulator 25.
+
+You may NOT:
+  - Redistribute the mod or any portion of it, modified or unmodified, by any
+    means or through any channel other than the official GIANTS ModHub.
+  - Decompile, disassemble, reverse engineer, extract, repackage, rebrand, or
+    create derivative works based on the mod software in whole or in part.
+  - Sell, sublicense, or otherwise commercialize the mod software or any
+    portion of it.
+  - Bundle the mod or its assets inside another mod, modpack, server bundle,
+    asset pack, or any other distribution unit.
+
+You MAY:
+  - Use the mod for personal play within Farming Simulator 25.
+  - Reference the mod's public API at runtime from your own mod without
+    declaring a hard dependency, in accordance with the API Documentation 
+    provided in the api/ directory.
+
+The mod is provided "AS IS", without warranty of any kind, express or implied,
+including but not limited to the warranties of merchantability, fitness for
+a particular purpose, and noninfringement.
+
+================================================================================
+DOCUMENTATION LICENSE (Creative Commons Attribution-NonCommercial-NoDerivs 4.0)
+================================================================================
+
+The documentation contained in this mod — including README.txt, README_API.txt, 
+and the contents of the api/ directory — is licensed under the Creative Commons
+Attribution-NonCommercial-NoDerivatives 4.0 International License (CC BY-NC-ND 4.0).
+
+Full license text: https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
+
+Under this license you may share (copy and redistribute) the documentation
+in any medium or format for non-commercial purposes, provided you give
+appropriate credit to whitevamp and do not distribute modified versions 
+of the material.
+
+The API Integration Example code snippets included within the documentation are 
+released into the public domain so that mod developers may copy them directly 
+into their own work without attribution. This public-domain dedication applies 
+ONLY to the snippets, not to the prose or structure of the documentation.
+
+================================================================================
+TRADEMARKS
+================================================================================
+
+"Farming Simulator" is a trademark of GIANTS Software GmbH. This mod and
+its documentation are not affiliated with or endorsed by GIANTS Software.
