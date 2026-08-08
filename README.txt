@@ -135,8 +135,14 @@ Recommended Values:
 ------------------------------------------------------------------------
 [6] CREDITS
 ------------------------------------------------------------------------
-Scripting & Physics Engine: whitevamp
-ADS Integration Support: id577
+Main Author & Scripting: whitevamp
+  • Core Physics Engine
+  • Integration Scripts (ADS & CompassHeading)
+
+Integrated Mod Credits:
+  • ADS – Original mod by id577
+  • CompassHeading – Original mod by RocklandUSA
+
 Testing & Feedback: Community
 
 You are free to use this mod in videos/streams.
