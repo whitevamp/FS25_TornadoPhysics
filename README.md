@@ -1,4 +1,6 @@
+### [⬇ Download TORNADO PHYSICS on the GIANTS ModHub](https://www.farming-simulator.com/mod.php?mod_id=344814)
 
+*Approved and live on the official GIANTS ModHub — install directly in-game or via the link above.*
 
 
 ========================================================================
