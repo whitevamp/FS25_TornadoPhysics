@@ -1,263 +1,151 @@
-### [⬇ Download TORNADO PHYSICS on the GIANTS ModHub](https://www.farming-simulator.com/mod.php?mod_id=344814)
+# 🌪️ Tornado Physics (v4.0.0.0 - The Destruction Update)
 
+### [⬇️ Download TORNADO PHYSICS on the GIANTS ModHub](https://www.farming-simulator.com/mod.php?mod_id=344814)
 *Approved and live on the official GIANTS ModHub — install directly in-game or via the link above.*
 
+[![GitHub Release](https://img.shields.io/badge/GitHub-whitevamp%2FFS25__TornadoPhysics-blue)](https://github.com/whitevamp/FS25_TornadoPhysics)
 
-========================================================================
-                     TORNADO PHYSICS (Release 4.0.0.0)
-                   Advanced Weather Destruction Engine
-                            by whitevamp
-========================================================================
+---
 
-Version: 4.0.0.0
-GAME:    Farming Simulator 25
-DATE:    June 2026
+## 📌 Overview
+**Tornado Physics** is a complete physics overhaul for Farming Simulator 25. It replaces standard, static visual weather effects with an advanced, high-performance destruction engine that calculates mass, lift, drag, and structural disruption in real time.
 
-------------------------------------------------------------------------
-[1] OVERVIEW
-------------------------------------------------------------------------
-This mod is a full physics overhaul for the in-game tornado. It turns
-the standard visual effect into a dynamic vortex that calculates lift,
-drag, and mass resistance.
+---
 
-NEW IN v4.0.0.0 (REFACTOR UPDATE):
-- Complete Code Rewrite: Modular architecture for better stability.
-- Cargo Spilling: Trailers dump contents based on cover state.
-- ADS Support: Integration with "Advanced Damage System".
-- Siren Audio: 3-minute warning siren loops on spawn.
-- Smoke Effects: Vehicles emit smoke when damaged by the storm.
-- Shader Mesh Support: Volumetric visuals for the funnel.
+## 🆕 What's New in v4.0.0.0 (The Destruction Update)
 
-------------------------------------------------------------------------
-[2] INSTALLATION
-------------------------------------------------------------------------
-1. Place the "FS25_TornadoPhysics.zip" into your "mods" folder.
-   (Usually: Documents/My Games/FarmingSimulator2025/mods)
-2. Activate the mod in the game menu.
-3. No new save game required.
+* 🏗️ **Complete Code Rewrite:** Rebuilt on a modular architecture for maximum stability, save-game safety, and performance.
+* 🔌 **Modder API:** Open API allowing other developers to hook into storm state, intensity, and lifecycle events (see `/API` folder).
+* 🧰 **Centralized Command System:** Streamlined console control via `t_help`, replacing 20+ disconnected commands.
+* 📦 **Cargo Spilling:** Trailers and implements drop cargo based on cover state (Uncovered = 100% loss; Covered = leak/pop risk).
+* 💥 **Vehicle Destruction & Auto-Repair:** Rips physical nodes off machines. Features an automated 24-hour repair cycle fully synced to your save game.
+* 💰 **Hardcore Recovery System:** Charges an itemized tow and repair bill if you reset tornado-damaged equipment back to the shop.
+* 🌧️ **Dynamic Weather Supercells:** Randomizes rain and hail intensity on storm spawn across 3 profiles (*LP*, *Classic*, and *HP* Supercells).
+* 🚨 **Siren Warnings:** Features a 3-minute warning siren loop upon storm spawn.
+* 🗺️ **Map UI & Teleportation:** Real-time ESC map hotspot with live storm telemetry (EF-Rating, Wind Speed, Radius) and instant teleportation.
+* 🔥 **Visual Effects & Shader Support:** Motorized machines emit smoke/fire when critically damaged; volumetric funnel rendering via `smokeTrailSubUV`.
+* 🧭 **Cross-Mod Integrations:** Native support for *Advanced Damage System (ADS)* by id577 and *CompassHeading* by RocklandUSA.
 
-------------------------------------------------------------------------
-[3] KEY FEATURES
-------------------------------------------------------------------------
->> TRUE PHYSICS ENGINE
-   Vehicles are lifted, orbited, and ejected. Heavier tractors resist 
-   suction longer than light balers or pallets.
+---
 
->> CARGO SPILLING (NEW)
-   If enabled, Trailers caught in the storm will lose their crop.
-   - Uncovered: 100% loss (Dumped to ground).
-   - Covered: Chance to leak or "pop" the cover open.
+## 💾 Installation
+1. Download `FS25_TornadoPhysics.zip` and place it in your game's `mods` directory:
+   * **Path:** `Documents/My Games/FarmingSimulator2025/mods`
+2. Activate **Tornado Physics** in the in-game mod selection screen.
+3. *No new save game required.*
 
->> ADVANCED DAMAGE SYSTEM (ADS) SUPPORT
-   If you use the ADS mod, the tornado applies damage in stages:
-   - 15s: Minor Damage
-   - 30s: Moderate Damage
-   - 50s: Total Destruction
+---
 
->> HUSBANDRY & LIVESTOCK
-   If enabled, tornadoes passing over pastures will kill animals.
-   - Includes "Dynamic Immunity": After a strike, the pasture is safe for
-   - set time (scales automatically with map size).
-   - Pasture-Only Targeting: The Reaper logic now strictly targets outdoor pastures, fences, and meadows by reading Giants' `spec_husbandryFence` data.
-   - Indoor Immunity: Animals housed inside enclosed barns are now 100% safe from storm loss.
-   - Dynamic Map Scaling: Livestock immunity timers now automatically adjust based on the physical size of the map (e.g., 2km vs 8km maps).
+## ⚙️ Core Mechanics & Features
 
->> The Destruction Engine
-   If enabled, tornadoes passing over vehicles will dynamically destroy them.
-   - Targeted Vehicle Destruction: Tornadoes physically rip specific parts off of vehicles caught within the storm's damage zone.
-   - Smart Categorization: Automatically sorts vehicle components into "Trash" (e.g., hoses, decals, wires) and "Structural" (e.g., mirrors, glass, pipes) utilizing a custom database and an intelligent ignore list.
-   - Persistent Damage States: Vehicle damage is flawlessly synchronized with the base game's save cycle, ensuring damaged machines remain broken even after exiting and reloading a save.
-   - Automated 24-Hour Repairs: Damaged vehicles receive an in-game 24-hour repair cooldown. Once this internal timer expires, all missing parts are automatically restored.
-   - Safe Save Injection: Safely bypasses the native Giants event listener to hardwire destruction data directly into the core `FSBaseMission.saveSavegame` queue, completely preventing Lua panics and corrupted weather states.
-   - Compatibility Note: Not all vehicles are fully supported. Modded or custom vehicles utilizing unique 3D nodes that are not mapped in the mod's global database may be ignored by the destruction system.
+### 🚜 True Physics Engine & Geo-Fencing
+Vehicles are orbited, lifted, and ejected based on physical mass. Heavy tractors resist suction longer than light balers or pallets. Automated geo-fencing prevents objects from being hurled off the map edge.
 
->> GEO-FENCING
-   Prevents vehicles from being thrown off the map edge.
+### 🐄 Husbandry & Animal Lethality
+Tornadoes passing over pastures will kill exposed livestock. 
+* **Pasture Detection:** Checks for outdoor pastures using GIANTS `spec_husbandryFence` data.
+* **Indoor Immunity:** Animals inside enclosed, fully indoor barns are completely safe.
+* **Dynamic Scaling:** Post-strike immunity timers automatically scale to map size.
 
-------------------------------------------------------------------------
-[4] CONFIGURATION & COMMANDS (NEW SYSTEM)
-------------------------------------------------------------------------
-You can tune the mod live using the console (~).
-Settings are saved to: "modSettings/TornadoPhysics_Config.xml"
+### 🛠️ Advanced Damage System (ADS) Stages
+When running alongside the *ADS* mod, storm exposure applies staged damage:
+| Exposure Duration | Damage Severity |
+| :--- | :--- |
+| **15 Seconds** | Minor Damage |
+| **30 Seconds** | Moderate Damage |
+| **50 Seconds** | Total Destruction |
 
-NOTE: The old commands (t_toggle, t_status) have been replaced!
+---
 
-1. Help (t_help)
-   - t_help [command] for more details.
-   - t_physics                  : Adjust Physics: radius, power, heavy, fence, randomize...
-   - t_sfx: Adjust SFX          : sound, ring, particles...
-   - t_set: Module Settings     : cargo, husbandry, destruction, save...
-   - t_dev: Developer Tools     : status, verbose, hud, hotspotdump, kill_test...
-   - t_tune                     : Fine-tune Physics Constants
-   - t_reset                    : Reset Settings: all, physics, tuning, cargo...
+## 💻 Console Commands (`~`)
 
-2. PHYSICS CONTROL (t_physics)
-   - t_physics radius [x]     : Manually override storm size (Default: 35)
-   - t_physics power [x]      : Change ejection strength (Default: 20)
-   - t_physics heavy [x]      : Set mass threshold for heavy vehicles
-   - t_physics fence [x]      : Set safe distance from map edge
-   - t_physics lift_bales     : Toggle handling of bales/pallets
+Configuration settings are live-tunable and auto-save to `modSettings/TornadoPhysics_Config.xml`.  
+Type `t_help [command]` in the console for detailed sub-command info.
 
-2. MODULE SETTINGS (t_set)
-   - t_set save               : Save current configuration to XML
-   - t_set cargo              : Toggle Cargo Spilling System
-   - t_set husbandry          : Toggle Animal Lethality
-   - t_set husbandry immunity [x] : Set barn safety timer (seconds)
+### Command Categories
+| Command Group | Description | Default Status |
+| :--- | :--- | :--- |
+| `t_physics` | Manage storm radius, power, mass thresholds, and physical targets | Active |
+| `t_set` | Toggle core gameplay modules (cargo, destruction, recovery, UI) | Modular |
+| `t_sfx` | Toggle audio sirens, dual debug rings, and vehicle fires | Modular |
+| `t_tune` | Live-tune hardcore simulation constants (suction, lift, chaos, hover) | Advanced |
+| `t_dev` | Access telemetry HUDs, coordinate tracking, and master logging | Developer |
+| `t_reset` | Factory reset config targets (`all`, `physics`, `tuning`, `cargo`, `husbandry`) | Utility |
 
-3. VISUALS & AUDIO (t_sfx)
-   - t_sfx sound              : Toggle Siren Audio ON/OFF
-   - t_sfx ring               : Toggle Debug Ring (Visual Safety Zone)
+### Quick Reference Command List
+```text
+=== PHYSICS CONTROL (t_physics) ===
+t_physics radius [x]      : Override storm radius (Default: 35)
+t_physics power [x]       : Ejection power (Default: 20)
+t_physics heavy [x]       : Mass threshold for heavy vehicles
+t_physics fence [x]       : Safe distance buffer from map edge
+t_physics lift_bales      : Toggle lift for bales and pallets
+t_physics lift_logs       : Toggle lift for timber/logs
+t_physics indoor_damage   : Toggle structural damage inside sheds
+t_physics randomize       : Force a new random storm size and EF rating
 
-4. HARDCORE TUNING (t_tune)
-   Fine-tune the simulation constants live.
-   - t_tune suction [x]     : Speed of suction towards center
-   - t_tune lift [x]        : Speed of vertical lift
-   - t_tune chaos [x]       : Randomness of movement
-   - t_tune bale_orbit [x]  : Orbital speed for bales
-   - t_tune hover [x]       : Max height before 
-   
-5. Debug logging (t_dev)
-   - t_dev verbose destruction       : Tracks XML saves, relinking, and 24-hour repair timers.
-   - t_dev verbose physics           : Tracks suction, mass calculation, and ejection forces.
-   - t_dev verbose all               : Enables master logging.
-   - t_dev pos                       : Toggles real-time coordinate tracking for the tornado node.
+=== MODULE TOGGLES (t_set) ===
+t_set cargo               : Cargo Spilling System (Default: OFF)
+t_set husbandry           : Animal Lethality (Default: OFF)
+t_set destruction         : Persistent Vehicle Destruction (Default: OFF)
+t_set recovery            : Emergency Tow Billing on Shop Reset (Default: OFF)
+t_set mapui               : Map Overlay Telemetry Widget (Default: OFF)
+t_set save                : Force-save current settings to XML
 
-------------------------------------------------------------------------
-[5] MAP SCALING GUIDE
-------------------------------------------------------------------------
-The mod attempts to auto-detect map size, but you can manually tune the
-Base Radius (using "t_physics radius") to make the storm fit better.
+=== VISUALS & AUDIO (t_sfx) ===
+t_sfx sound               : Toggle 3-Minute Warning Siren
+t_sfx ring                : Toggle Dual Debug Rings (Safety & Suction Zones) (Default: OFF)
+t_sfx fire_random         : Toggle random vehicle fire ignition
 
-Recommended Values:
-- Standard Map (2km):  Radius 35  (Max EF-5 size: 175m)
-- 4x Map       (4km):  Radius 70  (Max EF-5 size: 350m)
-- 16x Map      (8km):  Radius 140 (Max EF-5 size: 700m)
-- 64x Map      (16km): Radius 280 (Max EF-5 size: 1400m)
+=== HARDCORE TUNING (t_tune) ===
+t_tune [suction|lift|chaos|bale_orbit|hover|max_speed|purge_time] [x]
+Example: "t_tune chaos 20" (Extremely violent storm movement)
 
-------------------------------------------------------------------------
-[6] CREDITS
-------------------------------------------------------------------------
-Main Author & Scripting: whitevamp
-  • Core Physics Engine
-  • Integration Scripts (ADS & CompassHeading)
+=== DEVELOPER TOOLS (t_dev) ===
+t_dev hud                 : Toggle real-time physics telemetry over nodes
+t_dev verbose all         : Enable master system logging
+t_dev pos                 : Toggle real-time tornado node coordinates
 
-Integrated Mod Credits:
-  • ADS – Original mod by id577
-  • CompassHeading – Original mod by RocklandUSA
+```
 
-Testing & Feedback: Community
+---
 
-You are free to use this mod in videos/streams.
-Please do not re-upload to other sites without permission.
+## 🗺️ Map Radius & Scaling Guide
+
+The mod automatically scales for custom map sizes, but manual radius overrides can be applied via `t_physics radius [x]`:
+
+| Map Type | Physical Dimensions | Recommended Radius | Max EF-5 Width |
+| --- | --- | --- | --- |
+| **Standard** | 2km × 2km | `Radius 35` | 175m |
+| **4x Map** | 4km × 4km | `Radius 70` | 350m |
+| **16x Map** | 8km × 8km | `Radius 140` | 700m |
+| **64x Map** | 16km × 16km | `Radius 280` | 1400m |
+
+---
+
+## ⚠️ Known Developer Tool Limitations
+
+> [!NOTE]
+> *Normal high-speed time acceleration and standard gameplay simulation function flawlessly.* The items below only apply when using external developer utilities:
+
+1. **Extreme Time Fast-Forwarding:** Using external tools (e.g., *EasyDevControls*) to jump several months ahead in a single frame while a storm is active may freeze lingering smoke/fire effects.
+2. **24-Hour Auto-Repair Countdown:** Single-frame multi-month time jumps will pause the 24-hour repair timer. To resume normally, simply pass time using standard game mechanics (such as sleeping).
+3. **High Vehicle Density Performance:** If dozens of vehicles are packed tightly together (e.g., via stacking mods like *Used Equipment Yard*) and hit simultaneously, brief engine-level structural calculation stutters may occur.
+
+---
+
+## 👥 Credits & Modder Support
+
+* **Main Author & Lead Developer:** whitevamp *(Core Engine, Modular Architecture, Mod API)*
+
+* **ADS Mod Integration:** Original mod by *id577*
+
+* **CompassHeading Integration:** Original mod by *RocklandUSA Gaming*
+
+* **Testing & Feedback:** Community
 
 
 
-========================================================================
-                     TORNADO PHYSICS V3
-                   Advanced Weather Destruction Engine
-                            by whitevamp
-========================================================================
+*Bug reports, feature requests, and developer API documentation:*
 
-VERSION: 3.0 (Internal Build 107)
-GAME:    Farming Simulator 25
-DATE:    December 2025
-
-------------------------------------------------------------------------
-[1] OVERVIEW
-------------------------------------------------------------------------
-This is not just a script—it is a full physics overhaul for the in-game
-tornado. Tornado Physics V3 takes the standard visual effect and gives
-it real teeth.
-
-Standard game tornadoes pass through objects like ghosts. With this mod,
-the storm becomes a dynamic vortex that calculates lift, drag, and mass
-resistance. Vehicles are lifted, spun Counter-Clockwise (matching the
-visuals), and thrown based on their weight.
-
-NEW IN V3:
-- Livestock Destruction (Husbandry)
-- Intelligent Map Scaling (Support for 4x, 16x, 64x maps)
-- Full In-Game Configuration (Console Commands & XML)
-- Geo-Fencing (Prevents vehicles from flying off the map)
-
-------------------------------------------------------------------------
-[2] INSTALLATION
-------------------------------------------------------------------------
-1. Place the "FS25_TornadoPhysics.zip" into your "mods" folder.
-   (Usually: Documents/My Games/FarmingSimulator2025/mods)
-2. Activate the mod in the game menu.
-3. No new save game required.
-
-------------------------------------------------------------------------
-[3] KEY FEATURES
-------------------------------------------------------------------------
->> TRUE PHYSICS ENGINE
-   Vehicles are no longer just "deleted." They are physically lifted,
-   orbited, and ejected. Heavier tractors resist suction longer than
-   light balers or pallets.
-
->> HUSBANDRY & LIVESTOCK (Disabled by Default)
-   If enabled, tornadoes passing over pastures will kill animals.
-   Includes "Dynamic Immunity": After a strike, the pasture is safe for
-   a set time. On large maps (4x, 16x), this timer automatically
-   increases (up to 30+ mins) to account for the storm's travel time.
-
->> GEO-FENCING
-   The mod detects the map size automatically. If a vehicle is about to
-   be thrown into the "void" (map edge), the physics engine cuts power
-   and drops it safely within the map boundary.
-
->> COMPATIBILITY
-   - AutoRepair: Automatically pauses "AutoRepair" mods during storms
-     so mechanics don't try to repair flying vehicles.
-   - Multiplayer: Fully synced. All clients see the same destruction.
-
-------------------------------------------------------------------------
-[4] CONFIGURATION & COMMANDS
-------------------------------------------------------------------------
-You can tune the mod live using the console (~).
-Settings are saved to: "modSettings/TornadoPhysics_Config.xml"
-
-=== STANDARD COMMANDS ===
-t_save             Save current settings to XML.
-t_status           Check active storms and map scale.
-t_husbandry        Toggle Animal Death ON/OFF.
-t_immunity [sec]   Set how long pastures are safe after a strike.
-t_toggle [option]  Toggle features (lift_bales, lift_logs, indoor_damage).
-
-=== ADVANCED TUNING ===
-t_set radius [x]   Set Base Radius (See Map Scaling below).
-t_set power [x]    Set Ejection Power (Default: 20).
-t_set heavy [x]    Set Heavy Mass Threshold (Default: 3.0 tons).
-t_set dmg_in [x]   Damage per second inside the funnel (Default: 0.25).
-t_debug            Toggle text labels above flying objects.
-t_ring             Toggle the red debug ring showing the suction zone.
-
-------------------------------------------------------------------------
-[5] MAP SCALING GUIDE
-------------------------------------------------------------------------
-The mod attempts to auto-detect map size, but you can manually tune the
-Base Radius to make the storm fit your map better.
-
-Recommended "t_set radius" values:
-- Standard Map (2km):  Radius 35  (Max EF-5 size: 175m)
-- 4x Map       (4km):  Radius 70  (Max EF-5 size: 350m)
-- 16x Map      (8km):  Radius 140 (Max EF-5 size: 700m)
-- 64x Map      (16km): Radius 280 (Max EF-5 size: 1400m)
-
-------------------------------------------------------------------------
-[6] BUG FIXES IN V3
-------------------------------------------------------------------------
-- Fixed: Physics rotation now matches visual cloud spin (Counter-Clockwise).
-- Fixed: Vehicles taking damage/dirt while inside the Store menu.
-- Fixed: Borrowed Mission Vehicles taking storm damage.
-- Fixed: "Infinite Repair Loop" when used with AutoRepair mods.
-
-------------------------------------------------------------------------
-[7] CREDITS
-------------------------------------------------------------------------
-Scripting & Physics Engine: whitevamp
-Testing & Feedback: Community
-
-You are free to use this mod in videos/streams.
-Please do not re-upload to other sites without permission.
+🔗 **[GitHub Repository](https://github.com/whitevamp/FS25_TornadoPhysics)**
