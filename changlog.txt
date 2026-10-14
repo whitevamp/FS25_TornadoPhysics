@@ -146,6 +146,20 @@ Physics / gameplay
 - Fixed the 24-hour auto-repair countdown barely moving when time was
   fast-forwarded (EDC time skips, sleeping). Skipped time now counts fully.
 - Fixed fractional chaos values in t_tune chaos being rounded away.
+- Fixed cargo spilling from trailers still standing on their wheels (the
+  lift height was measured from the terrain, so a high trailer frame or a
+  farmyard / concrete surface counted as "in the air"). Lift is now
+  measured from the trailer's own resting height and wheel ground contact.
+- Fixed trailers keeping the last litres of cargo even when upside down
+  (small amounts were too little for a heap and were put back every time).
+- Cargo now spills at the same speed at any frame rate.
+- Fixed covered trailers stopping to leak after the first few litres when
+  standing on end or upside down (the trailer's own "no heap under me" area
+  blocked every drop, and heaps were capped at 0.1 m).
+- Fixed headers on a header trailer (and other dynamically mounted
+  vehicles) staying locked to the trailer in the storm: they stood on end
+  next to it and were pulled back onto it. Inside the wind field they are
+  now released and fly as loose objects.
 - Spawning a new tornado while one was already on the ground now gives it a
   new roll, touchdown alert, siren and storm weather (it was silently ignored).
 - Fixed a reloaded savegame re-rolling the tornado that was already on the

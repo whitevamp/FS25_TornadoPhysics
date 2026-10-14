@@ -562,6 +562,14 @@ function TornadoPhysics:applyVehiclePhysics(nodeId, tX, tY, tZ, dtSec, data)
         end
     end
 
+    -- A header on a header trailer (or anything else on a dynamic mount) is held by a joint that locks its
+    -- rotation to the carrier and pulls it back along one axis without ever breaking. In the storm that kept
+    -- the header standing on end next to the trailer and dragged it back onto it. Inside the wind field it
+    -- is a loose object of its own.
+    if data ~= nil and data.obj ~= nil then
+        self:releaseDynamicMount(data.obj)
+    end
+
     local massFactor = 1.0
     if mass > self.settings.heavy_threshold then
         massFactor = 1.0 + ((mass - self.settings.heavy_threshold) * self.settings.mass_penalty)
@@ -1550,6 +1558,26 @@ function TornadoPhysics:findTornadoSimple()
                 return
             end
         end
+    end
+end
+
+--- Server: frees a vehicle that is dynamically mounted on another one (header trailer, fork mounts).
+--- If it lands on its carrier again, the game mounts it again by itself.
+function TornadoPhysics:releaseDynamicMount(vehicle)
+    if MountableObject == nil or vehicle.unmountDynamic == nil or vehicle.spec_mountable == nil then
+        return
+    end
+    if vehicle.dynamicMountType ~= MountableObject.MOUNT_TYPE_DYNAMIC then
+        return
+    end
+    vehicle:unmountDynamic()
+    -- Same clean-up the game does when a mounted object leaves its carrier.
+    local spec = vehicle.spec_mountable
+    spec.dynamicMountObjectTriggerCount = nil
+    spec.dynamicMountJointNodeDynamicRefNode = nil
+    spec.dynamicMountJointNodeDynamicMountOffset = nil
+    if TornadoDebug then
+        TornadoDebug:log("PHYSICS", "Released dynamic mount: " .. tostring(vehicle.getName ~= nil and vehicle:getName() or vehicle.typeName))
     end
 end
 

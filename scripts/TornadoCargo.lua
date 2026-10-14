@@ -1,5 +1,5 @@
 ---@class TornadoCargo
----@version 5.2 (SELECTIVE LOGGING)
+---@version 5.3 (RESTING-HEIGHT LIFT CHECK, NO LEFTOVERS)
 ---@description Forces dumping by overriding Lua checks. Now features independent verbose logging.
 
 TornadoCargo            = {}
@@ -16,6 +16,11 @@ TornadoCargo.settings   = {
     coverLeakChance = 0.25,
     coverLeakMult = 0.10
 }
+
+-- Most cargo one trailer can lose per second, and the remainder that is poured out in one go.
+TornadoCargo.MAX_DUMP_PER_SECOND = 30000
+TornadoCargo.REMAINDER_LITERS = 150
+TornadoCargo.MAX_DUMP_PER_LEAK = 2000
 
 local IGNORED_FILLTYPES = {
     ["DIESEL"] = true,
@@ -62,15 +67,23 @@ function TornadoCargo:processVehicle(vehicle, dt)
 
     local x, y, z = getWorldTranslation(vehicle.rootNode)
     local terrainH = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z)
+    local clearance = y - terrainH
+    local _, dy, _ = localDirectionToWorld(vehicle.rootNode, 0, 1, 0)
+
+    -- Lift is measured from the vehicle's own resting height, not from the terrain: the root node of many
+    -- trailers sits well above the ground, and on a farmyard / concrete / bridge the surface is above the
+    -- terrain, so "root - terrain" alone made upright trailers on their wheels spill everything.
+    local grounded = self:getHasWheelGroundContact(vehicle)
+    if (grounded == true or vehicle.tornadoCargoRestHeight == nil) and dy > 0.9 then
+        vehicle.tornadoCargoRestHeight = clearance
+    end
+    local lift = clearance - (vehicle.tornadoCargoRestHeight or 0)
 
     local isSpilling = false
-    if (y - terrainH) > self.settings.spillHeight then
-        isSpilling = true
-    else
-        local _, dy, _ = localDirectionToWorld(vehicle.rootNode, 0, 1, 0)
-        if dy < self.settings.spillAngle then
-            isSpilling = true
-        end
+    if dy < self.settings.spillAngle then
+        isSpilling = true -- tipped over / upside down
+    elseif grounded ~= true and lift > self.settings.spillHeight then
+        isSpilling = true -- in the air
     end
 
     if not isSpilling then
@@ -102,12 +115,26 @@ function TornadoCargo:processVehicle(vehicle, dt)
                     ))
                 end
             end
-            self:drainCargo(vehicle, dt, x, z, self.settings.coverLeakMult)
+            self:drainCargo(vehicle, dt, x, z, self.settings.coverLeakMult, true)
         end
         return
     end
 
     self:drainCargo(vehicle, dt, x, z, 1.0)
+end
+
+--- true = a wheel touches the ground, false = no wheel does, nil = the vehicle has no wheels to ask.
+function TornadoCargo:getHasWheelGroundContact(vehicle)
+    local spec = vehicle.spec_wheels
+    if spec == nil or spec.wheels == nil or #spec.wheels == 0 then
+        return nil
+    end
+    for _, wheel in ipairs(spec.wheels) do
+        if wheel.physics ~= nil and wheel.physics.hasGroundContact then
+            return true
+        end
+    end
+    return false
 end
 
 function TornadoCargo:maybePopCoverOpen(vehicle, dt)
@@ -128,68 +155,96 @@ function TornadoCargo:maybePopCoverOpen(vehicle, dt)
     return cover.state ~= 0
 end
 
-function TornadoCargo:drainCargo(vehicle, dt, worldX, worldZ, drainScale)
+--- isBurst: one leak through a closed cover (a single share of drainRate), not a per-second flow.
+function TornadoCargo:drainCargo(vehicle, dt, worldX, worldZ, drainScale, isBurst)
     drainScale = drainScale or 1.0
     if drainScale <= 0 then return end
 
     local units = vehicle:getFillUnits()
     if not units then return end
 
-    for i, unit in pairs(units) do
+    -- drainRate is the share of the load lost per 0.1 s (frame-rate independent).
+    local seconds = (dt or 0) / 1000
+    if seconds <= 0 then return end
+    local share = 1 - (1 - math.min(self.settings.drainRate or 0.1, 1)) ^ (seconds * 10)
+    local maxDump = self.MAX_DUMP_PER_SECOND * seconds
+    if isBurst then
+        share = math.min(self.settings.drainRate or 0.1, 1)
+        maxDump = self.MAX_DUMP_PER_LEAK
+    end
+
+    for i, _ in pairs(units) do
         local currentLevel = vehicle:getFillUnitFillLevel(i)
-        if currentLevel > 10 then
+        if currentLevel > 0 then
             local fillTypeIndex = vehicle:getFillUnitFillType(i)
             local fillType = g_fillTypeManager:getFillTypeByIndex(fillTypeIndex)
             local fillName = (fillType and fillType.name) or "UNKNOWN"
 
             if not IGNORED_FILLTYPES[fillName] then
-                local baseDrain = currentLevel * self.settings.drainRate
-                local MAX_DUMP_PER_TICK = 2000
-                baseDrain = math.min(baseDrain, MAX_DUMP_PER_TICK)
+                local drainAmount = math.min(currentLevel * share, maxDump) * drainScale
 
-                local drainAmount = baseDrain * drainScale
-                if drainAmount > currentLevel then drainAmount = currentLevel end
-                if drainAmount <= 0 then return end
+                -- The ground only takes heaps above a minimum size; smaller amounts were refunded forever, which
+                -- left the last litres in the trailer (even upside down). Spill at least that much, and pour
+                -- out the rest in one go once only a small remainder is left.
+                local minValid = 0
+                if g_densityMapHeightManager ~= nil and g_densityMapHeightManager.getMinValidLiterValue ~= nil then
+                    minValid = g_densityMapHeightManager:getMinValidLiterValue(fillTypeIndex) or 0
+                end
+                local isRemainder = drainScale >= 1 and currentLevel <= math.max(minValid * 4, self.REMAINDER_LITERS)
+                if isRemainder then
+                    drainAmount = currentLevel
+                else
+                    drainAmount = math.max(drainAmount, minValid * 2)
+                end
+                drainAmount = math.min(drainAmount, currentLevel)
 
-                vehicle:addFillUnitFillLevel(vehicle:getOwnerFarmId(), i, -drainAmount, fillTypeIndex, ToolType
-                .UNDEFINED, nil)
+                if drainAmount > 0 then
+                    vehicle:addFillUnitFillLevel(vehicle:getOwnerFarmId(), i, -drainAmount, fillTypeIndex, ToolType
+                    .UNDEFINED, nil)
 
-                if fillType and not fillType.isLiquid then
-                    local dropped = self:forceTipToGround(fillTypeIndex, drainAmount, worldX, worldZ, vehicle)
+                    if fillType and not fillType.isLiquid then
+                        local dropped = self:forceTipToGround(fillTypeIndex, drainAmount, worldX, worldZ, vehicle)
 
-                    if dropped <= 0 then
-                        vehicle:addFillUnitFillLevel(vehicle:getOwnerFarmId(), i, drainAmount, fillTypeIndex,
-                            ToolType.UNDEFINED, nil)
+                        if isRemainder then
+                            -- The last few litres are blown away even if no heap could be placed.
+                            if self.isVerbose then
+                                TornadoDebug:log("CARGO", string.format("REMAINDER: %.1fL of %s spilled (%.1fL as heap).",
+                                    drainAmount, fillName, dropped))
+                            end
+                        elseif dropped <= 0 then
+                            vehicle:addFillUnitFillLevel(vehicle:getOwnerFarmId(), i, drainAmount, fillTypeIndex,
+                                ToolType.UNDEFINED, nil)
 
-                        -- Use local verbose flag
-                        if self.isVerbose then
-                            vehicle.tornadoNoDropTimer = (vehicle.tornadoNoDropTimer or 0) + dt
-                            if vehicle.tornadoNoDropTimer >= 1000 then
-                                vehicle.tornadoNoDropTimer = 0
+                            -- Use local verbose flag
+                            if self.isVerbose then
+                                vehicle.tornadoNoDropTimer = (vehicle.tornadoNoDropTimer or 0) + dt
+                                if vehicle.tornadoNoDropTimer >= 1000 then
+                                    vehicle.tornadoNoDropTimer = 0
+                                    TornadoDebug:log("CARGO", string.format(
+                                        "NO DROP: couldn't place %s this tick; refunded %.1fL",
+                                        fillName, drainAmount
+                                    ))
+                                end
+                            end
+                        elseif dropped < drainAmount then
+                            local refund = drainAmount - dropped
+                            vehicle:addFillUnitFillLevel(vehicle:getOwnerFarmId(), i, refund, fillTypeIndex,
+                                ToolType.UNDEFINED, nil)
+
+                            -- Use local verbose flag
+                            if self.isVerbose then
                                 TornadoDebug:log("CARGO", string.format(
-                                    "NO DROP: couldn't place %s this tick; refunded %.1fL",
-                                    fillName, drainAmount
+                                    "PARTIAL: Dropped %.1fL of %s, refunded %.1fL", dropped, fillName, refund
                                 ))
                             end
-                        end
-                    elseif dropped < drainAmount then
-                        local refund = drainAmount - dropped
-                        vehicle:addFillUnitFillLevel(vehicle:getOwnerFarmId(), i, refund, fillTypeIndex,
-                            ToolType.UNDEFINED, nil)
-
-                        -- Use local verbose flag
-                        if self.isVerbose then
-                            TornadoDebug:log("CARGO", string.format(
-                                "PARTIAL: Dropped %.1fL of %s, refunded %.1fL", dropped, fillName, refund
-                            ))
+                        else
+                            vehicle.tornadoNoDropTimer = 0
                         end
                     else
-                        vehicle.tornadoNoDropTimer = 0
-                    end
-                else
-                    -- Use local verbose flag
-                    if self.isVerbose then
-                        TornadoDebug:log("CARGO", string.format("LEAK: %.1fL of %s drained.", drainAmount, fillName))
+                        -- Use local verbose flag
+                        if self.isVerbose then
+                            TornadoDebug:log("CARGO", string.format("LEAK: %.1fL of %s drained.", drainAmount, fillName))
+                        end
                     end
                 end
             end
@@ -258,8 +313,11 @@ function TornadoCargo:forceTipToGround(fillTypeIndex, amount, x, z, vehicle)
     local maxZ = math.max(sz, ez) + pad
     g_densityMapHeightManager:updateCollisionMap(minX, minZ, maxX, maxZ)
 
+    -- No tip occlusion areas: they keep heaps from forming under a vehicle, and a trailer standing on end or
+    -- upside down covered its own spill line, so every drop failed and was put back (leak "stopped").
+    -- No line-height limit either: the fallback line lies 0.1 m above the ground and capped heaps to that.
     local dropped, newLineOffset = DensityMapHeightUtil.tipToGroundAroundLine(
-        vehicle, amount, fillTypeIndex, sx, sy, sz, ex, ey, ez, length, nil, lineOffset, true, nil, true
+        vehicle, amount, fillTypeIndex, sx, sy, sz, ex, ey, ez, length, nil, lineOffset, false, nil, false
     )
 
     if vehicle ~= nil and newLineOffset ~= nil then
