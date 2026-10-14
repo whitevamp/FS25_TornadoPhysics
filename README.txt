@@ -1,15 +1,13 @@
-
-
-
 ========================================================================
-                     TORNADO PHYSICS (Release 4.0.0.0)
+                     TORNADO PHYSICS (Release 5.0.0.0)
                    Advanced Weather Destruction Engine
+                        "The Real-Life Update"
                             by whitevamp
 ========================================================================
 
-Version: 4.0.0.0
+Version: 5.0.0.0
 GAME:    Farming Simulator 25
-DATE:    June 2026
+DATE:    October 2026
 
 ------------------------------------------------------------------------
 [1] OVERVIEW
@@ -18,13 +16,20 @@ This mod is a full physics overhaul for the in-game tornado. It turns
 the standard visual effect into a dynamic vortex that calculates lift,
 drag, and mass resistance.
 
-NEW IN v4.0.0.0 (REFACTOR UPDATE):
-- Complete Code Rewrite: Modular architecture for better stability.
-- Cargo Spilling: Trailers dump contents based on cover state.
-- ADS Support: Integration with "Advanced Damage System".
-- Siren Audio: 3-minute warning siren loops on spawn.
-- Smoke Effects: Vehicles emit smoke when damaged by the storm.
-- Shader Mesh Support: Volumetric visuals for the funnel.
+NEW IN v5.0.0.0 (THE REAL-LIFE UPDATE):
+- Tornado Control Panel: every setting in an in-game menu
+  (Right Ctrl + Right Shift + T), no console needed.
+- Real-Life Tornado Climate (optional): EF rating, size, hail, wind,
+  season, time of day, track direction and outbreak days follow real
+  recorded statistics for the United States and Canada.
+- AI Traffic Roadblocks: road traffic stops before driving into a tornado.
+- Full Multiplayer Support: every player sees the same tornado, weather,
+  damage and warnings.
+- Tornado Saved With The Savegame: an active tornado (and outbreak) comes
+  back exactly the same after loading.
+- Translations: English, German, French, Polish, Spanish, Italian, Dutch.
+- Map overlay shows storm type, hail, gusts and travel direction.
+- Many bug fixes (see changlog.txt for the full list).
 
 ------------------------------------------------------------------------
 [2] INSTALLATION
@@ -32,16 +37,79 @@ NEW IN v4.0.0.0 (REFACTOR UPDATE):
 1. Place the "FS25_TornadoPhysics.zip" into your "mods" folder.
    (Usually: Documents/My Games/FarmingSimulator2025/mods)
 2. Activate the mod in the game menu.
-3. No new save game required.
+3. No new save game required. Your v4 settings file is kept.
 
 ------------------------------------------------------------------------
 [3] KEY FEATURES
 ------------------------------------------------------------------------
 >> TRUE PHYSICS ENGINE
-   Vehicles are lifted, orbited, and ejected. Heavier tractors resist 
+   Vehicles are lifted, orbited, and ejected. Heavier tractors resist
    suction longer than light balers or pallets.
 
->> CARGO SPILLING (NEW)
+>> TORNADO CONTROL PANEL (NEW IN v5)
+   Open with Right Ctrl + Right Shift + T (rebind under Options >
+   Controls as "Tornado Control Panel"). Six tabs:
+   - Settings  : save to XML, auto-save on close, factory resets
+   - Physics   : radius, power, heavy threshold, damage, lifting, border,
+                 randomize, and all real-life climate options
+   - Tuning    : suction, lift, chaos, hover, max speed, core ratio,
+                 bale orbit/suction, ejection duration and interval
+   - Effects   : siren, danger ring, random fire
+   - Modules   : destruction, recovery bill, map overlay, cargo spilling,
+                 livestock, road traffic
+   - Developer : telemetry HUD, position tracking, verbose logging,
+                 status / hotspot / map overlay dumps, husbandry kill test
+   Every option has a tooltip. Changes apply instantly through the same
+   code as the console commands. Resets and the kill test ask first.
+
+>> REAL-LIFE TORNADO CLIMATE (NEW IN v5, OFF BY DEFAULT)
+   Turn it on in the Physics tab (or "t_set climate on"). Off = classic
+   random tornadoes, exactly as in v4.
+   - Regions: United States (US-wide + all 50 states) and Canada
+     (Canada-wide + AB, MB, ON, QC, SK). "Auto" picks the region from the
+     map (US base map = United States; a mod map with a state, province
+     or country in its name uses that region). Or pick one yourself.
+   - EF rating from the region's real EF mix (US: about 56% EF0, 32% EF1
+     ... 0.04% EF5). Size is placed inside the EF range from real track
+     widths; your radius setting and map scaling still apply.
+   - Storm weather: real hail odds and stone sizes, real severe-wind gusts.
+   - Seasons and time of day: tornadoes come in the region's real tornado
+     months, mostly in the late afternoon. Southern-hemisphere maps are
+     shifted by six months. "Tornado frequency" multiplier 0.25x - 4x.
+   - Track direction: natural tornadoes travel the way they do in the
+     region (mostly toward the north-east in the US).
+   - Outbreak days: a touchdown can start a busy storm day with more
+     tornadoes 30-120 in-game minutes apart (default max 3, until 22:00).
+   - Seasons, direction and outbreaks can each be switched on or off.
+
+>> AI TRAFFIC ROADBLOCKS (NEW IN v5)
+   AI road traffic stops and waits (like at a red light) before entering
+   the tornado's zone. Cars already inside drive out. Adjustable stop
+   distance (default 40 m). With the danger ring on, roadblocks show as
+   red posts.
+
+>> MULTIPLAYER (NEW IN v5)
+   - The server runs the tornado; every client sees the same touchdown
+     warning, siren, EF rating, radius, hotspot, overlay, compass marker,
+     funnel, destroyed parts, smoke, fire and storm weather.
+   - Players joining a running game get the current tornado and damage.
+   - Gameplay settings belong to the server: only the host or a server
+     admin can change them. Siren, danger ring, map overlay, debug tools
+     and auto-save stay personal per player.
+   - Messages (animal losses, tow bills, outbreak alerts) show in each
+     player's own language and currency.
+
+>> SAVEGAME PERSISTENCE (NEW IN v5)
+   A tornado on the ground when you save comes back after loading with
+   the same EF rating, size, weather and direction (no re-roll, no second
+   alert). A running outbreak carries on.
+
+>> ESC MAP OVERLAY
+   EF rating, wind speed, radius and distance, plus (v5) a second line
+   with storm type (LP / Classic / HP supercell), hail size, gusts and
+   the direction the tornado is moving.
+
+>> CARGO SPILLING
    If enabled, Trailers caught in the storm will lose their crop.
    - Uncovered: 100% loss (Dumped to ground).
    - Covered: Chance to leak or "pop" the cover open.
@@ -54,77 +122,109 @@ NEW IN v4.0.0.0 (REFACTOR UPDATE):
 
 >> HUSBANDRY & LIVESTOCK
    If enabled, tornadoes passing over pastures will kill animals.
-   - Includes "Dynamic Immunity": After a strike, the pasture is safe for
-   - set time (scales automatically with map size).
-   - Pasture-Only Targeting: The Reaper logic now strictly targets outdoor pastures, fences, and meadows by reading Giants' `spec_husbandryFence` data.
-   - Indoor Immunity: Animals housed inside enclosed barns are now 100% safe from storm loss.
-   - Dynamic Map Scaling: Livestock immunity timers now automatically adjust based on the physical size of the map (e.g., 2km vs 8km maps).
+   - Dynamic Immunity: after a strike, the pasture is safe for a set time
+     (scales automatically with map size).
+   - Pasture-Only Targeting: only outdoor pastures, fences and meadows
+     are hit. Animals inside enclosed barns are 100% safe.
 
->> The Destruction Engine
-   If enabled, tornadoes passing over vehicles will dynamically destroy them.
-   - Targeted Vehicle Destruction: Tornadoes physically rip specific parts off of vehicles caught within the storm's damage zone.
-   - Smart Categorization: Automatically sorts vehicle components into "Trash" (e.g., hoses, decals, wires) and "Structural" (e.g., mirrors, glass, pipes) utilizing a custom database and an intelligent ignore list.
-   - Persistent Damage States: Vehicle damage is flawlessly synchronized with the base game's save cycle, ensuring damaged machines remain broken even after exiting and reloading a save.
-   - Automated 24-Hour Repairs: Damaged vehicles receive an in-game 24-hour repair cooldown. Once this internal timer expires, all missing parts are automatically restored.
-   - Safe Save Injection: Safely bypasses the native Giants event listener to hardwire destruction data directly into the core `FSBaseMission.saveSavegame` queue, completely preventing Lua panics and corrupted weather states.
-   - Compatibility Note: Not all vehicles are fully supported. Modded or custom vehicles utilizing unique 3D nodes that are not mapped in the mod's global database may be ignored by the destruction system.
+>> THE DESTRUCTION ENGINE
+   If enabled, tornadoes rip parts off vehicles in the damage zone.
+   - Smart Categorization: "Trash" parts (hoses, decals, wires) and
+     "Structural" parts (mirrors, glass, pipes).
+   - Persistent: damaged vehicles stay damaged after save/reload.
+   - Automated 24-Hour Repairs: missing parts come back after 24 in-game
+     hours (v5: fast-forwarded time now counts fully).
+   - Hardcore Recovery Bill: resetting a tornado-damaged vehicle to the
+     shop charges an itemized tow and repair bill (v5: also restores the
+     missing parts).
+   - Compatibility Note: modded vehicles with unusual 3D nodes that are
+     not in the mod's database may be ignored.
+
+>> FIRE & SMOKE
+   Damaged vehicles smoke; engines can catch fire (random 50/50 mode or
+   every damaged engine).
 
 >> GEO-FENCING
    Prevents vehicles from being thrown off the map edge.
 
 ------------------------------------------------------------------------
-[4] CONFIGURATION & COMMANDS (NEW SYSTEM)
+[4] CONFIGURATION & COMMANDS
 ------------------------------------------------------------------------
-You can tune the mod live using the console (~).
+Everything below is also in the Tornado Control Panel.
 Settings are saved to: "modSettings/TornadoPhysics_Config.xml"
-
-NOTE: The old commands (t_toggle, t_status) have been replaced!
+In multiplayer, gameplay commands only work for the host / server admin.
 
 1. Help (t_help)
-   - t_help [command] for more details.
-   - t_physics                  : Adjust Physics: radius, power, heavy, fence, randomize...
-   - t_sfx: Adjust SFX          : sound, ring, particles...
-   - t_set: Module Settings     : cargo, husbandry, destruction, save...
-   - t_dev: Developer Tools     : status, verbose, hud, hotspotdump, kill_test...
-   - t_tune                     : Fine-tune Physics Constants
-   - t_reset                    : Reset Settings: all, physics, tuning, cargo...
+   - t_help [command]           : details for one command
+   - t_physics                  : radius, power, heavy, fence, randomize...
+   - t_sfx                      : sound, ring, fire_random
+   - t_set                      : modules, climate, traffic, save...
+   - t_dev                      : status, verbose, hud, hotspotdump, kill_test
+   - t_tune                     : fine-tune physics constants
+   - t_reset                    : all, physics, tuning, cargo, husbandry,
+                                  traffic, climate
 
 2. PHYSICS CONTROL (t_physics)
-   - t_physics radius [x]     : Manually override storm size (Default: 35)
-   - t_physics power [x]      : Change ejection strength (Default: 20)
-   - t_physics heavy [x]      : Set mass threshold for heavy vehicles
-   - t_physics fence [x]      : Set safe distance from map edge
-   - t_physics lift_bales     : Toggle handling of bales/pallets
+   - t_physics radius [x]       : Base storm size (Default: 35)
+   - t_physics power [x]        : Ejection strength (Default: 20)
+   - t_physics heavy [x]        : Mass threshold for heavy vehicles (tons)
+   - t_physics fence [x]        : Safe distance from map edge (m)
+   - t_physics dmg_in [x]       : Damage/sec inside the core
+   - t_physics dmg_out [x]      : Damage/sec in the outer winds
+   - t_physics lift_bales       : Toggle lifting bales/pallets
+   - t_physics lift_logs        : Toggle lifting logs
+   - t_physics border           : Toggle map border safety
+   - t_physics indoor_damage    : Toggle damage inside sheds
+   - t_physics outdoor_damage   : Toggle damage outside
+   - t_physics randomize        : Force a new size / EF rating now
 
-2. MODULE SETTINGS (t_set)
-   - t_set save               : Save current configuration to XML
-   - t_set cargo              : Toggle Cargo Spilling System
-   - t_set husbandry          : Toggle Animal Lethality
-   - t_set husbandry immunity [x] : Set barn safety timer (seconds)
+3. MODULE SETTINGS (t_set)
+   - t_set save                 : Save current configuration to XML
+   - t_set destruction [on|off] : Vehicle destruction
+   - t_set recovery             : Hardcore tow bill
+   - t_set mapui [on|off|sel|dump] : ESC map overlay
+   - t_set cargo [toggle|verbose|spill_height|spill_angle|drain_rate|
+                  spread|leak_chance] [x]
+   - t_set husbandry [toggle|immunity <sec>]
+   - t_set traffic [on|off|buffer <m>|status]            (NEW)
+   - t_set climate [on|off|region <name|code|auto>|list|status|
+                    seasons|direction|outbreaks [on|off]|
+                    frequency <x>|outbreakmax <n>]        (NEW)
+     Examples: t_set climate region oklahoma | OK | US | auto
+               t_set climate frequency 2
 
-3. VISUALS & AUDIO (t_sfx)
-   - t_sfx sound              : Toggle Siren Audio ON/OFF
-   - t_sfx ring               : Toggle Debug Ring (Visual Safety Zone)
+4. VISUALS & AUDIO (t_sfx)
+   - t_sfx sound                : Toggle siren
+   - t_sfx ring                 : Toggle danger-zone ring
+   - t_sfx fire_random          : Toggle random fire
 
-4. HARDCORE TUNING (t_tune)
-   Fine-tune the simulation constants live.
-   - t_tune suction [x]     : Speed of suction towards center
-   - t_tune lift [x]        : Speed of vertical lift
-   - t_tune chaos [x]       : Randomness of movement
-   - t_tune bale_orbit [x]  : Orbital speed for bales
-   - t_tune hover [x]       : Max height before 
-   
-5. Debug logging (t_dev)
-   - t_dev verbose destruction       : Tracks XML saves, relinking, and 24-hour repair timers.
-   - t_dev verbose physics           : Tracks suction, mass calculation, and ejection forces.
-   - t_dev verbose all               : Enables master logging.
-   - t_dev pos                       : Toggles real-time coordinate tracking for the tornado node.
+5. HARDCORE TUNING (t_tune)
+   - t_tune suction [x]         : Speed of suction towards center
+   - t_tune lift [x]            : Speed of vertical lift
+   - t_tune chaos [x]           : Randomness of movement
+   - t_tune hover [x]           : Max height for floating objects
+   - t_tune max_speed [x]       : Physics speed cap
+   - t_tune destruct_ratio [x]  : Share of radius that is the core (0-1)
+   - t_tune bale_orbit [x]      : Orbital speed for bales
+   - t_tune bale_suction [x]    : Suction speed for bales
+   - t_tune purge_time [ms]     : Ejection phase duration
+   - t_tune purge_int [ms]      : Time between ejections
+
+6. DEBUG (t_dev)
+   - t_dev status               : Status summary
+   - t_dev hud                  : Physics telemetry over objects
+   - t_dev pos                  : Real-time tornado coordinates
+   - t_dev verbose [all|physics|destruction|destruction_indoor_bypass]
+                                : log channels
+   - t_dev hotspotdump          : Hotspot / map overlay state
+   - t_dev kill_test            : Husbandry kill test (kills animals!)
 
 ------------------------------------------------------------------------
 [5] MAP SCALING GUIDE
 ------------------------------------------------------------------------
 The mod attempts to auto-detect map size, but you can manually tune the
-Base Radius (using "t_physics radius") to make the storm fit better.
+Base Radius (using "t_physics radius" or the Physics tab) to make the
+storm fit better.
 
 Recommended Values:
 - Standard Map (2km):  Radius 35  (Max EF-5 size: 175m)
@@ -133,21 +233,86 @@ Recommended Values:
 - 64x Map      (16km): Radius 280 (Max EF-5 size: 1400m)
 
 ------------------------------------------------------------------------
-[6] CREDITS
+[6] DEVELOPER NOTES (GitHub dev branch)
 ------------------------------------------------------------------------
-Main Author & Scripting: whitevamp
-  • Core Physics Engine
-  • Integration Scripts (ADS & CompassHeading)
+Folder layout:
+- TornadoMain.lua            : loader; network events and TornadoText
+                               are sourced at the top (events must be
+                               registered before a mission exists)
+- scripts/                   : one module per feature (Physics, Climate,
+                               Weather, Outbreak, Traffic, Sync,
+                               Persistence, Destruction, Recovery, ...)
+- scripts/events/            : multiplayer network events
+- scripts/gui/               : control panel controller + page base
+- scripts/gui/pages/         : one Lua file per panel tab
+- gui/TornadoMenu.xml        : panel layout (ASCII only, $l10n_ keys)
+- gui/guiProfiles.xml        : panel profiles
+- translations/              : GENERATED translation_xx.xml files
+- DB/                        : climate data + destruction ignore list
+- tools/                     : Python builders (not part of the mod zip)
 
-Integrated Mod Credits:
-  • ADS – Original mod by id577
-  • CompassHeading – Original mod by RocklandUSA
+Rules:
+- No pcall / xpcall anywhere (GIANTS ModHub rejects it). Use explicit
+  nil checks.
+- Player-visible text goes through scripts/TornadoText.lua. Server ->
+  client messages are sent as a text key + parameters
+  (TornadoSync:sendMessage(key, params, kind, farmId)), never as finished
+  text. Console and log output stay English.
 
+Translations:
+1. Edit tools/translations_source.py (every key needs all 7 languages).
+2. Run:  python tools/build_translations.py
+   It checks that every language uses the same %d / %s placeholders as
+   English and rewrites translations/translation_xx.xml.
+   Never edit the generated XML files by hand.
+
+Climate data:
+- python tools/build_tornado_climate.py  -> DB/TornadoClimate.xml
+  (NOAA SPC tornado / hail / wind CSVs; re-run for a new NOAA year)
+- python tools/build_au_ca_climate.py    -> DB/TornadoClimate_CA.xml
+  (+ DB/TornadoClimate_AU.xml). Canada borrows hail from neighbouring
+  US states: AB->MT, SK->ND, MB->MN, ON->MI, QC->NY.
+- Raw CSV data stays outside the mod zip.
+- The mod skips any climate file that is missing, so countries can be
+  added or removed as separate files.
+
+Release zip - leave these OUT:
+- dataS/, tools/, images/, weather_csv_files_for_tornadophysics/
+- screenshots (*.jpg) and old .rar / .zip builds
+- DB/TornadoClimate_AU.xml (Bureau of Meteorology licence not yet
+  confirmed - Australia does not ship until it is)
+
+------------------------------------------------------------------------
+[7] VERSION HISTORY
+------------------------------------------------------------------------
+v5.0.0.0 - The Real-Life Update (see changlog.txt for every change)
+v4.0.0.0 - Refactor Update: complete code rewrite (modular), cargo
+           spilling, ADS support, 3-minute siren, damage smoke, shader
+           mesh funnel, vehicle destruction engine, new t_ commands.
+v3.0     - Livestock, map scaling, console/XML configuration,
+           geo-fencing (full v3 readme below).
+
+------------------------------------------------------------------------
+[8] CREDITS
+------------------------------------------------------------------------
+Scripting & Physics Engine: whitevamp
+ADS Integration Support: id577
 Testing & Feedback: Community
+
+DATA SOURCES (Real-Life Tornado Climate mode):
+- United States: tornado, hail and wind statistics derived from the
+  NOAA / National Weather Service Storm Prediction Center Severe Weather
+  Database (public domain).
+- Canada: tornado statistics derived from Northern Tornadoes Project
+  event data, Western University, licensed under CC BY-NC 4.0
+  (https://creativecommons.org/licenses/by-nc/4.0/). The data was
+  aggregated and modified for this mod. Canadian hail values are borrowed
+  from neighbouring US states (NOAA SPC).
+- This mod is free and non-commercial. The included climate data may not
+  be used commercially.
 
 You are free to use this mod in videos/streams.
 Please do not re-upload to other sites without permission.
-
 
 
 ========================================================================
