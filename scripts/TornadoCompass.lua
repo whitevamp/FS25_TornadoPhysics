@@ -42,7 +42,7 @@ function TornadoCompass:update(dt)
         -- Clear out any existing native tornado markers from their active render table
         if compass._markers ~= nil then
             for id, marker in pairs(compass._markers) do
-                if string.find(string.lower(id), "tornado") then
+                if string.find(string.lower(tostring(id)), "tornado") then
                     compass._markers[id] = nil
                 end
             end

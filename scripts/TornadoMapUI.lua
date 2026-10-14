@@ -143,6 +143,15 @@ function TornadoMapUI:installHooks()
     if self._installed then return end
     self._installed = true
 
+    -- The hooked classes survive savegame reloads; flag them so hooks are only added once.
+    -- The hooks call the TornadoMapUI global at runtime, so they keep using the current module.
+    if InGameMenuMapFrame ~= nil and InGameMenuMapFrame.tornadoMapUiHooked then
+        return
+    end
+    if InGameMenuMapFrame ~= nil then
+        InGameMenuMapFrame.tornadoMapUiHooked = true
+    end
+
     if InGameMenuMapFrame ~= nil then
         if InGameMenuMapFrame.onFrameOpen ~= nil then
             InGameMenuMapFrame.onFrameOpen = Utils.appendedFunction(InGameMenuMapFrame.onFrameOpen, function(frame)
@@ -232,18 +241,17 @@ function TornadoMapUI:drawOverlay()
     -- Distance
     local tX, tZ = self._hotspot:getWorldPosition()
     local pX, pZ, src = getPlayerXZ()
-    local distStr = "n/a"
+    local distStr = TornadoText.get("tp_na")
     local distM = nil
     if tX ~= nil and tZ ~= nil and pX ~= nil and pZ ~= nil then
         distM = math.floor(MathUtil.vector2Length(tX - pX, tZ - pZ) + 0.5)
-        distStr = tostring(distM) .. "m"
+        distStr = tostring(distM) .. " m"
     else
         dbg("Distance is n/a (playerPos=" .. tostring(pX) .. "," .. tostring(pZ) .. " src=" .. tostring(src) .. ")")
     end
 
     -- Match your compact, single-line format due to tooltip limits
-    local text = string.format("EF:%d  Wind:%d-%dmph  Radius:%dm  Distance:%s", efNum or 0, windMin or 0, windMax or 0,
-        radiusM or 0, distStr)
+    local text = TornadoText.format("tp_map_line", efNum or 0, windMin or 0, windMax or 0, radiusM or 0, distStr)
 
     -- Optional: keep the NPC popup title in sync (so the stock UI also looks right)
     if TornadoHotspot ~= nil and TornadoHotspot.updateStats ~= nil then
@@ -278,6 +286,14 @@ function TornadoMapUI:drawOverlay()
     setTextAlignment(RenderText.ALIGN_LEFT)
 
     renderText(x, y, self.fontSize, text)
+
+    -- Second line: the storm weather that came with this tornado (TornadoWeather).
+    local stormText = TornadoWeather ~= nil and TornadoWeather.getMapLineText ~= nil and TornadoWeather:getMapLineText() or nil
+    if stormText ~= nil then
+        setTextBold(false)
+        setTextColor(1, 1, 1, 1)
+        renderText(x, y - (self.lineSize + self.lineGap), self.fontSize, stormText)
+    end
 
     setTextBold(false)
     setTextColor(1, 1, 1, 1)

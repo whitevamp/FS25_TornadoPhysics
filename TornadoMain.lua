@@ -4,6 +4,22 @@
 TornadoMain = {}
 local modDir = g_currentModDirectory
 
+-- Player-visible texts in the player's language (used by the events below and every module).
+source(Utils.getFilename("scripts/TornadoText.lua", modDir))
+
+-- Player-visible texts in the player's language (used by the events below and every module).
+source(Utils.getFilename("scripts/TornadoText.lua", modDir))
+
+-- Multiplayer network events. These MUST be loaded here, while the mod's scripts load: the game only
+-- allows registering event classes before a mission exists (InitEventClass), so not from loadMap().
+source(Utils.getFilename("scripts/events/TornadoSettingsEvent.lua", modDir))
+source(Utils.getFilename("scripts/events/TornadoActionEvent.lua", modDir))
+source(Utils.getFilename("scripts/events/TornadoStateEvent.lua", modDir))
+source(Utils.getFilename("scripts/events/TornadoWeatherEvent.lua", modDir))
+source(Utils.getFilename("scripts/events/TornadoDestructionEvent.lua", modDir))
+source(Utils.getFilename("scripts/events/TornadoFxEvent.lua", modDir))
+source(Utils.getFilename("scripts/events/TornadoMessageEvent.lua", modDir))
+
 function TornadoMain:loadMap(name)
     print("--------------------------------------------------")
     print("TORNADO MOD SYSTEM: INITIALIZING MAIN CONTROLLER")
@@ -18,7 +34,7 @@ function TornadoMain:loadMap(name)
     -- Load the Settings script.
     source(Utils.getFilename("scripts/TornadoSettings.lua", modDir))
 
-     -- Load SFX scripts.
+    -- Load SFX scripts.
     source(Utils.getFilename("scripts/TornadoSFX.lua", modDir))
     source(Utils.getFilename("scripts/TornadoEffects.lua", modDir))
 
@@ -36,9 +52,32 @@ function TornadoMain:loadMap(name)
 
     -- Weather system.
     source(Utils.getFilename("scripts/TornadoWeather.lua", modDir))
-    
+
+    -- AI road traffic roadblocks around the tornado.
+    source(Utils.getFilename("scripts/TornadoTraffic.lua", modDir))
+
+    -- Optional real-life climate mode (EF / size rolled from NOAA statistics).
+    source(Utils.getFilename("scripts/TornadoClimate.lua", modDir))
+    source(Utils.getFilename("scripts/TornadoOutbreak.lua", modDir))
+
+    -- Saves the active tornado / outbreak with the savegame so a reload carries on.
+    source(Utils.getFilename("scripts/TornadoPersistence.lua", modDir))
+
+    -- Multiplayer sync (settings, tornado state, weather, destruction, effects, messages).
+    source(Utils.getFilename("scripts/TornadoSync.lua", modDir))
+
     -- Load the console commands.
     source(Utils.getFilename("scripts/TornadoConsole.lua", modDir))
+
+    -- Load the control panel UI (base page first, then one script per tab, then the screen).
+    source(Utils.getFilename("scripts/gui/TornadoMenuPage.lua", modDir))
+    source(Utils.getFilename("scripts/gui/pages/TornadoPageSettings.lua", modDir))
+    source(Utils.getFilename("scripts/gui/pages/TornadoPagePhysics.lua", modDir))
+    source(Utils.getFilename("scripts/gui/pages/TornadoPageTuning.lua", modDir))
+    source(Utils.getFilename("scripts/gui/pages/TornadoPageEffects.lua", modDir))
+    source(Utils.getFilename("scripts/gui/pages/TornadoPageModules.lua", modDir))
+    source(Utils.getFilename("scripts/gui/pages/TornadoPageDeveloper.lua", modDir))
+    source(Utils.getFilename("scripts/gui/TornadoMenu.lua", modDir))
 
     -- Load CompassHeading mod intergration by RocklandUSA Gaming
     source(Utils.getFilename("scripts/TornadoCompass.lua", modDir))
@@ -48,7 +87,7 @@ function TornadoMain:loadMap(name)
 
     -- Load the vehicle reset/recovery script.
     source(Utils.getFilename("scripts/TornadoRecovery.lua", modDir))
-    
+
     -- Load Destruction Module
     source(Utils.getFilename("scripts/TornadoDestruction.lua", modDir))
 
@@ -70,7 +109,7 @@ function TornadoMain:loadMap(name)
     if TornadoADS then TornadoADS:loadMap() end
     if TornadoCompass then TornadoCompass:loadMap(name) end
     --if TornadoNFW then TornadoNFW:loadMap() end
-    
+
     -- Initialize Destruction (Before Physics uses it)
     if TornadoDestruction then TornadoDestruction:loadMap(name, modDir) end
 
@@ -84,7 +123,17 @@ function TornadoMain:loadMap(name)
 
     if TornadoPhysics then TornadoPhysics:loadMap(name, modDir) end
     if TornadoWeather then TornadoWeather:loadMap(name) end
+    if TornadoTraffic then TornadoTraffic:loadMap() end
+    if TornadoClimate then TornadoClimate:loadMap(modDir) end
+    if TornadoOutbreak then TornadoOutbreak:loadMap() end
+    if TornadoPersistence then TornadoPersistence:loadMap() end   -- after Outbreak: restores its state
+    -- Multiplayer: wrap the console handlers BEFORE they are registered, and send state to joining players.
+    if TornadoSync then
+        TornadoSync:wrapConsole()
+        TornadoSync:installHooks()
+    end
     if TornadoConsole then TornadoConsole:loadMap() end
+    if TornadoMenu then TornadoMenu.register(modDir) end
 
     -- Defer UI until mission + GUI + HUD exist
     self._pendingGuiRegister = true
@@ -98,10 +147,14 @@ function TornadoMain:loadMapFinished()
 end
 
 function TornadoMain:deleteMap()
+    if TornadoMenu then TornadoMenu.unregister() end
     if TornadoPhysics then TornadoPhysics:deleteMap() end
     if TornadoDestruction then TornadoDestruction:deleteMap() end
     if TornadoRecovery and TornadoRecovery.deleteMap then TornadoRecovery:deleteMap() end
     if TornadoHusbandry then TornadoHusbandry:deleteMap() end
+    if TornadoTraffic then TornadoTraffic:deleteMap() end
+    if TornadoClimate then TornadoClimate:deleteMap() end
+    if TornadoOutbreak then TornadoOutbreak:deleteMap() end
     if TornadoEffects then TornadoEffects:deleteMap() end
     if TornadoDebug then TornadoDebug:deleteMap() end
     if TornadoCompass then TornadoCompass:deleteMap() end
@@ -114,6 +167,8 @@ function TornadoMain:update(dt)
     if TornadoDestruction then TornadoDestruction:update(dt) end
     if TornadoEffects then TornadoEffects:update(dt) end
     if TornadoSFX then TornadoSFX:update(dt) end
+    if TornadoTraffic then TornadoTraffic:update(dt) end
+    if TornadoOutbreak then TornadoOutbreak:update(dt) end
     if TornadoCompass then TornadoCompass:update(dt) end
 
     -- ---- Map/HUD UI init (needs HUD/map) ----
@@ -142,18 +197,18 @@ end
 -- Helpers
 -- ---------------------------------------------------------------------------
 
-FSBaseMission.saveSavegame = Utils.appendedFunction(FSBaseMission.saveSavegame, function(...)
-    if TornadoDestruction and TornadoDestruction._saveToXML then
-        -- Keep our pcall firewall so we never corrupt the weather files
-        local success, err = pcall(function()
+-- FSBaseMission survives savegame reloads; flag it so the save hook is only appended once.
+if not FSBaseMission.tornadoSaveHooked then
+    FSBaseMission.tornadoSaveHooked = true
+    FSBaseMission.saveSavegame = Utils.appendedFunction(FSBaseMission.saveSavegame, function(...)
+        if TornadoDestruction and TornadoDestruction._saveToXML then
             TornadoDestruction:_saveToXML()
-        end)
-        
-        if not success then
-            print("TORNADO DESTRUCTION SAVE ERROR: " .. tostring(err))
         end
-    end
-end)
+        if TornadoPersistence and TornadoPersistence.save then
+            TornadoPersistence:save()
+        end
+    end)
+end
 
 
 

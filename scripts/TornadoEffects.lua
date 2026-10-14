@@ -269,7 +269,10 @@ function TornadoEffects:igniteVehicle(vehicleId)
     end
 
     -- DECIDE FATE: Random or Guaranteed?
-    if not effect.willBurn then
+    -- Rolled once per effect: applyDamage() calls this every frame for a burning vehicle, and
+    -- re-rolling each frame would turn the 50/50 chance into an almost certain fire.
+    if not effect.willBurn and not effect.fireRolled then
+        effect.fireRolled = true
         local ignite = true
         if self.CONFIG.RANDOM_FIRE_MODE then
             ignite = math.random() < self.CONFIG.FIRE_CHANCE
@@ -280,6 +283,19 @@ function TornadoEffects:igniteVehicle(vehicleId)
             if TornadoDebug then TornadoDebug:log("FX", "Vehicle marked for Delayed Ignition: " .. getName(vehicleId)) end
         end
     end
+end
+
+--- Multiplayer client: the server decided this vehicle burns (TornadoFxEvent). No roll here.
+function TornadoEffects:markBurning(vehicleId)
+    if not entityExists(vehicleId) then return end
+
+    local effect = self.activeEffects[vehicleId]
+    if not effect then
+        self:playDamageEffect(vehicleId)
+        effect = self.activeEffects[vehicleId]
+    end
+    effect.willBurn = true
+    effect.fireRolled = true
 end
 
 -- =========================

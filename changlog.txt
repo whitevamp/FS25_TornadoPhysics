@@ -1,0 +1,183 @@
+========================================================================
+ TORNADO PHYSICS - CHANGELOG
+ v5.0.0.0 (The Real-Life Update) - changes since v4.0.0.0
+========================================================================
+
+------------------------------------------------------------------------
+ NEW FEATURES
+------------------------------------------------------------------------
+
+[UI] Tornado Control Panel
+- New in-game settings screen, opened with Right Ctrl + Right Shift + T
+  (rebindable under Options > Controls as "Tornado Control Panel").
+- Every console setting is now available from six tabs:
+    Settings  - save to XML, auto-save on close, factory resets per category
+    Physics   - radius, ejection power, heavy threshold, damage rates, lift
+                bales/logs, indoor/outdoor damage, border safety, geo-fence,
+                randomize, plus the real-life climate options
+    Tuning    - suction, lift, chaos, hover height, max speed, core ratio,
+                bale orbit/suction, ejection duration and interval
+    Effects   - siren, danger ring, random fire
+    Modules   - destruction, recovery bill, map overlay, cargo spilling,
+                livestock, road traffic
+    Developer - telemetry HUD, position tracking, verbose log channels,
+                status / hotspot / map overlay dumps, husbandry kill test
+- Uses the game's own settings-page style, with tooltips on every option.
+- Every change goes through the same handlers as the t_ console commands,
+  so the panel and the console always agree.
+- Destructive actions (resets, kill test) ask for confirmation first.
+
+[UI] Translations
+- The control panel, key name, alerts, map overlay and in-game messages
+  are translated into English, German, French, Polish, Spanish, Italian
+  and Dutch. Other game languages show English.
+- In multiplayer every player reads server messages (animal losses, tow
+  bills, outbreak warnings) in their own language and currency.
+
+[GAMEPLAY] AI Traffic Roadblocks
+- AI road traffic now stops before driving into a tornado, waiting like at a
+  red light at the edge of a keep-out zone around the storm.
+- The zone follows the tornado and is released when it moves on or despawns.
+- Cars already inside the zone drive out instead of being trapped.
+- Adjustable stop distance beyond the tornado radius (default 40 m).
+- With the danger ring on, each roadblock is shown as a red post.
+- Console: t_set traffic [on|off|buffer <m>|status], t_reset traffic.
+
+[GAMEPLAY] Real-Life Tornado Climate (optional, OFF by default)
+- When enabled, tornadoes follow real recorded statistics instead of the classic
+  random roll. Turning it off keeps the classic behaviour exactly as before.
+- Two countries:
+    United States - NOAA Storm Prediction Center (1950-2025), US-wide + 50 states
+    Canada        - Northern Tornadoes Project (2017-2026), Canada-wide +
+                    Alberta, Manitoba, Ontario, Quebec, Saskatchewan
+                    (no Canadian hail records: hail borrowed from the
+                    neighbouring US states MT, ND, MN, MI, NY)
+  Smaller provinces use the Canada-wide data. More countries can be added
+  as separate data files without changing the mod.
+- Region: Auto (US map = United States; a mod map with a state, province or
+  country name in its title uses that region) or any region chosen manually.
+- EF rating: rolled from the region's real EF mix (in the US about 56% EF0,
+  32% EF1 ... 0.04% EF5). The tornado's size is placed inside its EF range
+  using real track widths; the mod's own size and map scaling are kept.
+- Storm weather: hail rolled from the region's real hail odds, with the stone
+  size from the real size range (bigger stones = heavier hail fall). Wind
+  gusts rolled from the region's real severe-wind data and applied as storm
+  wind.
+- Season and time of day: tornadoes come in the region's real tornado months
+  and mostly in the late afternoon, while the map keeps its overall tornado
+  rate. Adjustable "Tornado frequency" multiplier (0.25x - 4x).
+  Southern-hemisphere maps are shifted by six months.
+- Track direction: natural tornadoes travel the way they do in the region
+  (in the US mostly toward the north-east), starting on the upwind side of
+  the map. The console spawn still aims the way you are looking.
+- Outbreak days: with the region's real odds, a touchdown can start a busy
+  storm day. More tornadoes follow 30-120 in-game minutes apart, up to a
+  configurable limit (default 3), until 22:00. All players get an outbreak
+  alert.
+- Each sub-feature (seasons, direction, outbreaks) can be toggled on its own.
+- Console: t_set climate [on|off|region <name|code|auto>|list|status|
+  seasons|direction|outbreaks|frequency <x>|outbreakmax <n>], t_reset climate.
+- Climate data ships as small files, one per country (DB/TornadoClimate*.xml).
+- Data sources and licences are credited in the mod description and README.
+
+[UI] Map Overlay Additions
+- Second line on the ESC map tornado overlay: storm type (LP / Classic / HP
+  supercell), hail size and gusts (real-life mode), and the direction the
+  tornado is moving (for example "Moving: NE").
+
+[MULTIPLAYER] Full Multiplayer Support
+- Clients now see exactly what the host sees: touchdown warning, siren, EF
+  rating and radius, map hotspot, map overlay, compass marker, funnel size and
+  extra debris, missing vehicle parts, smoke and fire, and the same storm
+  weather (rain, hail, wind, direction).
+- Animal-loss warnings reach every player; emergency tow bills go to the
+  vehicle owner's farm.
+- Players joining a running game receive the current settings, an active
+  tornado, its weather and all damaged vehicles.
+- Gameplay settings are shared and owned by the server. Only the host or a
+  server admin can change them (same rule as the base game's settings); a
+  change applies to every player. Non-admins see those options greyed out.
+- Personal settings stay per player: siren sound, danger ring, map overlay,
+  debug tools and auto-save. Joining a server never overwrites your own
+  single-player configuration.
+
+[SYSTEM] Tornado Saved With The Savegame
+- A tornado that is on the ground when you save now comes back the same after
+  loading: same EF rating, size, stats, storm weather and direction. No new
+  roll, no second touchdown alert, no siren replay.
+- A running outbreak carries on after loading instead of starting over.
+
+[TOOLS] Climate Data Builder (modders only, not part of the mod download)
+- tools/build_tornado_climate.py turns the NOAA SPC tornado, hail and wind
+  CSV files into DB/TornadoClimate.xml. Re-run it when NOAA publishes a new
+  year of data.
+- tools/build_au_ca_climate.py does the same for the Australian (BoM) and
+  Canadian (NTP) files: DB/TornadoClimate_AU.xml and DB/TornadoClimate_CA.xml.
+
+------------------------------------------------------------------------
+ BUG FIXES (existing issues from v4.0.0.0)
+------------------------------------------------------------------------
+
+Errors / log messages
+- Fixed "TORNADO DESTRUCTION SAVE ERROR: nil" printed on every save even when
+  saving worked.
+- Fixed a Lua error when Advanced Damage System total destruction ran with
+  verbose logging on.
+- Fixed Lua errors from log messages when verbose logging was enabled
+  (for example running the husbandry kill test with t_dev verbose all).
+- Fixed a possible error while re-linking saved destroyed vehicles that had
+  no position or root node.
+- Fixed a possible compass integration error with non-text marker ids.
+- The startup log line now reads "Base Radius ... (before EF roll)" instead
+  of looking like the tornado's actual radius.
+
+Physics / gameplay
+- Fixed the first tornado after loading a savegame using the base 35 m radius
+  (and no map-size scaling) for suction, damage and traffic while the HUD
+  showed the real size.
+- Fixed t_tune purge_int having no effect (the ejection interval was only
+  read once at map start).
+- Fixed the tornado's debris particles multiplying again on every radius
+  change or randomize (4x, 16x, 64x ...), which could hurt performance.
+- Fixed smoke/fire fading and the 24-hour repair timer running at double speed
+  while a tornado was active (several modules were updated twice per frame).
+- Fixed random fire mode making almost every damaged engine burn (the 50/50
+  chance was re-rolled every frame).
+- Fixed the 24-hour auto-repair countdown barely moving when time was
+  fast-forwarded (EDC time skips, sleeping). Skipped time now counts fully.
+- Fixed fractional chaos values in t_tune chaos being rounded away.
+- Spawning a new tornado while one was already on the ground now gives it a
+  new roll, touchdown alert, siren and storm weather (it was silently ignored).
+- Fixed a reloaded savegame re-rolling the tornado that was already on the
+  ground and showing its touchdown alert again.
+
+Weather
+- Fixed tornado storm weather permanently changing the map's own rain and
+  cloud settings: after one tornado, every later rain of that type kept the
+  tornado's rain, hail and darkness for the rest of the session.
+
+Settings / UI
+- Fixed the danger-ring setting not being restored when loading a savegame.
+- Fixed factory reset for recovery / destruction changing the wrong settings.
+- Fixed the map hotspot disappearing for good after a tornado despawned if
+  the environment could not be reloaded.
+- The pasture debug message no longer fills the log every 5 seconds while
+  animal lethality is on.
+
+Recovery
+- Resetting a tornado-damaged vehicle to the shop with the recovery bill now
+  also restores its missing parts.
+
+Multiplayer
+- Fixed clients missing almost everything visual (siren, warnings, hotspot,
+  overlay, funnel size, destroyed parts, smoke and fire); see Multiplayer
+  Support above.
+- Fixed every player getting different storm weather.
+- Fixed a client changing the radius re-rolling the tornado on their own
+  screen only.
+- Fixed each player using their own local settings file instead of the
+  server's.
+
+Stability
+- Game hooks (vehicle reset, weather, map screen, save) are no longer added
+  again each time a savegame is loaded in the same game session.

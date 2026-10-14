@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<!--
+    Tornado Physics - Control Panel GUI profiles.
+    Loaded once by TornadoMenu.register() via g_gui:loadProfiles() BEFORE gui/TornadoMenu.xml.
+
+    Everything that is not defined here comes straight from the base game (fs25_* profiles),
+    so the panel follows the look of the vanilla settings pages. Only the pieces the base
+    game has no profile for (in-row action buttons, status line, note rows) live here.
+
+    Keep this file plain ASCII - non-ASCII characters make the GUI XML loader fail.
+-->
+<GuiProfiles>
+
+    <!-- ===================================================================
+         ACTION BUTTON
+         Same construction as the base game's in-row "Pause" button on the settings page:
+         a transparent Button (emptyPanel) sitting where a selector would, plus a child
+         ThreePartBitmap that draws the rounded background. A plain "noSlice" fill must NOT
+         be used here - without an image file it samples the UI texture atlas (speckles).
+
+         XML usage:
+           <Button profile="tornado_actionButton" ...>
+               <ThreePartBitmap profile="tornado_actionButtonBg"/>
+           </Button>
+         The child bitmap follows the button's focus / hover / pressed state.
+         =================================================================== -->
+    <Profile name="tornado_actionButton" extends="emptyPanel" with="anchorMiddleRight">
+        <size value="280px 32px"/>
+        <position value="-10px 0px"/>
+        <focusOnHighlight value="true"/>
+        <textSize value="16px"/>
+        <textBold value="true"/>
+        <textUpperCase value="true"/>
+        <textAlignment value="center"/>
+        <textColor value="$preset_fs25_colorMainLight"/>
+        <textFocusedColor value="$preset_fs25_colorMainDark"/>
+        <textHighlightedColor value="$preset_fs25_colorMainDark"/>
+        <textPressedColor value="$preset_fs25_colorMainDark"/>
+        <textDisabledColor value="$preset_colorDisabled"/>
+    </Profile>
+
+    <!-- Destructive actions (resets / kill test): white text on the red highlight. -->
+    <Profile name="tornado_actionButtonDanger" extends="tornado_actionButton">
+        <textFocusedColor value="1 1 1 1"/>
+        <textHighlightedColor value="1 1 1 1"/>
+        <textPressedColor value="1 1 1 1"/>
+    </Profile>
+
+    <!-- Background: base settings-button artwork, also lit on mouse hover / press. -->
+    <Profile name="tornado_actionButtonBg" extends="fs25_settingsButtonBg">
+        <imageHighlightedColor value="$preset_fs25_colorMainHighlight"/>
+        <imagePressedColor value="$preset_fs25_colorMainHighlight"/>
+        <startImageHighlightedColor value="$preset_fs25_colorMainHighlight"/>
+        <startImagePressedColor value="$preset_fs25_colorMainHighlight"/>
+        <endImageHighlightedColor value="$preset_fs25_colorMainHighlight"/>
+        <endImagePressedColor value="$preset_fs25_colorMainHighlight"/>
+    </Profile>
+
+    <Profile name="tornado_actionButtonDangerBg" extends="tornado_actionButtonBg">
+        <imageFocusedColor value="0.78 0.16 0.12 1"/>
+        <imageHighlightedColor value="0.78 0.16 0.12 1"/>
+        <imagePressedColor value="0.78 0.16 0.12 1"/>
+        <startImageFocusedColor value="0.78 0.16 0.12 1"/>
+        <startImageHighlightedColor value="0.78 0.16 0.12 1"/>
+        <startImagePressedColor value="0.78 0.16 0.12 1"/>
+        <endImageFocusedColor value="0.78 0.16 0.12 1"/>
+        <endImageHighlightedColor value="0.78 0.16 0.12 1"/>
+        <endImagePressedColor value="0.78 0.16 0.12 1"/>
+    </Profile>
+
+    <!-- ===================================================================
+         STATUS LINE (header, right of the title)
+         Shows the result string of the last change, same text the console prints.
+         =================================================================== -->
+    <Profile name="tornado_statusText" extends="fs25_textDefault" with="anchorBottomRight">
+        <size value="620px 24px"/>
+        <position value="0px -26px"/>
+        <textSize value="17px"/>
+        <textAlignment value="right"/>
+        <textColor value="$preset_fs25_colorMainHighlight"/>
+    </Profile>
+
+    <!-- ===================================================================
+         NOTE ROW (informational line inside a page, no control)
+         =================================================================== -->
+    <!-- The parent fixes width="450px" (room for a selector on the right); a note row has no
+         selector, so it may use the whole 815px row minus the 20px left/right padding.
+         Text truncates by default, so allow a second line before anything gets cut. -->
+    <Profile name="tornado_noteText" extends="fs25_settingsMultiTextOptionTitle">
+        <width value="775px"/>
+        <textMaxNumLines value="2"/>
+        <textSize value="15px"/>
+        <textBold value="false"/>
+        <textColor value="$preset_colorWhite_50"/>
+    </Profile>
+
+</GuiProfiles>

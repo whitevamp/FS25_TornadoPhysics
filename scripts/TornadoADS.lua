@@ -117,14 +117,10 @@ function TornadoADS:applyTotalDestruction(vehicle)
                 if data.stages then maxStage = #data.stages end
 
                 -- 3. Apply it
-                -- We use pcall (Protected Call) to prevent crashing if one specific breakdown fails
-                local success, err = pcall(function() vehicle:addBreakdown(breakdownId, maxStage) end)
+                vehicle:addBreakdown(breakdownId, maxStage)
 
-                if not success then
-                    TornadoDebug:log(string.format(" > Failed to apply %s: %s", tostring(breakdownId), tostring(err)))
-                else
-                    -- strictly for debug
-                    TornadoDebug:log(string.format(" > Wrecked: %s (Stage %d)", tostring(breakdownId), maxStage))
+                if TornadoDebug then
+                    TornadoDebug:log("ADS", string.format(" > Wrecked: %s (Stage %d)", tostring(breakdownId), maxStage))
                 end
             end
         end

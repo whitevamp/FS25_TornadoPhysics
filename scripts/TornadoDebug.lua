@@ -69,6 +69,12 @@ function TornadoDebug:deleteMap()
 end
 
 function TornadoDebug:log(tag, msg)
+    -- Called with a single argument (log("text")): treat it as an untagged message.
+    if msg == nil then
+        msg = tag
+        tag = "LOG"
+    end
+
     -- 1. If the master switch is on, everything prints
     local shouldLog = self.verboseMode 
 
@@ -82,7 +88,7 @@ function TornadoDebug:log(tag, msg)
 
     -- 3. Print if a switch was active
     if shouldLog then
-        print(string.format("[%s] %s", tag, msg))
+        print(string.format("[%s] %s", tostring(tag), tostring(msg)))
     end
 end
 

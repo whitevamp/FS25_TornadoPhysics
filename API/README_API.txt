@@ -11,8 +11,6 @@ and custom vehicles from being destroyed.
 The API is fully initialized and published at map load on the global table:
    g_tornadoPhysicsAPI
 
-All callbacks are fully insulated using pcalls to prevent a third-party script 
-failure from crashing the core tornado physics engine.
 
 -------------------------------------------------------------------------------
 1. TELEMETRY (GETTERS)

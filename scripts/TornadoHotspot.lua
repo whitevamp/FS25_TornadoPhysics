@@ -31,9 +31,11 @@ local function pickFirstExisting(baseDir, relList)
 end
 
 local function buildTitle(efNum, windMin, windMax, radiusM, distanceM)
-    local windStr = (windMin ~= nil and windMax ~= nil) and string.format("%d-%d mph", windMin, windMax) or "n/a"
-    local distStr = (distanceM ~= nil) and (tostring(distanceM) .. "m") or "n/a"
-    return string.format("EF:%d  Wind:%s  Radius:%sm  Distance:%s", efNum or 0, windStr, radiusM ~= nil and tostring(radiusM) or "n/a", distStr)
+    local na = TornadoText.get("tp_na")
+    local windStr = (windMin ~= nil and windMax ~= nil) and string.format("%d-%d mph", windMin, windMax) or na
+    local distStr = (distanceM ~= nil) and (tostring(distanceM) .. " m") or na
+    local radiusStr = radiusM ~= nil and (tostring(radiusM) .. " m") or na
+    return TornadoText.format("tp_hotspot_title", efNum or 0, windStr, radiusStr, distStr)
 end
 
 -- ============================================================================

@@ -1,0 +1,575 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<!--
+    Tornado Physics - Control Panel layout.
+    Controller: scripts/gui/TornadoMenu.lua (ScreenElement). Each tab's rows are wired up by
+    its own page script in scripts/gui/pages/ - the element ids below are the keys those
+    scripts look up, so rename them in both places.
+
+    Naming:  tab<Key> = tab button, page<Key> = page container, layout<Key> = scrolling list
+    Row callbacks (all dispatched by TornadoMenu.lua to the owning page script):
+        BinaryOption    -> onClickBinary
+        MultiTextOption -> onClickNumber (value grid) / onClickChoice (named options)
+        Button          -> onClickAction
+
+    onOpen/onClose on <GUI> are REQUIRED: Gui:changeScreen() only calls onOpen() on the root
+    element, and the root forwards it to the controller through these two callbacks.
+    Keep this file plain ASCII. All texts are $l10n_ keys from translations/translation_xx.xml
+    (source: tools/translations_source.py).
+-->
+<GUI name="TornadoMenu" onOpen="onOpen" onClose="onClose">
+    <Bitmap profile="fs25_fullScreenBackground" id="backgroundImage" imageColor="0.01681 0.01764 0.016 0.97"/>
+
+    <GuiElement profile="fs25_menuContainer">
+
+        <!-- ================= HEADER ================= -->
+        <GuiElement profile="fs25_menuHeaderPanel">
+            <Bitmap profile="fs25_menuHeaderIconBg">
+                <Bitmap profile="fs25_menuHeaderIcon" imageSliceId="gui.icon_options_generalSettings2"/>
+            </Bitmap>
+            <Text profile="fs25_menuHeaderTitle" text="$l10n_tp_title"/>
+            <Text profile="tornado_statusText" id="statusText" text=""/>
+        </GuiElement>
+
+        <!-- ================= TABS ================= -->
+        <BoxLayout profile="fs25_subCategorySelectorTabbedBox" id="tabBox">
+            <Button profile="fs25_subCategorySelectorTabbedTab" id="tabSettings" text="$l10n_tp_tab_settings" onClick="onClickTab">
+                <ThreePartBitmap profile="fs25_subCategorySelectorTabbedTabBg" name="background"/>
+            </Button>
+            <Button profile="fs25_subCategorySelectorTabbedTab" id="tabPhysics" text="$l10n_tp_tab_physics" onClick="onClickTab">
+                <ThreePartBitmap profile="fs25_subCategorySelectorTabbedTabBg" name="background"/>
+            </Button>
+            <Button profile="fs25_subCategorySelectorTabbedTab" id="tabTuning" text="$l10n_tp_tab_tuning" onClick="onClickTab">
+                <ThreePartBitmap profile="fs25_subCategorySelectorTabbedTabBg" name="background"/>
+            </Button>
+            <Button profile="fs25_subCategorySelectorTabbedTab" id="tabEffects" text="$l10n_tp_tab_effects" onClick="onClickTab">
+                <ThreePartBitmap profile="fs25_subCategorySelectorTabbedTabBg" name="background"/>
+            </Button>
+            <Button profile="fs25_subCategorySelectorTabbedTab" id="tabModules" text="$l10n_tp_tab_modules" onClick="onClickTab">
+                <ThreePartBitmap profile="fs25_subCategorySelectorTabbedTabBg" name="background"/>
+            </Button>
+            <Button profile="fs25_subCategorySelectorTabbedTab" id="tabDeveloper" text="$l10n_tp_tab_developer" onClick="onClickTab">
+                <ThreePartBitmap profile="fs25_subCategorySelectorTabbedTabBg" name="background"/>
+            </Button>
+        </BoxLayout>
+        <ThreePartBitmap profile="fs25_lineSeparatorTopHighlighted" position="0px -57px"/>
+
+        <!-- =====================================================================
+             SETTINGS TAB  (t_set save / t_reset)   -> scripts/gui/pages/TornadoPageSettings.lua
+             ===================================================================== -->
+        <GuiElement profile="fs25_subCategorySelectorTabbedContainer" id="pageSettings">
+            <ScrollingLayout profile="fs25_settingsLayout" id="layoutSettings">
+
+                <Text profile="fs25_settingsSectionHeader" name="sectionHeader" text="$l10n_tp_sec_configuration"/>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <BinaryOption profile="fs25_settingsBinaryOption" id="setAutoSave" onClick="onClickBinary">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_autosave"/>
+                    </BinaryOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_autosave"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <Button profile="tornado_actionButton" id="setSave" text="$l10n_tp_btn_save_now" onClick="onClickAction">
+                        <ThreePartBitmap profile="tornado_actionButtonBg"/>
+                    </Button>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_save_xml"/>
+                </Bitmap>
+
+                <Text profile="fs25_settingsSectionHeader" name="sectionHeader" text="$l10n_tp_sec_factory_reset"/>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <Button profile="tornado_actionButtonDanger" id="setResetPhysics" text="$l10n_tp_btn_reset" onClick="onClickAction">
+                        <ThreePartBitmap profile="tornado_actionButtonDangerBg"/>
+                    </Button>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_reset_physics"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <Button profile="tornado_actionButtonDanger" id="setResetTuning" text="$l10n_tp_btn_reset" onClick="onClickAction">
+                        <ThreePartBitmap profile="tornado_actionButtonDangerBg"/>
+                    </Button>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_reset_tuning"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <Button profile="tornado_actionButtonDanger" id="setResetCargo" text="$l10n_tp_btn_reset" onClick="onClickAction">
+                        <ThreePartBitmap profile="tornado_actionButtonDangerBg"/>
+                    </Button>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_reset_cargo"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <Button profile="tornado_actionButtonDanger" id="setResetHusbandry" text="$l10n_tp_btn_reset" onClick="onClickAction">
+                        <ThreePartBitmap profile="tornado_actionButtonDangerBg"/>
+                    </Button>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_reset_husbandry"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <Button profile="tornado_actionButtonDanger" id="setResetTraffic" text="$l10n_tp_btn_reset" onClick="onClickAction">
+                        <ThreePartBitmap profile="tornado_actionButtonDangerBg"/>
+                    </Button>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_reset_traffic"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <Button profile="tornado_actionButtonDanger" id="setResetClimate" text="$l10n_tp_btn_reset" onClick="onClickAction">
+                        <ThreePartBitmap profile="tornado_actionButtonDangerBg"/>
+                    </Button>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_reset_climate"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <Button profile="tornado_actionButtonDanger" id="setResetAll" text="$l10n_tp_btn_reset_all" onClick="onClickAction">
+                        <ThreePartBitmap profile="tornado_actionButtonDangerBg"/>
+                    </Button>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_reset_everything"/>
+                </Bitmap>
+
+                <Text profile="fs25_settingsSectionHeader" name="sectionHeader" text="$l10n_tp_sec_info"/>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <Text profile="tornado_noteText" text="$l10n_tp_info_instant"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <Text profile="tornado_noteText" id="setHostNote" text=""/>
+                </Bitmap>
+            </ScrollingLayout>
+            <Bitmap profile="fs25_settingsTooltipSeparator"/>
+        </GuiElement>
+
+        <!-- =====================================================================
+             PHYSICS TAB  (t_physics)   -> scripts/gui/pages/TornadoPagePhysics.lua
+             ===================================================================== -->
+        <GuiElement profile="fs25_subCategorySelectorTabbedContainer" id="pagePhysics">
+            <ScrollingLayout profile="fs25_settingsLayout" id="layoutPhysics">
+
+                <Text profile="fs25_settingsSectionHeader" name="sectionHeader" text="$l10n_tp_sec_climate"/>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <BinaryOption profile="fs25_settingsBinaryOption" id="physClimate" onClick="onClickBinary">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_climate"/>
+                    </BinaryOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_climate"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="physClimateRegion" onClick="onClickChoice">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_climate_region"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_climate_region"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <BinaryOption profile="fs25_settingsBinaryOption" id="physClimateSeasons" onClick="onClickBinary">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_seasons"/>
+                    </BinaryOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_seasons"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <BinaryOption profile="fs25_settingsBinaryOption" id="physClimateDirection" onClick="onClickBinary">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_direction"/>
+                    </BinaryOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_direction"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <BinaryOption profile="fs25_settingsBinaryOption" id="physClimateOutbreaks" onClick="onClickBinary">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_outbreaks"/>
+                    </BinaryOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_outbreaks"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="physClimateFrequency" onClick="onClickNumber">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_frequency"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_frequency"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="physClimateOutbreakMax" onClick="onClickNumber">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_outbreak_max"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_outbreak_max"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <Text profile="tornado_noteText" id="physClimateNote" text=""/>
+                </Bitmap>
+
+                <Text profile="fs25_settingsSectionHeader" name="sectionHeader" text="$l10n_tp_sec_storm"/>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="physRadius" onClick="onClickNumber">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_radius"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_radius"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="physPower" onClick="onClickNumber">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_power"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_power"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="physHeavy" onClick="onClickNumber">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_heavy"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_heavy"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <Button profile="tornado_actionButton" id="physRandomize" text="$l10n_tp_btn_randomize" onClick="onClickAction">
+                        <ThreePartBitmap profile="tornado_actionButtonBg"/>
+                    </Button>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_randomize"/>
+                </Bitmap>
+
+                <Text profile="fs25_settingsSectionHeader" name="sectionHeader" text="$l10n_tp_sec_damage"/>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="physDmgIn" onClick="onClickNumber">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_dmg_in"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_dmg_in"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="physDmgOut" onClick="onClickNumber">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_dmg_out"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_dmg_out"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <BinaryOption profile="fs25_settingsBinaryOption" id="physOutdoorDamage" onClick="onClickBinary">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_outdoor"/>
+                    </BinaryOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_outdoor"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <BinaryOption profile="fs25_settingsBinaryOption" id="physIndoorDamage" onClick="onClickBinary">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_indoor"/>
+                    </BinaryOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_indoor"/>
+                </Bitmap>
+
+                <Text profile="fs25_settingsSectionHeader" name="sectionHeader" text="$l10n_tp_sec_objects"/>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <BinaryOption profile="fs25_settingsBinaryOption" id="physLiftBales" onClick="onClickBinary">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_lift_bales"/>
+                    </BinaryOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_lift_bales"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <BinaryOption profile="fs25_settingsBinaryOption" id="physLiftLogs" onClick="onClickBinary">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_lift_logs"/>
+                    </BinaryOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_lift_logs"/>
+                </Bitmap>
+
+                <Text profile="fs25_settingsSectionHeader" name="sectionHeader" text="$l10n_tp_sec_border"/>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <BinaryOption profile="fs25_settingsBinaryOption" id="physBorder" onClick="onClickBinary">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_border"/>
+                    </BinaryOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_border"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="physFence" onClick="onClickNumber">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_fence"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_fence"/>
+                </Bitmap>
+            </ScrollingLayout>
+            <Bitmap profile="fs25_settingsTooltipSeparator"/>
+        </GuiElement>
+
+        <!-- =====================================================================
+             TUNING TAB  (t_tune)   -> scripts/gui/pages/TornadoPageTuning.lua
+             ===================================================================== -->
+        <GuiElement profile="fs25_subCategorySelectorTabbedContainer" id="pageTuning">
+            <ScrollingLayout profile="fs25_settingsLayout" id="layoutTuning">
+
+                <Text profile="fs25_settingsSectionHeader" name="sectionHeader" text="$l10n_tp_sec_movement"/>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="tuneSuction" onClick="onClickNumber">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_suction"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_suction"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="tuneLift" onClick="onClickNumber">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_lift"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_lift"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="tuneChaos" onClick="onClickNumber">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_chaos"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_chaos"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="tuneHover" onClick="onClickNumber">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_hover"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_hover"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="tuneMaxSpeed" onClick="onClickNumber">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_max_speed"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_max_speed"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="tuneDestructRatio" onClick="onClickNumber">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_destruct_ratio"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_destruct_ratio"/>
+                </Bitmap>
+
+                <Text profile="fs25_settingsSectionHeader" name="sectionHeader" text="$l10n_tp_sec_bales"/>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="tuneBaleOrbit" onClick="onClickNumber">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_bale_orbit"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_bale_orbit"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="tuneBaleSuction" onClick="onClickNumber">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_bale_suction"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_bale_suction"/>
+                </Bitmap>
+
+                <Text profile="fs25_settingsSectionHeader" name="sectionHeader" text="$l10n_tp_sec_ejection"/>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="tunePurgeTime" onClick="onClickNumber">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_purge_time"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_purge_time"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="tunePurgeInterval" onClick="onClickNumber">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_purge_int"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_purge_int"/>
+                </Bitmap>
+            </ScrollingLayout>
+            <Bitmap profile="fs25_settingsTooltipSeparator"/>
+        </GuiElement>
+
+        <!-- =====================================================================
+             EFFECTS TAB  (t_sfx)   -> scripts/gui/pages/TornadoPageEffects.lua
+             ===================================================================== -->
+        <GuiElement profile="fs25_subCategorySelectorTabbedContainer" id="pageEffects">
+            <ScrollingLayout profile="fs25_settingsLayout" id="layoutEffects">
+
+                <Text profile="fs25_settingsSectionHeader" name="sectionHeader" text="$l10n_tp_sec_audio"/>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <BinaryOption profile="fs25_settingsBinaryOption" id="sfxSound" onClick="onClickBinary">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_siren"/>
+                    </BinaryOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_siren"/>
+                </Bitmap>
+
+                <Text profile="fs25_settingsSectionHeader" name="sectionHeader" text="$l10n_tp_sec_visuals"/>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <BinaryOption profile="fs25_settingsBinaryOption" id="sfxRing" onClick="onClickBinary">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_ring"/>
+                    </BinaryOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_ring"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <BinaryOption profile="fs25_settingsBinaryOption" id="sfxFireRandom" onClick="onClickBinary">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_fire"/>
+                    </BinaryOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_fire"/>
+                </Bitmap>
+            </ScrollingLayout>
+            <Bitmap profile="fs25_settingsTooltipSeparator"/>
+        </GuiElement>
+
+        <!-- =====================================================================
+             MODULES TAB  (t_set destruction / recovery / mapui / cargo / husbandry / traffic)
+             -> scripts/gui/pages/TornadoPageModules.lua
+             ===================================================================== -->
+        <GuiElement profile="fs25_subCategorySelectorTabbedContainer" id="pageModules">
+            <ScrollingLayout profile="fs25_settingsLayout" id="layoutModules">
+
+                <Text profile="fs25_settingsSectionHeader" name="sectionHeader" text="$l10n_tp_sec_gameplay"/>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <BinaryOption profile="fs25_settingsBinaryOption" id="modDestruction" onClick="onClickBinary">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_destruction"/>
+                    </BinaryOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_destruction"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <BinaryOption profile="fs25_settingsBinaryOption" id="modRecovery" onClick="onClickBinary">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_recovery"/>
+                    </BinaryOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_recovery"/>
+                </Bitmap>
+
+                <Text profile="fs25_settingsSectionHeader" name="sectionHeader" text="$l10n_tp_map_overlay"/>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <BinaryOption profile="fs25_settingsBinaryOption" id="modMapUi" onClick="onClickBinary">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_mapui"/>
+                    </BinaryOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_map_overlay"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <BinaryOption profile="fs25_settingsBinaryOption" id="modMapUiSelected" onClick="onClickBinary">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_mapui_sel"/>
+                    </BinaryOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_mapui_sel"/>
+                </Bitmap>
+
+                <Text profile="fs25_settingsSectionHeader" name="sectionHeader" text="$l10n_tp_cargo"/>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <BinaryOption profile="fs25_settingsBinaryOption" id="modCargo" onClick="onClickBinary">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_cargo"/>
+                    </BinaryOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_cargo"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="modCargoSpillHeight" onClick="onClickNumber">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_spill_height"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_spill_height"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="modCargoSpillAngle" onClick="onClickNumber">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_spill_angle"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_spill_angle"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="modCargoDrainRate" onClick="onClickNumber">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_drain"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_drain"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="modCargoSpread" onClick="onClickNumber">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_spread"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_spread"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="modCargoLeakChance" onClick="onClickNumber">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_leak"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_leak"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <BinaryOption profile="fs25_settingsBinaryOption" id="modCargoVerbose" onClick="onClickBinary">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_cargo_verbose"/>
+                    </BinaryOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_cargo_verbose"/>
+                </Bitmap>
+
+                <Text profile="fs25_settingsSectionHeader" name="sectionHeader" text="$l10n_tp_sec_livestock"/>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <BinaryOption profile="fs25_settingsBinaryOption" id="modHusbandry" onClick="onClickBinary">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_husbandry"/>
+                    </BinaryOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_husbandry"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="modHusbandryImmunity" onClick="onClickNumber">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_immunity"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_immunity"/>
+                </Bitmap>
+
+                <Text profile="fs25_settingsSectionHeader" name="sectionHeader" text="$l10n_tp_sec_traffic"/>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <BinaryOption profile="fs25_settingsBinaryOption" id="modTraffic" onClick="onClickBinary">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_traffic"/>
+                    </BinaryOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_traffic"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="modTrafficBuffer" onClick="onClickNumber">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_traffic_buffer"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_traffic_buffer"/>
+                </Bitmap>
+            </ScrollingLayout>
+            <Bitmap profile="fs25_settingsTooltipSeparator"/>
+        </GuiElement>
+
+        <!-- =====================================================================
+             DEVELOPER TAB  (t_dev, t_set mapui dump)   -> scripts/gui/pages/TornadoPageDeveloper.lua
+             ===================================================================== -->
+        <GuiElement profile="fs25_subCategorySelectorTabbedContainer" id="pageDeveloper">
+            <ScrollingLayout profile="fs25_settingsLayout" id="layoutDeveloper">
+
+                <Text profile="fs25_settingsSectionHeader" name="sectionHeader" text="$l10n_tp_sec_overlays"/>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <BinaryOption profile="fs25_settingsBinaryOption" id="devHud" onClick="onClickBinary">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_hud"/>
+                    </BinaryOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_hud"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <BinaryOption profile="fs25_settingsBinaryOption" id="devPos" onClick="onClickBinary">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_pos"/>
+                    </BinaryOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_pos"/>
+                </Bitmap>
+
+                <Text profile="fs25_settingsSectionHeader" name="sectionHeader" text="$l10n_tp_sec_verbose"/>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <BinaryOption profile="fs25_settingsBinaryOption" id="devVerboseAll" onClick="onClickBinary">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_verbose_all"/>
+                    </BinaryOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_verbose_all"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <BinaryOption profile="fs25_settingsBinaryOption" id="devVerbosePhysics" onClick="onClickBinary">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_verbose_physics"/>
+                    </BinaryOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_tab_physics"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <BinaryOption profile="fs25_settingsBinaryOption" id="devVerboseDestruction" onClick="onClickBinary">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_verbose_destruction"/>
+                    </BinaryOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_verbose_destruction"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <BinaryOption profile="fs25_settingsBinaryOption" id="devVerboseIndoor" onClick="onClickBinary">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_verbose_indoor"/>
+                    </BinaryOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_verbose_indoor"/>
+                </Bitmap>
+
+                <Text profile="fs25_settingsSectionHeader" name="sectionHeader" text="$l10n_tp_sec_diagnostics"/>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <Button profile="tornado_actionButton" id="devStatus" text="$l10n_tp_btn_print" onClick="onClickAction">
+                        <ThreePartBitmap profile="tornado_actionButtonBg"/>
+                    </Button>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_dev_status"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <Button profile="tornado_actionButton" id="devHotspotDump" text="$l10n_tp_btn_dump" onClick="onClickAction">
+                        <ThreePartBitmap profile="tornado_actionButtonBg"/>
+                    </Button>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_dev_hotspot"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <Button profile="tornado_actionButton" id="devMapUiDump" text="$l10n_tp_btn_dump" onClick="onClickAction">
+                        <ThreePartBitmap profile="tornado_actionButtonBg"/>
+                    </Button>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_dev_mapui"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <Button profile="tornado_actionButtonDanger" id="devKillTest" text="$l10n_tp_btn_run" onClick="onClickAction">
+                        <ThreePartBitmap profile="tornado_actionButtonDangerBg"/>
+                    </Button>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_dev_kill_test"/>
+                </Bitmap>
+            </ScrollingLayout>
+            <Bitmap profile="fs25_settingsTooltipSeparator"/>
+        </GuiElement>
+
+        <!-- Scrollbar shared by all tabs; selectPage() re-targets it with setDataElement(). -->
+        <ThreePartBitmap profile="fs25_sliderDockedBg" id="settingsSliderBox">
+            <ThreePartBitmap profile="fs25_sliderDockedBox">
+                <Slider profile="fs25_sliderDocked" id="settingsSlider" dataElementId="layoutSettings"/>
+            </ThreePartBitmap>
+        </ThreePartBitmap>
+    </GuiElement>
+
+    <!-- ================= FOOTER ================= -->
+    <BoxLayout profile="fs25_buttonBox" id="buttonsPanel">
+        <Button profile="buttonBack" text="$l10n_tp_btn_close" onClick="onClickBack" id="backButton">
+            <Bitmap profile="fs25_buttonBoxSeparator" name="separator"/>
+        </Button>
+        <Button profile="buttonExtra1" text="$l10n_tp_btn_save_settings" onClick="onClickSave" id="saveButton">
+            <Bitmap profile="fs25_buttonBoxSeparator" name="separator"/>
+        </Button>
+    </BoxLayout>
+</GUI>

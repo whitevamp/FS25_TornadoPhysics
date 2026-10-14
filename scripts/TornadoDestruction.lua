@@ -39,6 +39,7 @@ TornadoDestruction.IgnoreListPatterns = {}
 TornadoDestruction.isInitialized = false
 TornadoDestruction.loggedIgnoredFiles = {}
 TornadoDestruction.nextLinkCheckTime = 0 -- Throttle timer for relinking
+TornadoDestruction.clientHidden = {}      -- Multiplayer client: vehicle -> nodes hidden by the server
 
 local function getTableCount(t)
     local count = 0
@@ -153,12 +154,14 @@ function TornadoDestruction:update(dt)
         end
 
         -- Time-skip delta check
+        -- dayTime and repairTimer are both milliseconds. The normal frame (scaledDt) was already
+        -- subtracted above, so only the extra skipped time is taken off here.
         local expectedMaxDelta = dt * timeScale * 2
         if absoluteDelta > expectedMaxDelta then
+            local skippedMs = absoluteDelta - scaledDt
             for id, data in pairs(self._destroyedObjects) do
                 if data.repairTimer then
-                    local skippedUnits = absoluteDelta / 1000
-                    data.repairTimer = data.repairTimer - skippedUnits
+                    data.repairTimer = data.repairTimer - skippedMs
                 end
             end
         end
@@ -309,6 +312,9 @@ function TornadoDestruction:destroyTarget(target)
             lastY = y or 0,
             lastZ = z or 0
         }
+
+        -- Multiplayer: clients hide the same parts.
+        if TornadoSync ~= nil then TornadoSync:sendDestruction(target, finalHiddenNodes, false) end
     else
         if TornadoDebug then TornadoDebug:log("DESTRUCTION", "FAILED. No suitable vehicle parts found.") end
         target.tornadoLastDestructionScan = g_currentMission.time
@@ -458,6 +464,7 @@ function TornadoDestruction:_updateRepairs(dt)
             end
         end
 
+        if TornadoSync ~= nil then TornadoSync:sendDestruction(data.obj, nil, true) end
         self._destroyedObjects[id] = nil
     end
 end
@@ -513,7 +520,8 @@ function TornadoDestruction:_linkPendingObjects()
 
         for _, obj in ipairs(searchTargets) do
             local filename = self:_cleanFilename(obj.i3dFilename)
-            if filename == pending.filename then
+            if filename == pending.filename and obj.rootNode ~= nil and entityExists(obj.rootNode)
+                and pending.x ~= nil and pending.y ~= nil and pending.z ~= nil then
                 local x, y, z = getWorldTranslation(obj.rootNode)
                 if x ~= nil then
                     local dx, dy, dz = x - pending.x, y - pending.y, z - pending.z
@@ -537,6 +545,7 @@ function TornadoDestruction:_linkPendingObjects()
                             lastY = y,
                             lastZ = z
                         }
+                        if TornadoSync ~= nil then TornadoSync:sendDestruction(obj, pending.nodes, false) end
                         found = true
                         break
                     end
@@ -669,6 +678,42 @@ function TornadoDestruction:_loadFromXML()
 
     delete(xmlId)
     if TornadoDebug then TornadoDebug:log("DESTRUCTION", "SUCCESS. Loaded " .. i .. " pending vehicle objects.") end
+end
+
+-- ============================================================================
+-- Multiplayer client (TornadoDestructionEvent)
+-- ============================================================================
+
+--- Hides the parts the server hid on this vehicle.
+function TornadoDestruction:clientDestroy(vehicle, paths)
+    if vehicle == nil or vehicle.rootNode == nil or not entityExists(vehicle.rootNode) then
+        return
+    end
+    local hidden = self.clientHidden[vehicle] or {}
+    for _, entry in ipairs(paths) do
+        local node = TornadoSync.decodeNodePath(vehicle, entry)
+        if node ~= nil and node ~= 0 and entityExists(node) then
+            setVisibility(node, false)
+            hidden[#hidden + 1] = node
+        end
+    end
+    self.clientHidden[vehicle] = hidden
+end
+
+--- Shows the parts again (24 h repair or emergency recovery on the server).
+function TornadoDestruction:clientRepair(vehicle)
+    if vehicle == nil then
+        return
+    end
+    local hidden = self.clientHidden[vehicle]
+    if hidden ~= nil then
+        for _, node in ipairs(hidden) do
+            if entityExists(node) then
+                setVisibility(node, true)
+            end
+        end
+    end
+    self.clientHidden[vehicle] = nil
 end
 
 function TornadoDestruction:purgeOrphanedFX(vehicleNode)

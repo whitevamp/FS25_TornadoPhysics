@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<modDesc xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" descVersion="111" xsi:noNamespaceSchemaLocation="https://validation.gdn.giants-software.com/xml/fs25/modDesc.xsd">
+<modDesc xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" descVersion="113" xsi:noNamespaceSchemaLocation="https://validation.gdn.giants-software.com/xml/fs25/modDesc.xsd">
     <author>whitevamp</author>
+    <!-- Built-in compatibility support for ADS (id577) and CompassHeading (RocklandUSA Gaming) -->
     <contributors>id577, RocklandUSA Gaming</contributors>
-    <version>4.0.0.0</version>
+    <version>5.0.0.0</version>
     <title>
         <en>Tornado Physics</en>
         <de>Tornado Physik</de>
@@ -28,6 +29,10 @@ FEATURES:
 - Map Support: Auto-scales radius for 4x, 16x, and 64x maps
 - Safety: Player ejection system and indoor safe zones (Barns)
 - Custom Particle Effects & Audio
+- NEW: In-game Control Panel - every setting in one menu (Right Ctrl + Right Shift + T)
+- NEW: Real-Life Tornado Climate (optional) - EF rating, size, hail, wind, season, time of day, direction and outbreak days from real US and Canadian tornado records
+- NEW: AI traffic stops before driving into the tornado
+- NEW: Full multiplayer support
 
 For bug reports and updates, visit: https://github.com/whitevamp/FS25_TornadoPhysics
 
@@ -57,6 +62,8 @@ This update introduces a centralized command system. You no longer need to remem
 - t_set destruction      : Toggle persistent vehicle destruction (Default: OFF)
 - t_set recovery         : Toggle the hardcore Emergency Tow bill when resetting to the shop (Default: OFF)
 - t_set mapui            : Toggle the Map UI overlay ON/OFF (Default: OFF)
+- t_set traffic          : AI traffic roadblocks ON/OFF, buffer [m], status (Default: ON)
+- t_set climate          : Real-life tornado climate ON/OFF, region, seasons, direction, outbreaks, frequency, status (Default: OFF)
 
 3. VISUALS & AUDIO (t_sfx)
 - t_sfx sound            : Toggle Siren Audio ON/OFF
@@ -70,7 +77,7 @@ This update introduces a centralized command system. You no longer need to remem
 
 5. MASTER RESET (t_reset)
 - Factory reset your settings if things get out of hand.
-- Commands: all, physics, tuning, cargo, husbandry
+- Commands: all, physics, tuning, cargo, husbandry, traffic, climate
 - Example: "t_reset all"
 
 6. DEVELOPER TOOLS (t_dev)
@@ -81,6 +88,17 @@ This update introduces a centralized command system. You no longer need to remem
 ------------------------------------------------------------------------
 CHANGELOG
 ------------------------------------------------------------------------
+v5.0.0.0 (The Real-Life Update)
+
+- [UI] Tornado Control Panel: A new in-game settings menu (Right Ctrl + Right Shift + T, rebindable) with Settings, Physics, Tuning, Effects, Modules and Developer tabs. Every console setting is available there, with tooltips.
+- [GAMEPLAY] Real-Life Tornado Climate (Default: OFF): Tornadoes follow real recorded statistics instead of the classic random roll. United States (NOAA SPC, 1950-2025, US-wide + 50 states) and Canada (Northern Tornadoes Project, 2017-2026, Canada-wide + 5 provinces). Auto-detects the region from the map, or pick one.
+- [GAMEPLAY] Real-life EF ratings and sizes, storm hail and wind gusts, tornado season and time of day, track direction and outbreak days (several tornadoes in one storm day). Each part can be switched on or off; adjustable tornado frequency.
+- [GAMEPLAY] AI Traffic Roadblocks: AI road traffic waits at the edge of the storm instead of driving into the tornado (Default: ON).
+- [UI] Map overlay now also shows the storm type, hail, gusts and the direction the tornado is moving.
+- [MULTIPLAYER] Full multiplayer support: every player sees the same tornado, siren, warnings, map info, funnel size, vehicle destruction, smoke/fire and storm weather. Players joining later get the current state. Gameplay settings belong to the server and can only be changed by the host or an admin.
+- [SYSTEM] An active tornado and a running outbreak are now saved with the savegame and continue after loading.
+- [FIX] Many fixes: save error message, verbose-logging errors, first tornado after loading using the wrong size, debris multiplying on every resize, double-speed effects and repair timers, random fire almost always igniting, fast-forward barely advancing the repair timer, tornado weather permanently changing the map's rain, danger ring setting not restored, and more. See changelog.txt for the full list.
+
 v4.0.0.0 (The Destruction Update)
 
 - [SYSTEM] Complete Code Rewrite: Moved to a modular architecture for better stability, save-game safety, and performance.
@@ -99,6 +117,13 @@ v4.0.0.0 (The Destruction Update)
 - [VISUALS] Improved Debug Ring: Added a secondary ring for better visibility in valleys.
 - [VISUALS] Enhanced Tornado Ground Debris: The base of the tornado now dynamically multiplies native dirt and debris particles to create a massive, churning wedge.
 - [UI/UX] Added Map Hotspot & UI: You can now teleport to or visit the tornado from the ESC map. A new UI widget in the upper right corner of the map menu displays real-time tornado stats (EF Rating, Wind Speed, Radius).
+
+------------------------------------------------------------------------
+DATA SOURCES (Real-Life Tornado Climate mode)
+------------------------------------------------------------------------
+- United States: tornado, hail and wind statistics derived from the NOAA / National Weather Service Storm Prediction Center Severe Weather Database (public domain).
+- Canada: tornado statistics derived from Northern Tornadoes Project event data, Western University, licensed under CC BY-NC 4.0 (https://creativecommons.org/licenses/by-nc/4.0/). The data was aggregated and modified for this mod. Canadian hail values are borrowed from neighbouring US states (NOAA SPC).
+- This mod is free and non-commercial. The included climate data may not be used commercially.
 ]]>
         </en>
         <de>
@@ -120,6 +145,10 @@ EIGENSCHAFTEN:
 - Kartenunterstützung: Automatische Skalierung des Radius für 4x-, 16x- und 64x-Karten
 - Sicherheit: Spielerauswurfsystem und sichere Zonen in Gebäuden (Scheunen)
 - Benutzerdefinierte Partikeleffekte & Audio
+- NEU: Kontrollzentrum im Spiel - alle Einstellungen in einem Menü (Rechte Strg + Rechte Umschalt + T)
+- NEU: Reales Tornado-Klima (optional) - EF-Stufe, Größe, Hagel, Wind, Jahreszeit, Tageszeit, Zugrichtung und Ausbruchstage aus echten Tornadodaten der USA und Kanadas
+- NEU: KI-Verkehr hält vor dem Tornado an
+- NEU: Vollständige Multiplayer-Unterstützung
 
 Für Fehlerberichte und Updates besuche: https://github.com/whitevamp/FS25_TornadoPhysics
 
@@ -149,6 +178,8 @@ Dieses Update führt ein zentrales Befehlssystem ein. Du musst dir keine 20 vers
 - t_set destruction      : Dauerhafte Fahrzeugzerstörung umschalten (Standard: AUS)
 - t_set recovery         : Die harte Notfall-Abschlepprechnung beim Zurücksetzen zum Shop umschalten (Standard: AUS)
 - t_set mapui            : Map-UI-Overlay EIN-/AUSSCHALTEN
+- t_set traffic          : Straßensperren für KI-Verkehr EIN/AUS, buffer [m], status (Standard: AN)
+- t_set climate          : Reales Tornado-Klima EIN/AUS, region, seasons, direction, outbreaks, frequency, status (Standard: AUS)
 
 3. OPTIK & AUDIO (t_sfx)
 - t_sfx sound            : Tornado-Sirene EIN-/AUSSCHALTEN
@@ -162,7 +193,7 @@ Dieses Update führt ein zentrales Befehlssystem ein. Du musst dir keine 20 vers
 
 5. MASTER RESET (t_reset)
 - Setze deine Einstellungen auf die Werkseinstellungen zurück, falls die Dinge außer Kontrolle geraten.
-- Befehle: all, physics, tuning, cargo, husbandry
+- Befehle: all, physics, tuning, cargo, husbandry, traffic, climate
 - Beispiel: "t_reset all"
 
 6. ENTWICKLERWERKZEUGE (t_dev)
@@ -173,6 +204,17 @@ Dieses Update führt ein zentrales Befehlssystem ein. Du musst dir keine 20 vers
 ------------------------------------------------------------------------
 ÄNDERUNGSPROTOKOLL
 ------------------------------------------------------------------------
+v5.0.0.0 (Das Realitäts-Update)
+
+- [UI] Tornado-Kontrollzentrum: Neues Einstellungsmenü im Spiel (Rechte Strg + Rechte Umschalt + T, frei belegbar) mit den Reitern Einstellungen, Physik, Feinabstimmung, Effekte, Module und Entwickler. Alle Konsoleneinstellungen sind dort mit Tooltips verfügbar.
+- [GAMEPLAY] Reales Tornado-Klima (Standard: AUS): Tornados folgen echten Statistiken statt dem klassischen Zufallswurf. USA (NOAA SPC, 1950-2025, landesweit + 50 Bundesstaaten) und Kanada (Northern Tornadoes Project, 2017-2026, landesweit + 5 Provinzen). Die Region wird anhand der Karte erkannt oder kann gewählt werden.
+- [GAMEPLAY] Reale EF-Stufen und Größen, Hagel und Windböen, Tornadosaison und Tageszeit, Zugrichtung und Ausbruchstage (mehrere Tornados an einem Unwettertag). Jeder Teil ist einzeln schaltbar; Tornado-Häufigkeit einstellbar.
+- [GAMEPLAY] Straßensperren für KI-Verkehr: Der KI-Straßenverkehr wartet am Rand des Sturms, statt in den Tornado zu fahren (Standard: AN).
+- [UI] Das Karten-Overlay zeigt jetzt auch Unwettertyp, Hagel, Böen und die Zugrichtung des Tornados.
+- [MULTIPLAYER] Vollständige Multiplayer-Unterstützung: Alle Spieler sehen denselben Tornado, dieselbe Sirene, Warnungen, Karteninfos, Trichtergröße, Fahrzeugzerstörung, Rauch/Feuer und dasselbe Unwetter. Später beitretende Spieler erhalten den aktuellen Stand. Spieleinstellungen gehören dem Server und können nur vom Host oder einem Admin geändert werden.
+- [SYSTEM] Ein aktiver Tornado und ein laufender Ausbruch werden mit dem Spielstand gespeichert und nach dem Laden fortgesetzt.
+- [FIX] Viele Fehlerbehebungen: Fehlermeldung beim Speichern, Fehler bei ausführlicher Protokollierung, falsche Größe des ersten Tornados nach dem Laden, sich vervielfachende Trümmer bei jeder Größenänderung, doppelt so schnelle Effekte und Reparatur-Timer, fast immer entzündendes Zufallsfeuer, kaum fortschreitender Reparatur-Timer beim Vorspulen, dauerhaft veränderter Regen der Karte nach einem Tornado, nicht wiederhergestellter Gefahrenring und mehr. Die vollständige Liste steht in changlog.txt.
+
 v4.0.0.0 (Das Zerstörungs-Update)
 
 - [SYSTEM] Komplette Code-Überarbeitung: Wechsel zu einer modularen Architektur für bessere Stabilität, Speichersicherheit und Leistung.
@@ -191,6 +233,13 @@ v4.0.0.0 (Das Zerstörungs-Update)
 - [VISUALS] Debug-Ring verbessert: Ein zweiter Ring für bessere Sichtbarkeit in Tälern wurde hinzugefügt.
 - [VISUALS] Tornado-Bodentrümmer verbessert: Die Basis des Tornados multipliziert nun dynamisch native Erd- und Trümmerpartikel, um einen massiven, wirbelnden Keil (Wedge) zu erzeugen.
 - [UI/UX] Karten-Hotspot & UI hinzugefügt: Man kann sich nun über die ESC-Karte zum Tornado teleportieren. Ein neues UI-Widget in der oberen rechten Ecke des Kartenmenüs zeigt Echtzeit-Tornado-Statistiken (EF-Kategorie, Windgeschwindigkeit, Radius) an.
+
+------------------------------------------------------------------------
+DATENQUELLEN (Modus "Reales Tornado-Klima")
+------------------------------------------------------------------------
+- USA: Tornado-, Hagel- und Windstatistiken abgeleitet aus der Severe Weather Database des NOAA / National Weather Service Storm Prediction Center (gemeinfrei).
+- Kanada: Tornadostatistiken abgeleitet aus Ereignisdaten des Northern Tornadoes Project, Western University, lizenziert unter CC BY-NC 4.0 (https://creativecommons.org/licenses/by-nc/4.0/). Die Daten wurden fuer diesen Mod zusammengefasst und veraendert. Kanadische Hagelwerte stammen aus benachbarten US-Bundesstaaten (NOAA SPC).
+- Dieser Mod ist kostenlos und nicht kommerziell. Die enthaltenen Klimadaten duerfen nicht kommerziell genutzt werden.
 ]]>
         </de>
         <fr>
@@ -212,6 +261,10 @@ CARACTÉRISTIQUES :
 - Support de carte : Mise à l'échelle automatique du rayon pour les cartes 4x, 16x et 64x
 - Sécurité : Système d'éjection du joueur et zones de sécurité en intérieur (Granges)
 - Effets de particules et audio personnalisés
+- NOUVEAU : Panneau de contrôle en jeu - tous les réglages dans un seul menu (Ctrl droit + Maj droite + T)
+- NOUVEAU : Climat réel des tornades (optionnel) - catégorie EF, taille, grêle, vent, saison, heure, direction et épisodes de tornades multiples issus de vraies données de tornades des États-Unis et du Canada
+- NOUVEAU : La circulation IA s'arrête avant la tornade
+- NOUVEAU : Prise en charge complète du multijoueur
 
 Pour les rapports de bugs et les mises à jour, visitez : https://github.com/whitevamp/FS25_TornadoPhysics
 
@@ -241,6 +294,8 @@ Cette mise à jour introduit un système de commandes centralisé. Vous n'avez p
 - t_set destruction      : Activer/Désactiver la destruction persistante des véhicules (Défaut : DÉSACTIVÉ)
 - t_set recovery         : Activer/Désactiver la facture de remorquage d'urgence hardcore lors de la réinitialisation au magasin (Défaut : DÉSACTIVÉ)
 - t_set mapui            : Activer/Désactiver la superposition de l'interface de la carte
+- t_set traffic          : Barrages routiers pour la circulation IA ON/OFF, buffer [m], status (Défaut : ACTIVÉ)
+- t_set climate          : Climat réel des tornades ON/OFF, region, seasons, direction, outbreaks, frequency, status (Défaut : DÉSACTIVÉ)
 
 3. VISUELS ET AUDIO (t_sfx)
 - t_sfx sound            : Activer/Désactiver la sirène de tornade
@@ -254,7 +309,7 @@ Cette mise à jour introduit un système de commandes centralisé. Vous n'avez p
 
 5. RÉINITIALISATION COMPLÈTE (t_reset)
 - Réinitialisez vos paramètres aux valeurs d'usine si les choses dégénèrent.
-- Commandes : all, physics, tuning, cargo, husbandry
+- Commandes : all, physics, tuning, cargo, husbandry, traffic, climate
 - Exemple : "t_reset all"
 
 6. OUTILS DE DÉVELOPPEMENT (t_dev)
@@ -265,6 +320,17 @@ Cette mise à jour introduit un système de commandes centralisé. Vous n'avez p
 ------------------------------------------------------------------------
 JOURNAL DES MODIFICATIONS
 ------------------------------------------------------------------------
+v5.0.0.0 (La Mise à Jour Réalité)
+
+- [UI] Panneau de contrôle Tornade : nouveau menu de réglages en jeu (Ctrl droit + Maj droite + T, modifiable) avec les onglets Réglages, Physique, Ajustements, Effets, Modules et Développeur. Tous les réglages de la console y sont disponibles, avec des info-bulles.
+- [JOUABILITÉ] Climat réel des tornades (Défaut : DÉSACTIVÉ) : les tornades suivent de vraies statistiques au lieu du tirage aléatoire classique. États-Unis (NOAA SPC, 1950-2025, tout le pays + 50 États) et Canada (Northern Tornadoes Project, 2017-2026, tout le pays + 5 provinces). La région est détectée à partir de la carte, ou peut être choisie.
+- [JOUABILITÉ] Catégories EF et tailles réelles, grêle et rafales d'orage, saison et heure des tornades, direction de déplacement et épisodes de tornades multiples (plusieurs tornades le même jour d'orage). Chaque partie peut être activée ou désactivée ; fréquence des tornades réglable.
+- [JOUABILITÉ] Barrages routiers pour la circulation IA : la circulation IA attend au bord de la tempête au lieu d'entrer dans la tornade (Défaut : ACTIVÉ).
+- [UI] La superposition de la carte affiche aussi le type d'orage, la grêle, les rafales et la direction de la tornade.
+- [MULTIJOUEUR] Prise en charge complète du multijoueur : tous les joueurs voient la même tornade, la même sirène, les mêmes alertes, informations de carte, taille de l'entonnoir, destruction des véhicules, fumée/feu et le même orage. Les joueurs qui rejoignent plus tard reçoivent l'état actuel. Les réglages de jeu appartiennent au serveur et ne peuvent être modifiés que par l'hôte ou un administrateur.
+- [SYSTÈME] Une tornade active et un épisode de tornades en cours sont désormais enregistrées avec la sauvegarde et continuent après le chargement.
+- [CORRECTIF] Nombreuses corrections : message d'erreur à la sauvegarde, erreurs avec la journalisation détaillée, mauvaise taille de la première tornade après le chargement, débris qui se multipliaient à chaque redimensionnement, effets et minuteurs de réparation deux fois trop rapides, feu aléatoire presque toujours déclenché, minuteur de réparation qui avançait à peine en accéléré, pluie de la carte modifiée de façon permanente après une tornade, anneau de danger non restauré, et plus encore. La liste complète se trouve dans changlog.txt.
+
 v4.0.0.0 (La Mise à Jour Destruction)
 
 - [SYSTÈME] Réécriture complète du code : Passage à une architecture modulaire pour une meilleure stabilité, sécurité des sauvegardes et performance.
@@ -283,6 +349,13 @@ v4.0.0.0 (La Mise à Jour Destruction)
 - [VISUELS] Anneau de débogage amélioré : Ajout d'un deuxième anneau pour une meilleure visibilité dans les vallées.
 - [VISUELS] Débris au sol de la tornade améliorés : La base de la tornade multiplie désormais dynamiquement les particules de terre et de débris natives pour créer un énorme cône (wedge) tourbillonnant.
 - [UI/UX] Point d'intérêt et interface carte ajoutés : Vous pouvez désormais vous téléporter ou visiter la tornade depuis la carte du menu Échap. Un nouveau widget dans le coin supérieur droit du menu de la carte affiche les statistiques de la tornade en temps réel (Catégorie EF, Vitesse du vent, Rayon).
+
+------------------------------------------------------------------------
+SOURCES DES DONNEES (mode "Climat reel des tornades")
+------------------------------------------------------------------------
+- Etats-Unis : statistiques de tornades, de grele et de vent derivees de la Severe Weather Database du NOAA / National Weather Service Storm Prediction Center (domaine public).
+- Canada : statistiques de tornades derivees des donnees d'evenements du Northern Tornadoes Project, Western University, sous licence CC BY-NC 4.0 (https://creativecommons.org/licenses/by-nc/4.0/). Les donnees ont ete agregees et modifiees pour ce mod. Les valeurs de grele canadiennes proviennent des Etats americains voisins (NOAA SPC).
+- Ce mod est gratuit et non commercial. Les donnees climatiques incluses ne peuvent pas etre utilisees a des fins commerciales.
 ]]>
         </fr>
     </description>
@@ -292,6 +365,20 @@ v4.0.0.0 (La Mise à Jour Destruction)
     <extraSourceFiles>
         <sourceFile filename="TornadoMain.lua"/>
     </extraSourceFiles>
+
+    <!-- Control panel key (scripts/gui/TornadoMenu.lua). Rebindable in Options > Controls. -->
+    <actions>
+        <action name="TORNADO_MENU" category="BASE"/>
+    </actions>
+    <inputBinding>
+        <actionBinding action="TORNADO_MENU">
+            <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_rshift KEY_t"/>
+        </actionBinding>
+    </inputBinding>
+
+    <!-- All player-visible texts (key name, control panel, messages). Edit tools/translations_source.py
+         and run tools/build_translations.py - do not edit the generated files by hand. -->
+    <l10n filenamePrefix="translations/translation"/>
 
     <!-- <emergencyPack version="1">
         <scenarioDirectory>emergencyScenarios/</scenarioDirectory>

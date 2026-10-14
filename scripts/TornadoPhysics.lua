@@ -61,7 +61,8 @@ function TornadoPhysics:loadMap(name)
     self.tornadoNode = nil
     self.lastTornadoPos = nil
     self.debugMode = false
-    self.showRing = false
+    -- showRing is NOT reset here: TornadoSettings:loadMap() has already applied the saved value.
+    if self.showRing == nil then self.showRing = false end
     self.activeNodes = {}
     self.scanTimer = 0
     self.safetyCache = {}
@@ -83,6 +84,9 @@ function TornadoPhysics:loadMap(name)
     mapInitialized = false
 
 
+    self.respawnPending = false
+    self:installSpawnHook()
+
     if TornadoDebug then TornadoDebug:info("PHYSICS", "V3.0.0.1 Initialized (Gold Master)") end
 end
 
@@ -93,10 +97,15 @@ function TornadoPhysics:deleteMap()
 end
 
 function TornadoPhysics:update(dt)
-    if TornadoEffects then TornadoEffects:update(dt) end
+    -- TornadoEffects / TornadoDestruction / TornadoCompass are updated by TornadoMain:update().
 
     -- 1. BASIC SERVER CHECKS (Always required)
-    if not self.isActive or g_currentMission == nil or not g_currentMission:getIsServer() then
+    if not self.isActive or g_currentMission == nil then
+        return
+    end
+    -- Multiplayer clients only show what the server sends (TornadoStateEvent); no physics here.
+    if not g_currentMission:getIsServer() then
+        self:updateClient(dt)
         return
     end
 
@@ -184,6 +193,12 @@ function TornadoPhysics:update(dt)
         end
     end
 
+    -- A new spawn on the twister that was already active (see installSpawnHook): treat it as a new touchdown.
+    if tornadoIsValid and self.respawnPending then
+        self.respawnPending = false
+        self:onTornadoRespawn()
+    end
+
     if tornadoIsValid then
         if TornadoSFX then TornadoSFX:playSiren() end
     else
@@ -210,9 +225,6 @@ function TornadoPhysics:update(dt)
 
     -- Run the Physics Scan
     self:processNearbyObjects(dt, x, y, z)
-
-    -- Update Sub-modules
-    if TornadoDestruction then TornadoDestruction:update(dt) end
 
     if not mapInitialized then
         self:calculateMapScale()
@@ -248,7 +260,7 @@ function TornadoPhysics:update(dt)
             if TornadoDebug then TornadoDebug:log("PHYSICS", "Purge Complete. Resuming Suction.") end
         end
     else
-        if self.purgeTimer > self.purgeInterval then
+        if self.purgeTimer > self:getPurgeInterval() then
             self.isPurging = true
             self.purgeTimer = 0
             if TornadoDebug then TornadoDebug:log("PHYSICS", "Purge Started! EJECTING CONTENTS...") end
@@ -264,6 +276,7 @@ function TornadoPhysics:update(dt)
     if TornadoHotspot ~= nil and TornadoHotspot.updatePosition ~= nil then
         TornadoHotspot:updatePosition(tX, tZ, rotY)
     end
+    self:trackMovement(tX, tZ)
 
     if self.lastTornadoPos then
         local jumpDist = MathUtil.vector2Length(tX - self.lastTornadoPos.x, tZ - self.lastTornadoPos.z)
@@ -278,7 +291,6 @@ function TornadoPhysics:update(dt)
 
     if TornadoADS then TornadoADS:update(dt, self.activeNodes) end
     if TornadoCargo then TornadoCargo:update(dt, self.activeNodes) end
-    if TornadoCompass then TornadoCompass:update(dt) end
 
     -- VISUAL DEBUGGER
     if self.showRing or self.debugMode then
@@ -317,75 +329,6 @@ end
 --#region
 function TornadoPhysics:processNearbyObjects(dt, tX, tY, tZ)
     --#region
-    -- ============================================================================
-    -- [COMPATIBILITY HOOK] NeighborFieldWorkers Evacuation
-    -- Prevents infinite flip/respawn lag loops by dismissing AI in the tornado's path.
-    -- ============================================================================
-    -- if _G.NeighborFieldWorkers and _G.NeighborFieldWorkers.activeAssignments then
-    --     for key, assignment in pairs(_G.NeighborFieldWorkers.activeAssignments) do
-    --         if assignment and assignment.vehicle and assignment.vehicle.rootNode then
-    --             local vx, vy, vz = getWorldTranslation(assignment.vehicle.rootNode)
-    --             local dist = MathUtil.vector2Length(vx - tX, vz - tZ)
-
-    --             -- Evacuate if the tornado is within a safe buffer (e.g., 2x the base radius)
-    --             if dist < (self.settings.base_radius * 2.0) then
-    --                 local mission = assignment.mission
-    --                 if mission and mission.status ~= MissionStatus.DISMISSED then
-    --                     if TornadoDebug then TornadoDebug:log("PHYSICS", "NFW AI detected in tornado path. Evacuating/Despawning!") end
-
-    --                     -- 1. Halt the AI logic
-    --                     if assignment.vehicle.stopCurrentAIJob then
-    --                         pcall(assignment.vehicle.stopCurrentAIJob, assignment.vehicle)
-    --                     end
-
-    --                     -- 2. Dismiss the GIANTS mission to despawn the rented vehicles safely
-    --                     if g_missionManager then
-    --                         pcall(g_missionManager.cancelMission, g_missionManager, mission)
-    --                         pcall(g_missionManager.dismissMission, g_missionManager, mission)
-    --                     end
-
-    --                     -- 3. Clean up the NFW tracker
-    --                     if type(_G.NeighborFieldWorkers.removeAssignment) == "function" then
-    --                         pcall(_G.NeighborFieldWorkers.removeAssignment, _G.NeighborFieldWorkers, assignment)
-    --                     end
-    --                 end
-    --             end
-    --         end
-    --     end
-    -- end
-    -- ============================================================================
-    --#endregion
-
-    -- 1. Scan Vehicles
-    -- if g_currentMission.vehicleSystem and g_currentMission.vehicleSystem.vehicles then
-    --     for _, vehicle in pairs(g_currentMission.vehicleSystem.vehicles) do
-    --         if vehicle ~= nil and vehicle.rootNode ~= nil then
-    --             local vx, vy, vz = getWorldTranslation(vehicle.rootNode)
-    --             local dist = MathUtil.vector3Length(vx-tX, vy-tY, vz-tZ)
-
-    --             --#region
-    --             if math.abs(vx) < 0.001 and math.abs(vz) < 0.001 then
-    --                 goto continue
-    --             end
-
-    --             -- Also guard against explicit shop property state
-    --             if vehicle.propertyState == Vehicle.PROPERTY_STATE_SHOP then
-    --                 goto continue
-    --             end
-    --             --#endregion
-
-    --             if dist < self.settings.base_radius then
-    --                 --self:applyTornadoForces(vehicle, dist, dt)
-
-    --                 -- Trigger Destruction
-    --                 if TornadoDestruction then
-    --                     TornadoDestruction:destroyTarget(vehicle)
-    --                 end
-    --             end
-    --         end
-    --     end
-    -- end
-
     if g_currentMission.vehicleSystem and g_currentMission.vehicleSystem.vehicles then
         for _, vehicle in pairs(g_currentMission.vehicleSystem.vehicles) do
             if vehicle ~= nil and vehicle.rootNode ~= nil then
@@ -411,23 +354,6 @@ function TornadoPhysics:processNearbyObjects(dt, tX, tY, tZ)
             end
         end
     end
-    --#region
-    -- -- 2. Scan Placeables (Buildings)
-    -- if g_currentMission.placeableSystem and g_currentMission.placeableSystem.placeables then
-    --     for _, placeable in pairs(g_currentMission.placeableSystem.placeables) do
-    --          if placeable ~= nil and placeable.rootNode ~= nil then
-    --             local px, py, pz = getWorldTranslation(placeable.rootNode)
-    --             local dist = MathUtil.vector3Length(px-tX, py-tY, pz-tZ)
-
-    --             if dist < self.settings.base_radius then
-    --                  -- Trigger Destruction
-    --                  if TornadoDestruction then
-    --                     TornadoDestruction:destroyTarget(placeable)
-    --                 end
-    --             end
-    --          end
-    --     end
-    -- end
     --#endregion
     --#region
     -- 2. Scan Placeables (Buildings)
@@ -1002,9 +928,11 @@ function TornadoPhysics:applyBalePhysics(nodeId, tX, tY, tZ, dtSec, data)
         targetVy = 2.0
     end
 
-    targetVx = targetVx + math.random(-self.settings.chaos_factor, self.settings.chaos_factor)
-    targetVz = targetVz + math.random(-self.settings.chaos_factor, self.settings.chaos_factor)
-    targetVy = targetVy + math.random(-2.0, 2.0)
+    -- math.random(m, n) only takes whole numbers; chaos_factor may be fractional, so scale a 0..1 roll instead.
+    local chaos = self.settings.chaos_factor
+    targetVx = targetVx + (math.random() * 2 - 1) * chaos
+    targetVz = targetVz + (math.random() * 2 - 1) * chaos
+    targetVy = targetVy + (math.random() * 4 - 2)
 
     if (vY - tY) > self.settings.hover_height then targetVy = -5.0 end
 
@@ -1065,6 +993,13 @@ function TornadoPhysics:applyDamage(vehicle, amount, currentOuterRadius)
 
     if vehicle.tornadoIsOnFire and TornadoEffects and TornadoEffects.igniteVehicle then
         TornadoEffects:igniteVehicle(vehicle.rootNode)
+
+        -- Multiplayer: the fire roll happens here on the server; tell clients once per effect.
+        local effect = TornadoEffects.activeEffects ~= nil and TornadoEffects.activeEffects[vehicle.rootNode] or nil
+        if effect ~= nil and effect.willBurn and not effect.burnSent then
+            effect.burnSent = true
+            if TornadoSync ~= nil then TornadoSync:sendFx(vehicle, TornadoSync.FX_BURN) end
+        end
     end
 
     if TornadoEffects and vehicle.spec_motorized then
@@ -1078,6 +1013,7 @@ function TornadoPhysics:applyDamage(vehicle, amount, currentOuterRadius)
             if tNode and entityExists(tNode) and vNode and entityExists(vNode) then
                 TornadoEffects:playDamageEffect(vNode, tNode, currentOuterRadius or 0)
                 vehicle.tornadoNextSmokeTime = now + cd
+                if TornadoSync ~= nil then TornadoSync:sendFx(vehicle, TornadoSync.FX_CONTACT) end
             end
         end
     end
@@ -1271,16 +1207,27 @@ function TornadoPhysics:drawDebugRing(x, y, z, r)
     end
 end
 
+--- Live outer radius of the active tornado (map-scaled and EF-scaled), for other modules.
+function TornadoPhysics:getOuterRadius()
+    return currentOuterRadius
+end
+
+--- Ejection interval: the tuned base value plus the extra time large maps get.
+--- Read live so t_tune purge_int / t_reset apply immediately.
+function TornadoPhysics:getPurgeInterval()
+    return self.settings.purge_interval + ((mapScaleFactor - 1.0) * 20000)
+end
+
 function TornadoPhysics:calculateMapScale()
     if g_currentMission and g_currentMission.terrainSize then
         local size = g_currentMission.terrainSize
         mapScaleFactor = size / 2048.0; if mapScaleFactor < 1.0 then mapScaleFactor = 1.0 end
         mapBoundary = size * 0.5; currentOuterRadius = self.settings.base_radius * mapScaleFactor; currentOuterRadiusSq =
         currentOuterRadius * currentOuterRadius
-        self.purgeInterval = self.settings.purge_interval + ((mapScaleFactor - 1.0) * 20000)
+        self.purgeInterval = self:getPurgeInterval()
         self.dynamicImmunityMS = (240.0 + ((mapScaleFactor - 1.0) * 300.0)) * 1000
         if TornadoDebug then TornadoDebug:info("SETUP",
-                string.format("MapSize=%.0f | Radius=%.1fm | Purge=%.1fs", size, currentOuterRadius,
+                string.format("MapSize=%.0f | Base Radius=%.1fm (before EF roll) | Purge=%.1fs", size, currentOuterRadius,
                     self.purgeInterval / 1000)) end
     end
 
@@ -1292,38 +1239,28 @@ function TornadoPhysics:calculateMapScale()
 end
 
 function TornadoPhysics:randomizeTornado()
+    -- The server rolls the tornado; multiplayer clients get the result through TornadoStateEvent.
+    if g_currentMission == nil or not g_currentMission:getIsServer() then
+        return
+    end
     if self.tornadoNode then
+        -- The map scale must exist before the radius is rolled. Otherwise the first tornado after
+        -- loading uses scale 1.0 and calculateMapScale() then resets the rolled radius to base_radius.
+        if not mapInitialized then
+            self:calculateMapScale()
+            mapInitialized = true
+        end
+
         local scaledBase = self.settings.base_radius * mapScaleFactor
-        local scale = self.settings.min_scale + math.random() * (self.settings.max_scale - self.settings.min_scale)
+        -- Real-life climate mode (TornadoClimate) rolls EF + size from NOAA data; nil = classic even roll.
+        local scale = TornadoClimate ~= nil and TornadoClimate:rollScale() or nil
+        if scale == nil then
+            scale = self.settings.min_scale + math.random() * (self.settings.max_scale - self.settings.min_scale)
+        end
         setScale(self.tornadoNode, scale, scale, scale)
 
-        -- =========================================================================
-        -- DEBRIS MULTIPLIER LOGIC
-        -- =========================================================================
-        local numChildren = getNumOfChildren(self.tornadoNode)
-        for i = 0, numChildren - 1 do
-            local child = getChildAt(self.tornadoNode, i)
-            local childName = string.lower(getName(child) or "")
-
-            -- Look for native GIANTS particle/debris nodes attached to the twister
-            if string.find(childName, "debris") or string.find(childName, "dust") or string.find(childName, "particles") then
-                -- We found the debris ring! Let's clone it 3 times for 4x density.
-                for cloneIdx = 1, 3 do
-                    local clonedDebris = clone(child, true, false, false)
-                    link(self.tornadoNode, clonedDebris) -- Attach clone to the main tornado
-
-                    -- Offset the rotation so the debris fields interlock instead of overlapping
-                    local rx, ry, rz = getRotation(clonedDebris)
-                    setRotation(clonedDebris, rx, ry + math.rad(cloneIdx * 45), rz)
-
-                    -- Make the outer clones slightly wider to thicken the funnel base
-                    setScale(clonedDebris, 1.0 + (cloneIdx * 0.2), 1.0, 1.0 + (cloneIdx * 0.2))
-                end
-
-                if TornadoDebug then TornadoDebug:log("PHYSICS", "Successfully multiplied native debris/dust nodes.") end
-            end
-        end
-        -- =========================================================================
+        self.currentScale = scale
+        self:multiplyDebris(self.tornadoNode)
 
         currentOuterRadius = scaledBase * scale
         currentOuterRadiusSq = currentOuterRadius * currentOuterRadius
@@ -1362,12 +1299,234 @@ function TornadoPhysics:randomizeTornado()
             TornadoHotspot:updateStats(efNum, windMin, windMax, self.currentRadiusM)
         end
 
-        local msg = string.format("ALERT: TORNADO TOUCHDOWN! (%s | Radius: %dm | PwrMult: x%.1f)", rating,
-            math.floor(currentOuterRadius), self.sizeMultiplier)
-
-        if TornadoDebug then TornadoDebug:info("EVENT", msg) end
-        if g_currentMission then g_currentMission:showBlinkingWarning(msg, 20000) end
+        if TornadoDebug then
+            TornadoDebug:info("EVENT", string.format("Tornado touchdown (%s | Radius: %dm | PwrMult: x%.1f)", rating,
+                math.floor(currentOuterRadius), self.sizeMultiplier))
+        end
+        if g_currentMission and g_dedicatedServer == nil then
+            g_currentMission:showBlinkingWarning(TornadoText.format("tp_msg_touchdown", efNum,
+                math.floor(currentOuterRadius), self.sizeMultiplier), 20000)
+        end
         if TornadoAPI then TornadoAPI:fireTouchdownEvent() end
+
+        -- Multiplayer: clients show the same EF, size, warning and siren.
+        if TornadoSync ~= nil then TornadoSync:sendTornadoState(true, true) end
+    end
+end
+
+-- =========================================================================
+-- MULTIPLAYER CLIENT
+-- The server runs all tornado gameplay. A client only finds the (network-synced) twister node itself
+-- and shows the stats the server sends in TornadoStateEvent: funnel size, siren, warning, hotspot,
+-- map overlay, compass marker and the danger ring.
+-- =========================================================================
+
+--- The visible twister node in the scene, or nil. No side effects (unlike findTornadoSimple).
+function TornadoPhysics:findTwisterNode()
+    local root = getRootNode()
+    for i = 0, getNumOfChildren(root) - 1 do
+        local child = getChildAt(root, i)
+        local name = getName(child)
+        if name and string.find(string.lower(name), "twister") and getVisibility(child) then
+            return child
+        end
+    end
+    return nil
+end
+
+--- Client: stats from the server (TornadoStateEvent).
+function TornadoPhysics:applyClientState(state)
+    if not state.isActive then
+        local wasActive = self.clientActive
+        self.clientActive = false
+        self.clientVisualsPending = false
+        self.tornadoNode = nil
+        self:resetTrackMovement()
+        if TornadoHotspot ~= nil then TornadoHotspot:setActive(false) end
+        if TornadoSFX then TornadoSFX.sirenLoopCount = 0 end
+        if wasActive and TornadoAPI then TornadoAPI:fireDespawnEvent() end
+        return
+    end
+
+    if state.isNewTouchdown or not self.clientActive then
+        self:resetTrackMovement()
+    end
+    self.clientActive = true
+    currentOuterRadius = state.outerRadius
+    currentOuterRadiusSq = currentOuterRadius * currentOuterRadius
+    self.currentEfNum = state.efNum
+    self.currentWindMin = state.windMin
+    self.currentWindMax = state.windMax
+    self.currentRadiusM = state.radiusM
+    self.sizeMultiplier = state.sizeMultiplier
+    self.currentScale = state.scale
+    self.clientVisualsPending = true
+
+    if TornadoHotspot ~= nil and TornadoHotspot.updateStats ~= nil then
+        TornadoHotspot:updateStats(state.efNum, state.windMin, state.windMax, state.radiusM)
+    end
+    if TornadoClimate ~= nil and state.hasClimateRoll then
+        TornadoClimate.lastRoll = {
+            region = state.rollRegion, regionName = state.rollRegionName, ef = state.rollEf,
+            width = state.rollWidth >= 0 and state.rollWidth or nil, scale = state.scale,
+        }
+    end
+
+    if state.isNewTouchdown then
+        if TornadoSFX then
+            TornadoSFX.sirenLoopCount = 0
+            TornadoSFX.sirenTimer = 0
+        end
+        g_currentMission:showBlinkingWarning(TornadoText.format("tp_msg_touchdown",
+            state.efNum, math.floor(state.outerRadius), state.sizeMultiplier), 20000)
+        if TornadoAPI then TornadoAPI:fireTouchdownEvent() end
+    end
+end
+
+--- Client: funnel size and extra debris the way the server set them in randomizeTornado / visual sync.
+function TornadoPhysics:applyClientVisuals()
+    self.clientVisualsPending = false
+    local scale = self.currentScale or 1
+    setScale(self.tornadoNode, scale, scale, scale)
+    self:multiplyDebris(self.tornadoNode)
+
+    local weather = g_currentMission.environment ~= nil and g_currentMission.environment.weather or nil
+    if weather ~= nil and weather.twister ~= nil and weather.twister.rootNode ~= nil and self.currentEfNum ~= nil then
+        local visualScale = 1.0 + (self.currentEfNum * 0.8)
+        setScale(weather.twister.rootNode, visualScale, visualScale, visualScale)
+        weather.twister.isTornadoModScaled = true
+    end
+end
+
+--- Client per-frame: siren, hotspot position and the danger ring while the server reports a tornado.
+function TornadoPhysics:updateClient(dt)
+    if not self.clientActive then
+        return
+    end
+    if self.tornadoNode == nil or not entityExists(self.tornadoNode) then
+        self.tornadoNode = self:findTwisterNode()
+        if self.tornadoNode == nil then
+            return
+        end
+        self.clientVisualsPending = true
+    end
+    if not getVisibility(self.tornadoNode) then
+        return
+    end
+
+    if self.clientVisualsPending then
+        self:applyClientVisuals()
+    end
+    if TornadoSFX then TornadoSFX:playSiren() end
+
+    local tX, tY, tZ = getWorldTranslation(self.tornadoNode)
+    local _, rotY, _ = getWorldRotation(self.tornadoNode)
+    if TornadoHotspot ~= nil then
+        TornadoHotspot:updatePosition(tX, tZ, rotY)
+    end
+    self:trackMovement(tX, tZ)
+    if self.showRing or self.debugMode then
+        self:drawDebugRing(tX, tY, tZ, currentOuterRadius)
+    end
+end
+
+--- Compass direction the tornado is actually moving ("NE"), from its position over time.
+--- Works on the server and on clients and for every spawn type; shown on the ESC map overlay.
+function TornadoPhysics:trackMovement(tX, tZ)
+    if self.trackLastX == nil then
+        self.trackLastX, self.trackLastZ = tX, tZ
+        return
+    end
+    local dx, dz = tX - self.trackLastX, tZ - self.trackLastZ
+    if dx * dx + dz * dz < 4 then   -- wait for 2 m of movement so the heading is stable
+        return
+    end
+    self.trackLastX, self.trackLastZ = tX, tZ
+    if TornadoClimate ~= nil and TornadoClimate.directionToLabel ~= nil then
+        self.trackLabel = TornadoClimate.directionToLabel(dx, dz)
+    end
+end
+
+function TornadoPhysics:resetTrackMovement()
+    self.trackLastX, self.trackLastZ, self.trackLabel = nil, nil, nil
+end
+
+--- Server, after loading a savegame: puts the saved tornado back as it was (TornadoPersistence) instead of
+--- rolling a new one. No touchdown alert, no siren replay, no outbreak roll.
+function TornadoPhysics:restoreTornado(saved)
+    if not mapInitialized then
+        self:calculateMapScale()
+        mapInitialized = true
+    end
+
+    local scale = saved.scale or 1
+    setScale(self.tornadoNode, scale, scale, scale)
+    self.currentScale = scale
+    self:multiplyDebris(self.tornadoNode)
+
+    currentOuterRadius = saved.outerRadius or (self.settings.base_radius * mapScaleFactor * scale)
+    currentOuterRadiusSq = currentOuterRadius * currentOuterRadius
+    self.sizeMultiplier = saved.sizeMultiplier or 1
+    self.currentEfNum = saved.efNum
+    self.currentWindMin = saved.windMin
+    self.currentWindMax = saved.windMax
+    self.currentRadiusM = saved.radiusM
+
+    if TornadoHotspot ~= nil and TornadoHotspot.updateStats ~= nil then
+        TornadoHotspot:updateStats(saved.efNum, saved.windMin, saved.windMax, saved.radiusM)
+    end
+    if TornadoClimate ~= nil and saved.roll ~= nil then
+        TornadoClimate.lastRoll = saved.roll
+    end
+    -- The siren already warned about this tornado before the save.
+    if TornadoSFX then
+        TornadoSFX.sirenLoopCount = 3
+    end
+    -- The game restores twister weather without activating it, so put the saved storm back.
+    if saved.weather ~= nil and TornadoWeather ~= nil and TornadoWeather.applyProfile ~= nil then
+        TornadoWeather:applyProfile(nil, true, saved.weather)
+    end
+
+    if TornadoSync ~= nil then TornadoSync:sendTornadoState(true, false) end
+    print(string.format("TornadoPhysics: Restored saved tornado (EF-%d | Radius: %dm) - no new roll.",
+        saved.efNum or 0, math.floor(currentOuterRadius)))
+end
+
+--- Clones the twister's native debris / dust particle nodes 3x for a denser funnel base.
+--- Only once per tornado node: randomizeTornado() also runs on every radius change, and re-running this
+--- would clone the clones (4x, 16x, 64x ...). Used by the server and by multiplayer clients.
+function TornadoPhysics:multiplyDebris(node)
+    if node == nil or self.debrisMultipliedNode == node then
+        return
+    end
+    self.debrisMultipliedNode = node
+
+    -- Snapshot the original children first so clones added below are never scanned.
+    local originals = {}
+    for i = 0, getNumOfChildren(node) - 1 do
+        originals[#originals + 1] = getChildAt(node, i)
+    end
+
+    for _, child in ipairs(originals) do
+        local childName = string.lower(getName(child) or "")
+
+        -- Look for native GIANTS particle/debris nodes attached to the twister
+        if string.find(childName, "debris") or string.find(childName, "dust") or string.find(childName, "particles") then
+            -- We found the debris ring! Let's clone it 3 times for 4x density.
+            for cloneIdx = 1, 3 do
+                local clonedDebris = clone(child, true, false, false)
+                link(node, clonedDebris) -- Attach clone to the main tornado
+
+                -- Offset the rotation so the debris fields interlock instead of overlapping
+                local rx, ry, rz = getRotation(clonedDebris)
+                setRotation(clonedDebris, rx, ry + math.rad(cloneIdx * 45), rz)
+
+                -- Make the outer clones slightly wider to thicken the funnel base
+                setScale(clonedDebris, 1.0 + (cloneIdx * 0.2), 1.0, 1.0 + (cloneIdx * 0.2))
+            end
+
+            if TornadoDebug then TornadoDebug:log("PHYSICS", "Successfully multiplied native debris/dust nodes.") end
+        end
     end
 end
 
@@ -1380,7 +1539,14 @@ function TornadoPhysics:findTornadoSimple()
         if name and string.find(string.lower(name), "twister") then
             if getVisibility(child) then
                 self.tornadoNode = child
-                self:randomizeTornado()
+                -- A tornado that was on the ground when the game was saved keeps its saved stats.
+                local saved = TornadoPersistence ~= nil and TornadoPersistence:takeTornadoRestore() or nil
+                if saved ~= nil then
+                    self:restoreTornado(saved)
+                else
+                    self:randomizeTornado()
+                    if TornadoOutbreak ~= nil then TornadoOutbreak:onTouchdown() end
+                end
                 return
             end
         end
@@ -1404,6 +1570,53 @@ function TornadoPhysics:getVehicleTotalMass(vehicle)
     return totalMass
 end
 
+--- The game has a single twister object. Spawning while it is still on the ground (e.g. a second
+--- gsWeatherTwisterSpawn) re-uses the same node, so the "node appeared" detection never fires again.
+--- Twister:spawn() runs for every spawn, so flag it and let update() redo the touchdown.
+function TornadoPhysics:installSpawnHook()
+    -- Twister survives savegame reloads; flag the class so the hook is only added once.
+    if Twister == nil or Twister.spawn == nil or Twister.tornadoSpawnHooked then
+        return
+    end
+    Twister.tornadoSpawnHooked = true
+    Twister.spawn = Utils.appendedFunction(Twister.spawn, function(twister, ...)
+        -- Only a re-spawn matters; a first spawn is picked up by the normal node search.
+        if TornadoPhysics ~= nil and TornadoPhysics.tornadoNode ~= nil then
+            TornadoPhysics.respawnPending = true
+        end
+    end)
+end
+
+--- New touchdown on the already tracked twister: fresh roll, warning, siren and visual rescale.
+function TornadoPhysics:onTornadoRespawn()
+    print("TornadoPhysics: New tornado spawned on the active twister - rolling a new touchdown.")
+
+    self.activeNodes = {}
+    self.safetyCache = {}
+    self.isPurging = false
+    self.purgeTimer = 0
+    self:resetTrackMovement()
+
+    if TornadoSFX then
+        TornadoSFX.sirenLoopCount = 0
+        TornadoSFX.sirenTimer = 0
+    end
+
+    -- Let the visual sync scale the funnel to the new EF rating.
+    local weather = g_currentMission.environment ~= nil and g_currentMission.environment.weather or nil
+    if weather ~= nil and weather.twister ~= nil then
+        weather.twister.isTornadoModScaled = nil
+    end
+
+    self:randomizeTornado()
+    if TornadoOutbreak ~= nil then TornadoOutbreak:onTouchdown() end
+
+    -- No weather change happens on a re-spawn, so roll the storm weather (rain / hail / wind) here.
+    if TornadoWeather ~= nil and TornadoWeather.applyProfile ~= nil then
+        TornadoWeather:applyProfile(nil, true)
+    end
+end
+
 function TornadoPhysics:clearTornadoState()
     print("TornadoPhysics: WATCHDOG TRIGGERED! Cleaning up despawned tornado.")
 
@@ -1421,6 +1634,7 @@ function TornadoPhysics:clearTornadoState()
     --#endregion
 
     -- 1. Clear internal script variables
+    self:resetTrackMovement()
     self.tornadoNode = nil
     self.lastTornadoPos = nil
     self.activeNodes = {}
@@ -1489,14 +1703,6 @@ function TornadoPhysics:clearTornadoState()
         if environment.consoleCommandReloadEnvironment ~= nil then
             print("TornadoPhysics: Running consoleCommandReloadEnvironment to restore map definitions...")
             environment:consoleCommandReloadEnvironment()
-
-            -- Because the engine just destroyed and re-created the environment,
-            -- your initial loadMap overlays were unhooked. We re-register them now!
-            if TornadoHotspot ~= nil and TornadoHotspot.loadMap ~= nil then
-                print("TornadoPhysics: Restoring MapUI overlay elements and hotspots...")
-                -- Pass the current map filename if needed, or invoke your UI canvas refresh
-                TornadoHotspot:loadMap()
-            end
         else
             print("TornadoPhysics: Warning - consoleCommandReloadEnvironment not found on environment object.")
         end
@@ -1511,7 +1717,16 @@ function TornadoPhysics:clearTornadoState()
     end
     --#endregion
 
+    -- The hotspot was removed in step 2; always re-create it (hidden until the next tornado),
+    -- whether or not the environment reload above was available.
+    if TornadoHotspot ~= nil and TornadoHotspot.loadMap ~= nil then
+        print("TornadoPhysics: Restoring map hotspot...")
+        TornadoHotspot:loadMap()
+    end
+
     if TornadoAPI then TornadoAPI:fireDespawnEvent() end
+    if TornadoSync ~= nil then TornadoSync:sendTornadoState(false, false) end
+    if TornadoOutbreak ~= nil then TornadoOutbreak:onTornadoEnded() end
 
     print("TornadoPhysics: Cleanup complete. Ready for new spawn.")
 end

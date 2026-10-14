@@ -53,7 +53,7 @@ function TornadoConsole:cmdHelp(command)
         print("Usage: t_help [command] for more details.")
         print("t_physics: Adjust Physics: radius, power, heavy, fence, randomize...")
         print("t_sfx: Adjust SFX: sound, ring, particles...")
-        print("t_set: Module Settings: cargo, husbandry, destruction, save...")
+        print("t_set: Module Settings: cargo, husbandry, destruction, traffic, climate, save...")
         print("t_dev: Developer Tools: status, verbose, hud, hotspotdump, kill_test...")
         print("t_tune: Fine-tune Physics Constants")
         print("t_reset: Reset Settings: all, physics, tuning, cargo...")
@@ -117,6 +117,24 @@ function TornadoConsole:cmdHelp(command)
         print("  husbandry [sub-command] - Controls animal safety.")
         print("    toggle              - Toggles animal death system ON/OFF.")
         print("    immunity <seconds>  - Sets post-impact immunity duration. Ex: t_set husbandry immunity 180")
+        print(" ")
+        print("  traffic [sub-command] - AI road traffic stops before the tornado.")
+        print("    (no sub-command)    - Toggles the roadblocks ON/OFF.")
+        print("    on|off              - Explicitly turns the roadblocks ON or OFF.")
+        print("    buffer <meters>     - Distance beyond the tornado radius where cars stop. Ex: t_set traffic buffer 60")
+        print("    status              - Shows how many roadblocks are active.")
+        print(" ")
+        print("  climate [sub-command] - Real-life tornado climate (EF rating, size, hail and wind from NOAA data).")
+        print("    (no sub-command)    - Toggles real-life mode ON/OFF (OFF = classic random tornadoes).")
+        print("    on|off              - Explicitly turns real-life mode ON or OFF.")
+        print("    region <name|auto>  - Region to use. Ex: t_set climate region oklahoma | OK | US | auto")
+        print("    list                - Prints all available regions.")
+        print("    status              - Shows the mode, region in use, last roll, storm and outbreak state.")
+        print("    seasons [on|off]    - Tornado timing follows the region's months and time of day.")
+        print("    direction [on|off]  - Tornado tracks follow the region's real directions (mostly toward NE in the US).")
+        print("    outbreaks [on|off]  - Busy storm days: more tornadoes the same day, with the region's odds.")
+        print("    frequency <x>       - Multiplier on the map's tornado rate (0.25 - 4). Ex: t_set climate frequency 2")
+        print("    outbreakmax <n>     - Max tornadoes in one outbreak day, first one included (2 - 10).")
         print("--------------------------------------------------")
     elseif command == "t_dev" then
         print("---------------- t_dev HELP ----------------")
@@ -155,6 +173,8 @@ function TornadoConsole:cmdHelp(command)
         print("  tuning                - Resets advanced tuning values.")
         print("  cargo                 - Resets cargo module settings.")
         print("  husbandry             - Resets husbandry module settings.")
+        print("  traffic               - Resets traffic roadblock settings.")
+        print("  climate               - Resets real-life climate mode (OFF, region Auto).")
         print("--------------------------------------------------")
     else
         return string.format("Unknown command '%s'. Use 't_help' to see all commands.", tostring(command))
@@ -256,7 +276,7 @@ end
 -- =========================================================================
 -- 3. SET COMMANDS
 -- =========================================================================
-function TornadoConsole:cmdSet(module, subCmd, value)
+function TornadoConsole:cmdSet(module, subCmd, value, ...)
 
 
 -- ------------------------------------------------------------
@@ -391,7 +411,92 @@ end
         end
     end
 
-   return "Unknown Set CMD. Try: save, cargo, husbandry, destruction, recovery"
+    if module == "traffic" then
+        if not TornadoTraffic then return "Error: Traffic Module missing." end
+
+        if subCmd == "on" or subCmd == "true" then
+            TornadoTraffic.isEnabled = true
+        elseif subCmd == "off" or subCmd == "false" then
+            TornadoTraffic.isEnabled = false
+        elseif subCmd == "buffer" then
+            local val = tonumber(value)
+            if val == nil then return "Usage: t_set traffic buffer [meters]" end
+            TornadoTraffic.bufferDistance = math.max(0, val)
+            return string.format("Traffic: Stop distance beyond tornado radius set to %.0fm", TornadoTraffic.bufferDistance)
+        elseif subCmd == "status" then
+            return string.format("Traffic: Enabled = %s | Buffer = %.0fm | Active roadblocks = %d",
+                tostring(TornadoTraffic.isEnabled), TornadoTraffic.bufferDistance, TornadoTraffic:getNumActiveBlocks())
+        elseif subCmd == nil or subCmd == "toggle" then
+            TornadoTraffic.isEnabled = not TornadoTraffic.isEnabled
+        else
+            return "Unknown Traffic CMD. Try: on, off, buffer, status"
+        end
+        return "Traffic: Roadblocks Enabled = " .. tostring(TornadoTraffic.isEnabled)
+    end
+
+    if module == "climate" then
+        if not TornadoClimate then return "Error: Climate Module missing." end
+
+        if subCmd == "on" or subCmd == "true" then
+            TornadoClimate.isEnabled = true
+        elseif subCmd == "off" or subCmd == "false" then
+            TornadoClimate.isEnabled = false
+        elseif subCmd == "region" then
+            if value == nil then return "Usage: t_set climate region [name | postal code | US | auto]" end
+            -- The console splits on spaces; glue multi-word names back together ("new york").
+            local regionName = table.concat({ value, ... }, " ")
+            if not TornadoClimate:setRegion(regionName) then
+                return string.format("Climate: Unknown region '%s'. Use 't_set climate list'.", regionName)
+            end
+            return "Climate: Region = " .. TornadoClimate:getRegionLabel(TornadoClimate.regionSetting)
+        elseif subCmd == "list" then
+            if not TornadoClimate:hasData() then return "Climate: No climate data loaded (DB/TornadoClimate.xml missing)." end
+            print("---------------- CLIMATE REGIONS ----------------")
+            for _, id in ipairs(TornadoClimate.regionOrder) do
+                print(string.format("  %-6s %s", id, TornadoClimate.regions[id].name))
+            end
+            print("-------------------------------------------------")
+            return string.format("Climate: %d regions listed.", #TornadoClimate.regionOrder)
+        elseif subCmd == "status" then
+            local active = TornadoClimate:getActiveRegion()
+            local last = TornadoClimate.lastRoll
+            return string.format("Climate: Real-life = %s | Setting = %s | In use = %s | Last roll = %s | Last storm = %s | Seasons = %s, Direction = %s, Outbreaks = %s (max %d), Frequency = x%.2f | Outbreak = %s",
+                tostring(TornadoClimate.isEnabled), TornadoClimate:getRegionLabel(TornadoClimate.regionSetting),
+                active ~= nil and active.name or "none (classic)",
+                last ~= nil and string.format("%s EF-%d", last.regionName, last.ef) or "none yet",
+                TornadoWeather ~= nil and TornadoWeather:getLastProfileText() or "n/a",
+                tostring(TornadoClimate.useSeasonality), tostring(TornadoClimate.useDirection),
+                tostring(TornadoClimate.useOutbreaks), TornadoClimate.outbreakMax, TornadoClimate.frequency,
+                TornadoOutbreak ~= nil and TornadoOutbreak:getStatusText() or "n/a")
+        elseif subCmd == "seasons" or subCmd == "direction" or subCmd == "outbreaks" then
+            local field = ({ seasons = "useSeasonality", direction = "useDirection", outbreaks = "useOutbreaks" })[subCmd]
+            if value == "on" or value == "true" then
+                TornadoClimate[field] = true
+            elseif value == "off" or value == "false" then
+                TornadoClimate[field] = false
+            else
+                TornadoClimate[field] = not TornadoClimate[field]
+            end
+            return string.format("Climate: %s = %s", subCmd, tostring(TornadoClimate[field]))
+        elseif subCmd == "frequency" then
+            local val = tonumber(value)
+            if val == nil then return "Usage: t_set climate frequency [0.25 - 4]" end
+            TornadoClimate.frequency = math.max(0.25, math.min(4, val))
+            return string.format("Climate: Tornado frequency = x%.2f", TornadoClimate.frequency)
+        elseif subCmd == "outbreakmax" then
+            local val = tonumber(value)
+            if val == nil then return "Usage: t_set climate outbreakmax [2 - 10]" end
+            TornadoClimate.outbreakMax = math.max(2, math.min(10, math.floor(val + 0.5)))
+            return string.format("Climate: Max tornadoes per outbreak = %d", TornadoClimate.outbreakMax)
+        elseif subCmd == nil or subCmd == "toggle" then
+            TornadoClimate.isEnabled = not TornadoClimate.isEnabled
+        else
+            return "Unknown Climate CMD. Try: on, off, region, list, status, seasons, direction, outbreaks, frequency, outbreakmax"
+        end
+        return "Climate: Real-life tornado climate = " .. tostring(TornadoClimate.isEnabled)
+    end
+
+   return "Unknown Set CMD. Try: save, cargo, husbandry, destruction, recovery, traffic, climate"
 end
 
 -- =========================================================================
@@ -449,7 +554,7 @@ function TornadoConsole:cmdDev(tool, arg1)
             local c = 0
             for _ in pairs(TornadoPhysics.activeNodes) do c = c + 1 end
             print(string.format("[STATUS] Active Nodes: %d | Purge: %.1f/%.1f",
-                c, TornadoPhysics.purgeTimer / 1000, TornadoPhysics.purgeInterval / 1000))
+                c, TornadoPhysics.purgeTimer / 1000, TornadoPhysics:getPurgeInterval() / 1000))
             return "Check Console for Status."
         end
 
@@ -504,11 +609,11 @@ end
 function TornadoConsole:cmdReset(category)
     if not TornadoSettings then return "Error: Settings module missing." end
     
-    if category == "all" or category == "physics" or category == "tuning" or category == "cargo" or category == "husbandry" then
+    if category == "all" or category == "physics" or category == "tuning" or category == "cargo" or category == "husbandry" or category == "traffic" or category == "climate" then
         TornadoSettings:resetToDefaults(category)
         return string.format("RESET COMPLETE: '%s' settings restored to factory defaults.", category)
     else
-        return "Usage: t_reset [all | physics | tuning | cargo | husbandry]"
+        return "Usage: t_reset [all | physics | tuning | cargo | husbandry | traffic | climate]"
     end
 end
 

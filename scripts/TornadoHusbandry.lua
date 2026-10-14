@@ -17,7 +17,7 @@ TornadoHusbandry.scanTimer = 0
 TornadoHusbandry.isActive = false
 
 -- Debug: set true to print pasture classification for husbandries within tornado radius (can spam the log!)
-TornadoHusbandry.DEBUG_PASTURE_FLAGS = true --false
+TornadoHusbandry.DEBUG_PASTURE_FLAGS = false
 -- Throttle debug prints per-placeable (ms)
 TornadoHusbandry.DEBUG_PASTURE_THROTTLE_MS = 5000
 
@@ -178,17 +178,23 @@ function TornadoHusbandry:checkPasture(placeable, currentTime)
         self.victimCache[placeable] = currentTime
 
         local name = (placeable.getName and placeable:getName()) or "Livestock Pen"
-        local typeLabel = "Pasture"
+        local typeKey = "tp_pen_pasture"
         if placeable.spec_husbandryMeadow ~= nil or (placeable.getIsMeadow ~= nil and placeable:getIsMeadow() == true) then
-            typeLabel = "Meadow"
+            typeKey = "tp_pen_meadow"
         elseif placeable.spec_husbandryFence ~= nil then
-            typeLabel = "Fence"
+            typeKey = "tp_pen_fence"
         end
 
-        local msg = string.format("STORM DAMAGE: %s (%s) lost %d animals! (Safe for %.0fs)",
-            name, typeLabel, lostCount, immunity / 1000)
+        local params = { TornadoText.str(name), TornadoText.key(typeKey), TornadoText.num(lostCount),
+            TornadoText.num(math.floor(immunity / 1000 + 0.5)) }
+        local msg = TornadoText.formatMessage("tp_msg_storm_damage", params)
 
-        g_currentMission:showBlinkingWarning(msg, 10000)
+        -- Everyone sees it (the husbandry runs on the server).
+        if TornadoSync ~= nil then
+            TornadoSync:sendMessage("tp_msg_storm_damage", params, TornadoSync.MSG_BLINKING)
+        else
+            g_currentMission:showBlinkingWarning(msg, 10000)
+        end
 
         if TornadoDebug then
             TornadoDebug:log("TORNADO HUSBANDRY: " .. msg)

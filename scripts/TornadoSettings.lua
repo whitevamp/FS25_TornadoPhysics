@@ -95,19 +95,40 @@ function TornadoSettings:resetToDefaults(category)
         end
     end
 
-    -- RESET Recovery
-    if TornadoRecovery then
-        if category == "all" or category == "recovery" then
-            TornadoRecovery.isActive = false
-            print("TORNADO RESET: Recovery defaults restored.")
+    -- RESET Recovery (the bill is gated by TornadoSettings.recoveryEnabled)
+    if category == "all" or category == "recovery" then
+        self.recoveryEnabled = false
+        print("TORNADO RESET: Recovery defaults restored.")
+    end
+
+    -- RESET Destruction (gated by TornadoPhysics.settings.destructionEnabled)
+    if category == "all" or category == "destruction" then
+        if TornadoPhysics and TornadoPhysics.settings then
+            TornadoPhysics.settings.destructionEnabled = false
+        end
+        print("TORNADO RESET: Destruction defaults restored.")
+    end
+
+    -- RESET Traffic roadblocks
+    if TornadoTraffic then
+        if category == "all" or category == "traffic" then
+            TornadoTraffic.isEnabled = true
+            TornadoTraffic.bufferDistance = 40.0
+            print("TORNADO RESET: Traffic defaults restored.")
         end
     end
 
-    -- RESET Destruction
-    if TornadoDestruction then
-        if category == "all" or category == "destruction" then
-            TornadoRecovery.isActive = false
-            print("TORNADO RESET: Destruction defaults restored.")
+    -- RESET Real-life climate mode
+    if TornadoClimate then
+        if category == "all" or category == "climate" then
+            TornadoClimate.isEnabled = false
+            TornadoClimate.regionSetting = "AUTO"
+            TornadoClimate.useSeasonality = true
+            TornadoClimate.useDirection = true
+            TornadoClimate.useOutbreaks = true
+            TornadoClimate.frequency = 1.0
+            TornadoClimate.outbreakMax = 3
+            print("TORNADO RESET: Climate defaults restored.")
         end
     end
 
@@ -179,6 +200,19 @@ function TornadoSettings:createDefaultXML()
     
     -- 12. EFFECTS
     setXMLBool(xmlId, "TornadoPhysics.effects.fireRandom", false)
+
+    -- 13. AI TRAFFIC ROADBLOCKS
+    setXMLBool(xmlId, "TornadoPhysics.traffic.enabled", true)
+    setXMLFloat(xmlId, "TornadoPhysics.traffic.bufferDistance", 40.0)
+
+    -- 14. REAL-LIFE CLIMATE MODE
+    setXMLBool(xmlId, "TornadoPhysics.climate.enabled", false)
+    setXMLString(xmlId, "TornadoPhysics.climate.region", "AUTO")
+    setXMLBool(xmlId, "TornadoPhysics.climate.seasonality", true)
+    setXMLBool(xmlId, "TornadoPhysics.climate.direction", true)
+    setXMLBool(xmlId, "TornadoPhysics.climate.outbreaks", true)
+    setXMLFloat(xmlId, "TornadoPhysics.climate.frequency", 1.0)
+    setXMLInt(xmlId, "TornadoPhysics.climate.outbreakMax", 3)
 
     -- 13. Emergency DLC Intergration
     -- setXMLBool(xmlId, "TornadoPhysics.settings.enableEmergencyDLC", TornadoSettings.enableEmergencyDLC)
@@ -285,11 +319,61 @@ function TornadoSettings:loadFromXML()
         if fireRandom ~= nil then TornadoEffects.CONFIG.RANDOM_FIRE_MODE = fireRandom end
     end
 
+    if TornadoTraffic then
+        local trafficEnabled = getXMLBool(xmlId, "TornadoPhysics.traffic.enabled")
+        if trafficEnabled ~= nil then TornadoTraffic.isEnabled = trafficEnabled end
+        TornadoTraffic.bufferDistance = getXMLFloat(xmlId, "TornadoPhysics.traffic.bufferDistance") or TornadoTraffic.bufferDistance
+    end
+
+    if TornadoClimate then
+        local climateEnabled = getXMLBool(xmlId, "TornadoPhysics.climate.enabled")
+        if climateEnabled ~= nil then TornadoClimate.isEnabled = climateEnabled end
+        -- Stored as an id; validated against the loaded data when a tornado is rolled.
+        TornadoClimate.regionSetting = getXMLString(xmlId, "TornadoPhysics.climate.region") or TornadoClimate.regionSetting
+        local seasonality = getXMLBool(xmlId, "TornadoPhysics.climate.seasonality")
+        if seasonality ~= nil then TornadoClimate.useSeasonality = seasonality end
+        local direction = getXMLBool(xmlId, "TornadoPhysics.climate.direction")
+        if direction ~= nil then TornadoClimate.useDirection = direction end
+        local outbreaks = getXMLBool(xmlId, "TornadoPhysics.climate.outbreaks")
+        if outbreaks ~= nil then TornadoClimate.useOutbreaks = outbreaks end
+        TornadoClimate.frequency = getXMLFloat(xmlId, "TornadoPhysics.climate.frequency") or TornadoClimate.frequency
+        TornadoClimate.outbreakMax = getXMLInt(xmlId, "TornadoPhysics.climate.outbreakMax") or TornadoClimate.outbreakMax
+    end
+
     delete(xmlId)
     if TornadoDebug then TornadoDebug:log("SETTINGS", "Preferences Loaded Successfully.") end
 end
 
+--- Multiplayer client: only this player's own preferences are written. Gameplay settings belong to the
+--- server, and saving them here would overwrite the player's single-player configuration with the server's.
+function TornadoSettings:saveLocalPreferences()
+    if not fileExists(self.FILE) then
+        self:createDefaultXML()
+    end
+    local xmlId = loadXMLFile("TornadoConfig", self.FILE)
+    if xmlId == nil or xmlId == 0 then return end
+
+    if TornadoSFX then
+        setXMLBool(xmlId, "TornadoPhysics.audio.enabled", TornadoSFX.isEnabled)
+    end
+    if TornadoPhysics then
+        setXMLBool(xmlId, "TornadoPhysics.debug.showRing", TornadoPhysics.showRing == true)
+    end
+    if TornadoMapUI then
+        setXMLBool(xmlId, "TornadoPhysics.mapui.enabled", TornadoMapUI.enabled)
+        setXMLBool(xmlId, "TornadoPhysics.mapui.onlyWhenSelected", TornadoMapUI.onlyWhenSelected)
+    end
+
+    saveXMLFile(xmlId)
+    delete(xmlId)
+    if TornadoDebug then TornadoDebug:info("SETTINGS", "Multiplayer client: personal preferences saved (gameplay settings are the server's).") end
+end
+
 function TornadoSettings:saveToXML()
+    if TornadoSync ~= nil and TornadoSync:isClient() then
+        self:saveLocalPreferences()
+        return
+    end
     if TornadoDebug then TornadoDebug:info("SETTINGS", "Saving current state...") end
     local xmlId = createXMLFile("TornadoConfig", self.FILE, "TornadoPhysics")
 
@@ -353,6 +437,21 @@ function TornadoSettings:saveToXML()
 
     if TornadoEffects and TornadoEffects.CONFIG then
         setXMLBool(xmlId, "TornadoPhysics.effects.fireRandom", TornadoEffects.CONFIG.RANDOM_FIRE_MODE)
+    end
+
+    if TornadoTraffic then
+        setXMLBool(xmlId, "TornadoPhysics.traffic.enabled", TornadoTraffic.isEnabled)
+        setXMLFloat(xmlId, "TornadoPhysics.traffic.bufferDistance", TornadoTraffic.bufferDistance)
+    end
+
+    if TornadoClimate then
+        setXMLBool(xmlId, "TornadoPhysics.climate.enabled", TornadoClimate.isEnabled)
+        setXMLString(xmlId, "TornadoPhysics.climate.region", TornadoClimate.regionSetting)
+        setXMLBool(xmlId, "TornadoPhysics.climate.seasonality", TornadoClimate.useSeasonality)
+        setXMLBool(xmlId, "TornadoPhysics.climate.direction", TornadoClimate.useDirection)
+        setXMLBool(xmlId, "TornadoPhysics.climate.outbreaks", TornadoClimate.useOutbreaks)
+        setXMLFloat(xmlId, "TornadoPhysics.climate.frequency", TornadoClimate.frequency)
+        setXMLInt(xmlId, "TornadoPhysics.climate.outbreakMax", math.floor(TornadoClimate.outbreakMax + 0.5))
     end
 
     saveXMLFile(xmlId)

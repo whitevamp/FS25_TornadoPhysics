@@ -2,12 +2,12 @@
 ---@version 5.2 (SELECTIVE LOGGING)
 ---@description Forces dumping by overriding Lua checks. Now features independent verbose logging.
 
-TornadoCargo                    = {}
-TornadoCargo.isEnabled          = false --true
-TornadoCargo.isVerbose          = false -- Separate logging toggle
+TornadoCargo            = {}
+TornadoCargo.isEnabled  = false         --true
+TornadoCargo.isVerbose  = false         -- Separate logging toggle
 
 -- TUNING
-TornadoCargo.settings = {
+TornadoCargo.settings   = {
     spillHeight = 1.5,
     spillAngle = 0.7,
     drainRate = 0.10,
@@ -56,8 +56,8 @@ end
 
 function TornadoCargo:processVehicle(vehicle, dt)
     -- Use local verbose flag
-    local isVerbose = self.isVerbose 
-    
+    local isVerbose = self.isVerbose
+
     if vehicle == nil or vehicle.rootNode == nil or vehicle.getFillUnits == nil then return end
 
     local x, y, z = getWorldTranslation(vehicle.rootNode)
@@ -119,13 +119,11 @@ function TornadoCargo:maybePopCoverOpen(vehicle, dt)
         return false
     end
 
-    pcall(function()
-        if vehicle.setCoverState ~= nil then
-            vehicle:setCoverState(1, false)
-        else
-            cover.state = 1
-        end
-    end)
+    if vehicle.setCoverState ~= nil then
+        vehicle:setCoverState(1, false)
+    else
+        cover.state = 1
+    end
 
     return cover.state ~= 0
 end
@@ -153,13 +151,15 @@ function TornadoCargo:drainCargo(vehicle, dt, worldX, worldZ, drainScale)
                 if drainAmount > currentLevel then drainAmount = currentLevel end
                 if drainAmount <= 0 then return end
 
-                vehicle:addFillUnitFillLevel(vehicle:getOwnerFarmId(), i, -drainAmount, fillTypeIndex, ToolType.UNDEFINED, nil)
+                vehicle:addFillUnitFillLevel(vehicle:getOwnerFarmId(), i, -drainAmount, fillTypeIndex, ToolType
+                .UNDEFINED, nil)
 
                 if fillType and not fillType.isLiquid then
                     local dropped = self:forceTipToGround(fillTypeIndex, drainAmount, worldX, worldZ, vehicle)
 
                     if dropped <= 0 then
-                        vehicle:addFillUnitFillLevel(vehicle:getOwnerFarmId(), i, drainAmount, fillTypeIndex, ToolType.UNDEFINED, nil)
+                        vehicle:addFillUnitFillLevel(vehicle:getOwnerFarmId(), i, drainAmount, fillTypeIndex,
+                            ToolType.UNDEFINED, nil)
 
                         -- Use local verbose flag
                         if self.isVerbose then
@@ -174,7 +174,8 @@ function TornadoCargo:drainCargo(vehicle, dt, worldX, worldZ, drainScale)
                         end
                     elseif dropped < drainAmount then
                         local refund = drainAmount - dropped
-                        vehicle:addFillUnitFillLevel(vehicle:getOwnerFarmId(), i, refund, fillTypeIndex, ToolType.UNDEFINED, nil)
+                        vehicle:addFillUnitFillLevel(vehicle:getOwnerFarmId(), i, refund, fillTypeIndex,
+                            ToolType.UNDEFINED, nil)
 
                         -- Use local verbose flag
                         if self.isVerbose then

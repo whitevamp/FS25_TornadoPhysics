@@ -96,20 +96,20 @@ end
 
 function TornadoAPI:fireTouchdownEvent()
     local stats = g_tornadoPhysicsAPI.getStats()
-    for modId, callback in pairs(self._touchdownCallbacks) do
-        pcall(callback, stats)
+    for _, callback in pairs(self._touchdownCallbacks) do
+        callback(stats)
     end
 end
 
 function TornadoAPI:fireDespawnEvent()
-    for modId, callback in pairs(self._despawnCallbacks) do
-        pcall(callback)
+    for _, callback in pairs(self._despawnCallbacks) do
+        callback()
     end
 end
 
 function TornadoAPI:fireDestructionEvent(targetNode)
-    for modId, callback in pairs(self._destructionCallbacks) do
-        pcall(callback, targetNode)
+    for _, callback in pairs(self._destructionCallbacks) do
+        callback(targetNode)
     end
 end
 
