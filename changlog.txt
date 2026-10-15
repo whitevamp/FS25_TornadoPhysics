@@ -172,6 +172,26 @@ Physics / gameplay
 - Fixed covered trailers stopping to leak after the first few litres when
   standing on end or upside down (the trailer's own "no heap under me" area
   blocked every drop, and heaps were capped at 0.1 m).
+- Restored wheel destruction: vehicles hit by the tornado can lose whole
+  wheels (tire and rim) again, 0-2 per hit. Wheels are now taken from the
+  game's own wheel list instead of part names, and are restored correctly
+  after loading a savegame and by the 24-hour repair / recovery bill.
+  Tracked vehicles keep their tracks: wheels inside a track, wheels without
+  a tire and tracks that mods build as wheels are never removed.
+- Tornadoes can now (rarely, 10% per hit) tear a whole track off a tracked
+  vehicle. On the recovery bill a track costs 3% of the vehicle's value
+  (at least $2,000, at most $40,000).
+- Fixed vehicles being wrecked again (and billed twice when reset was pressed
+  again) right after an emergency-tow reset during a tornado: FS25 loads the
+  reset vehicle as a new copy and keeps the old one in the storm until it is
+  ready. The old copy is now left alone while the reset is in progress.
+- The recovery bill now prices lost wheels properly: 0.6% of the vehicle's
+  value per wheel (at least $250, at most $8,000), instead of the $30 of a
+  small body part.
+- Fixed damaged vehicles showing the wrong missing parts after loading a
+  savegame when several parts had the same name (e.g. two "glass" parts):
+  hidden parts are now saved by their exact position in the vehicle.
+  Older savegames still load.
 - Fixed animal lethality checking the distance to the barn instead of the
   pasture: a tornado crossing the far side of a large pasture did nothing,
   while one passing the barn killed animals in a pasture it never touched.

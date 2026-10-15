@@ -15,6 +15,26 @@ TornadoDestruction.SEARCH_BUDGET = 1000
 TornadoDestruction.MIN_STRUCT_TO_DESTROY = 2
 TornadoDestruction.MAX_STRUCT_TO_DESTROY = 6
 
+-- WHEELS (whole tire + rim). Taken from the game's own wheel list (spec_wheels), not from node names:
+-- every wheel's visuals sit in one "visualWheel" group (dual wheels have one group each).
+-- The collision / physics wheel stays, only the visible wheel disappears.
+TornadoDestruction.MIN_WHEELS_TO_DESTROY = 0
+TornadoDestruction.MAX_WHEELS_TO_DESTROY = 2
+-- Saved by wheel index instead of node name (every group is called "visualWheel").
+TornadoDestruction.WHEEL_NODE_PREFIX = "wheel#"
+
+-- TRACKS (crawlers). Only a whole track can go - belt, rollers, sprocket and idlers are one loaded model
+-- (spec_crawlers.crawlers[i].loadedCrawler). Rare: tracks are heavy and bolted to the drive.
+-- The physics wheels underneath stay, like with a lost wheel.
+TornadoDestruction.TRACK_LOSS_CHANCE = 0.10       -- chance per hit that a track is torn off
+TornadoDestruction.MAX_TRACKS_TO_DESTROY = 1
+TornadoDestruction.CRAWLER_NODE_PREFIX = "crawler#"
+
+-- Other parts are saved as "<name>@<component>:<child index>.<child index>..." - the exact position in the
+-- vehicle's node tree, so parts with the same name (two "glass" nodes) come back as the right ones.
+-- The name is checked on load; older saves (name only) still load by name.
+TornadoDestruction.PATH_SEPARATOR = "@"
+
 -- KEYWORDS FOR "ALWAYS HIDE" (Trash / Cosmetic Details)
 TornadoDestruction.TRASH_KEYWORDS = {
     "decal", "sticker", "logo", "lettering", "sign", "warning", "label",
@@ -183,6 +203,12 @@ function TornadoDestruction:destroyTarget(target)
     local objectId = target.rootNode
     if self._destroyedObjects[objectId] ~= nil then return end
 
+    -- Being reset: this old copy stays in the storm until the new one at the reset spot has loaded,
+    -- then the game deletes it. It was just billed and repaired - do not wreck it again.
+    -- Vehicle:delete() only marks the vehicle (markedForDeletion) and removes it a moment later, after
+    -- isResetInProgress is already cleared, so that flag is checked as well.
+    if target.isResetInProgress or target.markedForDeletion or target.isDeleted or target.isDeleting then return end
+
     local rawFilename = target.i3dFilename or ""
     local lowerRawFilename = string.lower(rawFilename)
 
@@ -293,11 +319,43 @@ function TornadoDestruction:destroyTarget(target)
         structCount = structCount + 1
     end
 
+    -- C. Wheel lottery (whole tire + rim)
+    local wheels = self:_collectVisualWheels(target)
+    local wheelLimit = math.random(self.MIN_WHEELS_TO_DESTROY, self.MAX_WHEELS_TO_DESTROY)
+    local wheelCount = 0
+    self:_shuffleTable(wheels)
+    for _, nodeData in ipairs(wheels) do
+        if wheelCount >= wheelLimit then break end
+        if TornadoDebug and TornadoDebug.verboseDestruction then
+            TornadoDebug:log("DESTRUCTION", "   >> HIDING (Wheel): " .. nodeData.name)
+        end
+        setVisibility(nodeData.id, false)
+        table.insert(finalHiddenNodes, nodeData)
+        wheelCount = wheelCount + 1
+    end
+
+    -- D. Track lottery (whole track only, rare)
+    local trackCount = 0
+    if math.random() < self.TRACK_LOSS_CHANCE then
+        local tracks = self:_collectCrawlers(target)
+        self:_shuffleTable(tracks)
+        for _, nodeData in ipairs(tracks) do
+            if trackCount >= self.MAX_TRACKS_TO_DESTROY then break end
+            if TornadoDebug and TornadoDebug.verboseDestruction then
+                TornadoDebug:log("DESTRUCTION", "   >> HIDING (Track): " .. nodeData.name)
+            end
+            setVisibility(nodeData.id, false)
+            table.insert(finalHiddenNodes, nodeData)
+            trackCount = trackCount + 1
+        end
+    end
+
     -- 3. RECORD STATE
     if #finalHiddenNodes > 0 then
         if TornadoDebug and TornadoDebug.verboseDestruction then
             TornadoDebug:log("DESTRUCTION",
-                string.format("RESULT -> Hid %d Trash, %d/%d Structure.", #foundTrash, structCount, structLimit))
+                string.format("RESULT -> Hid %d Trash, %d/%d Structure, %d/%d Wheels, %d Tracks.", #foundTrash, structCount,
+                    structLimit, wheelCount, wheelLimit, trackCount))
         end
 
         target.tornadoLastDestructionScan = g_currentMission.time
@@ -426,6 +484,170 @@ function TornadoDestruction:_scanProcedural(rootNode, outTrash, outStructure)
     end
 end
 
+-- ============================================================================
+-- Wheels
+-- ============================================================================
+
+-- Model file words that mean "this is a track, not a tire" (mods that build tracks as wheels).
+TornadoDestruction.TRACK_FILE_KEYWORDS = { "crawler", "track" }
+
+--- Wheels that belong to a track (crawler). The game positions the track from them; they are the road
+--- wheels / idlers inside the track and are never removed.
+function TornadoDestruction:_getCrawlerWheels(vehicle)
+    local result = {}
+    local spec = vehicle.spec_crawlers
+    if spec ~= nil and spec.crawlers ~= nil then
+        for _, crawler in ipairs(spec.crawlers) do
+            if crawler.wheels ~= nil then
+                for _, entry in ipairs(crawler.wheels) do
+                    if entry.wheel ~= nil then
+                        result[entry.wheel] = true
+                    end
+                end
+            end
+        end
+    end
+    return result
+end
+
+--- true if a visual wheel is a real tire + rim (and not a track built as a wheel by a mod).
+function TornadoDestruction:_isRemovableVisualWheel(visualWheel)
+    if visualWheel.getTireNode == nil or visualWheel:getTireNode() == nil then
+        return false -- no tire part: hub, sprocket, idler or a track model
+    end
+    if visualWheel.visualParts ~= nil then
+        for _, part in ipairs(visualWheel.visualParts) do
+            local filename = part.filename ~= nil and string.lower(part.filename) or ""
+            for _, keyword in ipairs(self.TRACK_FILE_KEYWORDS) do
+                if string.find(filename, keyword, 1, true) then
+                    return false
+                end
+            end
+        end
+    end
+    return true
+end
+
+--- Visible wheel groups of a vehicle as { id, name = "wheel#<wheel>#<visual wheel>" }.
+--- Tracks are left alone: wheels inside a crawler, visual wheels without a tire and track models.
+function TornadoDestruction:_collectVisualWheels(vehicle)
+    local result = {}
+    local spec = vehicle.spec_wheels
+    if spec == nil or spec.wheels == nil then
+        return result
+    end
+    local crawlerWheels = self:_getCrawlerWheels(vehicle)
+    for wheelIndex, wheel in ipairs(spec.wheels) do
+        if wheel.visualWheels ~= nil and not crawlerWheels[wheel] then
+            for visualIndex, visualWheel in ipairs(wheel.visualWheels) do
+                local node = visualWheel.node
+                if node ~= nil and node ~= 0 and entityExists(node) and getVisibility(node)
+                    and self:_isRemovableVisualWheel(visualWheel) then
+                    table.insert(result, { id = node, name = self.WHEEL_NODE_PREFIX .. wheelIndex .. "#" .. visualIndex })
+                end
+            end
+        end
+    end
+    return result
+end
+
+-- ============================================================================
+-- Saved part references
+-- ============================================================================
+
+--- Text for one hidden part in the savegame (see PATH_SEPARATOR).
+function TornadoDestruction:_encodeSavedNode(vehicle, nodeInfo)
+    local name = nodeInfo.name or ""
+    if string.sub(name, 1, #self.WHEEL_NODE_PREFIX) == self.WHEEL_NODE_PREFIX
+        or string.sub(name, 1, #self.CRAWLER_NODE_PREFIX) == self.CRAWLER_NODE_PREFIX then
+        return name
+    end
+    if vehicle ~= nil and nodeInfo.id ~= nil and nodeInfo.id ~= 0 and TornadoSync ~= nil and TornadoSync.encodeNodePath ~= nil then
+        local entry = TornadoSync.encodeNodePath(vehicle, nodeInfo.id)
+        if entry ~= nil then
+            return name .. self.PATH_SEPARATOR .. entry.component .. ":" .. table.concat(entry.path, ".")
+        end
+    end
+    -- Not linked to a vehicle yet (still pending after a load): keep what was loaded.
+    return nodeInfo.saved or name
+end
+
+--- Saved text -> { id = 0, name, component, path, saved }.
+function TornadoDestruction:_decodeSavedNode(entry)
+    local name, component, pathText = string.match(entry, "^(.*)" .. self.PATH_SEPARATOR .. "(%d+):([%d%.]*)$")
+    if name == nil then
+        return { id = 0, name = entry, saved = entry }
+    end
+    local path = {}
+    for index in string.gmatch(pathText, "(%d+)") do
+        path[#path + 1] = tonumber(index)
+    end
+    return { id = 0, name = name, component = tonumber(component), path = path, saved = entry }
+end
+
+--- Node for a saved part on a loaded vehicle, or 0.
+function TornadoDestruction:_findSavedNode(vehicle, nodeInfo)
+    if string.sub(nodeInfo.name, 1, #self.WHEEL_NODE_PREFIX) == self.WHEEL_NODE_PREFIX then
+        return self:_findVisualWheelNode(vehicle, nodeInfo.name)
+    end
+    if string.sub(nodeInfo.name, 1, #self.CRAWLER_NODE_PREFIX) == self.CRAWLER_NODE_PREFIX then
+        return self:_findCrawlerNode(vehicle, nodeInfo.name)
+    end
+    if nodeInfo.component ~= nil and TornadoSync ~= nil and TornadoSync.decodeNodePath ~= nil then
+        local node = TornadoSync.decodeNodePath(vehicle, { component = nodeInfo.component, path = nodeInfo.path })
+        -- The name must match: if the vehicle changed (mod update), fall back to the name search.
+        if node ~= nil and node ~= 0 and entityExists(node) and getName(node) == nodeInfo.name then
+            return node
+        end
+    end
+    return self:_findNodeByName(vehicle.rootNode, nodeInfo.name)
+end
+
+--- Visible tracks of a vehicle as { id, name = "crawler#<crawler>" }.
+function TornadoDestruction:_collectCrawlers(vehicle)
+    local result = {}
+    local spec = vehicle.spec_crawlers
+    if spec == nil or spec.crawlers == nil then
+        return result
+    end
+    for crawlerIndex, crawler in ipairs(spec.crawlers) do
+        local node = crawler.loadedCrawler
+        if node ~= nil and node ~= 0 and entityExists(node) and getVisibility(node) then
+            table.insert(result, { id = node, name = self.CRAWLER_NODE_PREFIX .. crawlerIndex })
+        end
+    end
+    return result
+end
+
+--- Node of a saved "crawler#<crawler>" entry, or 0.
+function TornadoDestruction:_findCrawlerNode(vehicle, name)
+    local crawlerIndex = string.match(name, "^" .. self.CRAWLER_NODE_PREFIX .. "(%d+)$")
+    local spec = vehicle.spec_crawlers
+    if crawlerIndex == nil or spec == nil or spec.crawlers == nil then
+        return 0
+    end
+    local crawler = spec.crawlers[tonumber(crawlerIndex)]
+    if crawler == nil or crawler.loadedCrawler == nil or not entityExists(crawler.loadedCrawler) then
+        return 0
+    end
+    return crawler.loadedCrawler
+end
+
+--- Node of a saved "wheel#<wheel>#<visual wheel>" entry, or 0.
+function TornadoDestruction:_findVisualWheelNode(vehicle, name)
+    local wheelIndex, visualIndex = string.match(name, "^" .. self.WHEEL_NODE_PREFIX .. "(%d+)#(%d+)$")
+    local spec = vehicle.spec_wheels
+    if wheelIndex == nil or spec == nil or spec.wheels == nil then
+        return 0
+    end
+    local wheel = spec.wheels[tonumber(wheelIndex)]
+    local visualWheel = wheel ~= nil and wheel.visualWheels ~= nil and wheel.visualWheels[tonumber(visualIndex)] or nil
+    if visualWheel == nil or visualWheel.node == nil or not entityExists(visualWheel.node) then
+        return 0
+    end
+    return visualWheel.node
+end
+
 function TornadoDestruction:_shuffleTable(t)
     for i = #t, 2, -1 do
         local j = math.random(i)
@@ -529,7 +751,7 @@ function TornadoDestruction:_linkPendingObjects()
                         if TornadoDebug then TornadoDebug:log("DESTRUCTION", "RELINKING saved vehicle -> " .. filename) end
 
                         for _, nodeInfo in ipairs(pending.nodes) do
-                            local foundNode = self:_findNodeByName(obj.rootNode, nodeInfo.name)
+                            local foundNode = self:_findSavedNode(obj, nodeInfo)
                             if foundNode and foundNode ~= 0 then
                                 setVisibility(foundNode, false)
                                 nodeInfo.id = foundNode
@@ -606,7 +828,7 @@ function TornadoDestruction:_saveToXML()
 
         local nodesStr = ""
         if data.nodes then
-            for _, nodeInfo in ipairs(data.nodes) do nodesStr = nodesStr .. nodeInfo.name .. ";" end
+            for _, nodeInfo in ipairs(data.nodes) do nodesStr = nodesStr .. self:_encodeSavedNode(data.obj, nodeInfo) .. ";" end
         end
         setXMLString(xmlId, objKey .. ".nodes", nodesStr)
         i = i + 1
@@ -656,7 +878,7 @@ function TornadoDestruction:_loadFromXML()
 
         local nodesStr = getXMLString(xmlId, objkey .. ".nodes") or ""
         local nodes = {}
-        for nodeName in string.gmatch(nodesStr, "([^;]+)") do table.insert(nodes, { id = 0, name = nodeName }) end
+        for entry in string.gmatch(nodesStr, "([^;]+)") do table.insert(nodes, self:_decodeSavedNode(entry)) end
 
         local savedTimer = getXMLFloat(xmlId, objkey .. ".repairTimer")
         if savedTimer == nil then
