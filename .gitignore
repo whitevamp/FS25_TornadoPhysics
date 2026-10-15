@@ -1,0 +1,19 @@
+# Decrypted game / DLC source (reference only - never publish)
+dataS/
+emergency/
+
+# Raw USDA RMA data (the builder output DB/CropInsurance_US.xml is committed)
+USDA_RMA/
+
+# Screenshots
+images/
+
+# Raw NOAA Weather files.
+weather_csv_files_for_tornadophysics
+
+# Archives (old builds, downloaded mods)
+*.rar
+*.zip
+
+# Australia climate data - not cleared to ship yet (BoM licence)
+DB/TornadoClimate_AU.xml
