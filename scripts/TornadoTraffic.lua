@@ -1,6 +1,6 @@
 ---@class TornadoTraffic
----@version 1.0
----@description Stops AI road traffic before it drives into the tornado.
+---@version 1.1
+---@description Stops AI road traffic and pedestrians before they walk / drive into the tornado.
 --- FS25 traffic is simulated by the engine; Lua cannot steer individual cars or change their
 --- routes. What the engine does offer is the same "blocking position" mechanism traffic lights and
 --- railroad crossings use: a point on a traffic lane where cars wait until it is released.
@@ -12,7 +12,14 @@
 ---      before the entry point, so cars queue outside the storm like at a red light.
 ---   4. Blocks are moved as the tornado moves and all released when it is gone or the feature is off.
 --- Cars already inside the circle are not blocked (they drive out of it).
---- Server only: the traffic system is simulated on the server and streamed to clients.
+--- Cars: server only - the traffic system is simulated on the server and streamed to clients.
+---
+--- Pedestrians use the same mechanism (the one traffic lights and railroad crossings use for them).
+--- The engine gives Lua no way to steer or move a single pedestrian, so they stop at the edge instead
+--- of turning round. Footpaths are two-way and pedestrian blocks only hold one walking direction, so
+--- both ends of every path through the circle are blocked; people already inside walk out.
+--- Pedestrians are local: every player's game runs its own (a dedicated server has none), so this
+--- part runs on every machine that has a pedestrian system.
 
 TornadoTraffic = {}
 
@@ -31,6 +38,12 @@ function TornadoTraffic:loadMap()
     self.blockInfoCache = {}  -- key -> { splineId, splineTime } or false when no lane was found
     self.updateTimer = 0
 
+    -- Pedestrians (local to this machine)
+    self.pedPaths = nil
+    self.pedActiveBlocks = {} -- key -> { splineId, splineTime, direction, x, y, z }
+    self.pedBlockInfoCache = {}
+    self.pedUpdateTimer = 0
+
     if TornadoDebug then TornadoDebug:info("TRAFFIC", "V1.0 Initialized (Traffic Roadblocks)") end
 end
 
@@ -38,6 +51,9 @@ function TornadoTraffic:deleteMap()
     self:releaseAll()
     self.lanes = nil
     self.blockInfoCache = {}
+    self:releaseAllPedestrians()
+    self.pedPaths = nil
+    self.pedBlockInfoCache = {}
 end
 
 -- =========================================================================
@@ -56,9 +72,10 @@ function TornadoTraffic:getTrafficSystemId()
     return trafficSystem.trafficSystemId, trafficSystem.rootNodeId
 end
 
---- Samples every traffic lane once. Each lane keeps a bounding box so far-away lanes are skipped cheaply.
-function TornadoTraffic:buildLaneCache(rootNodeId)
-    self.lanes = {}
+--- Samples every spline below rootNodeId once. Each lane keeps a bounding box so far-away lanes are skipped
+--- cheaply. Used for the traffic lanes and the pedestrian paths.
+function TornadoTraffic:sampleSplines(rootNodeId)
+    local lanes = {}
     local spacing = self.SAMPLE_SPACING
     local numSamples = 0
 
@@ -78,11 +95,16 @@ function TornadoTraffic:buildLaneCache(rootNodeId)
             end
 
             lane.minX, lane.maxX, lane.minZ, lane.maxZ = minX, maxX, minZ, maxZ
-            self.lanes[#self.lanes + 1] = lane
+            lanes[#lanes + 1] = lane
             numSamples = numSamples + #lane.samples
         end
     end)
+    return lanes, numSamples
+end
 
+function TornadoTraffic:buildLaneCache(rootNodeId)
+    local numSamples
+    self.lanes, numSamples = self:sampleSplines(rootNodeId)
     if TornadoDebug then
         TornadoDebug:info("TRAFFIC", string.format("Lane cache built: %d lanes, %d samples.", #self.lanes, numSamples))
     end
@@ -123,13 +145,20 @@ end
 -- =========================================================================
 
 function TornadoTraffic:update(dt)
-    if g_currentMission == nil or not g_currentMission:getIsServer() then
+    if g_currentMission == nil then
+        return
+    end
+
+    local tornadoNode = TornadoPhysics ~= nil and TornadoPhysics.tornadoNode or nil
+    local tornadoActive = tornadoNode ~= nil and entityExists(tornadoNode)
+
+    self:updatePedestrians(dt, tornadoNode, tornadoActive)
+
+    if not g_currentMission:getIsServer() then
         return
     end
 
     local hasBlocks = next(self.activeBlocks) ~= nil
-    local tornadoNode = TornadoPhysics ~= nil and TornadoPhysics.tornadoNode or nil
-    local tornadoActive = tornadoNode ~= nil and entityExists(tornadoNode)
 
     if not self.isEnabled or not tornadoActive then
         if hasBlocks then
@@ -215,9 +244,155 @@ function TornadoTraffic:getNumActiveBlocks()
     return count
 end
 
---- Red posts at every active roadblock, shown together with the danger ring (t_sfx ring).
+function TornadoTraffic:getNumActivePedestrianBlocks()
+    local count = 0
+    for _ in pairs(self.pedActiveBlocks or {}) do count = count + 1 end
+    return count
+end
+
+--- Red posts at every active roadblock (yellow for pedestrians), shown with the danger ring (t_sfx ring).
 function TornadoTraffic:drawBlocks()
     for _, block in pairs(self.activeBlocks) do
         drawDebugLine(block.x, block.y, block.z, 1, 0, 0, block.x, block.y + 6, block.z, 1, 0, 0)
+    end
+end
+
+function TornadoTraffic:drawPedestrianBlocks()
+    for _, block in pairs(self.pedActiveBlocks) do
+        drawDebugLine(block.x, block.y, block.z, 1, 1, 0, block.x, block.y + 3, block.z, 1, 1, 0)
+    end
+end
+
+-- =========================================================================
+-- PEDESTRIANS (every machine with a pedestrian system)
+-- =========================================================================
+
+--- Pedestrian system id and its path root node, or nil (dedicated server / map without pedestrians).
+function TornadoTraffic:getPedestrianSystemId()
+    local pedestrianSystem = g_currentMission.pedestrianSystem
+    if pedestrianSystem == nil or pedestrianSystem.pedestrianSystemId == nil or pedestrianSystem.transformId == nil then
+        return nil
+    end
+    return pedestrianSystem.pedestrianSystemId, pedestrianSystem.transformId
+end
+
+function TornadoTraffic:releaseAllPedestrians()
+    local pedestrianSystemId = self:getPedestrianSystemId()
+    if pedestrianSystemId ~= nil and self.pedActiveBlocks ~= nil then
+        for _, block in pairs(self.pedActiveBlocks) do
+            setPedestrianSystemBlockingPositionState(pedestrianSystemId, block.splineId, block.splineTime, block.direction, false)
+        end
+    end
+    self.pedActiveBlocks = {}
+end
+
+--- Engine path id/time/direction for a sample, walking forwards (along the spline) or backwards.
+function TornadoTraffic:getPedestrianBlockInfo(pedestrianSystemId, path, sampleIndex, reverse, key)
+    local cached = self.pedBlockInfoCache[key]
+    if cached ~= nil then
+        return cached
+    end
+
+    local sample = path.samples[sampleIndex]
+    local dx, dy, dz = getSplineDirection(path.spline, sample.t)
+    if reverse then
+        dx, dy, dz = -dx, -dy, -dz
+    end
+    local splineId, splineTime, direction = findPedestrianSystemBlockingPositionInformation(pedestrianSystemId,
+        sample.x, sample.y, sample.z, dx, dy, dz, self.BLOCK_SEARCH_DISTANCE)
+
+    local info = false
+    if splineId ~= nil and splineId ~= 0 then
+        info = { splineId = splineId, splineTime = splineTime, direction = direction }
+    end
+    self.pedBlockInfoCache[key] = info
+    return info
+end
+
+function TornadoTraffic:updatePedestrians(dt, tornadoNode, tornadoActive)
+    local hasBlocks = next(self.pedActiveBlocks) ~= nil
+    if not self.isEnabled or not tornadoActive then
+        if hasBlocks then
+            self:releaseAllPedestrians()
+            if TornadoDebug then TornadoDebug:log("TRAFFIC", "Pedestrian blocks released.") end
+        end
+        return
+    end
+
+    if hasBlocks and TornadoPhysics.showRing then
+        self:drawPedestrianBlocks()
+    end
+
+    self.pedUpdateTimer = self.pedUpdateTimer + dt
+    if self.pedUpdateTimer < self.UPDATE_INTERVAL then
+        return
+    end
+    self.pedUpdateTimer = 0
+
+    local pedestrianSystemId, rootNodeId = self:getPedestrianSystemId()
+    if pedestrianSystemId == nil then
+        return
+    end
+    if self.pedPaths == nil then
+        local numSamples
+        self.pedPaths, numSamples = self:sampleSplines(rootNodeId)
+        if TornadoDebug then
+            TornadoDebug:info("TRAFFIC", string.format("Pedestrian path cache built: %d paths, %d samples.", #self.pedPaths, numSamples))
+        end
+    end
+
+    local tX, _, tZ = getWorldTranslation(tornadoNode)
+    local outerRadius = TornadoPhysics.getOuterRadius ~= nil and TornadoPhysics:getOuterRadius() or TornadoPhysics.settings.base_radius
+    local keepOut = outerRadius + self.bufferDistance
+    local keepOutSq = keepOut * keepOut
+
+    -- 1. Both ends of every stretch of path inside the keep-out circle.
+    local wanted = {}
+    local function want(pathIndex, path, sampleIndex, reverse)
+        local key = pathIndex .. ":" .. sampleIndex .. (reverse and "r" or "f")
+        local info = self:getPedestrianBlockInfo(pedestrianSystemId, path, sampleIndex, reverse, key)
+        if info then
+            local s = path.samples[sampleIndex]
+            wanted[key] = { splineId = info.splineId, splineTime = info.splineTime, direction = info.direction,
+                x = s.x, y = s.y, z = s.z }
+        end
+    end
+
+    for pathIndex, path in ipairs(self.pedPaths) do
+        if path.maxX >= tX - keepOut and path.minX <= tX + keepOut and path.maxZ >= tZ - keepOut and path.minZ <= tZ + keepOut then
+            local wasInside = nil
+            for i, sample in ipairs(path.samples) do
+                local dx, dz = sample.x - tX, sample.z - tZ
+                local isInside = (dx * dx + dz * dz) < keepOutSq
+                if isInside and wasInside == false then
+                    want(pathIndex, path, i - 1, false) -- walking along the path into the circle
+                elseif not isInside and wasInside == true then
+                    want(pathIndex, path, i, true)      -- walking back along the path into the circle
+                end
+                wasInside = isInside
+            end
+        end
+    end
+
+    -- 2. Release blocks the tornado has moved away from, then switch on the new ones.
+    local released, added = 0, 0
+    for key, block in pairs(self.pedActiveBlocks) do
+        if wanted[key] == nil then
+            setPedestrianSystemBlockingPositionState(pedestrianSystemId, block.splineId, block.splineTime, block.direction, false)
+            self.pedActiveBlocks[key] = nil
+            released = released + 1
+        end
+    end
+    for key, block in pairs(wanted) do
+        if self.pedActiveBlocks[key] == nil then
+            setPedestrianSystemBlockingPositionState(pedestrianSystemId, block.splineId, block.splineTime, block.direction, true)
+            self.pedActiveBlocks[key] = block
+            added = added + 1
+        end
+    end
+
+    if TornadoDebug and (added > 0 or released > 0) then
+        TornadoDebug:log("TRAFFIC", string.format("Pedestrian blocks: +%d / -%d (active %d, keep-out %.0fm)",
+            added, released, self:getNumActivePedestrianBlocks(), keepOut))
     end
 end

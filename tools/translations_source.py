@@ -520,31 +520,55 @@ t("tp_tip_husbandry", "Tornadoes can kill animals in pastures that are not stric
   "Tornado's kunnen dieren doden op weides die niet volledig binnen liggen.")
 t("tp_immunity", "Post-impact immunity", "Schutzzeit nach Treffer", "Immunité après impact", "Odporność po uderzeniu",
   "Inmunidad tras impacto", "Immunità dopo l'impatto", "Immuniteit na treffer")
-t("tp_tip_immunity", "Immunity time for a pasture after it was hit.", "Schutzzeit einer Weide, nachdem sie getroffen wurde.",
-  "Durée d'immunité d'un pâturage après avoir été touché.", "Czas odporności pastwiska po uderzeniu.",
-  "Tiempo de inmunidad de un pasto tras ser alcanzado.", "Tempo di immunità di un pascolo dopo essere stato colpito.",
-  "Immuniteitstijd van een weide nadat die is geraakt.")
+t("tp_tip_immunity", "Immunity time for a pasture after it was hit, for a 2 km map. Bigger maps scale it up (4 km = 2x, 8 km = 4x).",
+  "Schutzzeit einer Weide, nachdem sie getroffen wurde, für eine 2-km-Karte. Größere Karten verlängern sie (4 km = 2x, 8 km = 4x).",
+  "Durée d'immunité d'un pâturage après avoir été touché, pour une carte de 2 km. Les cartes plus grandes l'allongent (4 km = 2x, 8 km = 4x).",
+  "Czas odporności pastwiska po uderzeniu, dla mapy 2 km. Większe mapy go wydłużają (4 km = 2x, 8 km = 4x).",
+  "Tiempo de inmunidad de un pasto tras ser alcanzado, para un mapa de 2 km. Los mapas más grandes lo alargan (4 km = 2x, 8 km = 4x).",
+  "Tempo di immunità di un pascolo dopo essere stato colpito, per una mappa di 2 km. Le mappe più grandi lo allungano (4 km = 2x, 8 km = 4x).",
+  "Immuniteitstijd van een weide nadat die is geraakt, voor een kaart van 2 km. Grotere kaarten verlengen die (4 km = 2x, 8 km = 4x).")
 t("tp_sec_traffic", "Road traffic", "Straßenverkehr", "Circulation routière", "Ruch drogowy", "Tráfico", "Traffico stradale", "Wegverkeer")
 t("tp_traffic", "Traffic roadblocks", "Straßensperren", "Barrages routiers", "Blokady drogowe", "Controles de tráfico",
   "Blocchi stradali", "Wegversperringen")
 t("tp_tip_traffic",
-  "AI road traffic stops and waits (like at a red light) before driving into the tornado. Cars already inside the zone drive out.",
-  "Der KI-Straßenverkehr hält vor dem Tornado an und wartet (wie an einer roten Ampel). Autos, die schon in der Zone sind, fahren heraus.",
-  "La circulation IA s'arrête et attend (comme à un feu rouge) avant d'entrer dans la tornade. Les voitures déjà dans la zone en sortent.",
-  "Ruch AI zatrzymuje się i czeka (jak na czerwonym świetle) przed wjazdem w tornado. Auta już w strefie z niej wyjeżdżają.",
-  "El tráfico de IA se detiene y espera (como en un semáforo en rojo) antes de entrar en el tornado. Los coches que ya están en la zona salen.",
-  "Il traffico IA si ferma e attende (come a un semaforo rosso) prima di entrare nel tornado. Le auto già nella zona ne escono.",
-  "AI-verkeer stopt en wacht (zoals bij rood licht) voordat het de tornado in rijdt. Auto's die al in de zone zijn, rijden eruit.")
+  "AI road traffic and pedestrians stop and wait (like at a red light) before entering the tornado. Cars and people already inside the zone leave it.",
+  "KI-Straßenverkehr und Fußgänger halten vor dem Tornado an und warten (wie an einer roten Ampel). Autos und Personen, die schon in der Zone sind, verlassen sie.",
+  "La circulation IA et les piétons s'arrêtent et attendent (comme à un feu rouge) avant d'entrer dans la tornade. Les voitures et personnes déjà dans la zone en sortent.",
+  "Ruch AI i piesi zatrzymują się i czekają (jak na czerwonym świetle) przed wejściem w tornado. Auta i ludzie już w strefie ją opuszczają.",
+  "El tráfico de IA y los peatones se detienen y esperan (como en un semáforo en rojo) antes de entrar en el tornado. Los coches y personas que ya están en la zona salen.",
+  "Il traffico IA e i pedoni si fermano e attendono (come a un semaforo rosso) prima di entrare nel tornado. Auto e persone già nella zona ne escono.",
+  "AI-verkeer en voetgangers stoppen en wachten (zoals bij rood licht) voordat ze de tornado in gaan. Auto's en mensen die al in de zone zijn, verlaten die.")
 t("tp_traffic_buffer", "Stop distance", "Haltabstand", "Distance d'arrêt", "Odległość zatrzymania", "Distancia de parada",
   "Distanza di arresto", "Stopafstand")
 t("tp_tip_traffic_buffer",
-  "How far outside the tornado's outer radius cars stop. Turn on the danger ring (Effects tab) to see the roadblocks as red posts.",
-  "Wie weit außerhalb des Tornadoradius Autos halten. Mit dem Gefahrenring (Reiter Effekte) erscheinen die Sperren als rote Pfosten.",
-  "Distance au-delà du rayon de la tornade où les voitures s'arrêtent. Activez l'anneau de danger (onglet Effets) pour voir les barrages en poteaux rouges.",
-  "Jak daleko poza promieniem tornada zatrzymują się auta. Włącz pierścień zagrożenia (zakładka Efekty), by zobaczyć blokady jako czerwone słupki.",
-  "A qué distancia fuera del radio del tornado se detienen los coches. Activa el anillo de peligro (pestaña Efectos) para ver los controles como postes rojos.",
-  "Quanto fuori dal raggio del tornado si fermano le auto. Attiva l'anello di pericolo (scheda Effetti) per vedere i blocchi come paletti rossi.",
-  "Hoe ver buiten de tornadostraal auto's stoppen. Zet de gevarenring aan (tabblad Effecten) om de versperringen als rode palen te zien.")
+  "How far outside the tornado's outer radius cars and pedestrians stop. Turn on the danger ring (Effects tab) to see the roadblocks as red posts (yellow for pedestrians).",
+  "Wie weit außerhalb des Tornadoradius Autos und Fußgänger halten. Mit dem Gefahrenring (Reiter Effekte) erscheinen die Sperren als rote Pfosten (gelb für Fußgänger).",
+  "Distance au-delà du rayon de la tornade où voitures et piétons s'arrêtent. Activez l'anneau de danger (onglet Effets) pour voir les barrages en poteaux rouges (jaunes pour les piétons).",
+  "Jak daleko poza promieniem tornada zatrzymują się auta i piesi. Włącz pierścień zagrożenia (zakładka Efekty), by zobaczyć blokady jako czerwone słupki (żółte dla pieszych).",
+  "A qué distancia fuera del radio del tornado se detienen coches y peatones. Activa el anillo de peligro (pestaña Efectos) para ver los controles como postes rojos (amarillos para peatones).",
+  "Quanto fuori dal raggio del tornado si fermano auto e pedoni. Attiva l'anello di pericolo (scheda Effetti) per vedere i blocchi come paletti rossi (gialli per i pedoni).",
+  "Hoe ver buiten de tornadostraal auto's en voetgangers stoppen. Zet de gevarenring aan (tabblad Effecten) om de versperringen als rode palen te zien (geel voor voetgangers).")
+
+t("tp_sec_wildlife", "Wildlife", "Wildtiere", "Faune sauvage", "Dzikie zwierzęta", "Fauna", "Fauna selvatica", "Wilde dieren")
+t("tp_wildlife", "Wildlife flees the tornado", "Wildtiere fliehen vor dem Tornado", "La faune fuit la tornade",
+  "Zwierzęta uciekają przed tornadem", "La fauna huye del tornado", "La fauna fugge dal tornado", "Wilde dieren vluchten voor de tornado")
+t("tp_tip_wildlife",
+  "Birds, deer, boar and other wild animals run or fly away from the tornado; animals it catches vanish. The farm dog runs home to its doghouse.",
+  "Vögel, Rehe, Wildschweine und andere Wildtiere laufen oder fliegen vor dem Tornado davon; erfasste Tiere verschwinden. Der Hofhund läuft nach Hause zu seiner Hundehütte.",
+  "Oiseaux, cerfs, sangliers et autres animaux sauvages fuient la tornade en courant ou en volant ; ceux qu'elle attrape disparaissent. Le chien de la ferme rentre à sa niche.",
+  "Ptaki, sarny, dziki i inne dzikie zwierzęta uciekają przed tornadem; złapane przez nie znikają. Pies z farmy biegnie do swojej budy.",
+  "Aves, ciervos, jabalíes y otros animales salvajes huyen corriendo o volando del tornado; los que atrapa desaparecen. El perro de la granja vuelve a su caseta.",
+  "Uccelli, cervi, cinghiali e altri animali selvatici scappano dal tornado correndo o volando; quelli che cattura scompaiono. Il cane della fattoria torna alla sua cuccia.",
+  "Vogels, herten, wilde zwijnen en andere wilde dieren rennen of vliegen weg van de tornado; dieren die hij grijpt verdwijnen. De boerderijhond rent naar zijn hondenhok.")
+t("tp_wildlife_distance", "Flee distance", "Fluchtabstand", "Distance de fuite", "Odległość ucieczki", "Distancia de huida",
+  "Distanza di fuga", "Vluchtafstand")
+t("tp_tip_wildlife_distance", "How far outside the tornado's outer radius animals start to flee.",
+  "Wie weit außerhalb des Tornadoradius Tiere zu fliehen beginnen.",
+  "Distance au-delà du rayon de la tornade à partir de laquelle les animaux fuient.",
+  "Jak daleko poza promieniem tornada zwierzęta zaczynają uciekać.",
+  "A qué distancia fuera del radio del tornado empiezan a huir los animales.",
+  "Quanto fuori dal raggio del tornado gli animali iniziano a fuggire.",
+  "Hoe ver buiten de tornadostraal dieren beginnen te vluchten.")
 
 # =====================================================================================================
 # DEVELOPER TAB

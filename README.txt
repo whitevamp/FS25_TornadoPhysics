@@ -22,7 +22,10 @@ NEW IN v5.0.0.0 (THE REAL-LIFE UPDATE):
 - Real-Life Tornado Climate (optional): EF rating, size, hail, wind,
   season, time of day, track direction and outbreak days follow real
   recorded statistics for the United States and Canada.
-- AI Traffic Roadblocks: road traffic stops before driving into a tornado.
+- AI Traffic Roadblocks: road traffic and pedestrians stop before entering
+  a tornado.
+- Wildlife flees the tornado (caught animals vanish); the farm dog runs
+  home to its doghouse.
 - Full Multiplayer Support: every player sees the same tornado, weather,
   damage and warnings.
 - Tornado Saved With The Savegame: an active tornado (and outbreak) comes
@@ -83,10 +86,17 @@ NEW IN v5.0.0.0 (THE REAL-LIFE UPDATE):
    - Seasons, direction and outbreaks can each be switched on or off.
 
 >> AI TRAFFIC ROADBLOCKS (NEW IN v5)
-   AI road traffic stops and waits (like at a red light) before entering
-   the tornado's zone. Cars already inside drive out. Adjustable stop
-   distance (default 40 m). With the danger ring on, roadblocks show as
-   red posts.
+   AI road traffic and pedestrians stop and wait (like at a red light)
+   before entering the tornado's zone. Cars and people already inside
+   leave it. Adjustable stop distance (default 40 m). With the danger ring
+   on, roadblocks show as red posts (yellow for pedestrians).
+
+>> WILDLIFE (NEW IN v5, ON BY DEFAULT)
+   Birds, deer, boar and other wild animals run or fly away when a
+   tornado comes within the flee distance (default 150 m beyond its
+   radius). Animals the tornado catches vanish. The farm dog runs home to
+   its doghouse and is never lost or harmed. Modules tab or
+   "t_set wildlife".
 
 >> MULTIPLAYER (NEW IN v5)
    - The server runs the tornado; every client sees the same touchdown
@@ -123,7 +133,9 @@ NEW IN v5.0.0.0 (THE REAL-LIFE UPDATE):
 >> HUSBANDRY & LIVESTOCK
    If enabled, tornadoes passing over pastures will kill animals.
    - Dynamic Immunity: after a strike, the pasture is safe for a set time
-     (scales automatically with map size).
+     (the setting is for a 2 km map; 4 km maps get 2x, 8 km maps 4x).
+   - Real pasture area (v5): the tornado must touch the pasture's fence
+     outline, not just the barn.
    - Pasture-Only Targeting: only outdoor pastures, fences and meadows
      are hit. Animals inside enclosed barns are 100% safe.
 
@@ -162,7 +174,7 @@ In multiplayer, gameplay commands only work for the host / server admin.
    - t_dev                      : status, verbose, hud, hotspotdump, kill_test
    - t_tune                     : fine-tune physics constants
    - t_reset                    : all, physics, tuning, cargo, husbandry,
-                                  traffic, climate
+                                  traffic, wildlife, climate
 
 2. PHYSICS CONTROL (t_physics)
    - t_physics radius [x]       : Base storm size (Default: 35)
@@ -187,6 +199,7 @@ In multiplayer, gameplay commands only work for the host / server admin.
                   spread|leak_chance] [x]
    - t_set husbandry [toggle|immunity <sec>]
    - t_set traffic [on|off|buffer <m>|status]            (NEW)
+   - t_set wildlife [on|off|distance <m>|status]         (NEW)
    - t_set climate [on|off|region <name|code|auto>|list|status|
                     seasons|direction|outbreaks [on|off]|
                     frequency <x>|outbreakmax <n>]        (NEW)
@@ -218,6 +231,9 @@ In multiplayer, gameplay commands only work for the host / server admin.
                                 : log channels
    - t_dev hotspotdump          : Hotspot / map overlay state
    - t_dev kill_test            : Husbandry kill test (kills animals!)
+   - t_dev wildlife list        : Wildlife species on this map
+   - t_dev wildlife spawn <species> [distance] [count]
+                                : Spawn wildlife in front of you (testing)
 
 ------------------------------------------------------------------------
 [5] MAP SCALING GUIDE

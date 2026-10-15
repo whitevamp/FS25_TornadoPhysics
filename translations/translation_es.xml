@@ -151,12 +151,17 @@
         <text name="tp_husbandry" text="Letalidad para animales"/>
         <text name="tp_tip_husbandry" text="Los tornados pueden matar animales en pastos que no están totalmente bajo techo."/>
         <text name="tp_immunity" text="Inmunidad tras impacto"/>
-        <text name="tp_tip_immunity" text="Tiempo de inmunidad de un pasto tras ser alcanzado."/>
+        <text name="tp_tip_immunity" text="Tiempo de inmunidad de un pasto tras ser alcanzado, para un mapa de 2 km. Los mapas más grandes lo alargan (4 km = 2x, 8 km = 4x)."/>
         <text name="tp_sec_traffic" text="Tráfico"/>
         <text name="tp_traffic" text="Controles de tráfico"/>
-        <text name="tp_tip_traffic" text="El tráfico de IA se detiene y espera (como en un semáforo en rojo) antes de entrar en el tornado. Los coches que ya están en la zona salen."/>
+        <text name="tp_tip_traffic" text="El tráfico de IA y los peatones se detienen y esperan (como en un semáforo en rojo) antes de entrar en el tornado. Los coches y personas que ya están en la zona salen."/>
         <text name="tp_traffic_buffer" text="Distancia de parada"/>
-        <text name="tp_tip_traffic_buffer" text="A qué distancia fuera del radio del tornado se detienen los coches. Activa el anillo de peligro (pestaña Efectos) para ver los controles como postes rojos."/>
+        <text name="tp_tip_traffic_buffer" text="A qué distancia fuera del radio del tornado se detienen coches y peatones. Activa el anillo de peligro (pestaña Efectos) para ver los controles como postes rojos (amarillos para peatones)."/>
+        <text name="tp_sec_wildlife" text="Fauna"/>
+        <text name="tp_wildlife" text="La fauna huye del tornado"/>
+        <text name="tp_tip_wildlife" text="Aves, ciervos, jabalíes y otros animales salvajes huyen corriendo o volando del tornado; los que atrapa desaparecen. El perro de la granja vuelve a su caseta."/>
+        <text name="tp_wildlife_distance" text="Distancia de huida"/>
+        <text name="tp_tip_wildlife_distance" text="A qué distancia fuera del radio del tornado empiezan a huir los animales."/>
         <text name="tp_sec_overlays" text="Superposiciones"/>
         <text name="tp_hud" text="HUD de telemetría"/>
         <text name="tp_tip_hud" text="Etiquetas de telemetría física sobre cada objeto seguido."/>

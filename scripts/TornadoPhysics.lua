@@ -1226,6 +1226,11 @@ function TornadoPhysics:getPurgeInterval()
     return self.settings.purge_interval + ((mapScaleFactor - 1.0) * 20000)
 end
 
+--- Map size relative to a standard 2 km map (1 = 2 km, 2 = 4 km, 4 = 8 km ...).
+function TornadoPhysics:getMapScaleFactor()
+    return mapScaleFactor
+end
+
 function TornadoPhysics:calculateMapScale()
     if g_currentMission and g_currentMission.terrainSize then
         local size = g_currentMission.terrainSize
@@ -1233,7 +1238,6 @@ function TornadoPhysics:calculateMapScale()
         mapBoundary = size * 0.5; currentOuterRadius = self.settings.base_radius * mapScaleFactor; currentOuterRadiusSq =
         currentOuterRadius * currentOuterRadius
         self.purgeInterval = self:getPurgeInterval()
-        self.dynamicImmunityMS = (240.0 + ((mapScaleFactor - 1.0) * 300.0)) * 1000
         if TornadoDebug then TornadoDebug:info("SETUP",
                 string.format("MapSize=%.0f | Base Radius=%.1fm (before EF roll) | Purge=%.1fs", size, currentOuterRadius,
                     self.purgeInterval / 1000)) end

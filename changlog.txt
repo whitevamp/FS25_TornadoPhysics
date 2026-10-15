@@ -34,6 +34,18 @@
 - In multiplayer every player reads server messages (animal losses, tow
   bills, outbreak warnings) in their own language and currency.
 
+[GAMEPLAY] Wildlife Flees The Tornado
+- Birds, deer, boar and other wild animals run or fly away from an
+  approaching tornado; animals it catches vanish.
+- The farm dog runs home to its doghouse when the storm gets close (it is
+  never lost or harmed).
+- Adjustable flee distance beyond the tornado radius (default 150 m).
+- Works in multiplayer: each player's own wildlife reacts.
+- Console: t_set wildlife [on|off|distance <m>|status], t_reset wildlife.
+- Test tools: t_dev wildlife list / t_dev wildlife spawn <species> [distance]
+  [count] spawns wildlife in front of you (the game's own spawn command
+  only exists in the developer build).
+
 [GAMEPLAY] AI Traffic Roadblocks
 - AI road traffic now stops before driving into a tornado, waiting like at a
   red light at the edge of a keep-out zone around the storm.
@@ -41,6 +53,10 @@
 - Cars already inside the zone drive out instead of being trapped.
 - Adjustable stop distance beyond the tornado radius (default 40 m).
 - With the danger ring on, each roadblock is shown as a red post.
+- Pedestrians stop at the edge of the zone too (both directions on every
+  footpath), so nobody walks into the storm; people already inside walk out.
+  Shown as yellow posts with the danger ring. FS25 gives mods no way to
+  turn single pedestrians round, so they wait instead.
 - Console: t_set traffic [on|off|buffer <m>|status], t_reset traffic.
 
 [GAMEPLAY] Real-Life Tornado Climate (optional, OFF by default)
@@ -156,6 +172,15 @@ Physics / gameplay
 - Fixed covered trailers stopping to leak after the first few litres when
   standing on end or upside down (the trailer's own "no heap under me" area
   blocked every drop, and heaps were capped at 0.1 m).
+- Fixed animal lethality checking the distance to the barn instead of the
+  pasture: a tornado crossing the far side of a large pasture did nothing,
+  while one passing the barn killed animals in a pasture it never touched.
+  The pasture's real fence outline is used now.
+- Fixed the pasture immunity never scaling with map size (it was always
+  2 minutes). The setting is now the value for a 2 km map and grows with
+  bigger maps (4 km = 2x, 8 km = 4x).
+- Animal losses now update the barn's animal count and the visible animals
+  right away.
 - Fixed headers on a header trailer (and other dynamically mounted
   vehicles) staying locked to the trailer in the storm: they stood on end
   next to it and were pulled back onto it. Inside the wind field they are

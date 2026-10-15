@@ -151,12 +151,17 @@
         <text name="tp_husbandry" text="Animal lethality"/>
         <text name="tp_tip_husbandry" text="Tornadoes can kill animals in pastures that are not strictly indoors."/>
         <text name="tp_immunity" text="Post-impact immunity"/>
-        <text name="tp_tip_immunity" text="Immunity time for a pasture after it was hit."/>
+        <text name="tp_tip_immunity" text="Immunity time for a pasture after it was hit, for a 2 km map. Bigger maps scale it up (4 km = 2x, 8 km = 4x)."/>
         <text name="tp_sec_traffic" text="Road traffic"/>
         <text name="tp_traffic" text="Traffic roadblocks"/>
-        <text name="tp_tip_traffic" text="AI road traffic stops and waits (like at a red light) before driving into the tornado. Cars already inside the zone drive out."/>
+        <text name="tp_tip_traffic" text="AI road traffic and pedestrians stop and wait (like at a red light) before entering the tornado. Cars and people already inside the zone leave it."/>
         <text name="tp_traffic_buffer" text="Stop distance"/>
-        <text name="tp_tip_traffic_buffer" text="How far outside the tornado's outer radius cars stop. Turn on the danger ring (Effects tab) to see the roadblocks as red posts."/>
+        <text name="tp_tip_traffic_buffer" text="How far outside the tornado's outer radius cars and pedestrians stop. Turn on the danger ring (Effects tab) to see the roadblocks as red posts (yellow for pedestrians)."/>
+        <text name="tp_sec_wildlife" text="Wildlife"/>
+        <text name="tp_wildlife" text="Wildlife flees the tornado"/>
+        <text name="tp_tip_wildlife" text="Birds, deer, boar and other wild animals run or fly away from the tornado; animals it catches vanish. The farm dog runs home to its doghouse."/>
+        <text name="tp_wildlife_distance" text="Flee distance"/>
+        <text name="tp_tip_wildlife_distance" text="How far outside the tornado's outer radius animals start to flee."/>
         <text name="tp_sec_overlays" text="Overlays"/>
         <text name="tp_hud" text="Telemetry HUD"/>
         <text name="tp_tip_hud" text="Physics telemetry labels over every tracked object."/>

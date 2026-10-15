@@ -56,6 +56,9 @@ function TornadoMain:loadMap(name)
     -- AI road traffic roadblocks around the tornado.
     source(Utils.getFilename("scripts/TornadoTraffic.lua", modDir))
 
+    -- Wildlife flees the tornado, the farm dog runs home.
+    source(Utils.getFilename("scripts/TornadoWildlife.lua", modDir))
+
     -- Optional real-life climate mode (EF / size rolled from NOAA statistics).
     source(Utils.getFilename("scripts/TornadoClimate.lua", modDir))
     source(Utils.getFilename("scripts/TornadoOutbreak.lua", modDir))
@@ -124,6 +127,7 @@ function TornadoMain:loadMap(name)
     if TornadoPhysics then TornadoPhysics:loadMap(name, modDir) end
     if TornadoWeather then TornadoWeather:loadMap(name) end
     if TornadoTraffic then TornadoTraffic:loadMap() end
+    if TornadoWildlife then TornadoWildlife:loadMap() end
     if TornadoClimate then TornadoClimate:loadMap(modDir) end
     if TornadoOutbreak then TornadoOutbreak:loadMap() end
     if TornadoPersistence then TornadoPersistence:loadMap() end   -- after Outbreak: restores its state
@@ -153,6 +157,7 @@ function TornadoMain:deleteMap()
     if TornadoRecovery and TornadoRecovery.deleteMap then TornadoRecovery:deleteMap() end
     if TornadoHusbandry then TornadoHusbandry:deleteMap() end
     if TornadoTraffic then TornadoTraffic:deleteMap() end
+    if TornadoWildlife then TornadoWildlife:deleteMap() end
     if TornadoClimate then TornadoClimate:deleteMap() end
     if TornadoOutbreak then TornadoOutbreak:deleteMap() end
     if TornadoEffects then TornadoEffects:deleteMap() end
@@ -168,6 +173,7 @@ function TornadoMain:update(dt)
     if TornadoEffects then TornadoEffects:update(dt) end
     if TornadoSFX then TornadoSFX:update(dt) end
     if TornadoTraffic then TornadoTraffic:update(dt) end
+    if TornadoWildlife then TornadoWildlife:update(dt) end
     if TornadoOutbreak then TornadoOutbreak:update(dt) end
     if TornadoCompass then TornadoCompass:update(dt) end
 

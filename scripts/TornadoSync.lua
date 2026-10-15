@@ -98,6 +98,9 @@ TornadoSync.SETTINGS = {
     -- t_set traffic
     fieldSetting(function() return TornadoTraffic end, "isEnabled", "b"),
     fieldSetting(function() return TornadoTraffic end, "bufferDistance", "f"),
+    -- t_set wildlife
+    fieldSetting(function() return TornadoWildlife end, "isEnabled", "b"),
+    fieldSetting(function() return TornadoWildlife end, "fleeDistance", "f"),
     -- t_set climate
     fieldSetting(function() return TornadoClimate end, "isEnabled", "b"),
     fieldSetting(function() return TornadoClimate end, "regionSetting", "s"),
@@ -229,7 +232,7 @@ function TornadoSync:isGameplayCommand(method, a, b)
     if method == "cmdSet" then
         if a == nil or LOCAL_SET_MODULES[a] then return false end
         if a == "cargo" and b == "verbose" then return false end
-        if (a == "traffic" or a == "climate") and (b == "status" or b == "list") then return false end
+        if (a == "traffic" or a == "climate" or a == "wildlife") and (b == "status" or b == "list") then return false end
         return true
     end
     return false

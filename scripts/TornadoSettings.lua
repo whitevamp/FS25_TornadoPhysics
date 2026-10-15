@@ -118,6 +118,15 @@ function TornadoSettings:resetToDefaults(category)
         end
     end
 
+    -- RESET Wildlife
+    if TornadoWildlife then
+        if category == "all" or category == "wildlife" then
+            TornadoWildlife.isEnabled = true
+            TornadoWildlife.fleeDistance = 150.0
+            print("TORNADO RESET: Wildlife defaults restored.")
+        end
+    end
+
     -- RESET Real-life climate mode
     if TornadoClimate then
         if category == "all" or category == "climate" then
@@ -204,6 +213,10 @@ function TornadoSettings:createDefaultXML()
     -- 13. AI TRAFFIC ROADBLOCKS
     setXMLBool(xmlId, "TornadoPhysics.traffic.enabled", true)
     setXMLFloat(xmlId, "TornadoPhysics.traffic.bufferDistance", 40.0)
+
+    -- WILDLIFE
+    setXMLBool(xmlId, "TornadoPhysics.wildlife.enabled", true)
+    setXMLFloat(xmlId, "TornadoPhysics.wildlife.fleeDistance", 150.0)
 
     -- 14. REAL-LIFE CLIMATE MODE
     setXMLBool(xmlId, "TornadoPhysics.climate.enabled", false)
@@ -325,6 +338,12 @@ function TornadoSettings:loadFromXML()
         TornadoTraffic.bufferDistance = getXMLFloat(xmlId, "TornadoPhysics.traffic.bufferDistance") or TornadoTraffic.bufferDistance
     end
 
+    if TornadoWildlife then
+        local wildlifeEnabled = getXMLBool(xmlId, "TornadoPhysics.wildlife.enabled")
+        if wildlifeEnabled ~= nil then TornadoWildlife.isEnabled = wildlifeEnabled end
+        TornadoWildlife.fleeDistance = getXMLFloat(xmlId, "TornadoPhysics.wildlife.fleeDistance") or TornadoWildlife.fleeDistance
+    end
+
     if TornadoClimate then
         local climateEnabled = getXMLBool(xmlId, "TornadoPhysics.climate.enabled")
         if climateEnabled ~= nil then TornadoClimate.isEnabled = climateEnabled end
@@ -442,6 +461,11 @@ function TornadoSettings:saveToXML()
     if TornadoTraffic then
         setXMLBool(xmlId, "TornadoPhysics.traffic.enabled", TornadoTraffic.isEnabled)
         setXMLFloat(xmlId, "TornadoPhysics.traffic.bufferDistance", TornadoTraffic.bufferDistance)
+    end
+
+    if TornadoWildlife then
+        setXMLBool(xmlId, "TornadoPhysics.wildlife.enabled", TornadoWildlife.isEnabled)
+        setXMLFloat(xmlId, "TornadoPhysics.wildlife.fleeDistance", TornadoWildlife.fleeDistance)
     end
 
     if TornadoClimate then

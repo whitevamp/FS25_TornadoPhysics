@@ -151,12 +151,17 @@
         <text name="tp_husbandry" text="Tödlichkeit für Tiere"/>
         <text name="tp_tip_husbandry" text="Tornados können Tiere auf Weiden töten, die nicht vollständig im Stall sind."/>
         <text name="tp_immunity" text="Schutzzeit nach Treffer"/>
-        <text name="tp_tip_immunity" text="Schutzzeit einer Weide, nachdem sie getroffen wurde."/>
+        <text name="tp_tip_immunity" text="Schutzzeit einer Weide, nachdem sie getroffen wurde, für eine 2-km-Karte. Größere Karten verlängern sie (4 km = 2x, 8 km = 4x)."/>
         <text name="tp_sec_traffic" text="Straßenverkehr"/>
         <text name="tp_traffic" text="Straßensperren"/>
-        <text name="tp_tip_traffic" text="Der KI-Straßenverkehr hält vor dem Tornado an und wartet (wie an einer roten Ampel). Autos, die schon in der Zone sind, fahren heraus."/>
+        <text name="tp_tip_traffic" text="KI-Straßenverkehr und Fußgänger halten vor dem Tornado an und warten (wie an einer roten Ampel). Autos und Personen, die schon in der Zone sind, verlassen sie."/>
         <text name="tp_traffic_buffer" text="Haltabstand"/>
-        <text name="tp_tip_traffic_buffer" text="Wie weit außerhalb des Tornadoradius Autos halten. Mit dem Gefahrenring (Reiter Effekte) erscheinen die Sperren als rote Pfosten."/>
+        <text name="tp_tip_traffic_buffer" text="Wie weit außerhalb des Tornadoradius Autos und Fußgänger halten. Mit dem Gefahrenring (Reiter Effekte) erscheinen die Sperren als rote Pfosten (gelb für Fußgänger)."/>
+        <text name="tp_sec_wildlife" text="Wildtiere"/>
+        <text name="tp_wildlife" text="Wildtiere fliehen vor dem Tornado"/>
+        <text name="tp_tip_wildlife" text="Vögel, Rehe, Wildschweine und andere Wildtiere laufen oder fliegen vor dem Tornado davon; erfasste Tiere verschwinden. Der Hofhund läuft nach Hause zu seiner Hundehütte."/>
+        <text name="tp_wildlife_distance" text="Fluchtabstand"/>
+        <text name="tp_tip_wildlife_distance" text="Wie weit außerhalb des Tornadoradius Tiere zu fliehen beginnen."/>
         <text name="tp_sec_overlays" text="Einblendungen"/>
         <text name="tp_hud" text="Telemetrie-HUD"/>
         <text name="tp_tip_hud" text="Physik-Telemetrie über jedem erfassten Objekt."/>

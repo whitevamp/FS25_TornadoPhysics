@@ -476,6 +476,20 @@
                     </MultiTextOption>
                     <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_traffic_buffer"/>
                 </Bitmap>
+
+                <Text profile="fs25_settingsSectionHeader" name="sectionHeader" text="$l10n_tp_sec_wildlife"/>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <BinaryOption profile="fs25_settingsBinaryOption" id="modWildlife" onClick="onClickBinary">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_wildlife"/>
+                    </BinaryOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_wildlife"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="modWildlifeDistance" onClick="onClickNumber">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_wildlife_distance"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_wildlife_distance"/>
+                </Bitmap>
             </ScrollingLayout>
             <Bitmap profile="fs25_settingsTooltipSeparator"/>
         </GuiElement>

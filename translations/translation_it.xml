@@ -151,12 +151,17 @@
         <text name="tp_husbandry" text="Letalità per gli animali"/>
         <text name="tp_tip_husbandry" text="I tornado possono uccidere gli animali nei pascoli non completamente al chiuso."/>
         <text name="tp_immunity" text="Immunità dopo l'impatto"/>
-        <text name="tp_tip_immunity" text="Tempo di immunità di un pascolo dopo essere stato colpito."/>
+        <text name="tp_tip_immunity" text="Tempo di immunità di un pascolo dopo essere stato colpito, per una mappa di 2 km. Le mappe più grandi lo allungano (4 km = 2x, 8 km = 4x)."/>
         <text name="tp_sec_traffic" text="Traffico stradale"/>
         <text name="tp_traffic" text="Blocchi stradali"/>
-        <text name="tp_tip_traffic" text="Il traffico IA si ferma e attende (come a un semaforo rosso) prima di entrare nel tornado. Le auto già nella zona ne escono."/>
+        <text name="tp_tip_traffic" text="Il traffico IA e i pedoni si fermano e attendono (come a un semaforo rosso) prima di entrare nel tornado. Auto e persone già nella zona ne escono."/>
         <text name="tp_traffic_buffer" text="Distanza di arresto"/>
-        <text name="tp_tip_traffic_buffer" text="Quanto fuori dal raggio del tornado si fermano le auto. Attiva l'anello di pericolo (scheda Effetti) per vedere i blocchi come paletti rossi."/>
+        <text name="tp_tip_traffic_buffer" text="Quanto fuori dal raggio del tornado si fermano auto e pedoni. Attiva l'anello di pericolo (scheda Effetti) per vedere i blocchi come paletti rossi (gialli per i pedoni)."/>
+        <text name="tp_sec_wildlife" text="Fauna selvatica"/>
+        <text name="tp_wildlife" text="La fauna fugge dal tornado"/>
+        <text name="tp_tip_wildlife" text="Uccelli, cervi, cinghiali e altri animali selvatici scappano dal tornado correndo o volando; quelli che cattura scompaiono. Il cane della fattoria torna alla sua cuccia."/>
+        <text name="tp_wildlife_distance" text="Distanza di fuga"/>
+        <text name="tp_tip_wildlife_distance" text="Quanto fuori dal raggio del tornado gli animali iniziano a fuggire."/>
         <text name="tp_sec_overlays" text="Overlay"/>
         <text name="tp_hud" text="HUD telemetria"/>
         <text name="tp_tip_hud" text="Etichette di telemetria fisica sopra ogni oggetto tracciato."/>

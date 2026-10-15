@@ -151,12 +151,17 @@
         <text name="tp_husbandry" text="Śmiertelność zwierząt"/>
         <text name="tp_tip_husbandry" text="Tornada mogą zabijać zwierzęta na pastwiskach, które nie są całkowicie zadaszone."/>
         <text name="tp_immunity" text="Odporność po uderzeniu"/>
-        <text name="tp_tip_immunity" text="Czas odporności pastwiska po uderzeniu."/>
+        <text name="tp_tip_immunity" text="Czas odporności pastwiska po uderzeniu, dla mapy 2 km. Większe mapy go wydłużają (4 km = 2x, 8 km = 4x)."/>
         <text name="tp_sec_traffic" text="Ruch drogowy"/>
         <text name="tp_traffic" text="Blokady drogowe"/>
-        <text name="tp_tip_traffic" text="Ruch AI zatrzymuje się i czeka (jak na czerwonym świetle) przed wjazdem w tornado. Auta już w strefie z niej wyjeżdżają."/>
+        <text name="tp_tip_traffic" text="Ruch AI i piesi zatrzymują się i czekają (jak na czerwonym świetle) przed wejściem w tornado. Auta i ludzie już w strefie ją opuszczają."/>
         <text name="tp_traffic_buffer" text="Odległość zatrzymania"/>
-        <text name="tp_tip_traffic_buffer" text="Jak daleko poza promieniem tornada zatrzymują się auta. Włącz pierścień zagrożenia (zakładka Efekty), by zobaczyć blokady jako czerwone słupki."/>
+        <text name="tp_tip_traffic_buffer" text="Jak daleko poza promieniem tornada zatrzymują się auta i piesi. Włącz pierścień zagrożenia (zakładka Efekty), by zobaczyć blokady jako czerwone słupki (żółte dla pieszych)."/>
+        <text name="tp_sec_wildlife" text="Dzikie zwierzęta"/>
+        <text name="tp_wildlife" text="Zwierzęta uciekają przed tornadem"/>
+        <text name="tp_tip_wildlife" text="Ptaki, sarny, dziki i inne dzikie zwierzęta uciekają przed tornadem; złapane przez nie znikają. Pies z farmy biegnie do swojej budy."/>
+        <text name="tp_wildlife_distance" text="Odległość ucieczki"/>
+        <text name="tp_tip_wildlife_distance" text="Jak daleko poza promieniem tornada zwierzęta zaczynają uciekać."/>
         <text name="tp_sec_overlays" text="Nakładki"/>
         <text name="tp_hud" text="HUD telemetrii"/>
         <text name="tp_tip_hud" text="Etykiety telemetrii fizyki nad każdym śledzonym obiektem."/>

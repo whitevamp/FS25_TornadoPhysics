@@ -1,5 +1,5 @@
 ---@class TornadoPageModules
----@description Modules tab: mirrors t_set destruction / recovery / mapui / cargo / husbandry / traffic.
+---@description Modules tab: mirrors t_set destruction / recovery / mapui / cargo / husbandry / traffic / wildlife.
 
 local Page = TornadoMenuPage
 local console = TornadoMenuPage.console
@@ -23,6 +23,10 @@ end
 
 local function hasTraffic()
     return TornadoTraffic ~= nil
+end
+
+local function hasWildlife()
+    return TornadoWildlife ~= nil
 end
 
 --- Number row routed through `t_set cargo <sub> <value>`.
@@ -178,6 +182,31 @@ TornadoPageModules = TornadoMenuPage.new("Modules", "Modules", {
         end,
         set = function(value)
             return console("cmdSet", "traffic", "buffer", value)
+        end,
+    },
+
+    -- Wildlife
+    {
+        id = "modWildlife",
+        kind = Page.KIND_BOOL,
+        requires = hasWildlife,
+        get = function()
+            return TornadoWildlife.isEnabled
+        end,
+        set = function(value)
+            return console("cmdSet", "wildlife", value and "on" or "off")
+        end,
+    },
+    {
+        id = "modWildlifeDistance",
+        kind = Page.KIND_NUMBER,
+        requires = hasWildlife,
+        min = 0, max = 500, step = 25, format = "%d m",
+        get = function()
+            return TornadoWildlife.fleeDistance
+        end,
+        set = function(value)
+            return console("cmdSet", "wildlife", "distance", value)
         end,
     },
 })

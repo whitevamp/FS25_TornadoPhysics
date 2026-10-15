@@ -151,12 +151,17 @@
         <text name="tp_husbandry" text="Dodelijk voor dieren"/>
         <text name="tp_tip_husbandry" text="Tornado's kunnen dieren doden op weides die niet volledig binnen liggen."/>
         <text name="tp_immunity" text="Immuniteit na treffer"/>
-        <text name="tp_tip_immunity" text="Immuniteitstijd van een weide nadat die is geraakt."/>
+        <text name="tp_tip_immunity" text="Immuniteitstijd van een weide nadat die is geraakt, voor een kaart van 2 km. Grotere kaarten verlengen die (4 km = 2x, 8 km = 4x)."/>
         <text name="tp_sec_traffic" text="Wegverkeer"/>
         <text name="tp_traffic" text="Wegversperringen"/>
-        <text name="tp_tip_traffic" text="AI-verkeer stopt en wacht (zoals bij rood licht) voordat het de tornado in rijdt. Auto's die al in de zone zijn, rijden eruit."/>
+        <text name="tp_tip_traffic" text="AI-verkeer en voetgangers stoppen en wachten (zoals bij rood licht) voordat ze de tornado in gaan. Auto's en mensen die al in de zone zijn, verlaten die."/>
         <text name="tp_traffic_buffer" text="Stopafstand"/>
-        <text name="tp_tip_traffic_buffer" text="Hoe ver buiten de tornadostraal auto's stoppen. Zet de gevarenring aan (tabblad Effecten) om de versperringen als rode palen te zien."/>
+        <text name="tp_tip_traffic_buffer" text="Hoe ver buiten de tornadostraal auto's en voetgangers stoppen. Zet de gevarenring aan (tabblad Effecten) om de versperringen als rode palen te zien (geel voor voetgangers)."/>
+        <text name="tp_sec_wildlife" text="Wilde dieren"/>
+        <text name="tp_wildlife" text="Wilde dieren vluchten voor de tornado"/>
+        <text name="tp_tip_wildlife" text="Vogels, herten, wilde zwijnen en andere wilde dieren rennen of vliegen weg van de tornado; dieren die hij grijpt verdwijnen. De boerderijhond rent naar zijn hondenhok."/>
+        <text name="tp_wildlife_distance" text="Vluchtafstand"/>
+        <text name="tp_tip_wildlife_distance" text="Hoe ver buiten de tornadostraal dieren beginnen te vluchten."/>
         <text name="tp_sec_overlays" text="Overlays"/>
         <text name="tp_hud" text="Telemetrie-HUD"/>
         <text name="tp_tip_hud" text="Fysica-telemetrie boven elk gevolgd object."/>

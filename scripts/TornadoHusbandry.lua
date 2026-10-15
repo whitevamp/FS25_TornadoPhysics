@@ -1,5 +1,5 @@
 ---@class TornadoHusbandry
----@version 2.0 (PASTURE-ONLY)
+---@version 2.1 (PASTURE AREA HIT TEST, MAP-SCALED IMMUNITY)
 ---@description Only applies livestock losses to outdoor pens/pastures (fence/meadow), skipping indoor barns.
 
 TornadoHusbandry = {}
@@ -33,18 +33,36 @@ function TornadoHusbandry:loadMap(name)
 
     if TornadoDebug then
         TornadoDebug:log("--------------------------------------------------")
-        TornadoDebug:log("TORNADO HUSBANDRY V2.0: PASTURE-ONLY")
+        TornadoDebug:log("TORNADO HUSBANDRY V2.1: PASTURE-ONLY")
         TornadoDebug:log("--------------------------------------------------")
     end
+end
 
-    -- Get the dynamically calculated immunity, but only if user hasn't set a custom value
-    if TornadoPhysics and TornadoPhysics.dynamicImmunityMS and not self.customImmunitySet then
-        self.IMMUNITY_DURATION = TornadoPhysics.dynamicImmunityMS
-        if TornadoDebug then
-            TornadoDebug:log(string.format("TORNADO HUSBANDRY: Using dynamic base immunity of %.1fs",
-                self.IMMUNITY_DURATION / 1000))
-        end
+--- Immunity actually used: the setting is for a standard 2 km map, bigger maps scale it up because the
+--- tornado needs longer to cross a pasture there (4 km map = 2x, 8 km = 4x ...).
+function TornadoHusbandry:getImmunityMs()
+    local base = tonumber(self.IMMUNITY_DURATION) or 120000
+    local scale = 1.0
+    if TornadoPhysics ~= nil and TornadoPhysics.getMapScaleFactor ~= nil then
+        scale = TornadoPhysics:getMapScaleFactor() or 1.0
     end
+    return base * math.max(scale, 1.0)
+end
+
+--- true if a circle (tornado / test radius) touches the husbandry's outdoor area.
+--- Uses the pasture's real fence outline; the placeable's origin is often at the barn, far from the
+--- pasture, so origin distance missed tornadoes crossing the pasture and hit pastures the tornado only
+--- passed on the barn side. Falls back to the origin when the game has no outline.
+function TornadoHusbandry:getIsPastureInRange(placeable, x, z, radius)
+    local polygon = nil
+    if placeable.getOutdoorContourPolygon ~= nil then
+        polygon = placeable:getOutdoorContourPolygon()
+    end
+    if polygon ~= nil and polygon.getIsCircleIntersecting ~= nil and polygon.vertices ~= nil and #polygon.vertices >= 6 then
+        return polygon:getIsCircleIntersecting(x, z, radius)
+    end
+    local bX, _, bZ = getWorldTranslation(placeable.rootNode)
+    return MathUtil.vector2Length(x - bX, z - bZ) < radius
 end
 
 function TornadoHusbandry:deleteMap()
@@ -141,23 +159,19 @@ function TornadoHusbandry:runCycle(dt, tX, tY, tZ, radius)
     self.scanTimer = 0
 
     local currentTime = g_currentMission.time
-    local radiusSq = radius * radius
 
     if g_currentMission.placeableSystem and g_currentMission.placeableSystem.placeables then
         for _, placeable in pairs(g_currentMission.placeableSystem.placeables) do
             if placeable.spec_husbandry and placeable.rootNode ~= nil then
-                -- Distance check (compute once per placeable)
-                local bX, _, bZ = getWorldTranslation(placeable.rootNode)
-                local dx, dz = (tX - bX), (tZ - bZ)
-                local distSq = dx * dx + dz * dz
+                local inRange = self:getIsPastureInRange(placeable, tX, tZ, radius)
 
                 -- Optional debug: log any husbandry within radius so you can verify pasture detection.
-                if self.DEBUG_PASTURE_FLAGS and distSq < radiusSq then
+                if self.DEBUG_PASTURE_FLAGS and inRange then
                     self:debugPastureFlags(placeable)
                 end
 
                 -- Only apply tornado livestock losses to outdoor pastures/pens (skip indoor barns).
-                if distSq < radiusSq and self:isOutdoorPasture(placeable) then
+                if inRange and self:isOutdoorPasture(placeable) then
                     self:checkPasture(placeable, currentTime)
                 end
             end
@@ -167,7 +181,7 @@ end
 
 -- Called only for outdoor pastures already inside the tornado radius.
 function TornadoHusbandry:checkPasture(placeable, currentTime)
-    local immunity = tonumber(self.IMMUNITY_DURATION) or 120000
+    local immunity = self:getImmunityMs()
     local lastHit = self.victimCache[placeable] or 0
     if (currentTime - lastHit) < immunity then
         return
@@ -215,11 +229,11 @@ function TornadoHusbandry:executeKill(placeable)
         return 0
     end
 
+    if not g_currentMission:getIsServer() then return 0 end
+
     local clusters = nil
-    if placeable.spec_husbandry.getClusters then
-        clusters = placeable.spec_husbandry:getClusters()
-    elseif placeable.spec_husbandry.clusters then
-        clusters = placeable.spec_husbandry.clusters
+    if placeable.getClusters ~= nil then
+        clusters = placeable:getClusters()
     end
 
     if clusters == nil then return 0 end
@@ -245,7 +259,7 @@ function TornadoHusbandry:executeKill(placeable)
 
         if count > 0 then
             local take = math.min(count, targetKill)
-            if g_currentMission:getIsServer() and cluster.changeNumAnimals then
+            if cluster.changeNumAnimals then
                 cluster:changeNumAnimals(-take)
                 totalKilled = totalKilled + take
                 targetKill = targetKill - take
@@ -253,8 +267,13 @@ function TornadoHusbandry:executeKill(placeable)
         end
     end
 
-    if totalKilled > 0 and placeable.spec_husbandry.updateVisuals then
-        placeable.spec_husbandry:updateVisuals()
+    -- Apply now (same as selling animals): empty groups are removed, the animal count and the visible
+    -- animals update, and every player is told.
+    if totalKilled > 0 and placeable.getClusterSystem ~= nil then
+        local clusterSystem = placeable:getClusterSystem()
+        if clusterSystem ~= nil and clusterSystem.updateNow ~= nil then
+            clusterSystem:updateNow()
+        end
     end
 
     return totalKilled
@@ -306,7 +325,7 @@ function TornadoHusbandry:debugKillTest()
                 local bX, _, bZ = getWorldTranslation(placeable.rootNode)
                 local dist = MathUtil.vector2Length(px - bX, pz - bZ)
 
-                if dist < 60.0 then
+                if self:getIsPastureInRange(placeable, px, pz, 60.0) then
                     local name = (placeable.getName and placeable:getName()) or "Unknown Husbandry"
                     local outdoor = self:isOutdoorPasture(placeable)
 

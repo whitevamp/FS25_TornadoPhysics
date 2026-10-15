@@ -151,12 +151,17 @@
         <text name="tp_husbandry" text="Létalité pour les animaux"/>
         <text name="tp_tip_husbandry" text="Les tornades peuvent tuer les animaux des pâturages qui ne sont pas entièrement à l'intérieur."/>
         <text name="tp_immunity" text="Immunité après impact"/>
-        <text name="tp_tip_immunity" text="Durée d'immunité d'un pâturage après avoir été touché."/>
+        <text name="tp_tip_immunity" text="Durée d'immunité d'un pâturage après avoir été touché, pour une carte de 2 km. Les cartes plus grandes l'allongent (4 km = 2x, 8 km = 4x)."/>
         <text name="tp_sec_traffic" text="Circulation routière"/>
         <text name="tp_traffic" text="Barrages routiers"/>
-        <text name="tp_tip_traffic" text="La circulation IA s'arrête et attend (comme à un feu rouge) avant d'entrer dans la tornade. Les voitures déjà dans la zone en sortent."/>
+        <text name="tp_tip_traffic" text="La circulation IA et les piétons s'arrêtent et attendent (comme à un feu rouge) avant d'entrer dans la tornade. Les voitures et personnes déjà dans la zone en sortent."/>
         <text name="tp_traffic_buffer" text="Distance d'arrêt"/>
-        <text name="tp_tip_traffic_buffer" text="Distance au-delà du rayon de la tornade où les voitures s'arrêtent. Activez l'anneau de danger (onglet Effets) pour voir les barrages en poteaux rouges."/>
+        <text name="tp_tip_traffic_buffer" text="Distance au-delà du rayon de la tornade où voitures et piétons s'arrêtent. Activez l'anneau de danger (onglet Effets) pour voir les barrages en poteaux rouges (jaunes pour les piétons)."/>
+        <text name="tp_sec_wildlife" text="Faune sauvage"/>
+        <text name="tp_wildlife" text="La faune fuit la tornade"/>
+        <text name="tp_tip_wildlife" text="Oiseaux, cerfs, sangliers et autres animaux sauvages fuient la tornade en courant ou en volant ; ceux qu'elle attrape disparaissent. Le chien de la ferme rentre à sa niche."/>
+        <text name="tp_wildlife_distance" text="Distance de fuite"/>
+        <text name="tp_tip_wildlife_distance" text="Distance au-delà du rayon de la tornade à partir de laquelle les animaux fuient."/>
         <text name="tp_sec_overlays" text="Superpositions"/>
         <text name="tp_hud" text="HUD de télémétrie"/>
         <text name="tp_tip_hud" text="Étiquettes de télémétrie physique au-dessus de chaque objet suivi."/>
