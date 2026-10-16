@@ -92,6 +92,21 @@ Netherlands (CropInsurance_NL.xml)
 - Rates are estimates, not official figures. Not affiliated with or
   endorsed by any of them.
 
+Spain (CropInsurance_ES.xml)
+- Spanish crop insurance rules from the 47th Plan de Seguros Agrarios
+  Combinados (Boletin Oficial del Estado) and ENESA; figures from
+  Agroseguro's annual report 2024 and "Sistema espanol de Seguros
+  Agrarios Combinados".
+- Rates are estimates, not official figures. Not affiliated with or
+  endorsed by ENESA or Agroseguro.
+
+Italy (CropInsurance_IT.xml)
+- Italian crop insurance rules from the Piano di gestione dei rischi in
+  agricoltura 2026 (Ministero dell'agricoltura, della sovranita
+  alimentare e delle foreste, MASAF); figures from ISMEA.
+- Rates are estimates, not official figures. Not affiliated with or
+  endorsed by MASAF or ISMEA.
+
 Germany (CropInsurance_DE.xml)
 - German crop insurance rules from the Bavarian State Ministry for
   Food, Agriculture, Forestry and Tourism (StMELF) and the state

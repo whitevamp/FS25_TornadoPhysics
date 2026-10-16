@@ -103,8 +103,9 @@ Rules:
 
 ## 6. Policies
 
-All policies are **per farm**. Only the farm manager (`Farm:isUserFarmManager`) or a server admin
-can buy, change or cancel them – the same rule as other farm-finance actions.
+All policies are **per farm**. Who may buy, change, renew or cancel them is a setting (§12, "Policy
+managers"): **farm manager + server admin** (default – `Farm:isUserFarmManager`, the same rule as other
+farm-finance actions) or **server admin only** (for servers that want the admin to run insurance).
 
 ### 6.1 Equipment policy
 
@@ -164,6 +165,34 @@ Based on US federal crop insurance (USDA Risk Management Agency).
 
 **Not insurable:** crops with no sell point on the current map (the UI explains why); fields the farm
 does not own.
+
+### 6.3 Group (co-op) policies and renewal bonus
+
+Real model: Spain's *contratación colectiva* – a cooperative or farmers' organisation takes out the
+policy and its members join under it; each member gets **+6 points** of subsidy. Each member still has
+its own fields, own claims and own payouts; the group is administrative, not a shared risk pool.
+
+**In the mod (multiplayer):**
+- A farm creates a **co-op group** for a crop policy; other farms join it. Joining needs the consent of
+  each joining farm (its policy manager, see §6).
+- Members get the **group discount** while the group has at least `Minimum members` farms (default 2).
+  Mode setting: **flat** (default, like Spain: every member gets the same discount) or **per member**
+  (discount grows by a step for every extra farm, up to a cap – an optional "more neighbours, cheaper"
+  rule).
+- Claims, payouts, deductibles and inbox messages stay **per farm**.
+- Joining / leaving takes effect at the **next policy year** (no joining after a storm warning). A deleted
+  farm leaves at once; if fewer than the minimum remain, the others fall back to the individual price at
+  the next renewal (inbox message).
+
+**Single player:** the same discount through a **local co-op membership** (toggle per farm) with a small
+yearly membership fee, so single-player farms get the "group" price without other players.
+
+**Renewal (continuity) bonus:** renewing the same cover without a gap gives a small discount (Spain:
++5 points, +7 for herbaceous crops, olive, vine and forage). Lost after a year without the cover.
+
+**Per country:** Spain uses its real values (group +6, continuity +5 / +7). The other countries have no
+real equivalent, so they use the setting defaults; the data files can carry their own `groupDiscount` /
+`continuityDiscount` later if a real one is found.
 
 ## 7. Equipment claims
 
@@ -344,6 +373,13 @@ Every money value is formatted in the receiving player's currency (`TornadoText.
 | Crop base rates / subsidy table | from RMA data | Server (data file) |
 | Waiting periods / delays | §10 | Server |
 | No-claims discount strength | small | Server |
+| Policy managers | farm manager + admin / admin only | Server |
+| Group (co-op) policies | ON | Server |
+| Group discount | country value (Spain 6 points), else 5 % | Server |
+| Group discount mode | flat / per member (step 1 %, cap 10 %) | Server |
+| Group minimum members | 2 | Server |
+| Local co-op membership (single player) | ON, fee to decide | Server |
+| Continuity (renewal) bonus | country value (Spain 5 / 7 points), else 3 % | Server |
 
 Policies themselves are per-farm data, not settings.
 
@@ -364,7 +400,7 @@ sell points, vehicle sell prices), so price-changing mods are covered without de
 - **Crop insurance data** – **done:** `tools/build_crop_insurance.py` (standard library only, same
   pattern as the climate builders) turns the USDA RMA *Summary of Business* files into
   `DB/CropInsurance_US.xml` (~86 KB). Public-domain US government data; credit RMA in modDesc / README.
-  Canada: §13.3. Poland: §13.4. Brazil: §13.5. Germany: §13.6. France: §13.7. Netherlands: §13.8.
+  Canada: §13.3. Poland: §13.4. Brazil: §13.5. Germany: §13.6. France: §13.7. Netherlands: §13.8. Spain: §13.9. Italy: §13.10.
 
 ### 13.1 RMA source data and processing rules
 
@@ -559,6 +595,49 @@ Nederland) and the 2024 Ecorys / WUR evaluation of the Subsidieregeling Brede We
 range from Agriver. Rates are estimates, not official figures; not affiliated with or endorsed by any of
 them."*
 
+### 13.9 Spain: `DB/CropInsurance_ES.xml`
+
+Spanish crop insurance is sold through one pool (**Agroseguro**) under a yearly state plan; **ENESA** and the
+regions pay part of the premium. Instead of coverage levels, farmers pick a **module**. The builder's
+`SPAIN` section:
+
+| Item | Value | Source |
+|---|---|---|
+| Modules | `1` whole farm, catastrophic only (single **75 %** subsidy); `2` all climatic risks per plot; `P` named perils (hail, fire …). Module rate factors 1 = 0.7, 2 = 1.0, P = 0.35 × (**estimates**; bananas sell P as their full cover, factor 1) | 47th plan, BOE-A-2025-27098 |
+| Base subsidy (2026) | herbaceous crops 22 % (module 2) / 5 % (P; rice and beans 8 %); olive 22 / 8; wine grape 22 (SB+GA1 31) / 8; fruit, citrus, vegetables, industrial, forage 20 / 8; bananas P 25 % | same, Anexo I |
+| Additional | young farmer +29 (P +27, herbaceous P +22.5); professional / priority farm +19 (17 / 12.5); collective +6; continuity +5 (+7 herbaceous, olive, vine, forage); new contract +3; shared ownership +5; risk practices +2; instalments +1. Module 2 floors: professionals ≥ 50 %, young ≥ 45 % in total | same |
+| Limits | ENESA + regions ≤ **75 %**; rates above 20 % subsidised only up to 20 %; €60 fixed deduction per farmer; Canary Islands base × 1.65 | same |
+| Modulation | withhold 10 % of the subsidy up to €5 000, 25 % (5 – 10 k), 35 % (10 – 20 k), 45 % (20 – 30 k), 50 % above €30 000; not for associations, the producer-organisation fixed-cost line, or farms wholly in the Canaries | same |
+| History 2014 – 2023 | premium €586 M → €967 M, subsidy €241 M → €486 M (50.25 %), sum insured €11.1 bn → €16.7 bn, claims €497 M → €1 241 M (all lines) | Agroseguro "Sistema español …" 2024 |
+| Claims by cause (2023, agricultural) | drought / no emergence 42.5 %, hail 27 %, other 10.8 %, rain / flood 7.3 %, wind 5.6 %, frost 5.0 %, poor fruit set 1.6 % | same |
+| Rates | per crop group, **estimates**, ×0.952 so the capital-weighted average is **6.25 %** = 2024 group A + B premium (€935 M, minus an estimated 10 % livestock) ÷ agricultural sum insured (74.08 % of €18.17 bn). Wheat module 2 3.8 %, wine grape 7.6 %, bananas 7.6 % | Agroseguro annual report 2024, builder |
+
+Regional (comunidad autónoma) top-ups are not modelled one by one – they only fill the gap up to the 75 % cap.
+
+**Credit text:** *"Spanish crop insurance rules from the 47th Plan de Seguros Agrarios Combinados (BOE) and
+ENESA; figures from Agroseguro's annual report 2024 and 'Sistema español de Seguros Agrarios Combinados'.
+Rates are estimates, not official figures; not affiliated with or endorsed by ENESA or Agroseguro."*
+
+### 13.10 Italy: `DB/CropInsurance_IT.xml`
+
+Italian subsidised policies (*assicurazioni agevolate*) follow the yearly **PGRA** (MASAF). The farmer
+builds the policy from **peril groups** – catastrophic (flood, drought, frost), frequency (snow, heavy
+rain, hail, strong wind), accessory (hot wind / sunburn, temperature swing) – into one of six types. The
+**AgriCat** fund (financed from direct payments) pays catastrophic losses on top, also for uninsured farms.
+
+| Item | Value | Source |
+|---|---|---|
+| Policy types | a all risk, b catastrophic + ≥ 1 frequency, c frequency (≥ 3 perils), d catastrophic only: up to **70 %**; c with 1 – 2 frequency perils **65 %** (new 2026); f SMART simplified (quantitative loss only, ~50 % cheaper) fixed 70 %. Damage threshold **20 %** for all. Rate factors vs. type a (1 / 0.85 / 0.6 / 0.45 / 0.4 / 0.5) are **estimates** | PGRA 2026 (DM 22/12/2025), via Codima; ISMEA (SMART) |
+| AgriCat | uninsured or frequency-only farms: 20 % franchise, max 55 % indemnity, loss > 20 % of average production; with a catastrophic policy (franchise ≥ 40 %, limit ≥ 80 %) the fund adds franchise 10 % / limit 40 %; 2026 budget ~€253 M | same |
+| Budget 2026 | ~€300 M for subsidised policies | same |
+| 2025 totals | crops €7.09 bn insured (all €9.94 bn), 1 222 985 ha, 57 047 farms, average rate **8.95 %**; North 80 % of value; package C ~2/3 | ISMEA via Terra e Vita / Askanews |
+| Main crops | wine grape > €2 bn, rice €732 M, processing tomato €728 M, apples €535 M | same |
+| Rates | all-risk rate per crop group, **estimates**, ×1.497 so the value-weighted average of the sold mix (2/3 type c, 1/3 types a / b) equals 8.95 %. Wheat / rice 7.5 %, vine 15 %, fruit 21 % (all risk) | builder |
+
+**Credit text:** *"Italian crop insurance rules from the Piano di gestione dei rischi in agricoltura 2026
+(MASAF); figures from ISMEA. Rates are estimates, not official figures; not affiliated with or endorsed by
+MASAF or ISMEA."*
+
 ### 13.5 Brazil: `DB/CropInsurance_BR.xml`
 
 Built from MAPA's **PSR open data** (SISSER, https://dados.agricultura.gov.br/dataset/sisser3, Creative
@@ -597,6 +676,10 @@ product."*
 - Joining players get their farm's state in `TornadoSync:sendInitialState`.
 - Messages use key + parameters (`TornadoSync:sendMessage`) so each player reads them in their own
   language and currency.
+
+- **Group policies:** group state (members, policy, discount) is server-owned and saved with the
+  insurance state; every member farm receives the group's state, other farms only its name and size
+  (for the "join" list).
 
 ## 15. Integration with existing modules
 

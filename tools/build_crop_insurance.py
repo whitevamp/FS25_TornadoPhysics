@@ -126,6 +126,34 @@ config):
     the insured value (Agriver). No insured-area total is published, so there is no calibration.
 
 ----------------------------------------------------------------------------
+Spain (DB/CropInsurance_ES.xml)
+----------------------------------------------------------------------------
+Spanish crop insurance ("seguros agrarios combinados") is sold through one pool of insurers (Agroseguro)
+under a yearly state plan; ENESA (and the regions) pay part of the premium. The file holds (see the SPAIN
+config):
+
+  * Modules: "1" whole-farm catastrophic cover (single 75 % subsidy), "2" all climatic risks per plot,
+    "P" named perils (hail, fire, ...) - base subsidy per line and module from the 47th plan (2026).
+  * Additional subsidies (young farmer, professional, collective, continuity, ...), floors, the 75 % cap,
+    the 20 % rate cap and the progressive reduction ("modulacion") of large subsidies.
+  * National history 2014 - 2023 (premium, subsidy, sum insured, claims) and the 2023 claims by cause.
+  * Rates and sums insured per hectare: OUR ESTIMATES (isEstimate="true"), scaled so their capital-weighted
+    average equals the agricultural average implied by Agroseguro's 2024 totals.
+
+----------------------------------------------------------------------------
+Italy (DB/CropInsurance_IT.xml)
+----------------------------------------------------------------------------
+Italian subsidised policies ("assicurazioni agevolate") follow the yearly risk-management plan (PGRA): the
+farmer combines groups of perils (catastrophic, frequency, accessory) into one of six policy types, all with
+a 20 % damage threshold and up to 70 % public contribution. The AgriCat fund pays catastrophic losses
+(flood, frost, drought) on top - also for uninsured farms. The file holds (see the ITALY config):
+
+  * Peril groups and the six policy types with their contribution share; AgriCat rules.
+  * 2025 totals (insured value, hectares, farms, average rate 8.95 %) and the insured value of the main crops.
+  * Rates and sums insured per hectare: OUR ESTIMATES (isEstimate="true"), scaled so their capital-weighted
+    average equals ISMEA's 2025 average rate.
+
+----------------------------------------------------------------------------
 Brazil (DB/CropInsurance_BR.xml)
 ----------------------------------------------------------------------------
 Built from MAPA's PSR open data (SISSER, one row per subsidised policy, Creative Commons Attribution):
@@ -580,6 +608,183 @@ NETHERLANDS_GROUPS = {
     "vegetables": (10000,   0.060,     0.015),
     "grassland":  (1200,    0.040,     0.003),
     "fruit":      (25000,   0.080,     0.030),
+}
+
+# ============================================================================
+# SPAIN  -  47th Plan de Seguros Agrarios Combinados (2026) + Agroseguro figures
+# ============================================================================
+
+SPAIN_OUTPUT_XML = os.path.join(TOOLS_DIR, "..", "DB", "CropInsurance_ES.xml")
+
+# BOE-A-2025-27098 (47th plan, 2026). Base subsidy (share of the premium "base de calculo") per line and module;
+# module 1 always gets a single 75 %. Lines: groups below -> plan line.
+SPAIN_MODULE1_SUBSIDY = 0.75
+SPAIN_BASE_SUBSIDY = {
+    #              module 2  module P   plan line
+    "cereals":    (0.22,    0.05,     "Cultivos herbaceos extensivos"),
+    "maize":      (0.22,    0.05,     "Cultivos herbaceos extensivos"),
+    "sunflower":  (0.22,    0.05,     "Cultivos herbaceos extensivos"),
+    "rapeseed":   (0.22,    0.05,     "Cultivos herbaceos extensivos"),
+    "legumes":    (0.22,    0.08,     "Cultivos herbaceos extensivos (habas: P 8 %)"),
+    "rice":       (0.22,    0.08,     "Cultivos herbaceos extensivos (arroz: P 8 %)"),
+    "potatoes":   (0.20,    0.08,     "Hortalizas al aire libre primavera-verano"),
+    "sugarbeet":  (0.20,    0.08,     "Cultivos industriales no textiles"),
+    "cotton":     (0.20,    0.08,     "Cultivos industriales textiles"),
+    "vegetables": (0.20,    0.08,     "Hortalizas al aire libre"),
+    "forage":     (0.20,    0.08,     "Cultivos forrajeros"),
+    "vine":       (0.22,    0.08,     "Uva de vinificacion (SB+GA1+GA2: 22 %, SB+GA1: 31 %)"),
+    "fruit":      (0.20,    0.08,     "Fruticolas"),
+    "citrus":     (0.20,    0.08,     "Citricos"),
+    "olive":      (0.22,    0.08,     "Olivar"),
+    "banana":     (None,    0.25,     "Platanos (modules P and E only)"),
+}
+# Additional subsidies (percentage points on top of the base).
+SPAIN_ADDITIONAL = {
+    "youngFarmer":        {"module2": 0.29, "moduleP": 0.27, "moduleP_herbaceous": 0.225},
+    "professional":       {"module2": 0.19, "moduleP": 0.17, "moduleP_herbaceous": 0.125},  # also priority farms, PO members
+    "collective":         0.06,
+    "continuity":         0.05,   # 7 % for herbaceous, nuts, olive, wine grape, forage
+    "continuityHigh":     0.07,
+    "instalments":        0.01,
+    "riskPractices":      0.02,   # modules 2 / 3
+    "sharedOwnership":    0.05,
+    "newContract":        0.03,
+    "complementary":      0.06,
+}
+SPAIN_FLOORS = {"professional": 0.50, "youngFarmer": 0.45}    # module 2 / 3: total topped up to at least this
+SPAIN_MAX_SUBSIDY = 0.75            # ENESA + regions together
+SPAIN_RATE_CAP = 0.20               # rates above 20 % are only subsidised up to 20 %
+SPAIN_FIXED_DEDUCTION_EUR = 60      # per beneficiary
+SPAIN_CANARY_BASE_UPLIFT = 0.65     # base subsidy x 1.65 for farms on the Canary Islands
+# Progressive reduction of the subsidy per policy: share withheld from the part of the subsidy in each band.
+SPAIN_MODULATION = [(0, 5000, 0.10), (5000, 10000, 0.25), (10000, 20000, 0.35), (20000, 30000, 0.45),
+                    (30000, None, 0.50)]
+SPAIN_MODULATION_EXEMPT = "associative entities, fixed-cost line for producer organisations, farms wholly in the Canary Islands"
+
+# Agroseguro "Sistema espanol de Seguros Agrarios Combinados 2024": year -> (premium, subsidy ENESA + regions,
+# sum insured, claims) in M EUR, all lines (incl. livestock).
+SPAIN_HISTORY = {
+    2014: (586.34, 241.41, 11104.09, 496.81), 2015: (665.43, 270.50, 12113.45, 484.65),
+    2016: (706.56, 303.16, 12787.88, 485.69), 2017: (789.24, 317.50, 13770.34, 734.06),
+    2018: (758.16, 296.72, 14079.25, 738.30), 2019: (783.97, 313.90, 14257.72, 625.75),
+    2020: (797.82, 313.14, 15259.87, 616.20), 2021: (830.53, 341.09, 15672.28, 747.16),
+    2022: (868.48, 427.21, 16364.65, 793.33), 2023: (967.46, 486.10, 16748.24, 1241.21),
+}
+# Same source: agricultural claims by cause, 2023 (share of claims).
+SPAIN_CLAIM_CAUSES_2023 = {"DROUGHT": 0.4253, "HAIL": 0.2696, "OTHER": 0.1080, "HEAVY_RAIN": 0.0733,
+                           "WINDSTORM": 0.0555, "FROST": 0.0497, "POOR_FRUIT_SET": 0.0162, "FIRE": 0.0024}
+
+SPAIN_CROPS = {
+    "WHEAT": "cereals", "BARLEY": "cereals", "OAT": "cereals", "SORGHUM": "cereals",
+    "MAIZE": "maize", "SUNFLOWER": "sunflower", "CANOLA": "rapeseed",
+    "SOYBEAN": "legumes", "PEA": "legumes", "GREENBEAN": "vegetables",
+    "RICE": "rice", "RICELONGGRAIN": "rice",
+    "POTATO": "potatoes", "SUGARBEET": "sugarbeet", "COTTON": "cotton",
+    "CARROT": "vegetables", "PARSNIP": "vegetables", "REDBEET": "vegetables", "SPINACH": "vegetables",
+    "GRASS": "forage", "GRAPE": "vine", "OLIVE": "olive", "BANANA": "banana",
+    "DEFAULT": "cereals",
+}
+SPAIN_BORROWED = {"SORGHUM"}
+
+# Per crop group, OUR ESTIMATES: sum insured per ha (EUR, Spanish yields x prices), typical rate of the cover as
+# sold (before calibration) and the share of the agricultural sum insured (for the calibration).
+SPAIN_GROUPS = {
+    #              sumPerHa  rate    capitalShare
+    "cereals":    (900,     0.040,  0.20),
+    "maize":      (2600,    0.040,  0.04),
+    "sunflower":  (700,     0.045,  0.03),
+    "rapeseed":   (1100,    0.045,  0.01),
+    "legumes":    (700,     0.050,  0.01),
+    "rice":       (2500,    0.035,  0.01),
+    "potatoes":   (9000,    0.040,  0.02),
+    "sugarbeet":  (4000,    0.030,  0.005),
+    "cotton":     (2500,    0.050,  0.01),
+    "vegetables": (15000,   0.060,  0.15),
+    "forage":     (800,     0.050,  0.02),
+    "vine":       (3200,    0.080,  0.15),
+    "fruit":      (15000,   0.120,  0.15),
+    "citrus":     (10000,   0.060,  0.08),
+    "olive":      (2500,    0.050,  0.07),
+    "banana":     (30000,   0.080,  0.05),
+}
+# Module rate factors relative to the typical cover, OUR ESTIMATES: module P (named perils) is far cheaper,
+# module 1 (whole farm, catastrophic only) cheaper than module 2.
+SPAIN_MODULE_FACTORS = {"2": 1.0, "1": 0.7, "P": 0.35}
+
+# Calibration (Agroseguro annual report 2024): imputed premium of the agricultural + livestock lines (groups A + B)
+# 935.09 M EUR; agricultural share of the insured production 74.08 % of 18 173.39 M EUR. The livestock share of
+# the A + B premium is OUR ESTIMATE (10 %).
+SPAIN_CALIBRATION = {"premiumAB": 935.09e6, "livestockShare": 0.10, "insuredValue": 18173.39e6,
+                     "agriculturalShare": 0.7408, "areaHa": 5.98e6, "year": 2024}
+
+# ============================================================================
+# ITALY  -  PGRA 2026 (MASAF) + ISMEA figures
+# ============================================================================
+
+ITALY_OUTPUT_XML = os.path.join(TOOLS_DIR, "..", "DB", "CropInsurance_IT.xml")
+
+# Peril groups of the PGRA (unchanged since the 2015 plans).
+ITALY_PERILS = {
+    "catastrophic": ["FLOOD", "DROUGHT", "FROST"],                       # alluvione, siccita, gelo e brina
+    "frequency":    ["SNOW", "HEAVY_RAIN", "HAIL", "WINDSTORM"],         # eccesso di neve / pioggia, grandine, venti forti
+    "accessory":    ["HEAT_WIND", "TEMPERATURE_SWING"],                  # colpo di sole e vento caldo, sbalzo termico
+}
+ITALY_THRESHOLD = 0.20
+# PGRA 2026 policy types (crops): (id, required groups, public contribution). Type c: 70 % with >= 3 frequency
+# perils, 65 % with 1 - 2. Type f "simplified" (SMART): quantitative loss only, fixed 70 %.
+ITALY_POLICY_TYPES = [
+    ("a", "catastrophic frequency accessory", 0.70, "all risk"),
+    ("b", "catastrophic frequency>=1", 0.70, "catastrophic + at least one frequency peril"),
+    ("c", "frequency>=3", 0.70, "frequency perils (3 or more)"),
+    ("c2", "frequency 1-2", 0.65, "frequency perils (1 or 2)"),
+    ("d", "catastrophic", 0.70, "catastrophic perils only"),
+    ("f", "simplified", 0.70, "SMART simplified policy, quantitative loss only"),
+]
+# Relative rate of each policy type vs. type a (all risk), OUR ESTIMATES. ISMEA: SMART costs ~50 % less.
+ITALY_TYPE_FACTORS = {"a": 1.0, "b": 0.85, "c": 0.60, "c2": 0.45, "d": 0.40, "f": 0.50}
+# AgriCat (catastrophic fund, financed from direct payments): uninsured / frequency-only farms: 20 % franchise,
+# max 55 % indemnity (gross of franchise), loss must exceed 20 % of the average production. With a catastrophic
+# policy (a, b, d, e) the fund adds on top: franchise 10 %, limit 40 %, if the policy has franchise >= 40 % and
+# indemnity limit >= 80 %.
+ITALY_AGRICAT = {"uninsuredFranchise": 0.20, "uninsuredMaxIndemnity": 0.55, "threshold": 0.20,
+                 "withPolicyFranchise": 0.10, "withPolicyLimit": 0.40, "policyMinFranchise": 0.40,
+                 "policyMinLimit": 0.80, "budget2026": 253e6}
+ITALY_BUDGET_2026 = 300e6          # PSP 2023-2027 resources for subsidised policies available for 2026
+
+# ISMEA 2025 campaign (Terra e Vita, Askanews): crops.
+ITALY_TOTALS_2025 = {"insuredValueCrops": 7.09e9, "insuredValueAll": 9.941e9, "hectares": 1222985,
+                     "farms": 57047, "averageRate": 0.0895, "northShare": 0.80, "centreShare": 0.09,
+                     "southShare": 0.11, "packageCShare": 0.65}
+ITALY_CROP_VALUES_2025 = {"vine": 2.0e9, "rice": 0.732e9, "tomato": 0.728e9, "apples": 0.535e9}
+
+ITALY_CROPS = {
+    "WHEAT": "cereals", "BARLEY": "cereals", "OAT": "cereals", "SORGHUM": "cereals",
+    "MAIZE": "maize", "SUNFLOWER": "oilseeds", "CANOLA": "oilseeds", "SOYBEAN": "oilseeds",
+    "PEA": "legumes", "GREENBEAN": "vegetables",
+    "RICE": "rice", "RICELONGGRAIN": "rice",
+    "POTATO": "potatoes", "SUGARBEET": "sugarbeet",
+    "CARROT": "vegetables", "PARSNIP": "vegetables", "REDBEET": "vegetables", "SPINACH": "vegetables",
+    "GRASS": "forage", "GRAPE": "vine", "OLIVE": "olive",
+    "DEFAULT": "cereals",
+}
+ITALY_BORROWED = {"SORGHUM"}
+
+# Per crop group, OUR ESTIMATES: sum insured per ha (EUR), rate of an all-risk (type a) policy before
+# calibration, share of the insured crop value (vine / rice / tomato / apples from ISMEA 2025, rest estimated).
+ITALY_GROUPS = {
+    #              sumPerHa  rate    valueShare
+    "vine":       (12000,   0.100,  0.282),
+    "rice":       (2800,    0.050,  0.103),
+    "vegetables": (12000,   0.070,  0.103),    # processing tomato is the bulk
+    "fruit":      (20000,   0.140,  0.180),    # apples 0.075 + pears, stone fruit, kiwi
+    "cereals":    (1500,    0.050,  0.090),
+    "maize":      (2500,    0.060,  0.090),
+    "oilseeds":   (1300,    0.050,  0.030),
+    "legumes":    (1200,    0.060,  0.010),
+    "potatoes":   (8000,    0.060,  0.020),
+    "sugarbeet":  (3000,    0.050,  0.010),
+    "olive":      (4000,    0.060,  0.050),
+    "forage":     (1000,    0.040,  0.032),
 }
 
 # ============================================================================
@@ -1283,6 +1488,132 @@ def write_netherlands(out_path):
     print("wrote %s (%.1f KB, Netherlands, %d crops)" % (out_path, os.path.getsize(out_path) / 1024, len(NETHERLANDS_CROPS)))
 
 
+def write_spain(out_path):
+    """Spain: Agroseguro modules with ENESA subsidies, estimated rates. Needs no raw data."""
+    cal = SPAIN_CALIBRATION
+    agri_value = cal["insuredValue"] * cal["agriculturalShare"]
+    target = cal["premiumAB"] * (1 - cal["livestockShare"]) / agri_value
+    weighted = sum(g[1] * g[2] for g in SPAIN_GROUPS.values()) / sum(g[2] for g in SPAIN_GROUPS.values())
+    calibration = target / weighted
+    print("  Spain: agricultural average rate %.2f %%, estimated %.2f %% -> calibration x%.3f" % (
+        target * 100, weighted * 100, calibration))
+
+    lines = ['<?xml version="1.0" encoding="utf-8" standalone="no" ?>',
+             '<!-- Generated by tools/build_crop_insurance.py - do not edit by hand. -->',
+             '<!-- Sources: 47th Plan de Seguros Agrarios Combinados (BOE-A-2025-27098), Agroseguro annual report 2024 and -->',
+             '<!-- "Sistema espanol de Seguros Agrarios Combinados 2024". Values marked isEstimate="true" are our own -->',
+             '<!-- estimates, not official figures. -->',
+             '<cropInsurance version="1" source="ENESA plan 2026, Agroseguro" years="2014-2026" currency="EUR">',
+             '    <program type="modules" maxSubsidy="%s" rateCap="%s" fixedDeduction="%d" canaryBaseUplift="%s" '
+             'calibration="%s" averageRate="%s" averageRateIsEstimate="true" insuredAreaHa="%d">' % (
+                 fmt(SPAIN_MAX_SUBSIDY, 2), fmt(SPAIN_RATE_CAP, 2), SPAIN_FIXED_DEDUCTION_EUR,
+                 fmt(SPAIN_CANARY_BASE_UPLIFT, 2), fmt(calibration, 3), fmt(target), cal["areaHa"]),
+             '        <module id="1" cover="whole farm, catastrophic" subsidy="%s" rateFactor="%s" isEstimate="true"/>' % (
+                 fmt(SPAIN_MODULE1_SUBSIDY, 2), fmt(SPAIN_MODULE_FACTORS["1"], 2)),
+             '        <module id="2" cover="all climatic risks per plot" rateFactor="%s"/>' % fmt(SPAIN_MODULE_FACTORS["2"], 2),
+             '        <module id="P" cover="named perils (hail, fire, ...)" rateFactor="%s" isEstimate="true"/>' % (
+                 fmt(SPAIN_MODULE_FACTORS["P"], 2))]
+    for key, value in SPAIN_ADDITIONAL.items():
+        if isinstance(value, dict):
+            lines.append('        <additional id="%s" %s/>' % (key, " ".join(
+                '%s="%s"' % (k, fmt(v, 3)) for k, v in value.items())))
+        else:
+            lines.append('        <additional id="%s" share="%s"/>' % (key, fmt(value, 2)))
+    for who, floor in SPAIN_FLOORS.items():
+        lines.append('        <floor id="%s" totalShare="%s" modules="2 3"/>' % (who, fmt(floor, 2)))
+    lines.append('        <modulation exempt=%s>' % quoteattr(SPAIN_MODULATION_EXEMPT))
+    for low, high, share in SPAIN_MODULATION:
+        lines.append('            <band from="%d"%s withhold="%s"/>' % (
+            low, (' to="%d"' % high) if high is not None else "", fmt(share, 2)))
+    lines.append('        </modulation>')
+    lines.append('    </program>')
+
+    lines.append('    <history unit="MEUR" scope="all lines incl. livestock">')
+    for year, (premium, subsidy, value, claims) in sorted(SPAIN_HISTORY.items()):
+        lines.append('        <year id="%d" premium="%s" subsidy="%s" insuredValue="%s" claims="%s"/>' % (
+            year, fmt(premium, 2), fmt(subsidy, 2), fmt(value, 2), fmt(claims, 2)))
+    lines.append('    </history>')
+    lines.append('    <claimCauses year="2023" scope="agricultural claims">')
+    for peril, share in SPAIN_CLAIM_CAUSES_2023.items():
+        lines.append('        <peril id="%s" claimShare="%s"/>' % (peril, fmt(share, 4)))
+    lines.append('    </claimCauses>')
+
+    lines.append('    <region id="ESP" name="Spain">')
+    for crop, group in SPAIN_CROPS.items():
+        sum_per_ha, rate = SPAIN_GROUPS[group][0], SPAIN_GROUPS[group][1] * calibration
+        base2, baseP, line = SPAIN_BASE_SUBSIDY[group]
+        lines.append('        <crop fillType=%s group=%s line=%s%s sumPerHa="%d" sumPerHaIsEstimate="true">' % (
+            quoteattr(crop), quoteattr(group), quoteattr(line), ' borrowed="true"' if crop in SPAIN_BORROWED else "",
+            sum_per_ha))
+        if base2 is not None:
+            lines.append('            <module id="2" rate="%s" baseSubsidy="%s" isEstimate="true"/>' % (
+                fmt(min(rate, 1.0)), fmt(base2, 3)))
+            lines.append('            <module id="1" rate="%s" baseSubsidy="%s" isEstimate="true"/>' % (
+                fmt(rate * SPAIN_MODULE_FACTORS["1"]), fmt(SPAIN_MODULE1_SUBSIDY, 2)))
+        # Lines without module 2 (bananas) sell module P as their main, comprehensive cover: full rate.
+        p_factor = SPAIN_MODULE_FACTORS["P"] if base2 is not None else 1.0
+        lines.append('            <module id="P" rate="%s" baseSubsidy="%s" isEstimate="true"/>' % (
+            fmt(rate * p_factor), fmt(baseP, 3)))
+        lines.append('        </crop>')
+    lines.append('    </region>')
+    lines.append('</cropInsurance>')
+    lines.append('')
+
+    out_path = os.path.abspath(out_path)
+    with open(out_path, "w", encoding="utf-8", newline="\n") as f:
+        f.write("\n".join(lines))
+    print("wrote %s (%.1f KB, Spain, %d crops)" % (out_path, os.path.getsize(out_path) / 1024, len(SPAIN_CROPS)))
+
+
+def write_italy(out_path):
+    """Italy: PGRA peril groups and policy types, AgriCat, estimated rates. Needs no raw data."""
+    totals = ITALY_TOTALS_2025
+    weighted = sum(g[1] * g[2] for g in ITALY_GROUPS.values()) / sum(g[2] for g in ITALY_GROUPS.values())
+    # The ISMEA average covers the policy mix as sold (2/3 package C = frequency perils); scale the mix-weighted
+    # rate, not the all-risk rate: average factor of the sold mix (OUR ESTIMATE: 2/3 type c, 1/3 type a / b).
+    mix_factor = totals["packageCShare"] * ITALY_TYPE_FACTORS["c"] + (1 - totals["packageCShare"]) * \
+        (ITALY_TYPE_FACTORS["a"] + ITALY_TYPE_FACTORS["b"]) / 2
+    calibration = totals["averageRate"] / (weighted * mix_factor)
+    print("  Italy: average rate %.2f %%, estimated %.2f %% (mix x%.2f) -> calibration x%.3f" % (
+        totals["averageRate"] * 100, weighted * mix_factor * 100, mix_factor, calibration))
+
+    lines = ['<?xml version="1.0" encoding="utf-8" standalone="no" ?>',
+             '<!-- Generated by tools/build_crop_insurance.py - do not edit by hand. -->',
+             '<!-- Sources: Piano di gestione dei rischi in agricoltura 2026 (MASAF, DM 22/12/2025), ISMEA 2025 campaign -->',
+             '<!-- figures. Values marked isEstimate="true" are our own estimates, not official figures. -->',
+             '<cropInsurance version="1" source="MASAF PGRA 2026, ISMEA" years="2025-2026" currency="EUR">',
+             '    <program type="perilGroups" threshold="%s" budget2026="%d" calibration="%s">' % (
+                 fmt(ITALY_THRESHOLD, 2), ITALY_BUDGET_2026, fmt(calibration, 3))]
+    for group, perils in ITALY_PERILS.items():
+        lines.append('        <perilGroup id="%s" perils="%s"/>' % (group, " ".join(perils)))
+    for pid, needs, share, label in ITALY_POLICY_TYPES:
+        lines.append('        <policyType id="%s" needs="%s" subsidy="%s" rateFactor="%s" rateFactorIsEstimate="true" label=%s/>' % (
+            pid, needs, fmt(share, 2), fmt(ITALY_TYPE_FACTORS[pid], 2), quoteattr(label)))
+    lines.append('    </program>')
+    lines.append('    <solidarity id="AgriCat" perils="%s" %s/>' % (
+        " ".join(ITALY_PERILS["catastrophic"]),
+        " ".join('%s="%s"' % (k, fmt(v, 2)) for k, v in ITALY_AGRICAT.items())))
+    lines.append('    <totals year="2025" %s/>' % " ".join('%s="%s"' % (k, fmt(v, 4)) for k, v in totals.items()))
+    lines.append('    <cropValues year="2025" %s/>' % " ".join(
+        '%s="%s"' % (k, fmt(v, 0)) for k, v in ITALY_CROP_VALUES_2025.items()))
+
+    lines.append('    <region id="ITA" name="Italy">')
+    for crop, group in ITALY_CROPS.items():
+        sum_per_ha, rate = ITALY_GROUPS[group][0], ITALY_GROUPS[group][1] * calibration
+        lines.append('        <crop fillType=%s group=%s%s sumPerHa="%d" sumPerHaIsEstimate="true">' % (
+            quoteattr(crop), quoteattr(group), ' borrowed="true"' if crop in ITALY_BORROWED else "", sum_per_ha))
+        lines.append('            <rates allRisk="%s" isEstimate="true"/>' % fmt(rate))
+        lines.append('        </crop>')
+    lines.append('    </region>')
+    lines.append('</cropInsurance>')
+    lines.append('')
+
+    out_path = os.path.abspath(out_path)
+    with open(out_path, "w", encoding="utf-8", newline="\n") as f:
+        f.write("\n".join(lines))
+    print("wrote %s (%.1f KB, Italy, %d crops)" % (out_path, os.path.getsize(out_path) / 1024, len(ITALY_CROPS)))
+
+
 def brazil_num(text):
     """PSR numbers use a decimal comma; "-" = empty."""
     text = text.strip()
@@ -1472,6 +1803,10 @@ def main():
         write_france(FRANCE_OUTPUT_XML)
     if NETHERLANDS_OUTPUT_XML:
         write_netherlands(NETHERLANDS_OUTPUT_XML)
+    if SPAIN_OUTPUT_XML:
+        write_spain(SPAIN_OUTPUT_XML)
+    if ITALY_OUTPUT_XML:
+        write_italy(ITALY_OUTPUT_XML)
     print("Reading RMA Summary of Business %d-%d from %s" % (min(YEARS), max(YEARS), os.path.abspath(DATA_DIR)))
     us, state, seen = load()
     missing = [n for names in CROPS.values() for n in names if n not in seen]
