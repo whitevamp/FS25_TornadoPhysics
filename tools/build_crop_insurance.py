@@ -81,6 +81,28 @@ rules but no average rates are published per crop, so the file holds (see the PO
     (subsidy / 65 % / insured area / an estimated sum insured per ha). Needs no RMA data.
 
 ----------------------------------------------------------------------------
+Brazil (DB/CropInsurance_BR.xml)
+----------------------------------------------------------------------------
+Built from MAPA's PSR open data (SISSER, one row per subsidised policy, Creative Commons Attribution):
+  https://dados.agricultura.gov.br/dataset/sisser3  ->  "PSR - 2016 a 2024" (dados_abertos_psr_2016a2024csv.csv)
+The files hold farmer names and tax ids: those columns are never read, only totals are written, and the raw
+folder (BR_insurance/) is git-ignored and never shipped.
+
+  * Plans: "YP" = PRODUTIVIDADE (yield cover), "COST" = CUSTEIO (covers the financed production cost).
+    Livestock, forest, parametric and revenue policies are left out (too few / not crops).
+  * Coverage levels rounded to the nearest 5 %, 50 - 95 %. 100 % policies (mostly fruit, named-peril style
+    cover with few claims) are written as their own plan "FULL" so they do not flatten the other curves.
+  * Per crop / plan / level: the same attributes as the US file, per hectare instead of per acre
+    (farmerPerHa, hectares). YP / COST rates: Brazil's average rate for the crop and plan, shaped by a
+    yield-loss model (shape="lossModel", see coverage_shape) - Brazil's own rates fall with coverage
+    (selection), see brazil_shaped_rates. lossRatio / claimShare / farmerPerHa stay the raw values.
+  * Per state (BRA_xx): rateFactor and lossRatio against the national curves, like the US states.
+  * Per crop: perils = share of the payouts and claims per cause of loss (EVENTO_PREPONDERANTE): drought,
+    hail, frost, excessive rain, windstorm ("VENTOS FORTES/FRIOS"), flood ...
+  * Program rules (2025-2027 three-year plan, CGSR): subsidy 20 % soybeans / 40 % others, 30 % / 45 % in
+    the North and Northeast, at most R$ 60 000 per modality and R$ 120 000 per farmer and year.
+
+----------------------------------------------------------------------------
 RMA data rules handled here (from the record layout)
 ----------------------------------------------------------------------------
   * Only buy-up coverage (coverage category "A"). CAT ("C") is the flat-fee catastrophic
@@ -93,6 +115,7 @@ RMA data rules handled here (from the record layout)
     (price locked), YP = Yield Protection, APH = yield-based plan for specialty crops.
 """
 
+import math
 import os
 import re
 import sys
@@ -308,6 +331,76 @@ POLAND_DEDUCTIBLES_ESTIMATE = [(0.0, 1.0), (0.10, 0.85), (0.20, 0.70)]
 POLAND_EUR_PER_PLN = 1 / 4.25
 
 # ============================================================================
+# BRAZIL  -  MAPA PSR open data (SISSER)
+# ============================================================================
+
+BRAZIL_OUTPUT_XML = os.path.join(TOOLS_DIR, "..", "DB", "CropInsurance_BR.xml")
+BRAZIL_DATA = os.path.join(TOOLS_DIR, "..", "BR_insurance", "dados_abertos_psr_2016a2024csv.csv")
+BRAZIL_YEARS = [2020, 2021, 2022, 2023, 2024]   # 2025 file: year not complete, no claims yet
+BRAZIL_COVERAGE_LEVELS = [0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1.00]
+BRAZIL_PLANS = {"PRODUTIVIDADE": "YP", "CUSTEIO": "COST"}
+BRAZIL_MIN_HECTARES = 2000     # per crop / plan / level (summed over the years); state: per crop
+BRAZIL_MIN_POLICIES = 30
+# Yield variability (coefficient of variation) of the loss model that shapes the rate curves (coverage_shape).
+COVERAGE_SHAPE_CV = 0.30
+
+# FS25 fill type -> PSR crop names (NM_CULTURA_GLOBAL). COFFEE / BANANA: South America DLC.
+BRAZIL_CROPS = {
+    "WHEAT":         ["Trigo"],
+    "BARLEY":        ["Cevada"],
+    "OAT":           ["Aveia"],
+    "CANOLA":        ["Canola"],
+    "SORGHUM":       ["Sorgo"],
+    "SUNFLOWER":     ["Girassol"],
+    "SOYBEAN":       ["Soja"],
+    "MAIZE":         ["Milho 1ª safra", "Milho 2ª safra"],
+    "POTATO":        ["Batata"],
+    "SUGARCANE":     ["Cana-de-açúcar"],
+    "COTTON":        ["Algodão"],
+    "RICE":          ["Arroz"],
+    "RICELONGGRAIN": ["Arroz"],
+    "GRAPE":         ["Uva"],
+    "GREENBEAN":     ["Feijão 1ª safra", "Feijão 2ª safra", "Vagem"],
+    "CARROT":        ["Cenoura"],
+    "REDBEET":       ["Beterraba"],
+    "COFFEE":        ["Café"],
+    "BANANA":        ["Banana"],
+}
+BRAZIL_PROXY_CROPS = {
+    "SUGARBEET": "REDBEET",   # sugar beet is not grown in Brazil
+    "PEA": "GREENBEAN",
+    "SPINACH": "CARROT",
+    "PARSNIP": "CARROT",
+    "OLIVE": "GRAPE",
+}
+BRAZIL_DEFAULT = {"Soja", "Milho 1ª safra", "Milho 2ª safra", "Trigo", "Arroz", "Sorgo", "Cevada", "Aveia",
+                  "Feijão 1ª safra", "Feijão 2ª safra", "Algodão", "Canola", "Girassol", "Triticale"}
+
+# Cause of loss (EVENTO_PREPONDERANTE) -> peril id.
+BRAZIL_PERILS = {
+    "SECA": "DROUGHT", "GRANIZO": "HAIL", "GEADA": "FROST", "CHUVA EXCESSIVA": "EXCESS_RAIN",
+    "VENTOS FORTES/FRIOS": "WINDSTORM", "INUNDAÇÃO/TROMBA D´ÁGUA": "FLOOD",  # written with an acute accent, not an apostrophe
+    "VARIAÇÃO EXCESSIVA DE TEMPERATURA": "TEMPERATURE", "INCÊNDIO": "FIRE", "RAIO": "LIGHTNING",
+    "QUEDA DE PARREIRAL": "TRELLIS_COLLAPSE",
+}
+
+BRAZIL_STATES = {
+    "AC": "Acre", "AL": "Alagoas", "AP": "Amapá", "AM": "Amazonas", "BA": "Bahia", "CE": "Ceará",
+    "DF": "Distrito Federal", "ES": "Espírito Santo", "GO": "Goiás", "MA": "Maranhão", "MT": "Mato Grosso",
+    "MS": "Mato Grosso do Sul", "MG": "Minas Gerais", "PA": "Pará", "PB": "Paraíba", "PR": "Paraná",
+    "PE": "Pernambuco", "PI": "Piauí", "RJ": "Rio de Janeiro", "RN": "Rio Grande do Norte",
+    "RS": "Rio Grande do Sul", "RO": "Rondônia", "RR": "Roraima", "SC": "Santa Catarina", "SP": "São Paulo",
+    "SE": "Sergipe", "TO": "Tocantins",
+}
+# North and Northeast regions get the higher subsidy.
+BRAZIL_NORTH_NORTHEAST = {"AC", "AP", "AM", "PA", "RO", "RR", "TO",
+                          "AL", "BA", "CE", "MA", "PB", "PE", "PI", "RN", "SE"}
+# Plano Trienal do Seguro Rural 2025-2027 (CGSR): subsidy share and annual limits per farmer (BRL).
+BRAZIL_PROGRAM = {"subsidySoy": 0.20, "subsidyOther": 0.40, "subsidySoyNorthNortheast": 0.30,
+                  "subsidyOtherNorthNortheast": 0.45, "maxSubsidyPerModality": 60000,
+                  "maxSubsidyPerFarmer": 120000}
+
+# ============================================================================
 # READING
 # ============================================================================
 
@@ -469,17 +562,19 @@ def pav(values, weights):
     return out
 
 
-def smoothed_rates(us):
+def smoothed_rates(us, levels=None, is_usable=None):
     """(crop, plan, level) -> (premiumRate, farmerRate), both non-decreasing with the coverage level.
 
     The raw national averages often FALL at high coverage: low-risk farms pick high coverage
     (selection bias), so 80 % looked cheaper per acre than 70 %. Real rates rise with coverage, so
     each curve is smoothed to the closest rising curve with the same liability-weighted average."""
+    levels = levels or COVERAGE_LEVELS
+    is_usable = is_usable or usable
     result = {}
     keys = {(crop, plan) for (crop, plan, _) in us}
     for crop, plan in keys:
-        rows = [(level, us[(crop, plan, level)]) for level in COVERAGE_LEVELS
-                if (crop, plan, level) in us and usable(us[(crop, plan, level)])]
+        rows = [(level, us[(crop, plan, level)]) for level in levels
+                if (crop, plan, level) in us and is_usable(us[(crop, plan, level)])]
         if not rows:
             continue
         weights = [t.liability for _, t in rows]
@@ -490,15 +585,15 @@ def smoothed_rates(us):
     return result
 
 
-def level_attrs(t, rates):
+def level_attrs(t, rates, per="Acre", area="acres"):
     premium_rate, farmer_rate = rates
     subsidy_share = 1 - farmer_rate / premium_rate if premium_rate > 0 else 0
     farmer = t.premium - t.subsidy
     return ('premiumRate="%s" farmerRate="%s" subsidyShare="%s" lossRatio="%s" claimShare="%s" '
-            'farmerPerAcre="%s" acres="%d" policies="%d"' % (
+            'farmerPer%s="%s" %s="%d" policies="%d"' % (
                 fmt(premium_rate), fmt(farmer_rate), fmt(subsidy_share, 3),
                 fmt(t.indemnity / t.premium, 3), fmt(t.indemnified / t.policies if t.policies > 0 else 0, 3),
-                fmt(farmer / t.acres, 2), round(t.acres), round(t.policies)))
+                per, fmt(farmer / t.acres, 2), area, round(t.acres), round(t.policies)))
 
 
 def usable(t, min_acres=MIN_ACRES):
@@ -760,6 +855,223 @@ def write_poland(out_path):
         out_path, os.path.getsize(out_path) / 1024, len(POLAND_CROPS), len(POLAND_MAX_SUM_ANIMAL)))
 
 
+def brazil_num(text):
+    """PSR numbers use a decimal comma; "-" = empty."""
+    text = text.strip()
+    if text in ("", "-"):
+        return 0.0
+    if "," in text:
+        text = text.replace(".", "").replace(",", ".")
+    try:
+        return float(text)
+    except ValueError:
+        return 0.0
+
+
+def load_brazil(path):
+    """Totals per (crop, plan, level), per (state, crop, plan, level) and per (crop, peril).
+    Only the columns below are read - never the farmer name / tax id columns."""
+    name_to_crops = defaultdict(list)
+    for crop, names in BRAZIL_CROPS.items():
+        for name in names:
+            name_to_crops[name].append(crop)
+    years = {str(y) for y in BRAZIL_YEARS}
+    nat = defaultdict(Totals)
+    state = defaultdict(Totals)
+    perils = defaultdict(lambda: [0.0, 0.0])     # (crop, peril) -> [claims, indemnity]
+    skipped = defaultdict(int)
+    t0 = time.time()
+    with open(path, encoding="latin-1", newline="") as f:
+        head = f.readline().rstrip("\r\n").split(";")
+        col = {n: i for i, n in enumerate(head)}
+        c_ind = [i for n, i in col.items() if n.startswith("VALOR_INDENIZ")][0]
+        c_year, c_plan, c_crop = col["ANO_APOLICE"], col["NM_CLASSIF_PRODUTO"], col["NM_CULTURA_GLOBAL"]
+        c_uf, c_area, c_level = col["SG_UF_PROPRIEDADE"], col["NR_AREA_TOTAL"], col["NivelDeCobertura"]
+        c_liab, c_prem, c_sub = col["VL_LIMITE_GARANTIA"], col["VL_PREMIO_LIQUIDO"], col["VL_SUBVENCAO_FEDERAL"]
+        c_event = col["EVENTO_PREPONDERANTE"]
+        for line in f:
+            p = line.rstrip("\r\n").split(";")
+            if len(p) != len(head):
+                skipped["bad column count"] += 1
+                continue
+            if p[c_year] not in years:
+                continue
+            plan = BRAZIL_PLANS.get(p[c_plan])
+            if plan is None:
+                skipped["other product"] += 1
+                continue
+            level = round(brazil_num(p[c_level]) * 20) / 20
+            if level not in BRAZIL_COVERAGE_LEVELS:
+                skipped["coverage level missing / outside range"] += 1
+                continue
+            if level == 1.0:
+                # 100 % policies are a different product (mostly fruit / named-peril style cover, few claims):
+                # kept apart so they do not flatten the yield / cost curves.
+                plan = "FULL"
+            name = p[c_crop].strip()
+            crops = list(name_to_crops.get(name, []))
+            if name in BRAZIL_DEFAULT:
+                crops.append("DEFAULT")
+            if not crops:
+                skipped["crop not used"] += 1
+                continue
+            area = brazil_num(p[c_area])
+            liability = brazil_num(p[c_liab])
+            premium = brazil_num(p[c_prem])
+            if area <= 0 or liability <= 0 or premium <= 0:
+                skipped["no area / value / premium"] += 1
+                continue
+            subsidy = brazil_num(p[c_sub])
+            indemnity = brazil_num(p[c_ind])
+            claimed = 1.0 if indemnity > 0 else 0.0
+            peril = None
+            if claimed:
+                event = p[c_event].replace("\xa0", " ").strip().upper()
+                peril = BRAZIL_PERILS.get(event, "OTHER")
+            uf = p[c_uf].strip().upper()
+            for crop in crops:
+                nat[(crop, plan, level)].add(area, liability, premium, subsidy, indemnity, 1.0, claimed)
+                state[(uf, crop, plan, level)].add(area, liability, premium, subsidy, indemnity, 1.0, claimed)
+                if peril is not None:
+                    perils[(crop, peril)][0] += 1
+                    perils[(crop, peril)][1] += indemnity
+    print("  Brazil: PSR %d-%d read (%.1fs); skipped: %s" % (min(BRAZIL_YEARS), max(BRAZIL_YEARS), time.time() - t0,
+          ", ".join("%s %d" % kv for kv in sorted(skipped.items()))))
+    return nat, state, perils
+
+
+def brazil_usable(t, min_hectares=BRAZIL_MIN_HECTARES):
+    return t.acres >= min_hectares and t.policies >= BRAZIL_MIN_POLICIES and t.liability > 0 and t.premium > 0
+
+
+def coverage_shape(level, cv=None):
+    """Relative premium rate of yield cover at a coverage level, from a simple loss model.
+
+    Yield ~ Normal(mean 1, sd cv); guarantee g = level; rate = expected shortfall E[max(g - Y, 0)] / g.
+    With cv 0.30 the rate at 70 / 75 / 80 % is ~1.3 / 1.6 / 2.0 x the 65 % rate - the usual step-up of real
+    rate tables. Used where the data's own curve is flat (selection bias, see brazil_shaped_rates)."""
+    cv = cv or COVERAGE_SHAPE_CV
+    z = (level - 1.0) / cv
+    pdf = math.exp(-0.5 * z * z) / math.sqrt(2 * math.pi)
+    cdf = 0.5 * (1 + math.erf(z / math.sqrt(2)))
+    return ((level - 1.0) * cdf + cv * pdf) / level
+
+
+def brazil_shaped_rates(nat):
+    """(crop, plan, level) -> (premiumRate, farmerRate) for the YP / COST curves.
+
+    Brazil's raw rates FALL with coverage (high coverage is mostly bought in low-risk areas, while its loss
+    ratio climbs from ~1.1 at 65 % to ~6 at 80 % for soybeans), so smoothing alone gives a flat curve and
+    every player would pick the highest level. Level = Brazil's liability-weighted average for the crop and
+    plan; shape = coverage_shape (the US curves are flat above ~65 % for the same reason)."""
+    result = {}
+    for crop, plan in {(c, p) for (c, p, _) in nat if p in ("YP", "COST")}:
+        rows = [(lv, nat[(crop, plan, lv)]) for lv in BRAZIL_COVERAGE_LEVELS
+                if (crop, plan, lv) in nat and brazil_usable(nat[(crop, plan, lv)])]
+        shape = [coverage_shape(lv) for lv, _ in rows]
+        if not rows:
+            continue
+        liability = sum(t.liability for _, t in rows)
+        premium_avg = sum(t.premium for _, t in rows) / liability
+        farmer_avg = sum(t.premium - t.subsidy for _, t in rows) / liability
+        shape_avg = sum(t.liability * sh for (_, t), sh in zip(rows, shape)) / liability
+        for (lv, _), sh in zip(rows, shape):
+            result[(crop, plan, lv)] = (premium_avg * sh / shape_avg, farmer_avg * sh / shape_avg)
+    return result
+
+
+def write_brazil(path, out_path):
+    nat, state, perils = load_brazil(path)
+    smooth = smoothed_rates(nat, BRAZIL_COVERAGE_LEVELS, brazil_usable)   # FULL (one level each)
+    smooth.update(brazil_shaped_rates(nat))
+    crops = list(BRAZIL_CROPS) + ["DEFAULT"]
+    prog = BRAZIL_PROGRAM
+    lines = ['<?xml version="1.0" encoding="utf-8" standalone="no" ?>',
+             '<!-- Generated by tools/build_crop_insurance.py - do not edit by hand. -->',
+             '<!-- Source: Ministério da Agricultura e Pecuária (MAPA), PSR open data (SISSER) %d-%d, -->'
+             % (min(BRAZIL_YEARS), max(BRAZIL_YEARS)),
+             '<!-- Creative Commons Attribution. Totals only; not an official MAPA product. -->',
+             '<cropInsurance version="1" source="MAPA PSR open data (SISSER)" years="%d-%d" currency="BRL" area="ha">'
+             % (min(BRAZIL_YEARS), max(BRAZIL_YEARS)),
+             '    <program subsidySoy="%s" subsidyOther="%s" subsidySoyNorthNortheast="%s" '
+             'subsidyOtherNorthNortheast="%s" maxSubsidyPerModality="%d" maxSubsidyPerFarmer="%d" '
+             'source="Plano Trienal do Seguro Rural 2025-2027"/>' % (
+                 fmt(prog["subsidySoy"], 2), fmt(prog["subsidyOther"], 2), fmt(prog["subsidySoyNorthNortheast"], 2),
+                 fmt(prog["subsidyOtherNorthNortheast"], 2), prog["maxSubsidyPerModality"], prog["maxSubsidyPerFarmer"])]
+
+    # ---- national curves + perils
+    nat_rate = {}
+    lines.append('    <region id="BRA" name="Brazil">')
+    for crop in crops:
+        plan_lines = []
+        for plan in ("YP", "COST", "FULL"):
+            level_lines = []
+            for level in BRAZIL_COVERAGE_LEVELS:
+                t = nat.get((crop, plan, level))
+                if t is not None and brazil_usable(t):
+                    nat_rate[(crop, plan, level)] = smooth[(crop, plan, level)][0]
+                    level_lines.append('                <level coverage="%s" %s/>' % (
+                        fmt(level, 2), level_attrs(t, smooth[(crop, plan, level)], "Ha", "hectares")))
+            if level_lines:
+                plan_lines.append('            <plan id="%s"%s>' % (plan, (' shape="lossModel" shapeCv="%s"' % fmt(COVERAGE_SHAPE_CV, 2)) if plan != "FULL" else ""))
+                plan_lines += level_lines
+                plan_lines.append('            </plan>')
+        if not plan_lines:
+            continue
+        names = "all grains" if crop == "DEFAULT" else ", ".join(BRAZIL_CROPS[crop])
+        lines.append('        <crop fillType=%s psr=%s>' % (quoteattr(crop), quoteattr(names)))
+        lines += plan_lines
+        crop_perils = sorted(((pe, v) for (c, pe), v in perils.items() if c == crop), key=lambda x: -x[1][1])
+        total_ind = sum(v[1] for _, v in crop_perils)
+        total_claims = sum(v[0] for _, v in crop_perils)
+        if total_ind > 0:
+            lines.append('            <perils claims="%d">' % total_claims)
+            for peril, (claims, indemnity) in crop_perils:
+                lines.append('                <peril id="%s" payoutShare="%s" claimShare="%s"/>' % (
+                    peril, fmt(indemnity / total_ind, 3), fmt(claims / total_claims, 3)))
+            lines.append('            </perils>')
+        lines.append('        </crop>')
+    for crop, source in BRAZIL_PROXY_CROPS.items():
+        if any(k[0] == source for k in nat_rate):
+            lines.append('        <crop fillType=%s borrowedFrom=%s/>' % (quoteattr(crop), quoteattr(source)))
+    lines.append('    </region>')
+
+    # ---- state factors
+    acc = defaultdict(lambda: defaultdict(lambda: [0.0, 0.0, 0.0, 0.0, 0.0]))  # area, premium, expected, indemnity, policies
+    for (uf, crop, plan, level), t in state.items():
+        rate = nat_rate.get((crop, plan, level))
+        if rate is None:
+            continue
+        a = acc[uf][crop]
+        a[0] += t.acres
+        a[1] += t.premium
+        a[2] += t.liability * rate
+        a[3] += t.indemnity
+        a[4] += t.policies
+    num_states = 0
+    for uf in sorted(acc):
+        crop_lines = []
+        for crop in crops:
+            a = acc[uf].get(crop)
+            if a is None or a[0] < BRAZIL_MIN_HECTARES or a[4] < BRAZIL_MIN_POLICIES or a[2] <= 0 or a[1] <= 0:
+                continue
+            crop_lines.append('        <crop fillType=%s rateFactor="%s" lossRatio="%s" hectares="%d"/>' % (
+                quoteattr(crop), fmt(a[1] / a[2], 3), fmt(a[3] / a[1], 3), round(a[0])))
+        if crop_lines:
+            num_states += 1
+            lines.append('    <region id="BRA_%s" name=%s parent="BRA"%s>' % (
+                uf, quoteattr(BRAZIL_STATES.get(uf, uf)), ' northNortheast="true"' if uf in BRAZIL_NORTH_NORTHEAST else ""))
+            lines += crop_lines
+            lines.append('    </region>')
+    lines.append('</cropInsurance>')
+    lines.append('')
+
+    out_path = os.path.abspath(out_path)
+    with open(out_path, "w", encoding="utf-8", newline="\n") as f:
+        f.write("\n".join(lines))
+    print("wrote %s (%.0f KB, Brazil + %d states)" % (out_path, os.path.getsize(out_path) / 1024, num_states))
+
+
 def main():
     if POLAND_OUTPUT_XML:
         write_poland(POLAND_OUTPUT_XML)
@@ -771,6 +1083,11 @@ def main():
     write(us, state, OUTPUT_XML)
     if CANADA_OUTPUT_XML:
         write_canada(us, state, CANADA_OUTPUT_XML)
+    if BRAZIL_OUTPUT_XML:
+        if os.path.isfile(BRAZIL_DATA):
+            write_brazil(BRAZIL_DATA, BRAZIL_OUTPUT_XML)
+        else:
+            print("  Brazil: %s not found - skipped" % os.path.abspath(BRAZIL_DATA))
 
 
 if __name__ == "__main__":

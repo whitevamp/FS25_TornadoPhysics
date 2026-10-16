@@ -4,10 +4,10 @@ emergency/
 
 # Raw USDA RMA data (the builder output DB/CropInsurance_US.xml is committed)
 USDA_RMA/
-CA_insurance/
 
-#Raw Canada crop data for the builder
+# Raw Canada / Brazil crop data for the builder (Brazil files contain farmer names and tax ids - never publish)
 CA_insurance/
+BR_insurance/
 
 # Screenshots
 images/

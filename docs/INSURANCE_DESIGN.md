@@ -364,7 +364,7 @@ sell points, vehicle sell prices), so price-changing mods are covered without de
 - **Crop insurance data** – **done:** `tools/build_crop_insurance.py` (standard library only, same
   pattern as the climate builders) turns the USDA RMA *Summary of Business* files into
   `DB/CropInsurance_US.xml` (~86 KB). Public-domain US government data; credit RMA in modDesc / README.
-  Canada: §13.3. Poland: §13.4.
+  Canada: §13.3. Poland: §13.4. Brazil: §13.5.
 
 ### 13.1 RMA source data and processing rules
 
@@ -482,6 +482,36 @@ KNF statistics do not help here: crop insurance is part of non-life group 8 ("da
 forces"), which also holds home and business property (~6.6 bn PLN premium in 2024). A better average needs
 the total premium and sum insured of subsidised crop policies (MRiRW / ARiMR, not found published).
 
+### 13.5 Brazil: `DB/CropInsurance_BR.xml`
+
+Built from MAPA's **PSR open data** (SISSER, https://dados.agricultura.gov.br/dataset/sisser3, Creative
+Commons Attribution): one row per subsidised policy with crop, state, coverage level, area, sum insured,
+premium, rate, federal subsidy, indemnity and the **cause of loss**. Years 2020–2024 (the 2025 file has no
+claims yet). Raw files in `BR_insurance/` — they contain farmer names and tax ids: git-ignored, never shipped;
+the builder never reads those columns and writes totals only.
+
+| Item | Value |
+|---|---|
+| Plans | `YP` = PRODUTIVIDADE (yield), `COST` = CUSTEIO (financed production cost), `FULL` = 100 % policies (mostly fruit, named-peril style; kept apart). Livestock / forest / parametric / revenue left out |
+| Coverage levels | rounded to 5 %; in practice 65 – 85 % |
+| Subsidy (measured) | soybeans ~21 %, other crops ~38 – 40 % — matches the rules |
+| Program rules | `<program>`: 20 % soy / 40 % others, 30 % / 45 % in the North + Northeast (`northNortheast="true"` on those states), max R$ 60 000 per modality and R$ 120 000 per farmer and year (Plano Trienal 2025-2027) |
+| Curve shape | Brazil's average rate per crop and plan, shaped by a yield-loss model (`shape="lossModel"`, normal yield, CV 0.30: 70 / 75 / 80 % ≈ 1.3 / 1.6 / 2.0 × the 65 % rate). The raw rates fall with coverage (selection) while loss ratios climb (soy YP 1.1 at 65 % → 5.9 at 80 %) |
+| Perils | per crop `payoutShare` / `claimShare` by cause: drought, hail, frost, excessive rain, **windstorm**, flood/waterspout, temperature, fire, lightning, trellis collapse, other |
+| States | `BRA_xx` rateFactor / lossRatio like the US states (21 states with enough data) |
+| DLC crops | `COFFEE` (frost 38 % / drought 38 % / hail 12 % / wind 2.5 % of payouts), `BANANA` (`FULL` only, rate 9.7 %; **windstorm 90 %** of payouts) |
+
+Crops with no Brazilian data borrow one: sugar beet → red beet (not grown in Brazil; only if red beet has
+data), pea → green bean, spinach / parsnip → carrot, olive → grape.
+
+**Credit text when shipping:** *"Brazilian crop insurance figures from the Ministério da Agricultura e
+Pecuária (MAPA), PSR open data (SISSER), licensed under Creative Commons Attribution. Not an official MAPA
+product."*
+
+**Note for the US / Canada curves:** the RMA averages have the same selection bias — after smoothing, the US
+curves are flat above ~65 – 70 % (e.g. soybean YP 5.82 % from 65 % to 85 %), so higher coverage costs no more
+per dollar insured. `coverage_shape` could shape those too (open question, §16).
+
 ## 14. Multiplayer
 
 - All decisions, billing and payouts run on the **server**.
@@ -519,6 +549,8 @@ the total premium and sum insured of subsidised crop policies (MRiRW / ARiMR, no
 5. Does a write-off require the player to clear the field before replanting, or is that left to them?
 6. Equipment policy: all vehicles (simple) or per-vehicle opt-in (more control, more UI)?
 7. What happens to open claims when a farm is deleted or a vehicle is sold before the decision?
+8. US / Canada rate curves are flat above ~65 – 70 % after smoothing (selection bias in the RMA averages).
+   Shape them with the same loss model as Brazil (`coverage_shape`, keeps each curve's average)?
 
 ## 17. Real-life references to verify before release
 
