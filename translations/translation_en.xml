@@ -166,11 +166,13 @@
         <text name="tp_tip_wildlife_distance" text="How far outside the tornado's outer radius animals start to flee."/>
         <text name="tp_sec_hazards" text="Natural hazards"/>
         <text name="tp_hazards" text="Enable natural hazards"/>
-        <text name="tp_tip_hazards" text="Weather can hurt your crops: long dry spells cause drought damage and heavy rain on soaked soil floods low-lying fields (field fires come in a later update). Crop damage needs the game's disaster destruction setting. Off while FS25_RealisticWeather is installed."/>
+        <text name="tp_tip_hazards" text="Weather can hurt your crops: long dry spells cause drought damage, heavy rain on soaked soil floods low-lying fields, and during a hot drought ripe fields can catch fire. Crop damage needs the game's disaster destruction setting. Off while FS25_RealisticWeather is installed."/>
         <text name="tp_hazards_drought" text="Drought"/>
         <text name="tp_tip_hazards_drought" text="Long hot dry spells dry out the soil; growing crops then lose a little more every day until it rains. Rice paddies are spared."/>
         <text name="tp_hazards_flood" text="Flood"/>
         <text name="tp_tip_hazards_flood" text="Several hours of heavy rain on already soaked soil flood the lowest-lying growing fields: water pools at each field's lowest point and drowns the crop there. Rice paddies are spared."/>
+        <text name="tp_hazards_fire" text="Field fire"/>
+        <text name="tp_tip_hazards_fire" text="During a drought, on hot dry afternoons, a ripe grain-type field can catch fire. The fire spreads inside the field and burns the crop until it burns out or rain puts it out. Marked on the map."/>
         <text name="tp_hazards_owned" text="Only damage owned fields"/>
         <text name="tp_tip_hazards_owned" text="ON: drought and floods only damage fields a farm owns; fields nobody owns stay untouched. OFF: the weather hits every growing field on the map."/>
         <text name="tp_hazards_intensity" text="Crop damage strength"/>
@@ -206,6 +208,10 @@
         <text name="tp_msg_drought_damage" text="DROUGHT DAMAGE: %d of your fields lost crop today."/>
         <text name="tp_msg_flood" text="FLOODING! Heavy rain on waterlogged ground has flooded %d low-lying fields."/>
         <text name="tp_msg_flood_damage" text="FLOOD DAMAGE: %d of your fields are under water."/>
+        <text name="tp_msg_field_fire" text="FIELD FIRE on field %s! The dry crop is burning."/>
+        <text name="tp_msg_fire_out_rain" text="The rain has put out the fire on field %s."/>
+        <text name="tp_msg_fire_out" text="The fire on field %s has burned out."/>
+        <text name="tp_hotspot_field_fire" text="Field fire (field %s)"/>
         <text name="tp_msg_drought_end" text="The drought is over - rain has refilled the soil."/>
         <text name="tp_msg_outbreak_one" text="TORNADO OUTBREAK (%s): one more tornado possible today!"/>
         <text name="tp_msg_storm_damage" text="STORM DAMAGE: %s (%s) lost %d animals! Safe for %d seconds."/>

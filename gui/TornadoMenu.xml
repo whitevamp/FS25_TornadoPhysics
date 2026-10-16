@@ -517,6 +517,12 @@
                     <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_hazards_flood"/>
                 </Bitmap>
                 <Bitmap profile="fs25_multiTextOptionContainer">
+                    <BinaryOption profile="fs25_settingsBinaryOption" id="modHazardsFire" onClick="onClickBinary">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_hazards_fire"/>
+                    </BinaryOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_hazards_fire"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
                     <BinaryOption profile="fs25_settingsBinaryOption" id="modHazardsOwned" onClick="onClickBinary">
                         <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_hazards_owned"/>
                     </BinaryOption>

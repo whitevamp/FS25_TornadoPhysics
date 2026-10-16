@@ -585,13 +585,13 @@ t("tp_sec_hazards", "Natural hazards", "Naturgefahren", "Risques naturels", "Zag
 t("tp_hazards", "Enable natural hazards", "Naturgefahren aktivieren", "Activer les risques naturels",
   "Włącz zagrożenia naturalne", "Activar riesgos naturales", "Attiva rischi naturali", "Natuurrisico's inschakelen")
 t("tp_tip_hazards",
-  "Weather can hurt your crops: long dry spells cause drought damage and heavy rain on soaked soil floods low-lying fields (field fires come in a later update). Crop damage needs the game's disaster destruction setting. Off while FS25_RealisticWeather is installed.",
-  "Das Wetter kann deinen Pflanzen schaden: Lange Trockenphasen verursachen Dürreschäden, und Starkregen auf nassem Boden überflutet tief liegende Felder (Feldbrände folgen in einem späteren Update). Ernteschäden brauchen die Spieleinstellung für Katastrophenzerstörung. Aus, solange FS25_RealisticWeather installiert ist.",
-  "La météo peut abîmer vos cultures : les longues périodes sèches causent des dégâts de sécheresse et les fortes pluies sur un sol détrempé inondent les champs bas (les feux de champs arriveront dans une mise à jour). Les dégâts aux cultures nécessitent l'option de destruction par catastrophes du jeu. Désactivé si FS25_RealisticWeather est installé.",
-  "Pogoda może szkodzić uprawom: długie okresy bez deszczu powodują szkody od suszy, a ulewy na nasiąkniętej glebie zalewają nisko położone pola (pożary pól pojawią się w późniejszej aktualizacji). Szkody w uprawach wymagają włączonej opcji niszczenia przez katastrofy. Wyłączone, gdy zainstalowano FS25_RealisticWeather.",
-  "El tiempo puede dañar tus cultivos: los periodos secos largos causan daños por sequía y las lluvias fuertes sobre suelo empapado inundan los campos bajos (los incendios de campo llegarán en una actualización). Los daños necesitan la opción de destrucción por catástrofes del juego. Desactivado si FS25_RealisticWeather está instalado.",
-  "Il meteo può danneggiare le colture: i lunghi periodi secchi causano danni da siccità e le piogge forti su terreno zuppo allagano i campi bassi (gli incendi dei campi arriveranno in un aggiornamento). I danni richiedono l'opzione di distruzione da catastrofi del gioco. Disattivato se FS25_RealisticWeather è installato.",
-  "Het weer kan je gewassen schaden: lange droge periodes geven droogteschade en hevige regen op doorweekte grond zet laaggelegen velden onder water (veldbranden volgen in een latere update). Gewasschade vereist de spelinstelling voor rampvernietiging. Uit zolang FS25_RealisticWeather geïnstalleerd is.")
+  "Weather can hurt your crops: long dry spells cause drought damage, heavy rain on soaked soil floods low-lying fields, and during a hot drought ripe fields can catch fire. Crop damage needs the game's disaster destruction setting. Off while FS25_RealisticWeather is installed.",
+  "Das Wetter kann deinen Pflanzen schaden: Lange Trockenphasen verursachen Dürreschäden, Starkregen auf nassem Boden überflutet tief liegende Felder, und bei heißer Dürre können reife Felder in Brand geraten. Ernteschäden brauchen die Spieleinstellung für Katastrophenzerstörung. Aus, solange FS25_RealisticWeather installiert ist.",
+  "La météo peut abîmer vos cultures : les longues périodes sèches causent des dégâts de sécheresse, les fortes pluies sur un sol détrempé inondent les champs bas, et lors d'une sécheresse chaude les champs mûrs peuvent prendre feu. Les dégâts aux cultures nécessitent l'option de destruction par catastrophes du jeu. Désactivé si FS25_RealisticWeather est installé.",
+  "Pogoda może szkodzić uprawom: długie okresy bez deszczu powodują szkody od suszy, ulewy na nasiąkniętej glebie zalewają nisko położone pola, a podczas upalnej suszy dojrzałe pola mogą się zapalić. Szkody w uprawach wymagają włączonej opcji niszczenia przez katastrofy. Wyłączone, gdy zainstalowano FS25_RealisticWeather.",
+  "El tiempo puede dañar tus cultivos: los periodos secos largos causan daños por sequía, las lluvias fuertes sobre suelo empapado inundan los campos bajos y, en una sequía calurosa, los campos maduros pueden incendiarse. Los daños necesitan la opción de destrucción por catástrofes del juego. Desactivado si FS25_RealisticWeather está instalado.",
+  "Il meteo può danneggiare le colture: i lunghi periodi secchi causano danni da siccità, le piogge forti su terreno zuppo allagano i campi bassi e, durante una siccità torrida, i campi maturi possono prendere fuoco. I danni richiedono l'opzione di distruzione da catastrofi del gioco. Disattivato se FS25_RealisticWeather è installato.",
+  "Het weer kan je gewassen schaden: lange droge periodes geven droogteschade, hevige regen op doorweekte grond zet laaggelegen velden onder water, en tijdens een hete droogte kunnen rijpe velden in brand vliegen. Gewasschade vereist de spelinstelling voor rampvernietiging. Uit zolang FS25_RealisticWeather geïnstalleerd is.")
 t("tp_hazards_drought", "Drought", "Dürre", "Sécheresse", "Susza", "Sequía", "Siccità", "Droogte")
 t("tp_tip_hazards_drought",
   "Long hot dry spells dry out the soil; growing crops then lose a little more every day until it rains. Rice paddies are spared.",
@@ -610,6 +610,16 @@ t("tp_tip_hazards_flood",
   "Varias horas de lluvia fuerte sobre un suelo ya empapado inundan los campos más bajos: el agua se acumula en el punto más bajo de cada campo y ahoga allí el cultivo. Los arrozales se salvan.",
   "Diverse ore di pioggia forte su un terreno già zuppo allagano i campi più bassi: l'acqua si raccoglie nel punto più basso di ogni campo e lì annega la coltura. Le risaie sono risparmiate.",
   "Een paar uur hevige regen op al doorweekte grond zet de laagst gelegen velden onder water: het water verzamelt zich op het laagste punt van elk veld en verdrinkt daar het gewas. Rijstvelden blijven gespaard.")
+t("tp_hazards_fire", "Field fire", "Feldbrand", "Feu de champ", "Pożar pola", "Incendio de campo", "Incendio dei campi",
+  "Veldbrand")
+t("tp_tip_hazards_fire",
+  "During a drought, on hot dry afternoons, a ripe grain-type field can catch fire. The fire spreads inside the field and burns the crop until it burns out or rain puts it out. Marked on the map.",
+  "Während einer Dürre kann an heißen, trockenen Nachmittagen ein reifes Getreidefeld in Brand geraten. Das Feuer breitet sich im Feld aus und verbrennt die Pflanzen, bis es ausbrennt oder Regen es löscht. Auf der Karte markiert.",
+  "Pendant une sécheresse, par des après-midi chauds et secs, un champ mûr de type céréale peut prendre feu. Le feu se propage dans le champ et brûle la culture jusqu'à s'éteindre seul ou sous la pluie. Indiqué sur la carte.",
+  "Podczas suszy, w upalne i suche popołudnia, dojrzałe pole zbożowe może się zapalić. Ogień rozprzestrzenia się po polu i pali uprawę, aż się wypali lub zgasi go deszcz. Zaznaczony na mapie.",
+  "Durante una sequía, en tardes calurosas y secas, un campo maduro de cereal puede incendiarse. El fuego se extiende por el campo y quema el cultivo hasta apagarse solo o con la lluvia. Marcado en el mapa.",
+  "Durante una siccità, nei pomeriggi caldi e secchi, un campo maturo di cereali può prendere fuoco. L'incendio si estende nel campo e brucia la coltura finché si spegne da solo o con la pioggia. Segnato sulla mappa.",
+  "Tijdens een droogte kan een rijp graanveld op hete droge middagen in brand vliegen. Het vuur verspreidt zich door het veld en verbrandt het gewas tot het uitbrandt of de regen het dooft. Aangegeven op de kaart.")
 t("tp_hazards_owned", "Only damage owned fields", "Nur eigene Felder beschädigen", "Seulement les champs possédés",
   "Tylko posiadane pola", "Solo campos con dueño", "Solo campi posseduti", "Alleen velden met eigenaar")
 t("tp_tip_hazards_owned",
@@ -757,6 +767,29 @@ t("tp_msg_flood_damage", "FLOOD DAMAGE: %d of your fields are under water.",
   "DAÑOS POR INUNDACIÓN: %d de tus campos están bajo el agua.",
   "DANNI DA ALLUVIONE: %d dei tuoi campi sono sott'acqua.",
   "OVERSTROMINGSSCHADE: %d van je velden staan onder water.")
+t("tp_msg_field_fire", "FIELD FIRE on field %s! The dry crop is burning.",
+  "FELDBRAND auf Feld %s! Die trockenen Pflanzen brennen.",
+  "FEU DE CHAMP sur le champ %s ! La culture sèche brûle.",
+  "POŻAR POLA na polu %s! Sucha uprawa płonie.",
+  "¡INCENDIO DE CAMPO en el campo %s! El cultivo seco está ardiendo.",
+  "INCENDIO DEL CAMPO %s! La coltura secca sta bruciando.",
+  "VELDBRAND op veld %s! Het droge gewas staat in brand.")
+t("tp_msg_fire_out_rain", "The rain has put out the fire on field %s.",
+  "Der Regen hat den Brand auf Feld %s gelöscht.",
+  "La pluie a éteint le feu sur le champ %s.",
+  "Deszcz ugasił pożar na polu %s.",
+  "La lluvia ha apagado el incendio del campo %s.",
+  "La pioggia ha spento l'incendio del campo %s.",
+  "De regen heeft de brand op veld %s gedoofd.")
+t("tp_msg_fire_out", "The fire on field %s has burned out.",
+  "Der Brand auf Feld %s ist ausgebrannt.",
+  "Le feu sur le champ %s s'est éteint de lui-même.",
+  "Pożar na polu %s wypalił się.",
+  "El incendio del campo %s se ha consumido.",
+  "L'incendio del campo %s si è esaurito.",
+  "De brand op veld %s is uitgebrand.")
+t("tp_hotspot_field_fire", "Field fire (field %s)", "Feldbrand (Feld %s)", "Feu de champ (champ %s)", "Pożar pola (pole %s)",
+  "Incendio de campo (campo %s)", "Incendio (campo %s)", "Veldbrand (veld %s)")
 t("tp_msg_drought_end", "The drought is over - rain has refilled the soil.",
   "Die Dürre ist vorbei - Regen hat den Boden wieder aufgefüllt.",
   "La sécheresse est terminée - la pluie a rechargé le sol.",

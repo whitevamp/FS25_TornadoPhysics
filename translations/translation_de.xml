@@ -166,11 +166,13 @@
         <text name="tp_tip_wildlife_distance" text="Wie weit außerhalb des Tornadoradius Tiere zu fliehen beginnen."/>
         <text name="tp_sec_hazards" text="Naturgefahren"/>
         <text name="tp_hazards" text="Naturgefahren aktivieren"/>
-        <text name="tp_tip_hazards" text="Das Wetter kann deinen Pflanzen schaden: Lange Trockenphasen verursachen Dürreschäden, und Starkregen auf nassem Boden überflutet tief liegende Felder (Feldbrände folgen in einem späteren Update). Ernteschäden brauchen die Spieleinstellung für Katastrophenzerstörung. Aus, solange FS25_RealisticWeather installiert ist."/>
+        <text name="tp_tip_hazards" text="Das Wetter kann deinen Pflanzen schaden: Lange Trockenphasen verursachen Dürreschäden, Starkregen auf nassem Boden überflutet tief liegende Felder, und bei heißer Dürre können reife Felder in Brand geraten. Ernteschäden brauchen die Spieleinstellung für Katastrophenzerstörung. Aus, solange FS25_RealisticWeather installiert ist."/>
         <text name="tp_hazards_drought" text="Dürre"/>
         <text name="tp_tip_hazards_drought" text="Lange heiße Trockenphasen trocknen den Boden aus; wachsende Pflanzen verlieren dann jeden Tag etwas mehr, bis es regnet. Reisfelder bleiben verschont."/>
         <text name="tp_hazards_flood" text="Überschwemmung"/>
         <text name="tp_tip_hazards_flood" text="Mehrere Stunden Starkregen auf bereits nassem Boden überfluten die am tiefsten liegenden Felder: Das Wasser sammelt sich am tiefsten Punkt jedes Feldes und ertränkt dort die Pflanzen. Reisfelder bleiben verschont."/>
+        <text name="tp_hazards_fire" text="Feldbrand"/>
+        <text name="tp_tip_hazards_fire" text="Während einer Dürre kann an heißen, trockenen Nachmittagen ein reifes Getreidefeld in Brand geraten. Das Feuer breitet sich im Feld aus und verbrennt die Pflanzen, bis es ausbrennt oder Regen es löscht. Auf der Karte markiert."/>
         <text name="tp_hazards_owned" text="Nur eigene Felder beschädigen"/>
         <text name="tp_tip_hazards_owned" text="AN: Dürre und Überschwemmungen beschädigen nur Felder, die einem Hof gehören; Felder ohne Besitzer bleiben unberührt. AUS: Das Wetter trifft jedes wachsende Feld der Karte."/>
         <text name="tp_hazards_intensity" text="Stärke der Ernteschäden"/>
@@ -206,6 +208,10 @@
         <text name="tp_msg_drought_damage" text="DÜRRESCHADEN: %d deiner Felder haben heute Ertrag verloren."/>
         <text name="tp_msg_flood" text="ÜBERSCHWEMMUNG! Starkregen auf durchnässtem Boden hat %d tief liegende Felder überflutet."/>
         <text name="tp_msg_flood_damage" text="ÜBERSCHWEMMUNGSSCHADEN: %d deiner Felder stehen unter Wasser."/>
+        <text name="tp_msg_field_fire" text="FELDBRAND auf Feld %s! Die trockenen Pflanzen brennen."/>
+        <text name="tp_msg_fire_out_rain" text="Der Regen hat den Brand auf Feld %s gelöscht."/>
+        <text name="tp_msg_fire_out" text="Der Brand auf Feld %s ist ausgebrannt."/>
+        <text name="tp_hotspot_field_fire" text="Feldbrand (Feld %s)"/>
         <text name="tp_msg_drought_end" text="Die Dürre ist vorbei - Regen hat den Boden wieder aufgefüllt."/>
         <text name="tp_msg_outbreak_one" text="TORNADO-AUSBRUCH (%s): heute ist noch ein weiterer Tornado möglich!"/>
         <text name="tp_msg_storm_damage" text="STURMSCHADEN: %s (%s) hat %d Tiere verloren! %d Sekunden lang geschützt."/>

@@ -40,12 +40,14 @@ function weather:getCurrentMinMaxTemperatures() return self.temp - 8, self.maxTe
 
 g_currentMission = {
     getIsServer = function() return true end,
-    environment = { weather = weather, currentMonotonicDay = 1 },
-    missionInfo = { disasterDestructionState = DisasterDestructionState.ENABLED },
+    environment = { weather = weather, currentMonotonicDay = 1, currentHour = 12 },
+    missionInfo = { disasterDestructionState = DisasterDestructionState.ENABLED, timeScale = 1 },
 }
 
 local fruitNames = { [1] = "WHEAT", [2] = "RICE", [3] = "GRASS", [4] = "CANOLA" }
-g_fruitTypeManager = { getFruitTypeByIndex = function(_, i) return fruitNames[i] and { name = fruitNames[i] } or nil end }
+g_fruitTypeManager = { getFruitTypeByIndex = function(_, i)
+    return fruitNames[i] and { name = fruitNames[i], minHarvestingGrowthState = 4, maxHarvestingGrowthState = 5 } or nil
+end }
 -- Terrain: every field sits at its own height (field id * 10 m, field 1 lowest) - see fieldHeights below.
 local fieldHeights = {}
 g_terrainNode = 1
@@ -87,11 +89,19 @@ local disasterCalls = {}
 FSDensityMapUtil = { updateDisasterArea = function(polygon, perlin) table.insert(disasterCalls, { field = polygon.fieldId, perlin = perlin }) end }
 
 local messages = {}
+local broadcasts = {}
 TornadoSync = {
     MSG_BLINKING = 1, MSG_CRITICAL = 2, MSG_INFO = 3,
     sendMessage = function(_, key, params, kind, farmId) table.insert(messages, { key = key, farmId = farmId, params = params }) end,
+    broadcast = function(_, event) table.insert(broadcasts, event) end,
 }
-TornadoText = { num = function(v) return v end }
+TornadoText = { num = function(v) return v end, str = function(v) return v end }
+local fxCalls = {}
+TornadoFieldFireFX = {
+    start = function(_, data) table.insert(fxCalls, { kind = "start", data = data }) end,
+    stop = function(_, id) table.insert(fxCalls, { kind = "stop", id = id }) end,
+}
+TornadoFieldFireEvent = { START = 1, STOP = 2, new = function(kind, data) return { kind = kind, data = data } end }
 TornadoDestruction = { _resolveSavegamePath = function() return "savegame1/" end }
 
 dofile("scripts/TornadoHazards.lua")
@@ -306,6 +316,102 @@ TornadoHazards:save()
 TornadoHazards:deleteMap()
 TornadoHazards:loadMap()
 check("save / load keeps the flood cooldown", TornadoHazards.floodCooldownUntil, 77)
+
+-- ---------------------------------------------------------------- FIELD FIRE
+-- A ripe 200 x 200 m wheat field (growth 5 = harvest ready) with a real outline, owned by farm 1.
+local fireState = { isValid = true, fruitTypeIndex = 1, growthState = 5 }
+local fireField = {
+    getId = function() return 7 end,
+    getFieldState = function() return fireState end,
+    getDensityMapPolygon = function() return { fieldId = 7 } end,
+    getOwner = function() return 1 end,
+    getCenterOfFieldWorldPosition = function() return 1100, 100 end,
+    getPolygonPoints = function() return { { x = 1000, z = 0 }, { x = 1200, z = 0 }, { x = 1200, z = 200 }, { x = 1000, z = 200 } } end,
+    getAreaHa = function() return 4 end,
+}
+table.insert(fields, fireField)
+for _, f in ipairs(fields) do
+    if f ~= fireField and f.setFruit ~= nil then f.setFruit(1, 3) end   -- every other field: growing, not ripe
+end
+TornadoHazards.isEnabled, TornadoHazards.fireEnabled = true, true
+TornadoHazards.fire = nil
+weather.temp, weather.rain = 30, 0
+g_currentMission.environment.currentHour = 12
+messages, broadcasts, fxCalls, disasterCalls = {}, {}, {}, {}
+TornadoHazards.FIRE_CHANCE_PER_HOUR = 1.0     -- force the roll for the test
+
+TornadoHazards.droughtDay = 0
+hours(1)
+check("no fire without a drought", TornadoHazards.fire, nil)
+
+TornadoHazards.droughtDay = 1
+TornadoHazards.water = 0.05
+g_currentMission.environment.currentHour = 22
+hours(1)
+check("no fire at night", TornadoHazards.fire, nil)
+
+g_currentMission.environment.currentHour = 12
+weather.temp = 20
+hours(1)
+check("no fire below 25 C", TornadoHazards.fire, nil)
+
+weather.temp = 30
+hours(1)
+check("fire starts on the ripe field", TornadoHazards.fire ~= nil and TornadoHazards.fire.fieldId, 7)
+local f = TornadoHazards.fire
+check("fire start spot inside the field", f.x > 1000 and f.x < 1200 and f.z > 0 and f.z < 200, true)
+check("fire max radius stays inside the field (<= room, <= 80 m)",
+    f.maxRadius <= 80 and f.maxRadius <= math.min(f.x - 1000, 1200 - f.x, f.z, 200 - f.z) + 0.01, true)
+check("fire alert sent", countMessages("tp_msg_field_fire"), 1)
+check("fire visuals started on the host", #fxCalls == 1 and fxCalls[1].kind == "start", true)
+check("fire START sent to clients", #broadcasts == 1 and broadcasts[1].kind == 1, true)
+hours(1)
+check("only one fire at a time", countMessages("tp_msg_field_fire"), 1)
+
+-- Spread and burn: one game minute per update (timeScale 1, dt 60 000 ms).
+local startRadius = f.radius
+TornadoHazards:update(60000)
+check("fire spreads", f.radius > startRadius, true)
+check("fire burns the crop (perlin 0 = full)", #disasterCalls >= 1 and disasterCalls[#disasterCalls].perlin, 0)
+for _ = 1, 200 do
+    if TornadoHazards.fire == nil then break end
+    TornadoHazards:update(60000)
+end
+check("fire burns out at full size", TornadoHazards.fire, nil)
+check("burnt-out message", countMessages("tp_msg_fire_out"), 1)
+check("fire visuals stopped", fxCalls[#fxCalls].kind, "stop")
+local lastEvent = TornadoHazards.events[#TornadoHazards.events]
+check("FIRE event logged for farm 1", lastEvent.kind == "FIRE" and lastEvent.farmId == 1 and lastEvent.fieldId == 7, true)
+check("burnt share between 0 and 1", lastEvent.share > 0 and lastEvent.share <= 1, true)
+
+-- Rain puts it out.
+hours(1)
+check("a new fire can start after the last one", TornadoHazards.fire ~= nil, true)
+weather.rain = 0.5
+TornadoHazards:update(1000)
+check("rain puts the fire out", TornadoHazards.fire, nil)
+check("rain message", countMessages("tp_msg_fire_out_rain"), 1)
+weather.rain = 0
+
+-- Not ripe -> no candidate; only owned fields respected; dev command.
+fireState.growthState = 3
+hours(1)
+check("unripe field does not burn by itself", TornadoHazards.fire, nil)
+check("t_dev hazards fire 7 still works on a growing field", TornadoHazards:consoleCommand("fire", "7"):find("field 7") ~= nil, true)
+TornadoHazards:consoleCommand("fireout")
+check("t_dev hazards fireout", TornadoHazards.fire, nil)
+fireState.growthState = 5
+TornadoHazards.ownedOnly = true
+local ownerBackup = fireField.getOwner
+fireField.getOwner = function() return 0 end
+hours(1)
+check("owned only: unowned ripe field does not burn", TornadoHazards.fire, nil)
+fireField.getOwner = ownerBackup
+TornadoHazards.ownedOnly = false
+TornadoHazards.fireEnabled = false
+hours(1)
+check("fire toggle OFF: no fire", TornadoHazards.fire, nil)
+TornadoHazards.fireEnabled = true
 
 print(TornadoHazards:getStatusText())
 print(string.format("\n%d / %d checks passed", total - failures, total))

@@ -280,6 +280,17 @@ TornadoPageModules = TornadoMenuPage.new("Modules", "Modules", {
         end,
     },
     {
+        id = "modHazardsFire",
+        kind = Page.KIND_BOOL,
+        requires = hasHazards,
+        get = function()
+            return TornadoHazards.fireEnabled
+        end,
+        set = function(value)
+            return console("cmdSet", "hazards", "fire", value and "on" or "off")
+        end,
+    },
+    {
         id = "modHazardsOwned",
         kind = Page.KIND_BOOL,
         requires = hasHazards,

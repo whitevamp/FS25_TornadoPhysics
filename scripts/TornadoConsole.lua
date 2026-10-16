@@ -133,11 +133,12 @@ function TornadoConsole:cmdHelp(command)
         print("    distance <meters>   - How far beyond the tornado radius animals start to flee. Ex: t_set wildlife distance 200")
         print("    status              - Shows the settings and how many animals were caught.")
         print(" ")
-        print("  hazards [sub-command] - Natural hazards: drought and floods damage growing crops (OFF by default).")
+        print("  hazards [sub-command] - Natural hazards: drought, floods and field fires damage crops (OFF by default).")
         print("    (no sub-command)    - Toggles hazards ON/OFF.")
         print("    on|off              - Explicitly turns hazards ON or OFF.")
         print("    drought [on|off]    - Drought on its own.")
         print("    flood [on|off]      - Floods on its own (heavy rain on soaked soil floods low-lying fields).")
+        print("    fire [on|off]       - Field fires on their own (ripe dry fields can burn during a hot drought).")
         print("    owned [on|off]      - Only damage fields a farm owns (default OFF = every growing field).")
         print("    intensity <percent> - Crop damage strength, 25 - 300. 100 = mild. Ex: t_set hazards intensity 200")
         print("    frequency <percent> - How fast the soil dries out, 25 - 300. Ex: t_set hazards frequency 150")
@@ -173,6 +174,8 @@ function TornadoConsole:cmdHelp(command)
         print("  hazards damage        - Applies the next drought day of crop damage right now.")
         print("  hazards end           - Ends the drought and refills the soil.")
         print("  hazards flood         - Forces a flood now on the low-lying growing fields.")
+        print("  hazards fire [field]  - Starts a field fire now (random grain-type field, or the given field number).")
+        print("  hazards fireout       - Puts the burning field fire out.")
         print("  hazards log           - Prints the last 20 hazard events (field, farm, share).")
         print("--------------------------------------------------")
     elseif command == "t_tune" then
@@ -203,7 +206,7 @@ function TornadoConsole:cmdHelp(command)
         print("  husbandry             - Resets husbandry module settings.")
         print("  traffic               - Resets traffic roadblock settings.")
         print("  wildlife              - Resets wildlife settings (ON, flee distance 150 m).")
-        print("  hazards               - Resets natural hazards (OFF, drought + flood ON, all fields, 100 %).")
+        print("  hazards               - Resets natural hazards (OFF, drought + flood + fire ON, all fields, 100 %).")
         print("  climate               - Resets real-life climate mode (OFF, region Auto).")
         print("--------------------------------------------------")
     else
@@ -494,8 +497,8 @@ end
                 TornadoHazards.droughtEnabled = not TornadoHazards.droughtEnabled
             end
             return "Hazards: Drought = " .. tostring(TornadoHazards.droughtEnabled)
-        elseif subCmd == "flood" or subCmd == "owned" then
-            local field = subCmd == "flood" and "floodEnabled" or "ownedOnly"
+        elseif subCmd == "flood" or subCmd == "owned" or subCmd == "fire" then
+            local field = ({ flood = "floodEnabled", owned = "ownedOnly", fire = "fireEnabled" })[subCmd]
             if value == "on" or value == "true" then
                 TornadoHazards[field] = true
             elseif value == "off" or value == "false" then
@@ -503,7 +506,8 @@ end
             else
                 TornadoHazards[field] = not TornadoHazards[field]
             end
-            return string.format("Hazards: %s = %s", subCmd == "flood" and "Flood" or "Only owned fields", tostring(TornadoHazards[field]))
+            return string.format("Hazards: %s = %s", ({ flood = "Flood", owned = "Only owned fields", fire = "Field fire" })[subCmd],
+                tostring(TornadoHazards[field]))
         elseif subCmd == "intensity" or subCmd == "frequency" then
             local percent = tonumber(value)
             if percent == nil then return "Usage: t_set hazards " .. subCmd .. " <25-300>" end
@@ -514,7 +518,7 @@ end
         elseif subCmd == nil or subCmd == "toggle" then
             TornadoHazards.isEnabled = not TornadoHazards.isEnabled
         else
-            return "Unknown Hazards CMD. Try: on, off, drought, flood, owned, intensity, frequency, status"
+            return "Unknown Hazards CMD. Try: on, off, drought, flood, fire, owned, intensity, frequency, status"
         end
         return "Hazards: Natural hazards = " .. tostring(TornadoHazards.isEnabled)
     end

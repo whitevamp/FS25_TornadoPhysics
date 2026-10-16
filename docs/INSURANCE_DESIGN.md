@@ -898,6 +898,25 @@ circle; logged share = inside share × circle / field area. Rice spared. `FLOOD`
 message, `t_dev hazards flood`, toggle `floodEnabled`. Offline test now 45 checks. Note: a circle near a field edge
 can reach a neighbouring field (also low ground) even with "owned only".
 
+**Phase 3a implemented (2026-10-16): field fire** – only during a drought, 10:00 – 19:00, ≥ 25 °C, no rain; per hour
+0.04 × frequency that one ripe (harvest-ready growth state) grain-type field catches fire (excluded: rice, root
+crops, vegetables, grass, sugarcane, vines, olives, poplar); one fire at a time; "owned only" respected. Start spot:
+random grid point inside the outline with ≥ 10 m room; max radius = distance to the nearest edge (≤ 80 m), so the
+fire stays inside its field. Spreads 0.05 m per game second; every second `updateDisasterArea(circle, 0)` (full
+burn); rain ≥ 0.3 puts it out, otherwise it burns out at full size; burnt share (circle / field area) logged as
+`FIRE`. Visuals `scripts/TornadoFieldFireFX.lua` (all machines): up to 16 flames (FX/FireTrailSubUV.i3d via
+TornadoEffects) on the burning edge + 3 smoke columns, fade in / out, red map marker (`mapHotspots.other`,
+teleport) "Field fire (field N)". Sync `TornadoFieldFireEvent` (START with position / radius / speed, STOP;
+joiners get the burning fire in `TornadoSync:sendInitialState`). `t_dev hazards fire [field]` / `fireout`.
+A burning fire is not saved (it simply ends on reload). Offline test 74 checks.
+
+**Maybe later – 3b: Emergency DLC link** (user: "a maybe-to-add feature, come back to it later"). The DLC
+(`pdlc_emergencyPack`, free) has an official mod API v1: `<emergencyPack version="1"><scenarioDirectory>` in
+modDesc loads a mod's scenario XMLs (see its `data/scenarios/fire/field.xml`). Starting the DLC's field-fire
+scenario on *our* fire's field would need internal functions (`RolePlay:loadScenarioByInfo`,
+`setScenarioStartPosition`, `StartStrategyField:setActiveFieldIndex`) – unofficial, may break with DLC updates.
+Idea: players with fire trucks put our fire out early (less loss). Never copy DLC assets into the mod.
+
 ## 16. Open questions
 
 1. Rebuilt-title value penalty default: real-life ~20–40 % vs. the author's −50 % to −75 %.

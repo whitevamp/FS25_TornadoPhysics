@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- Field fire flames: a small local-space particle system of flame sprites (the mod's own royalty-free fire
+     texture; fieldFireFlames_diffuse.dds = fire1_64_8x8_512.dds with a soft alpha made from its brightness,
+     used as an emissive map so the flames glow, also at night) with the GIANTS particle shader and
+     emitter mesh (shared with fieldFireSmoke.i3d). TornadoFieldFireFX places many of these along the
+     burning edge and scales each one's emission so they flicker unevenly. Flames live ~0.9 s, rise ~2 m. -->
+<i3D name="fieldFireFlames" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+
+  <Files>
+    <File fileId="1" filename="fieldFireFlames_diffuse.dds"/>
+    <File fileId="4" filename="$data/shaders/psSubUVShader.xml"/>
+  </Files>
+
+  <Materials>
+    <Material name="lambert1" materialId="5" diffuseColor="0.494118 0.494118 0.494118 1">
+    </Material>
+    <!-- The shader takes the alpha from the base texture (Texture) when there is one, so the flames need it
+         there; the same texture as Emissivemap makes them glow. -->
+    <Material name="fieldFireFlames_mat" materialId="6" alphaBlending="true" customShaderId="4" customShaderVariation="subUV" shadingRate="2x2">
+      <Texture fileId="1"/>
+      <Emissivemap fileId="1"/>
+      <CustomParameter name="colorAlpha" value="1 1 1 1"/>
+      <CustomParameter name="playScale" value="25 35 0 0"/>
+    </Material>
+  </Materials>
+
+  <Shapes externalShapesFile="fieldFireSmoke.i3d.shapes">
+  </Shapes>
+
+  <Dynamics>
+    <ParticleSystem name="emitter" dynamicId="1" type="sprite" particleShapeId="3"
+        rate="0.02"
+        lifespan="900"
+        maxCount="40"
+        speed="0.0022"
+        speedRandom="0.0008"
+        tangentSpeed="0.35"
+        normalSpeed="1"
+        spriteScaleX="1.6"
+        spriteScaleY="2.0"
+        spriteScaleXGain="0.0004"
+        spriteScaleYGain="0.0008"
+        blendFactor="1"
+        blendInFactor="0.1"
+        blendOutFactor="0.5"
+        depthSort="true"
+        randomInitRotation="false"
+        textureAtlasSizeX="8"
+        textureAtlasSizeY="8">
+      <Gravity force="0 0 0"/>
+    </ParticleSystem>
+  </Dynamics>
+
+  <Scene>
+    <Dynamic name="emitter" dynamicId="1" emitterShapeNodeId="14" clipDistance="600" objectMask="0xff007f" nodeId="13" castsShadows="false" receiveShadows="false" distanceBlending="false" materialIds="6">
+      <Shape name="emitShape" rotation="90 -0 0" scale="3 3 3" shapeId="2" nodeId="14" castsShadows="false" receiveShadows="false" nonRenderable="true" materialIds="5"/>
+    </Dynamic>
+  </Scene>
+
+</i3D>

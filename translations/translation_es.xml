@@ -166,11 +166,13 @@
         <text name="tp_tip_wildlife_distance" text="A qué distancia fuera del radio del tornado empiezan a huir los animales."/>
         <text name="tp_sec_hazards" text="Riesgos naturales"/>
         <text name="tp_hazards" text="Activar riesgos naturales"/>
-        <text name="tp_tip_hazards" text="El tiempo puede dañar tus cultivos: los periodos secos largos causan daños por sequía y las lluvias fuertes sobre suelo empapado inundan los campos bajos (los incendios de campo llegarán en una actualización). Los daños necesitan la opción de destrucción por catástrofes del juego. Desactivado si FS25_RealisticWeather está instalado."/>
+        <text name="tp_tip_hazards" text="El tiempo puede dañar tus cultivos: los periodos secos largos causan daños por sequía, las lluvias fuertes sobre suelo empapado inundan los campos bajos y, en una sequía calurosa, los campos maduros pueden incendiarse. Los daños necesitan la opción de destrucción por catástrofes del juego. Desactivado si FS25_RealisticWeather está instalado."/>
         <text name="tp_hazards_drought" text="Sequía"/>
         <text name="tp_tip_hazards_drought" text="Los periodos largos de calor y sequía secan el suelo; los cultivos en crecimiento pierden un poco más cada día hasta que llueve. Los arrozales se salvan."/>
         <text name="tp_hazards_flood" text="Inundación"/>
         <text name="tp_tip_hazards_flood" text="Varias horas de lluvia fuerte sobre un suelo ya empapado inundan los campos más bajos: el agua se acumula en el punto más bajo de cada campo y ahoga allí el cultivo. Los arrozales se salvan."/>
+        <text name="tp_hazards_fire" text="Incendio de campo"/>
+        <text name="tp_tip_hazards_fire" text="Durante una sequía, en tardes calurosas y secas, un campo maduro de cereal puede incendiarse. El fuego se extiende por el campo y quema el cultivo hasta apagarse solo o con la lluvia. Marcado en el mapa."/>
         <text name="tp_hazards_owned" text="Solo campos con dueño"/>
         <text name="tp_tip_hazards_owned" text="SÍ: la sequía y las inundaciones solo dañan campos que pertenecen a una granja; los campos sin dueño no se tocan. NO: el tiempo afecta a todos los campos cultivados del mapa."/>
         <text name="tp_hazards_intensity" text="Intensidad de los daños"/>
@@ -206,6 +208,10 @@
         <text name="tp_msg_drought_damage" text="DAÑOS POR SEQUÍA: %d de tus campos han perdido cosecha hoy."/>
         <text name="tp_msg_flood" text="¡INUNDACIÓN! La lluvia fuerte sobre suelo encharcado ha inundado %d campos bajos."/>
         <text name="tp_msg_flood_damage" text="DAÑOS POR INUNDACIÓN: %d de tus campos están bajo el agua."/>
+        <text name="tp_msg_field_fire" text="¡INCENDIO DE CAMPO en el campo %s! El cultivo seco está ardiendo."/>
+        <text name="tp_msg_fire_out_rain" text="La lluvia ha apagado el incendio del campo %s."/>
+        <text name="tp_msg_fire_out" text="El incendio del campo %s se ha consumido."/>
+        <text name="tp_hotspot_field_fire" text="Incendio de campo (campo %s)"/>
         <text name="tp_msg_drought_end" text="La sequía ha terminado: la lluvia ha recargado el suelo."/>
         <text name="tp_msg_outbreak_one" text="BROTE DE TORNADOS (%s): ¡hoy es posible un tornado más!"/>
         <text name="tp_msg_storm_damage" text="DAÑOS DE TORMENTA: ¡%s (%s) ha perdido %d animales! A salvo durante %d segundos."/>

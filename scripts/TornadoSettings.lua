@@ -154,6 +154,7 @@ function TornadoSettings:resetToDefaults(category)
             TornadoHazards.intensity = 1.0
             TornadoHazards.frequency = 1.0
             TornadoHazards.floodEnabled = true
+            TornadoHazards.fireEnabled = true
             TornadoHazards.ownedOnly = false
             print("TORNADO RESET: Natural hazard defaults restored.")
         end
@@ -257,6 +258,7 @@ function TornadoSettings:createDefaultXML()
     setXMLFloat(xmlId, "TornadoPhysics.hazards.intensity", 1.0)
     setXMLFloat(xmlId, "TornadoPhysics.hazards.frequency", 1.0)
     setXMLBool(xmlId, "TornadoPhysics.hazards.flood", true)
+    setXMLBool(xmlId, "TornadoPhysics.hazards.fire", true)
     setXMLBool(xmlId, "TornadoPhysics.hazards.ownedOnly", false)
 
     -- 14. REAL-LIFE CLIMATE MODE
@@ -398,6 +400,8 @@ function TornadoSettings:loadFromXML()
         TornadoHazards.frequency = getXMLFloat(xmlId, "TornadoPhysics.hazards.frequency") or TornadoHazards.frequency
         local floodEnabled = getXMLBool(xmlId, "TornadoPhysics.hazards.flood")
         if floodEnabled ~= nil then TornadoHazards.floodEnabled = floodEnabled end
+        local fireEnabled = getXMLBool(xmlId, "TornadoPhysics.hazards.fire")
+        if fireEnabled ~= nil then TornadoHazards.fireEnabled = fireEnabled end
         local ownedOnly = getXMLBool(xmlId, "TornadoPhysics.hazards.ownedOnly")
         if ownedOnly ~= nil then TornadoHazards.ownedOnly = ownedOnly end
     end
@@ -533,6 +537,7 @@ function TornadoSettings:saveToXML()
         setXMLFloat(xmlId, "TornadoPhysics.hazards.intensity", TornadoHazards.intensity)
         setXMLFloat(xmlId, "TornadoPhysics.hazards.frequency", TornadoHazards.frequency)
         setXMLBool(xmlId, "TornadoPhysics.hazards.flood", TornadoHazards.floodEnabled)
+        setXMLBool(xmlId, "TornadoPhysics.hazards.fire", TornadoHazards.fireEnabled)
         setXMLBool(xmlId, "TornadoPhysics.hazards.ownedOnly", TornadoHazards.ownedOnly)
     end
 

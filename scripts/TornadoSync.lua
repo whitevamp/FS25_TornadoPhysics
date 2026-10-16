@@ -108,6 +108,7 @@ TornadoSync.SETTINGS = {
     fieldSetting(function() return TornadoHazards end, "intensity", "f"),
     fieldSetting(function() return TornadoHazards end, "frequency", "f"),
     fieldSetting(function() return TornadoHazards end, "floodEnabled", "b"),
+    fieldSetting(function() return TornadoHazards end, "fireEnabled", "b"),
     fieldSetting(function() return TornadoHazards end, "ownedOnly", "b"),
     -- t_set climate
     fieldSetting(function() return TornadoClimate end, "isEnabled", "b"),
@@ -345,6 +346,10 @@ function TornadoSync:sendInitialState(connection)
         if TornadoWeather ~= nil and TornadoWeather.lastProfile ~= nil then
             connection:sendEvent(TornadoWeatherEvent.new(TornadoWeather.lastProfile))
         end
+    end
+
+    if TornadoHazards ~= nil and TornadoHazards.fire ~= nil and TornadoFieldFireEvent ~= nil then
+        connection:sendEvent(TornadoFieldFireEvent.new(TornadoFieldFireEvent.START, TornadoHazards:getFireData(TornadoHazards.fire)))
     end
 
     if TornadoDestruction ~= nil and TornadoDestruction._destroyedObjects ~= nil then

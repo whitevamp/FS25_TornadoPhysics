@@ -166,11 +166,13 @@
         <text name="tp_tip_wildlife_distance" text="Quanto fuori dal raggio del tornado gli animali iniziano a fuggire."/>
         <text name="tp_sec_hazards" text="Rischi naturali"/>
         <text name="tp_hazards" text="Attiva rischi naturali"/>
-        <text name="tp_tip_hazards" text="Il meteo può danneggiare le colture: i lunghi periodi secchi causano danni da siccità e le piogge forti su terreno zuppo allagano i campi bassi (gli incendi dei campi arriveranno in un aggiornamento). I danni richiedono l'opzione di distruzione da catastrofi del gioco. Disattivato se FS25_RealisticWeather è installato."/>
+        <text name="tp_tip_hazards" text="Il meteo può danneggiare le colture: i lunghi periodi secchi causano danni da siccità, le piogge forti su terreno zuppo allagano i campi bassi e, durante una siccità torrida, i campi maturi possono prendere fuoco. I danni richiedono l'opzione di distruzione da catastrofi del gioco. Disattivato se FS25_RealisticWeather è installato."/>
         <text name="tp_hazards_drought" text="Siccità"/>
         <text name="tp_tip_hazards_drought" text="Lunghi periodi caldi e asciutti seccano il terreno; le colture in crescita perdono ogni giorno un po' di più finché non piove. Le risaie sono risparmiate."/>
         <text name="tp_hazards_flood" text="Alluvione"/>
         <text name="tp_tip_hazards_flood" text="Diverse ore di pioggia forte su un terreno già zuppo allagano i campi più bassi: l'acqua si raccoglie nel punto più basso di ogni campo e lì annega la coltura. Le risaie sono risparmiate."/>
+        <text name="tp_hazards_fire" text="Incendio dei campi"/>
+        <text name="tp_tip_hazards_fire" text="Durante una siccità, nei pomeriggi caldi e secchi, un campo maturo di cereali può prendere fuoco. L'incendio si estende nel campo e brucia la coltura finché si spegne da solo o con la pioggia. Segnato sulla mappa."/>
         <text name="tp_hazards_owned" text="Solo campi posseduti"/>
         <text name="tp_tip_hazards_owned" text="SÌ: siccità e alluvioni danneggiano solo i campi posseduti da una fattoria; i campi senza proprietario restano intatti. NO: il meteo colpisce ogni campo coltivato della mappa."/>
         <text name="tp_hazards_intensity" text="Intensità dei danni"/>
@@ -206,6 +208,10 @@
         <text name="tp_msg_drought_damage" text="DANNI DA SICCITÀ: %d dei tuoi campi hanno perso raccolto oggi."/>
         <text name="tp_msg_flood" text="ALLUVIONE! La pioggia forte su terreno fradicio ha allagato %d campi bassi."/>
         <text name="tp_msg_flood_damage" text="DANNI DA ALLUVIONE: %d dei tuoi campi sono sott'acqua."/>
+        <text name="tp_msg_field_fire" text="INCENDIO DEL CAMPO %s! La coltura secca sta bruciando."/>
+        <text name="tp_msg_fire_out_rain" text="La pioggia ha spento l'incendio del campo %s."/>
+        <text name="tp_msg_fire_out" text="L'incendio del campo %s si è esaurito."/>
+        <text name="tp_hotspot_field_fire" text="Incendio (campo %s)"/>
         <text name="tp_msg_drought_end" text="La siccità è finita: la pioggia ha ricaricato il terreno."/>
         <text name="tp_msg_outbreak_one" text="FOCOLAIO DI TORNADO (%s): oggi è possibile un altro tornado!"/>
         <text name="tp_msg_storm_damage" text="DANNI DA TEMPESTA: %s (%s) ha perso %d animali! Al sicuro per %d secondi."/>

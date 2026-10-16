@@ -29,12 +29,18 @@ AI assistance:
 Sound and effects (FX/):
 - Tornado siren (tornado_siren.ogg): royalty-free recording of a real
   Kansas tornado warning siren, edited for this mod.
-- Fire texture (fire1_64_8x8_512.dds, FireTrailSubUV): royalty-free
-  fire texture, modified for this mod.
+- Fire texture (fire1_64_8x8_512.dds, FireTrailSubUV, fieldFireFlames):
+  royalty-free fire texture, modified for this mod. The field fire
+  flames use a copy with a soft alpha (fieldFireFlames_diffuse.dds)
+  with the GIANTS particle shader and emitter mesh.
 - Smoke effect (smokeTrailSubUV): uses the GIANTS Software factory
   chimney smoke texture and smoke shader from Farming Simulator 25
   (loaded from the game, not included in the mod). The fire effect uses
   the same GIANTS shader.
+- Field fire smoke plume (fieldFireSmoke.i3d): a particle system made
+  from the GIANTS Software base-game smoke effects of Farming Simulator 25
+  (train / chimney smoke emitter mesh, destroy-smoke texture and shader;
+  textures and shader are loaded from the game).
 - If you are the original author of the siren recording or the fire
   texture, please get in touch so you can be credited by name.
 

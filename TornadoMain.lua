@@ -19,6 +19,7 @@ source(Utils.getFilename("scripts/events/TornadoWeatherEvent.lua", modDir))
 source(Utils.getFilename("scripts/events/TornadoDestructionEvent.lua", modDir))
 source(Utils.getFilename("scripts/events/TornadoFxEvent.lua", modDir))
 source(Utils.getFilename("scripts/events/TornadoMessageEvent.lua", modDir))
+source(Utils.getFilename("scripts/events/TornadoFieldFireEvent.lua", modDir))
 
 function TornadoMain:loadMap(name)
     print("--------------------------------------------------")
@@ -61,6 +62,7 @@ function TornadoMain:loadMap(name)
 
     -- Optional natural hazards (drought ...) - the perils the crop insurance will pay for.
     source(Utils.getFilename("scripts/TornadoHazards.lua", modDir))
+    source(Utils.getFilename("scripts/TornadoFieldFireFX.lua", modDir))
 
     -- Optional real-life climate mode (EF / size rolled from NOAA statistics).
     source(Utils.getFilename("scripts/TornadoRegion.lua", modDir))
@@ -133,6 +135,7 @@ function TornadoMain:loadMap(name)
     if TornadoTraffic then TornadoTraffic:loadMap() end
     if TornadoWildlife then TornadoWildlife:loadMap() end
     if TornadoHazards then TornadoHazards:loadMap() end
+    if TornadoFieldFireFX then TornadoFieldFireFX:loadMap(modDir) end
     if TornadoRegion then TornadoRegion:loadMap(modDir) end
     if TornadoClimate then TornadoClimate:loadMap(modDir) end
     if TornadoOutbreak then TornadoOutbreak:loadMap() end
@@ -165,6 +168,7 @@ function TornadoMain:deleteMap()
     if TornadoTraffic then TornadoTraffic:deleteMap() end
     if TornadoWildlife then TornadoWildlife:deleteMap() end
     if TornadoHazards then TornadoHazards:deleteMap() end
+    if TornadoFieldFireFX then TornadoFieldFireFX:deleteMap() end
     if TornadoClimate then TornadoClimate:deleteMap() end
     if TornadoRegion then TornadoRegion:deleteMap() end
     if TornadoOutbreak then TornadoOutbreak:deleteMap() end
@@ -182,6 +186,8 @@ function TornadoMain:update(dt)
     if TornadoSFX then TornadoSFX:update(dt) end
     if TornadoTraffic then TornadoTraffic:update(dt) end
     if TornadoWildlife then TornadoWildlife:update(dt) end
+    if TornadoHazards then TornadoHazards:update(dt) end
+    if TornadoFieldFireFX then TornadoFieldFireFX:update(dt) end
     if TornadoOutbreak then TornadoOutbreak:update(dt) end
     if TornadoCompass then TornadoCompass:update(dt) end
 

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- Field fire smoke plume: a world-space particle system built from the GIANTS base-game smoke (train /
+     chimney emitter mesh, destroy-smoke material). Textures and shader are loaded from the game ($data).
+     Particles rise about 3 m/s for 25 s (~75 m) and grow from 3 m to ~33 m wide. Emission is scaled from
+     Lua (TornadoFieldFireFX) with the size of the fire. -->
+<i3D name="fieldFireSmoke" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+
+  <Files>
+    <File fileId="1" filename="$data/effects/smoke/smoke6x6_diffuse.png"/>
+    <File fileId="2" filename="$data/effects/smoke/smoke6x6_normal.png"/>
+    <File fileId="3" filename="$data/shared/default_specular.png"/>
+    <File fileId="4" filename="$data/shaders/psSubUVShader.xml"/>
+  </Files>
+
+  <Materials>
+    <Material name="lambert1" materialId="5" diffuseColor="0.494118 0.494118 0.494118 1">
+    </Material>
+    <Material name="fieldFireSmoke_mat" materialId="6" alphaBlending="true" customShaderId="4" customShaderVariation="subUV" shadingRate="4x4">
+      <Texture fileId="1"/>
+      <Normalmap fileId="2"/>
+      <Glossmap fileId="3"/>
+      <CustomParameter name="colorAlpha" value="0.20 0.185 0.165 1"/>
+      <CustomParameter name="playScale" value="15 30 0 0"/>
+    </Material>
+  </Materials>
+
+  <Shapes externalShapesFile="fieldFireSmoke.i3d.shapes">
+  </Shapes>
+
+  <Dynamics>
+    <ParticleSystem name="emitter" dynamicId="1" type="sprite" particleShapeId="3"
+        rate="0.006"
+        lifespan="25000"
+        maxCount="300"
+        speed="0.003"
+        speedRandom="0.0008"
+        tangentSpeed="0.15"
+        normalSpeed="1"
+        spriteScaleX="3"
+        spriteScaleY="3"
+        spriteScaleXGain="0.0012"
+        spriteScaleYGain="0.0012"
+        blendFactor="1"
+        blendInFactor="0.05"
+        blendOutFactor="0.6"
+        depthSort="true"
+        randomInitRotation="true"
+        deltaRotateMin="-0.000174533"
+        deltaRotateMax="0.000174533"
+        textureAtlasSizeX="6"
+        textureAtlasSizeY="6">
+      <Gravity force="0 0 0"/>
+    </ParticleSystem>
+  </Dynamics>
+
+  <Scene>
+    <Dynamic name="emitter" dynamicId="1" emitterShapeNodeId="14" clipDistance="1500" objectMask="0xff007f" nodeId="13" castsShadows="false" receiveShadows="false" distanceBlending="false" materialIds="6">
+      <Shape name="emitShape" rotation="90 -0 0" scale="1 1 1" shapeId="2" nodeId="14" castsShadows="false" receiveShadows="false" nonRenderable="true" materialIds="5"/>
+    </Dynamic>
+  </Scene>
+
+</i3D>
