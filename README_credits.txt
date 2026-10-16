@@ -85,6 +85,13 @@ France (CropInsurance_FR.xml)
 - Rates are estimates, not official figures. Not affiliated with or
   endorsed by any of them.
 
+Netherlands (CropInsurance_NL.xml)
+- Dutch crop insurance rules and subsidy figures from RVO (Rijksdienst
+  voor Ondernemend Nederland) and the 2024 Ecorys / WUR evaluation of the
+  Subsidieregeling Brede Weersverzekering; premium range from Agriver.
+- Rates are estimates, not official figures. Not affiliated with or
+  endorsed by any of them.
+
 Germany (CropInsurance_DE.xml)
 - German crop insurance rules from the Bavarian State Ministry for
   Food, Agriculture, Forestry and Tourism (StMELF) and the state

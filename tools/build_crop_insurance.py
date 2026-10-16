@@ -112,6 +112,20 @@ uninsured ones. The file holds (see the FRANCE config):
     subsidy paid (Ministry of Agriculture via the Assemblee nationale report, January 2026).
 
 ----------------------------------------------------------------------------
+Netherlands (DB/CropInsurance_NL.xml)
+----------------------------------------------------------------------------
+The "brede weersverzekering" (broad weather insurance, BWV) is a subsidised multi-peril policy; hail-only
+cover is sold unsubsidised. The subsidy has a FIXED budget: when more premium is applied for, everyone's
+share is cut pro rata (63.7 % maximum, 46.3 % actually paid in 2025). The file holds (see the NETHERLANDS
+config):
+
+  * Plan "multiRisk": hail, rain, (night) frost, storm, drought, snow, freezing rain, lightning fire;
+    pays only above a 20 % loss of the average production. No 21 % insurance tax since 2020.
+  * Subsidy pool: budget, maximum share and the history of budget / premium / actual share 2015 - 2025.
+  * Rates and sums insured per hectare: OUR ESTIMATES (isEstimate="true") inside the published 4 - 8 % of
+    the insured value (Agriver). No insured-area total is published, so there is no calibration.
+
+----------------------------------------------------------------------------
 Brazil (DB/CropInsurance_BR.xml)
 ----------------------------------------------------------------------------
 Built from MAPA's PSR open data (SISSER, one row per subsidised policy, Creative Commons Attribution):
@@ -516,6 +530,57 @@ FRANCE_CALIBRATION = {"subsidyPaidEur": 365.8e6, "year": 2024,
                       "fieldCropMix": {"cereals": 0.70, "rapeseed": 0.10, "maize": 0.10, "sunflower": 0.05,
                                        "legumes": 0.02, "sugarbeet": 0.02, "potatoes": 0.01},
                       "sectorGroup": {"vine": "vine", "orchards": "fruit", "grassland": "grassland"}}
+
+# ============================================================================
+# NETHERLANDS  -  published rules + subsidy history (edit when newer figures are out)
+# ============================================================================
+
+NETHERLANDS_OUTPUT_XML = os.path.join(TOOLS_DIR, "..", "DB", "CropInsurance_NL.xml")
+
+# RVO "Brede weersverzekering 2025 / 2026" + Ecorys / WUR evaluation for the ministry (7 May 2024).
+NETHERLANDS_PERILS = ["HAIL", "HEAVY_RAIN", "FROST", "WINDSTORM", "DROUGHT", "SNOW", "FREEZING_RAIN", "LIGHTNING_FIRE"]
+NETHERLANDS_THRESHOLD = 0.20          # financial loss > 20 % of the average annual production (was 30 % before 2018)
+NETHERLANDS_MAX_SUBSIDY = 0.637       # EU maximum 70 % of premium + tax, minus the 21 % tax exemption since 2020
+NETHERLANDS_BUDGET_EUR = 17.5e6       # fixed, not indexed; over-subscription -> pro-rata cut for everyone
+NETHERLANDS_INSURANCE_TAX = 0.21      # assurantiebelasting; BWV exempt since 2020 (hail-only cover is not)
+NETHERLANDS_LOSS_RATIO_NORM = 0.5     # insurer's 5-year cumulative loss ratio must stay >= 0.5
+# year: (budget M EUR, subsidy paid M EUR, premium M EUR, actual subsidy share). 2015 - 2023: evaluation table 1;
+# 2025: RVO final share, premium = budget / share (the budget was used up).
+NETHERLANDS_HISTORY = {
+    2015: (9.0, 7.81, 12.02, 0.65), 2016: (9.0, 8.99, 14.50, 0.62), 2017: (11.2, 10.92, 16.81, 0.65),
+    2018: (13.0, 11.03, 16.97, 0.65), 2019: (15.0, 12.18, 18.73, 0.65), 2020: (17.5, 15.95, 25.04, 0.637),
+    2021: (17.5, 17.48, 28.97, 0.6035), 2022: (17.5, 17.50, 32.10, 0.5452), 2023: (17.5, 17.50, 32.88, 0.53225),
+    2025: (17.5, 17.50, 17.5 / 0.46266, 0.46266),
+}
+# Evaluation: 2 450 farms with a BWV in 2022 (~15 % of farms with a weather-sensitive main crop); ~1/3 of the
+# area on arable farms and ~60 % of apple / pear area insured.
+NETHERLANDS_UPTAKE = {"farms2022": 2450, "farmShare2022": 0.15, "arableAreaShare2022": 0.33, "applePearAreaShare2022": 0.60}
+
+NETHERLANDS_CROPS = {
+    "WHEAT": "cereals", "BARLEY": "cereals", "OAT": "cereals", "SORGHUM": "cereals",
+    "CANOLA": "rapeseed", "SUNFLOWER": "rapeseed", "MAIZE": "maize",
+    "SOYBEAN": "legumes", "PEA": "legumes", "GREENBEAN": "vegetables",
+    "POTATO": "potatoes", "SUGARBEET": "sugarbeet",
+    "CARROT": "vegetables", "PARSNIP": "vegetables", "REDBEET": "vegetables", "SPINACH": "vegetables",
+    "GRASS": "grassland", "GRAPE": "fruit", "OLIVE": "fruit",
+    "DEFAULT": "cereals",
+}
+NETHERLANDS_BORROWED = {"SORGHUM", "SUNFLOWER", "GRAPE", "OLIVE"}
+
+# Per crop group, OUR ESTIMATES: sum insured per ha (EUR, Dutch yields x prices), BWV rate (share of the sum
+# insured, inside Agriver's 4 - 8 %; fruit at the top), hail-only rate (unsubsidised, plus 21 % tax).
+NETHERLANDS_GROUPS = {
+    #              sumPerHa  multiRisk  hailOnly
+    "cereals":    (1800,    0.040,     0.006),
+    "rapeseed":   (1800,    0.050,     0.010),
+    "maize":      (2000,    0.040,     0.006),
+    "legumes":    (2000,    0.050,     0.008),
+    "potatoes":   (9000,    0.050,     0.008),
+    "sugarbeet":  (3400,    0.040,     0.005),
+    "vegetables": (10000,   0.060,     0.015),
+    "grassland":  (1200,    0.040,     0.003),
+    "fruit":      (25000,   0.080,     0.030),
+}
 
 # ============================================================================
 # BRAZIL  -  MAPA PSR open data (SISSER)
@@ -1181,6 +1246,43 @@ def write_france(out_path):
     print("wrote %s (%.1f KB, France, %d crops)" % (out_path, os.path.getsize(out_path) / 1024, len(FRANCE_CROPS)))
 
 
+def write_netherlands(out_path):
+    """Netherlands: subsidised broad weather insurance with a fixed subsidy pool. Needs no raw data."""
+    lines = ['<?xml version="1.0" encoding="utf-8" standalone="no" ?>',
+             '<!-- Generated by tools/build_crop_insurance.py - do not edit by hand. -->',
+             '<!-- Sources: RVO (Rijksdienst voor Ondernemend Nederland) brede weersverzekering 2025 / 2026, Ecorys / WUR -->',
+             '<!-- evaluation for the Ministry of LVVN (May 2024), Agriver. Values marked isEstimate="true" are our own -->',
+             '<!-- estimates, not official figures. -->',
+             '<cropInsurance version="1" source="RVO, Ecorys / WUR evaluation" years="2015-2026" currency="EUR">',
+             '    <program type="multiRisk" threshold="%s" perils="%s" insuranceTaxExempt="true" '
+             'lossRatioNorm="%s">' % (fmt(NETHERLANDS_THRESHOLD, 2), " ".join(NETHERLANDS_PERILS),
+                                       fmt(NETHERLANDS_LOSS_RATIO_NORM, 2)),
+             '        <subsidyPool budget="%d" maxShare="%s" rule="proRata"/>' % (
+                 NETHERLANDS_BUDGET_EUR, fmt(NETHERLANDS_MAX_SUBSIDY, 3))]
+    for year, (budget, paid, premium, share) in sorted(NETHERLANDS_HISTORY.items()):
+        lines.append('        <year id="%d" budget="%s" subsidyPaid="%s" premium="%s" share="%s"/>' % (
+            year, fmt(budget * 1e6, 0), fmt(paid * 1e6, 0), fmt(premium * 1e6, 0), fmt(share, 4)))
+    lines.append('        <hailOnly subsidised="false" insuranceTax="%s"/>' % fmt(NETHERLANDS_INSURANCE_TAX, 2))
+    lines.append('        <uptake %s/>' % " ".join('%s="%s"' % (k, fmt(v, 2)) for k, v in NETHERLANDS_UPTAKE.items()))
+    lines.append('    </program>')
+
+    lines.append('    <region id="NLD" name="Netherlands">')
+    for crop, group in NETHERLANDS_CROPS.items():
+        sum_per_ha, multi, hail = NETHERLANDS_GROUPS[group]
+        lines.append('        <crop fillType=%s group=%s%s sumPerHa="%d" sumPerHaIsEstimate="true">' % (
+            quoteattr(crop), quoteattr(group), ' borrowed="true"' if crop in NETHERLANDS_BORROWED else "", sum_per_ha))
+        lines.append('            <rates multiRisk="%s" hailOnly="%s" isEstimate="true"/>' % (fmt(multi), fmt(hail)))
+        lines.append('        </crop>')
+    lines.append('    </region>')
+    lines.append('</cropInsurance>')
+    lines.append('')
+
+    out_path = os.path.abspath(out_path)
+    with open(out_path, "w", encoding="utf-8", newline="\n") as f:
+        f.write("\n".join(lines))
+    print("wrote %s (%.1f KB, Netherlands, %d crops)" % (out_path, os.path.getsize(out_path) / 1024, len(NETHERLANDS_CROPS)))
+
+
 def brazil_num(text):
     """PSR numbers use a decimal comma; "-" = empty."""
     text = text.strip()
@@ -1368,6 +1470,8 @@ def main():
         write_germany(GERMANY_OUTPUT_XML)
     if FRANCE_OUTPUT_XML:
         write_france(FRANCE_OUTPUT_XML)
+    if NETHERLANDS_OUTPUT_XML:
+        write_netherlands(NETHERLANDS_OUTPUT_XML)
     print("Reading RMA Summary of Business %d-%d from %s" % (min(YEARS), max(YEARS), os.path.abspath(DATA_DIR)))
     us, state, seen = load()
     missing = [n for names in CROPS.values() for n in names if n not in seen]

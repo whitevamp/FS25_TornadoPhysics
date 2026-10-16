@@ -364,7 +364,7 @@ sell points, vehicle sell prices), so price-changing mods are covered without de
 - **Crop insurance data** – **done:** `tools/build_crop_insurance.py` (standard library only, same
   pattern as the climate builders) turns the USDA RMA *Summary of Business* files into
   `DB/CropInsurance_US.xml` (~86 KB). Public-domain US government data; credit RMA in modDesc / README.
-  Canada: §13.3. Poland: §13.4. Brazil: §13.5. Germany: §13.6. France: §13.7.
+  Canada: §13.3. Poland: §13.4. Brazil: §13.5. Germany: §13.6. France: §13.7. Netherlands: §13.8.
 
 ### 13.1 RMA source data and processing rules
 
@@ -537,6 +537,27 @@ ones. A good fit for an optional "state disaster aid" rule. The builder's `FRANC
 alimentaire (agriculture.gouv.fr); figures from the Assemblée nationale (commission des affaires économiques,
 January 2026) and La France Agricole. Rates are estimates, not official figures; not affiliated with or
 endorsed by any of them."*
+
+### 13.8 Netherlands: `DB/CropInsurance_NL.xml`
+
+The **brede weersverzekering** (broad weather insurance, BWV) is a subsidised multi-peril policy; hail-only
+cover is sold unsubsidised (and pays the 21 % insurance tax). The subsidy comes from a **fixed pool**: if
+more premium is applied for than the budget covers, every farmer's share is cut pro rata – a possible
+gameplay rule ("subsidy pool ran dry", share known only after the season).
+
+| Item | Value | Source |
+|---|---|---|
+| Plan | `multiRisk`: hail, rain, (night) frost, storm, drought, snow, freezing rain, lightning fire; pays only above a **20 %** loss of the average production (30 % before 2018) | RVO 2025 / 2026 |
+| Subsidy | max **63.7 %** (EU 70 % of premium + tax, minus the 21 % tax exemption since 2020); budget **€17.5 M**, not indexed, pro-rata cut | RVO, evaluation |
+| Actual share | 65 % (2015) … 63.7 % (2020), 60.4 % (2021), 54.5 % (2022), 53.2 % (2023), **46.3 % (2025)**; premium €12.0 M (2015) → €32.9 M (2023) → ~€37.8 M (2025) – full table in the XML | evaluation table 1, RVO |
+| Insurer rule | 5-year cumulative loss ratio must stay ≥ 0.5 | evaluation |
+| Uptake | 2 450 farms in 2022 (~15 % of farms with a weather-sensitive main crop); ~1/3 of arable area, ~60 % of apple / pear area | evaluation |
+| Rates | per crop group, **estimates** inside Agriver's published 4 – 8 % of the insured value (fruit 8 %); hail-only 0.3 – 3 %. No insured-area total is published, so no calibration | Agriver, builder |
+
+**Credit text:** *"Dutch crop insurance rules and subsidy figures from RVO (Rijksdienst voor Ondernemend
+Nederland) and the 2024 Ecorys / WUR evaluation of the Subsidieregeling Brede Weersverzekering; premium
+range from Agriver. Rates are estimates, not official figures; not affiliated with or endorsed by any of
+them."*
 
 ### 13.5 Brazil: `DB/CropInsurance_BR.xml`
 
