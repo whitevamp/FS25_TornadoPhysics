@@ -60,6 +60,7 @@ function TornadoMain:loadMap(name)
     source(Utils.getFilename("scripts/TornadoWildlife.lua", modDir))
 
     -- Optional real-life climate mode (EF / size rolled from NOAA statistics).
+    source(Utils.getFilename("scripts/TornadoRegion.lua", modDir))
     source(Utils.getFilename("scripts/TornadoClimate.lua", modDir))
     source(Utils.getFilename("scripts/TornadoOutbreak.lua", modDir))
 
@@ -128,6 +129,7 @@ function TornadoMain:loadMap(name)
     if TornadoWeather then TornadoWeather:loadMap(name) end
     if TornadoTraffic then TornadoTraffic:loadMap() end
     if TornadoWildlife then TornadoWildlife:loadMap() end
+    if TornadoRegion then TornadoRegion:loadMap(modDir) end
     if TornadoClimate then TornadoClimate:loadMap(modDir) end
     if TornadoOutbreak then TornadoOutbreak:loadMap() end
     if TornadoPersistence then TornadoPersistence:loadMap() end   -- after Outbreak: restores its state
@@ -159,6 +161,7 @@ function TornadoMain:deleteMap()
     if TornadoTraffic then TornadoTraffic:deleteMap() end
     if TornadoWildlife then TornadoWildlife:deleteMap() end
     if TornadoClimate then TornadoClimate:deleteMap() end
+    if TornadoRegion then TornadoRegion:deleteMap() end
     if TornadoOutbreak then TornadoOutbreak:deleteMap() end
     if TornadoEffects then TornadoEffects:deleteMap() end
     if TornadoDebug then TornadoDebug:deleteMap() end

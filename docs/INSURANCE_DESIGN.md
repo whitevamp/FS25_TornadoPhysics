@@ -763,8 +763,13 @@ fictional European `EU` → Germany, no region `NONE` → default). Survey resul
 
 **UI:** the settings page shows the detected region and *why* ("Known map: Nordkirchen → Germany",
 "Climate: base-game Europe → Germany", "Default → United States") so a wrong guess is easy to fix by hand.
-New maps: add a line to `tools/map_countries.csv` and rebuild. The climate module (`TornadoClimate:detectRegion`)
-can later use the same chain.
+New maps: add a line to `tools/map_countries.csv` and rebuild.
+
+**Implemented (2026-10-16):** `scripts/TornadoRegion.lua` reads the file and runs steps 2 – 6
+(`detect()`, `getProfileCountry()`, `getProfileRegion()`, `findLongestName()`, `getStatusText()`); each module
+keeps its own manual setting (step 1). The climate module uses it already (`TornadoClimate:detectRegion`):
+climate-region name in title / mod name → else the country from `detect()` (the *default* step is ignored, so
+unknown maps keep the classic roll) refined to a state / province named in the description.
 
 ### 13.5 Brazil: `DB/CropInsurance_BR.xml`
 

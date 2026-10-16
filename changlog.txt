@@ -77,8 +77,14 @@
                     neighbouring US states MT, ND, MN, MI, NY)
   Smaller provinces use the Canada-wide data. More countries can be added
   as separate data files without changing the mod.
-- Region: Auto (US map = United States; a mod map with a state, province or
-  country name in its title uses that region) or any region chosen manually.
+- Region: Auto or any region chosen manually. Auto recognises the map:
+    1. a state, province or country named in the map title or mod name;
+    2. otherwise the map's country - from a list of ~280 known ModHub maps,
+       the base-game map, country / region words in the map description, or
+       the base-game climate the map reuses - refined to a state / province
+       named in the description (e.g. a US map "in the heart of Michigan");
+    3. otherwise the classic roll (no guessing for unknown maps).
+  "t_set climate status" shows the detected country and why.
 - EF rating: rolled from the region's real EF mix (in the US about 56% EF0,
   32% EF1 ... 0.04% EF5). The tornado's size is placed inside its EF range
   using real track widths; the mod's own size and map scaling are kept.

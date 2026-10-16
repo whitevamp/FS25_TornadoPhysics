@@ -220,7 +220,8 @@ Which country profile a map uses. The mod tries, in this order (first hit wins):
   2. known maps: the map's mod name in tools/map_countries.csv (ModHub survey);
   3. base-game maps (MapUS / MapEU / MapAS);
   4. keywords in the map title and description (country names, native names, regions), longest match wins;
-     the sub-region names of the loaded profiles (US states, Canadian provinces ...) count as keywords too;
+     the sub-region names of the profile files (US states, Canadian provinces ...) count as keywords too
+     (<subRegions>, minus ambiguous names in REGION_SUBREGION_SKIP);
   5. the base-game climate the map reuses (map.environment#filename -> $data/maps/mapXX/);
   6. the default profile.
 A detected country without its own data uses its nearest profile (e.g. Austria -> Germany, Ireland -> UK);
@@ -1124,6 +1125,10 @@ REGION_NEAREST = {
     "MX": "US", "ASIA": "SEA", "SAM": "BR", "NONE": REGION_DEFAULT,
 }
 REGION_BASE_MAPS = {"MapUS": "US", "MapEU": "PL", "MapAS": "SEA"}
+# Sub-region names (states / provinces) of the profile files also count as keywords for their country, except
+# names that are also countries, common cities or people ("Georgia", "Washington", "Victoria", "Santa Fe" ...).
+REGION_SUBREGION_SKIP = {"georgia", "washington", "victoria", "santa fe", "cordoba", "córdoba", "indiana",
+                         "maine", "nevada", "mendoza", "amapá", "para", "pará", "sergipe", "acre"}
 # Base-game climate reused by a mod map (path part of map.environment#filename).
 REGION_ENVIRONMENTS = {"maps/mapUS/": "US", "maps/mapEU/": "EU", "maps/mapAS/": "SEA"}
 # Keywords per country, matched as whole words (case-insensitive) in title + description; longest match wins.
@@ -2222,6 +2227,24 @@ def write_regions(out_path):
     for path, code in REGION_ENVIRONMENTS.items():
         lines.append('        <environment pathContains="%s" country="%s"/>' % (path, code))
     lines.append('    </environments>')
+    # Sub-regions (states / provinces) from the profile files: <region id=".." name=".." parent="<country region>">
+    region_to_country = {region: code for code, (_, region, _) in REGION_PROFILES.items()}
+    sub_regions = []
+    for code, (filename, _, _) in REGION_PROFILES.items():
+        path = os.path.join(TOOLS_DIR, "..", "DB", filename)
+        if not os.path.isfile(path):
+            continue
+        with open(path, encoding="utf-8") as f:
+            text = f.read()
+        for m in re.finditer(r'<region id="([^"]+)" name="([^"]+)" parent="([^"]+)"', text):
+            region_id, name, parent = m.group(1), m.group(2), m.group(3)
+            country = region_to_country.get(parent)
+            if country is not None and name.lower() not in REGION_SUBREGION_SKIP:
+                sub_regions.append((country, region_id, name))
+    lines.append('    <subRegions match="wholeWord" count="%d">' % len(sub_regions))
+    for country, region_id, name in sub_regions:
+        lines.append('        <subRegion country="%s" region="%s" name=%s/>' % (country, region_id, quoteattr(name)))
+    lines.append('    </subRegions>')
     lines.append('    <keywords match="wholeWord" rule="longestMatch">')
     for code, words in REGION_KEYWORDS.items():
         lines.append('        <country id="%s" words=%s/>' % (code, quoteattr(", ".join(w.strip() for w in words.split(",")))))

@@ -511,9 +511,10 @@ end
         elseif subCmd == "status" then
             local active = TornadoClimate:getActiveRegion()
             local last = TornadoClimate.lastRoll
-            return string.format("Climate: Real-life = %s | Setting = %s | In use = %s | Last roll = %s | Last storm = %s | Seasons = %s, Direction = %s, Outbreaks = %s (max %d), Frequency = x%.2f | Outbreak = %s",
+            return string.format("Climate: Real-life = %s | Setting = %s | In use = %s | Map = %s | Last roll = %s | Last storm = %s | Seasons = %s, Direction = %s, Outbreaks = %s (max %d), Frequency = x%.2f | Outbreak = %s",
                 tostring(TornadoClimate.isEnabled), TornadoClimate:getRegionLabel(TornadoClimate.regionSetting),
                 active ~= nil and active.name or "none (classic)",
+                TornadoRegion ~= nil and TornadoRegion:getStatusText() or "n/a",
                 last ~= nil and string.format("%s EF-%d", last.regionName, last.ef) or "none yet",
                 TornadoWeather ~= nil and TornadoWeather:getLastProfileText() or "n/a",
                 tostring(TornadoClimate.useSeasonality), tostring(TornadoClimate.useDirection),

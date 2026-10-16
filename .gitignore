@@ -27,3 +27,6 @@ DB/TornadoClimate_AU.xml
 
 # Draft e-mails (personal)
 email_*.txt
+
+# Local Lua 5.1 interpreter for syntax checks (dev tool, never ship)
+lua-5.1.5_Win64_bin/

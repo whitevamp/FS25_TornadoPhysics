@@ -61,6 +61,87 @@
         <environment pathContains="maps/mapEU/" country="EU"/>
         <environment pathContains="maps/mapAS/" country="SEA"/>
     </environments>
+    <subRegions match="wholeWord" count="79">
+        <subRegion country="US" region="US_AL" name="Alabama"/>
+        <subRegion country="US" region="US_AR" name="Arkansas"/>
+        <subRegion country="US" region="US_AZ" name="Arizona"/>
+        <subRegion country="US" region="US_CA" name="California"/>
+        <subRegion country="US" region="US_CO" name="Colorado"/>
+        <subRegion country="US" region="US_CT" name="Connecticut"/>
+        <subRegion country="US" region="US_DE" name="Delaware"/>
+        <subRegion country="US" region="US_FL" name="Florida"/>
+        <subRegion country="US" region="US_IA" name="Iowa"/>
+        <subRegion country="US" region="US_ID" name="Idaho"/>
+        <subRegion country="US" region="US_IL" name="Illinois"/>
+        <subRegion country="US" region="US_KS" name="Kansas"/>
+        <subRegion country="US" region="US_KY" name="Kentucky"/>
+        <subRegion country="US" region="US_LA" name="Louisiana"/>
+        <subRegion country="US" region="US_MA" name="Massachusetts"/>
+        <subRegion country="US" region="US_MD" name="Maryland"/>
+        <subRegion country="US" region="US_MI" name="Michigan"/>
+        <subRegion country="US" region="US_MN" name="Minnesota"/>
+        <subRegion country="US" region="US_MO" name="Missouri"/>
+        <subRegion country="US" region="US_MS" name="Mississippi"/>
+        <subRegion country="US" region="US_MT" name="Montana"/>
+        <subRegion country="US" region="US_NC" name="North Carolina"/>
+        <subRegion country="US" region="US_ND" name="North Dakota"/>
+        <subRegion country="US" region="US_NE" name="Nebraska"/>
+        <subRegion country="US" region="US_NJ" name="New Jersey"/>
+        <subRegion country="US" region="US_NM" name="New Mexico"/>
+        <subRegion country="US" region="US_NY" name="New York"/>
+        <subRegion country="US" region="US_OH" name="Ohio"/>
+        <subRegion country="US" region="US_OK" name="Oklahoma"/>
+        <subRegion country="US" region="US_OR" name="Oregon"/>
+        <subRegion country="US" region="US_PA" name="Pennsylvania"/>
+        <subRegion country="US" region="US_SC" name="South Carolina"/>
+        <subRegion country="US" region="US_SD" name="South Dakota"/>
+        <subRegion country="US" region="US_TN" name="Tennessee"/>
+        <subRegion country="US" region="US_TX" name="Texas"/>
+        <subRegion country="US" region="US_UT" name="Utah"/>
+        <subRegion country="US" region="US_VA" name="Virginia"/>
+        <subRegion country="US" region="US_VT" name="Vermont"/>
+        <subRegion country="US" region="US_WI" name="Wisconsin"/>
+        <subRegion country="US" region="US_WV" name="West Virginia"/>
+        <subRegion country="US" region="US_WY" name="Wyoming"/>
+        <subRegion country="CA" region="CAN_AB" name="Alberta"/>
+        <subRegion country="CA" region="CAN_MB" name="Manitoba"/>
+        <subRegion country="CA" region="CAN_ON" name="Ontario"/>
+        <subRegion country="CA" region="CAN_QC" name="Quebec"/>
+        <subRegion country="CA" region="CAN_SK" name="Saskatchewan"/>
+        <subRegion country="BR" region="BRA_AL" name="Alagoas"/>
+        <subRegion country="BR" region="BRA_AM" name="Amazonas"/>
+        <subRegion country="BR" region="BRA_BA" name="Bahia"/>
+        <subRegion country="BR" region="BRA_DF" name="Distrito Federal"/>
+        <subRegion country="BR" region="BRA_ES" name="Espírito Santo"/>
+        <subRegion country="BR" region="BRA_GO" name="Goiás"/>
+        <subRegion country="BR" region="BRA_MA" name="Maranhão"/>
+        <subRegion country="BR" region="BRA_MG" name="Minas Gerais"/>
+        <subRegion country="BR" region="BRA_MS" name="Mato Grosso do Sul"/>
+        <subRegion country="BR" region="BRA_MT" name="Mato Grosso"/>
+        <subRegion country="BR" region="BRA_PB" name="Paraíba"/>
+        <subRegion country="BR" region="BRA_PE" name="Pernambuco"/>
+        <subRegion country="BR" region="BRA_PI" name="Piauí"/>
+        <subRegion country="BR" region="BRA_PR" name="Paraná"/>
+        <subRegion country="BR" region="BRA_RO" name="Rondônia"/>
+        <subRegion country="BR" region="BRA_RS" name="Rio Grande do Sul"/>
+        <subRegion country="BR" region="BRA_SC" name="Santa Catarina"/>
+        <subRegion country="BR" region="BRA_SP" name="São Paulo"/>
+        <subRegion country="BR" region="BRA_TO" name="Tocantins"/>
+        <subRegion country="DE" region="DEU_BY" name="Bavaria"/>
+        <subRegion country="DE" region="DEU_BW" name="Baden-Wuerttemberg"/>
+        <subRegion country="DE" region="DEU_NI" name="Lower Saxony"/>
+        <subRegion country="DE" region="DEU_SN" name="Saxony"/>
+        <subRegion country="AU" region="AUS_NSW" name="New South Wales"/>
+        <subRegion country="AU" region="AUS_QLD" name="Queensland"/>
+        <subRegion country="AU" region="AUS_SA" name="South Australia"/>
+        <subRegion country="AU" region="AUS_WA" name="Western Australia"/>
+        <subRegion country="AU" region="AUS_TAS" name="Tasmania"/>
+        <subRegion country="AU" region="AUS_NT" name="Northern Territory"/>
+        <subRegion country="AU" region="AUS_ACT" name="Australian Capital Territory"/>
+        <subRegion country="AR" region="ARG_BA" name="Buenos Aires"/>
+        <subRegion country="SEA" region="IDN" name="Indonesia"/>
+        <subRegion country="SEA" region="MYS" name="Malaysia"/>
+    </subRegions>
     <keywords match="wholeWord" rule="longestMatch">
         <country id="DE" words="germany, german, deutschland, deutsche, deutschen, bavaria, bayern, bavarian, saxony, sachsen, thuringia, thüringen, mecklenburg, brandenburg, westphalia, westfalen, niedersachsen, lower saxony, schleswig, holstein, east frisia, east frisian, north frisia, north frisian, ostfriesland, nordfriesland, palatinate, pfalz, swabia, schwaben, swabian, allgäu, eifel, rhön, harz, gdr, ddr, münsterland, sauerland, odenwald, baden-württemberg, württemberg, hessen, rhineland, rheinland, kiel canal, mühlenkreis"/>
         <country id="PL" words="poland, polish, polska, polski, polskiej, mazury, masuria, podlasie, kujawy, wielkopolska, pomerania, silesia"/>

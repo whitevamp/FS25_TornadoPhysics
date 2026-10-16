@@ -232,12 +232,58 @@ function TornadoClimate:hasData()
     return self.regionOrder ~= nil and #self.regionOrder > 0
 end
 
---- Region picked automatically from the map: a state / province / country name in the map's title or id
---- -> that region (longest name wins), base US map -> "US", otherwise nil (no data for this region yet).
+--- Region picked automatically from the map (longest name wins at each step):
+---   1. a state / province / country of the climate data named in the map title, id or mod name;
+---   2. else the map's country from TornadoRegion (known map, base map, keywords, base climate) if that
+---      country has climate data - refined to one of its states / provinces named in the map description;
+---   3. else nil: classic roll. TornadoRegion's "default" guess is not used here on purpose (an unknown
+---      map should not silently get US weather).
+--- Returns the region id and how it was found (TornadoRegion.SOURCE_* or "name").
 function TornadoClimate:detectRegion()
     if g_currentMission == nil or g_currentMission.missionInfo == nil then
         return nil
     end
+    if TornadoRegion ~= nil and TornadoRegion.isLoaded then
+        return self:detectRegionShared()
+    end
+    return self:detectRegionByTitle()
+end
+
+function TornadoClimate:detectRegionShared()
+    local names = {}
+    for _, id in ipairs(self.regionOrder) do
+        if id ~= "US" then
+            table.insert(names, { id = id, name = self.regions[id].name })
+        end
+    end
+    local byName = TornadoRegion:findLongestName(names, false)
+    if byName ~= nil then
+        return byName, "name"
+    end
+
+    local result = TornadoRegion:detect()
+    if result == nil or result.source == TornadoRegion.SOURCE_DEFAULT then
+        return nil
+    end
+    local countryRegion = TornadoRegion:getProfileRegion(TornadoRegion:getProfileCountry(result.country))
+    if countryRegion == nil or self.regions[countryRegion] == nil then
+        return nil
+    end
+
+    -- A state / province of that country named in the description ("... in the heart of Michigan").
+    local subRegions = {}
+    for _, id in ipairs(self.regionOrder) do
+        if self.regions[id].parent == countryRegion then
+            table.insert(subRegions, { id = id, name = self.regions[id].name })
+        end
+    end
+    local subRegion = TornadoRegion:findLongestName(subRegions, true)
+    return subRegion or countryRegion, result.source
+end
+
+--- Pre-TornadoRegion detection (only used if DB/InsuranceRegions.xml is missing): a state / province /
+--- country name in the map's title or id, base US map -> "US", otherwise nil.
+function TornadoClimate:detectRegionByTitle()
     local info = g_currentMission.missionInfo
     local mapId = info.mapId or ""
 
