@@ -25,7 +25,7 @@ Variants of the same map (4x, crossplay, "25") counted once; their number in bra
 | **Poland** | 16 (+4) | rules + estimates (§13.4) |
 | **Brazil** | 16 | **real PSR data** |
 | **France** | 13 | rules + estimates (§13.7) |
-| **United Kingdom** | 11 (+1) – incl. Northern Ireland, Scotland | **none yet** |
+| **United Kingdom** | 11 (+1) – incl. Northern Ireland, Scotland | estimates (§13.14) |
 | Canada | 5 | SCIC / AFSC |
 | Estonia | 4 (+1) | none |
 | Netherlands | 4 | estimates (§13.8) |

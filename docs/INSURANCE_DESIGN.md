@@ -400,7 +400,7 @@ sell points, vehicle sell prices), so price-changing mods are covered without de
 - **Crop insurance data** – **done:** `tools/build_crop_insurance.py` (standard library only, same
   pattern as the climate builders) turns the USDA RMA *Summary of Business* files into
   `DB/CropInsurance_US.xml` (~86 KB). Public-domain US government data; credit RMA in modDesc / README.
-  Canada: §13.3. Poland: §13.4. Brazil: §13.5. Germany: §13.6. France: §13.7. Netherlands: §13.8. Spain: §13.9. Italy: §13.10. Australia: §13.11. Argentina: §13.12. Chile: §13.13.
+  Canada: §13.3. Poland: §13.4. Brazil: §13.5. Germany: §13.6. France: §13.7. Netherlands: §13.8. Spain: §13.9. Italy: §13.10. Australia: §13.11. Argentina: §13.12. Chile: §13.13. United Kingdom: §13.14.
 
 ### 13.1 RMA source data and processing rules
 
@@ -697,6 +697,25 @@ Rain-fed vs. irrigated matters for the game: drought is only insurable on fields
 
 **Credit text:** *"Chilean crop insurance rules from Agroseguros (Comité de Seguros del Agro) and ChileAtiende;
 figures from DIPRES and the Ministerio de Agricultura. Rates are estimates, not official figures; not
+affiliated with or endorsed by any of them."*
+
+### 13.14 United Kingdom: `DB/CropInsurance_GB.xml`
+
+**No public support**; growers buy private hail cover, fire is usually part of the farm policy, multi-peril
+cover is rare. 11 ModHub maps plus the Highlands Fishing DLC (Scotland) – see `docs/MAP_SURVEY.md`.
+
+| Item | Value | Source |
+|---|---|---|
+| Plan | `namedPeril` hail + fire (storm optional), `multiPeril="rare"` | NI Assembly research paper |
+| Tax | **Insurance Premium Tax 12 %** of the premium | HMRC |
+| Rate level | ~**1 %** of the insured value (UK and Germany; Spain / Portugal / Italy 6 – 8 %) | NI Assembly research paper |
+| Rate shape | oilseed rape several times the cereal rate per acre (pods shatter) | Farmers Weekly (1990s – ratio only) |
+| Rates | per crop group, **estimates**: cereals 0.6 %, rape 2 %, pulses 1.5 %, potatoes 1 %, sugar beet 0.5 %, top fruit 4 %; area-weighted check ≈ 1.1 % | builder |
+
+One region `GBR` (England, Scotland, Wales, Northern Ireland – no published regional differences).
+
+**Credit text:** *"UK crop insurance figures from the Northern Ireland Assembly research paper 'Agricultural
+insurance' and Farmers Weekly; Insurance Premium Tax from HMRC. Rates are estimates, not official figures; not
 affiliated with or endorsed by any of them."*
 
 ### 13.5 Brazil: `DB/CropInsurance_BR.xml`

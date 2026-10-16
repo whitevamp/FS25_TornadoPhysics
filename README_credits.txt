@@ -114,6 +114,13 @@ Italy (CropInsurance_IT.xml)
 - Rates are estimates, not official figures. Not affiliated with or
   endorsed by MASAF or ISMEA.
 
+United Kingdom (CropInsurance_GB.xml)
+- UK crop insurance figures from the Northern Ireland Assembly research
+  paper "Agricultural insurance" and Farmers Weekly; Insurance Premium Tax
+  from HMRC.
+- Rates are estimates, not official figures. Not affiliated with or
+  endorsed by any of them.
+
 Chile (CropInsurance_CL.xml)
 - Chilean crop insurance rules from Agroseguros (Comite de Seguros del
   Agro) and ChileAtiende; figures from DIPRES and the Ministerio de
