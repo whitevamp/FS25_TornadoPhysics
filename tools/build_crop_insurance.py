@@ -66,6 +66,21 @@ CANADA config section, every number carries its source) plus the US curves:
     insured value by township, with 10 % / 25 % deductible options.
 
 ----------------------------------------------------------------------------
+Poland (DB/CropInsurance_PL.xml)
+----------------------------------------------------------------------------
+Polish crop insurance is private insurers selling state-subsidised named-peril policies. The law fixes the
+rules but no average rates are published per crop, so the file holds (see the POLAND config section):
+
+  * Plan: named-peril yield cover ("namedPeril"). Mandatory package: hail, spring frost, winter kill, flood,
+    drought; optional add-ons: windstorm (tornadoes), torrential rain, lightning, landslide, avalanche.
+  * Subsidy: 65 % of the premium, paid in full only up to a rate cap (9 % field crops, 20 % fruit,
+    0.5 % animals); above the cap the subsidy is 65 % of the capped premium.
+  * Maximum sum insured per hectare (2026) / per animal (2025 regulation), in PLN and converted to EUR.
+  * Rates per crop group, deductible options: OUR ESTIMATES (isEstimate="true"). The package rates are scaled
+    so their area-weighted average equals the average rate implied by the subsidy actually paid in 2024
+    (subsidy / 65 % / insured area / an estimated sum insured per ha). Needs no RMA data.
+
+----------------------------------------------------------------------------
 RMA data rules handled here (from the record layout)
 ----------------------------------------------------------------------------
   * Only buy-up coverage (coverage category "A"). CAT ("C") is the flat-fee catastrophic
@@ -202,6 +217,95 @@ SCIC_ACRES = {
 # it as official or AFSC-endorsed.
 AFSC_HAIL = {"rateMin": 0.03, "rateTypical": 0.06, "rateMax": 0.14,
              "deductibles": [(0.0, 1.0), (0.10, 0.75), (0.25, 0.5)]}
+
+# ============================================================================
+# POLAND  -  published rules (edit when newer regulations are out)
+# ============================================================================
+
+POLAND_OUTPUT_XML = os.path.join(TOOLS_DIR, "..", "DB", "CropInsurance_PL.xml")
+
+# Ustawa z 7 lipca 2005 o ubezpieczeniach upraw rolnych i zwierzat gospodarskich (Dz.U. 2025 poz. 251) and
+# gov.pl "Ubezpieczenie upraw rolnych i zwierzat gospodarskich w 2026 r. z doplata skladki z budzetu panstwa":
+# the state pays 65 % of the premium.
+POLAND_SUBSIDY_SHARE = 0.65
+
+# gov.pl "Okreslenie stawek taryfowych ubezpieczenia": the 65 % is paid in full only while the premium rate is at
+# most this share of the sum insured; above it the subsidy is 65 % of (cap x sum insured). (Soil classes V / VI
+# get 12 / 15 % and 22 / 25 % - FS25 has no soil classes, so only the normal cap is written.)
+POLAND_RATE_CAP = {"field": 0.09, "fruit": 0.20, "animal": 0.005}
+
+# Farmers receiving direct payments must insure at least 50 % of their crop area against at least one
+# mandatory peril, or pay a fee of the PLN equivalent of 2 EUR per hectare (written as an optional rule).
+POLAND_OBLIGATION = {"areaShare": 0.50, "feePerHaEur": 2.0}
+
+# Perils. "mandatory" = the subsidised package an insurer must offer (the farmer picks at least one);
+# "optional" = may be added. Windstorm ("huragan") is the one a tornado claim falls under.
+POLAND_PERILS = {
+    "mandatory": ["HAIL", "SPRING_FROST", "WINTER_KILL", "FLOOD", "DROUGHT"],
+    "optional": ["WINDSTORM", "TORRENTIAL_RAIN", "LIGHTNING", "LANDSLIDE", "AVALANCHE"],
+}
+
+# Maximum sum insured for 2026, PLN per ha: Dz.U. 2025 poz. 1628 (basket willow 60 000 and grass seed 30 000 added
+# by Dz.U. 2026 poz. 1020). "legumes" = large-seeded legumes (small-seeded: 4 700, no game crop).
+POLAND_MAX_SUM_YEAR = 2026
+POLAND_MAX_SUM = {
+    "cereals": 16300, "maize": 12700, "rapeseed": 13000, "sunflower": 6300, "hops": 50100, "tobacco": 57300,
+    "vegetables": 340500, "fruit": 171900, "strawberries": 105100, "potatoes": 63100,
+    "sugarbeet": 20600, "legumes": 23100, "grassSeed": 30000, "basketWillow": 60000,
+}
+# Per animal: 2025 regulation (Dz.U. 2024 poz. 1695); the 2026 animal values are not checked yet.
+POLAND_MAX_SUM_ANIMAL = {
+    "COW": 16000, "HORSE": 26300, "SHEEP": 1300, "GOAT": 800, "PIG": 2900, "CHICKEN": 60,
+    "DUCK": 65, "GOOSE": 250, "TURKEY": 210, "OSTRICH": 2000,
+}
+
+# FS25 fill type -> Polish crop group. Crops without an own entry in the regulation borrow a similar group
+# (marked borrowed="true"). Cotton, rice, sugarcane, olives and forage grass are not insured in Poland and
+# are left out (the mod falls back to DEFAULT = cereals).
+POLAND_CROPS = {
+    "WHEAT": "cereals", "BARLEY": "cereals", "OAT": "cereals", "SORGHUM": "cereals",
+    "MAIZE": "maize", "CANOLA": "rapeseed", "SUNFLOWER": "sunflower",
+    "POTATO": "potatoes", "SUGARBEET": "sugarbeet",
+    "SOYBEAN": "legumes", "PEA": "legumes", "GREENBEAN": "legumes",
+    "CARROT": "vegetables", "PARSNIP": "vegetables", "REDBEET": "vegetables", "SPINACH": "vegetables",
+    "GRAPE": "fruit",
+    "DEFAULT": "cereals",
+}
+POLAND_BORROWED = {"SORGHUM", "GRAPE"}
+
+# Typical premium rates (before subsidy, share of the sum insured) - OUR ESTIMATES of the RELATIVE cost per crop
+# group; written with isEstimate="true". "package" = hail + spring frost + winter kill + flood (the usual
+# multi-risk policy); "hail" = hail-only policy; add-ons are extra rate on top of either. The package rates are
+# then scaled by one calibration factor so the area-weighted average matches POLAND_CALIBRATION (like Canada).
+POLAND_RATES_ESTIMATE = {
+    "cereals":    {"package": 0.025, "hail": 0.012, "WINDSTORM": 0.004, "DROUGHT": 0.050, "capGroup": "field"},
+    "maize":      {"package": 0.020, "hail": 0.012, "WINDSTORM": 0.005, "DROUGHT": 0.060, "capGroup": "field"},
+    "sunflower":  {"package": 0.025, "hail": 0.012, "WINDSTORM": 0.005, "DROUGHT": 0.050, "capGroup": "field"},
+    "rapeseed":   {"package": 0.040, "hail": 0.015, "WINDSTORM": 0.005, "DROUGHT": 0.050, "capGroup": "field"},
+    "potatoes":   {"package": 0.020, "hail": 0.010, "WINDSTORM": 0.003, "DROUGHT": 0.050, "capGroup": "field"},
+    "sugarbeet":  {"package": 0.020, "hail": 0.010, "WINDSTORM": 0.003, "DROUGHT": 0.050, "capGroup": "field"},
+    "legumes":    {"package": 0.030, "hail": 0.015, "WINDSTORM": 0.004, "DROUGHT": 0.060, "capGroup": "field"},
+    "vegetables": {"package": 0.050, "hail": 0.025, "WINDSTORM": 0.005, "DROUGHT": 0.070, "capGroup": "field"},
+    "fruit":      {"package": 0.100, "hail": 0.040, "WINDSTORM": 0.010, "DROUGHT": 0.080, "capGroup": "fruit"},
+}
+POLAND_ANIMAL_RATE_ESTIMATE = 0.004
+
+# Calibration: average premium rate implied by the subsidy actually paid.
+#   2024: ~629 M PLN subsidy paid, ~3.8 M ha of crops and ~20.5 M animals insured, ~209 300 crop contracts
+#         (MRiRW figures as reported by wiescirolnicze.pl / farmer.pl for the 2026 subsidy regulation).
+#   rate = subsidy x cropShare / subsidyShare / (area x sumPerHa)
+# cropShare and sumPerHa are OUR ESTIMATES (no published split / average sum insured): livestock premiums are
+# capped at 0.5 % and are mostly poultry and pigs, so ~10 % of the subsidy; ~6 000 PLN/ha is the value of an
+# average cereal / rapeseed / maize crop. The area mix is an estimate of what is insured (rapeseed and cereals
+# are insured far more often than other crops; fruit is left out - small area).
+POLAND_CALIBRATION = {"subsidyPaidPln": 629e6, "areaHa": 3.8e6, "cropShare": 0.90, "sumPerHaPln": 6000,
+                      "areaMix": {"cereals": 0.62, "rapeseed": 0.18, "maize": 0.14, "potatoes": 0.02,
+                                  "sugarbeet": 0.02, "legumes": 0.02}}
+# Deductible options (share of the loss the farmer keeps -> rate factor), also estimates.
+POLAND_DEDUCTIBLES_ESTIMATE = [(0.0, 1.0), (0.10, 0.85), (0.20, 0.70)]
+# PLN -> EUR for the sum-insured caps (2025 average, about 4.25 PLN per EUR). The mod then applies its own
+# money scaling (TornadoSettings:getCostScale).
+POLAND_EUR_PER_PLN = 1 / 4.25
 
 # ============================================================================
 # READING
@@ -596,7 +700,69 @@ def write_canada(us, state, out_path):
     print("wrote %s (%.0f KB, Canada + %d provinces)" % (out_path, os.path.getsize(out_path) / 1024, len(CANADA_NEIGHBOUR)))
 
 
+def write_poland(out_path):
+    """Poland: named-peril yield cover from published rules plus estimated rates. Needs no RMA data."""
+    cal = POLAND_CALIBRATION
+    target = cal["subsidyPaidPln"] * cal["cropShare"] / POLAND_SUBSIDY_SHARE / (cal["areaHa"] * cal["sumPerHaPln"])
+    weighted = sum(POLAND_RATES_ESTIMATE[g]["package"] * w for g, w in cal["areaMix"].items()) / sum(cal["areaMix"].values())
+    calibration = target / weighted
+    print("  Poland: implied average rate %.2f %%, estimated package average %.2f %% -> calibration x%.3f" % (
+        target * 100, weighted * 100, calibration))
+    def rate_attrs(rates, group_cap):
+        package = rates["package"] * calibration
+        return 'package="%s" hail="%s" capped="%s"' % (
+            fmt(package), fmt(rates["hail"]), "true" if package > group_cap else "false")
+
+    lines = ['<?xml version="1.0" encoding="utf-8" standalone="no" ?>',
+             '<!-- Generated by tools/build_crop_insurance.py - do not edit by hand. -->',
+             '<!-- Sources: Ustawa o ubezpieczeniach upraw rolnych i zwierzat gospodarskich (Dz.U. 2025 poz. 251), -->',
+             '<!-- gov.pl (Ministerstwo Rolnictwa i Rozwoju Wsi) 2026 subsidy and tariff rules, Dz.U. 2025 poz. 1628, Dz.U. 2024 poz. 1695. -->',
+             '<!-- Rates marked isEstimate="true" are our own estimates, not official figures. -->',
+             '<cropInsurance version="1" source="Polish law and gov.pl (MRiRW)" years="2024-%d" currency="EUR">'
+             % POLAND_MAX_SUM_YEAR,
+             '    <program type="namedPeril" subsidyShare="%s" capRule="subsidyUpToCap" eurPerPln="%s" '
+             'calibration="%s" averageRate="%s" averageRateIsEstimate="true">' % (
+                 fmt(POLAND_SUBSIDY_SHARE, 2), fmt(POLAND_EUR_PER_PLN), fmt(calibration, 3), fmt(target)),
+             '        <rateCap group="field" share="%s"/>' % fmt(POLAND_RATE_CAP["field"], 3),
+             '        <rateCap group="fruit" share="%s"/>' % fmt(POLAND_RATE_CAP["fruit"], 3),
+             '        <rateCap group="animal" share="%s"/>' % fmt(POLAND_RATE_CAP["animal"], 3),
+             '        <obligation areaShare="%s" feePerHa="%s" optional="true"/>' % (
+                 fmt(POLAND_OBLIGATION["areaShare"], 2), fmt(POLAND_OBLIGATION["feePerHaEur"], 2))]
+    for kind in ("mandatory", "optional"):
+        for peril in POLAND_PERILS[kind]:
+            lines.append('        <peril id="%s" %s="true"/>' % (peril, kind))
+    for share, factor in POLAND_DEDUCTIBLES_ESTIMATE:
+        lines.append('        <deductible share="%s" rateFactor="%s" isEstimate="true"/>' % (fmt(share, 2), fmt(factor, 2)))
+    lines.append('    </program>')
+
+    lines.append('    <region id="POL" name="Poland">')
+    for crop, group in POLAND_CROPS.items():
+        rates = POLAND_RATES_ESTIMATE[group]
+        cap_group = rates["capGroup"]
+        lines.append('        <crop fillType=%s group=%s%s maxSumPerHa="%s" maxSumPerHaPln="%s" capGroup="%s">' % (
+            quoteattr(crop), quoteattr(group), ' borrowed="true"' if crop in POLAND_BORROWED else "",
+            fmt(POLAND_MAX_SUM[group] * POLAND_EUR_PER_PLN, 0), POLAND_MAX_SUM[group], cap_group))
+        lines.append('            <rates %s isEstimate="true"/>' % rate_attrs(rates, POLAND_RATE_CAP[cap_group]))
+        for peril in ("WINDSTORM", "DROUGHT"):
+            lines.append('            <addOn peril="%s" rate="%s" isEstimate="true"/>' % (peril, fmt(rates[peril])))
+        lines.append('        </crop>')
+    for animal, pln in POLAND_MAX_SUM_ANIMAL.items():
+        lines.append('        <animal type=%s maxSumPerHead="%s" maxSumPerHeadPln="%s" rate="%s" isEstimate="true"/>' % (
+            quoteattr(animal), fmt(pln * POLAND_EUR_PER_PLN, 0), pln, fmt(POLAND_ANIMAL_RATE_ESTIMATE)))
+    lines.append('    </region>')
+    lines.append('</cropInsurance>')
+    lines.append('')
+
+    out_path = os.path.abspath(out_path)
+    with open(out_path, "w", encoding="utf-8", newline="\n") as f:
+        f.write("\n".join(lines))
+    print("wrote %s (%.1f KB, Poland, %d crops, %d animals)" % (
+        out_path, os.path.getsize(out_path) / 1024, len(POLAND_CROPS), len(POLAND_MAX_SUM_ANIMAL)))
+
+
 def main():
+    if POLAND_OUTPUT_XML:
+        write_poland(POLAND_OUTPUT_XML)
     print("Reading RMA Summary of Business %d-%d from %s" % (min(YEARS), max(YEARS), os.path.abspath(DATA_DIR)))
     us, state, seen = load()
     missing = [n for names in CROPS.values() for n in names if n not in seen]

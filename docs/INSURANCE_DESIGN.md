@@ -364,7 +364,7 @@ sell points, vehicle sell prices), so price-changing mods are covered without de
 - **Crop insurance data** – **done:** `tools/build_crop_insurance.py` (standard library only, same
   pattern as the climate builders) turns the USDA RMA *Summary of Business* files into
   `DB/CropInsurance_US.xml` (~86 KB). Public-domain US government data; credit RMA in modDesc / README.
-  Canada: provincial programmes, later.
+  Canada: §13.3. Poland: §13.4.
 
 ### 13.1 RMA source data and processing rules
 
@@ -455,6 +455,32 @@ calibration. Raw PDFs live in `CA_insurance/` (never shipped).
   insurance figures from the Saskatchewan Crop Insurance Corporation (SCIC) 2024-25 annual report. Used for
   a free, non-commercial mod; not an official version and not affiliated with or endorsed by AFSC or SCIC.
   SCIC figures © 2026, Government of Saskatchewan."*
+
+### 13.4 Poland: `DB/CropInsurance_PL.xml`
+
+Polish crop insurance is sold by private insurers as state-subsidised **named-peril** policies (no yield
+guarantee or coverage levels). The law sets the rules; no average rate per crop is published. The builder's
+`POLAND` section (needs no RMA data):
+
+| Item | Value | Source |
+|---|---|---|
+| Plan | `namedPeril`: mandatory package hail, spring frost, winter kill, flood, drought (farmer picks ≥ 1); optional windstorm ("huragan", the tornado peril), torrential rain, lightning, landslide, avalanche | Ustawa z 7.07.2005 (Dz.U. 2025 poz. 251) |
+| Subsidy | 65 % of the premium | gov.pl, 2026 subsidy rules |
+| Rate cap | full subsidy only up to 9 % of the sum insured (field crops), 20 % (fruit, strawberries), 0.5 % (animals); above it the subsidy is 65 % of the capped premium. Soil classes V / VI (12 / 15 %) not used | gov.pl "Określenie stawek taryfowych" |
+| Max sum insured | 2026, PLN / ha: cereals 16 300, maize 12 700, rapeseed 13 000, sunflower 6 300, potatoes 63 100, sugar beet 20 600, legumes 23 100, vegetables 340 500, fruit 171 900 (Dz.U. 2025 poz. 1628); per animal 2025 (cattle 16 000, pigs 2 900 …, Dz.U. 2024 poz. 1695). Converted at 4.25 PLN/EUR | regulations |
+| Obligation | insure ≥ 50 % of the crop area against ≥ 1 mandatory peril or pay ~2 EUR/ha — optional rule, off by default | Ustawa |
+| Rates | package / hail-only rate per crop group, windstorm and drought add-ons, deductible options 0 / 10 / 20 % — **estimates** (`isEstimate="true"`) of the relative cost | builder |
+| Calibration | package rates ×1.42 so the area-weighted average is **3.82 %**: 2024 subsidy paid ~629 M PLN, 3.8 M ha + 20.5 M animals insured; estimated 90 % of it for crops and ~6 000 PLN/ha sum insured (`averageRateIsEstimate="true"`) | MRiRW via wiescirolnicze.pl / farmer.pl |
+
+Crops without an own group borrow one (`borrowed="true"`: sorghum → cereals, grape → fruit). Cotton, rice, sugarcane, olives and forage grass are not insured in Poland (DEFAULT =
+cereals). Region id `POL` (ISO-3 like `CAN` / `AUS`). Polish legal acts are not protected by copyright
+(Prawo autorskie art. 4); credit the sources anyway: *"Polish crop insurance rules from the Act on crop and
+livestock insurance and the Ministry of Agriculture and Rural Development (gov.pl). Rates are estimates,
+not official figures."*
+
+KNF statistics do not help here: crop insurance is part of non-life group 8 ("damage caused by natural
+forces"), which also holds home and business property (~6.6 bn PLN premium in 2024). A better average needs
+the total premium and sum insured of subsidised crop policies (MRiRW / ARiMR, not found published).
 
 ## 14. Multiplayer
 
