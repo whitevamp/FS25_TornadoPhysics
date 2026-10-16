@@ -450,6 +450,16 @@ t("tp_tip_recovery",
   "Cobra una factura detallada de remolque y reparación al devolver a la tienda un vehículo dañado por el tornado. Se guarda al instante.",
   "Addebita una fattura dettagliata di traino e riparazione quando un veicolo danneggiato dal tornado viene riportato al negozio. Salvato subito.",
   "Brengt een gespecificeerde sleep- en reparatierekening in rekening wanneer een door de tornado beschadigd voertuig naar de winkel wordt gezet. Direct opgeslagen.")
+t("tp_money_scale", "Cost scale", "Kostenfaktor", "Échelle des coûts", "Skala kosztów", "Escala de costes",
+  "Scala dei costi", "Kostenschaal")
+t("tp_tip_money_scale",
+  "Scales everything Tornado Physics charges, like the emergency tow bill. It is also adjusted automatically to the savegame's economic difficulty (Easy costs less than Hard).",
+  "Skaliert alles, was Tornado Physics berechnet, z. B. die Abschlepprechnung. Wird zusätzlich automatisch an den wirtschaftlichen Schwierigkeitsgrad des Spielstands angepasst (Leicht kostet weniger als Schwer).",
+  "Ajuste tout ce que Tornado Physics facture, comme la facture de remorquage. S'adapte aussi automatiquement à la difficulté économique de la partie (Facile coûte moins que Difficile).",
+  "Skaluje wszystko, za co Tornado Physics pobiera opłaty, np. rachunek za holowanie. Dodatkowo automatycznie dostosowuje się do poziomu trudności ekonomicznej zapisu (Łatwy kosztuje mniej niż Trudny).",
+  "Escala todo lo que cobra Tornado Physics, como la factura del remolque. También se ajusta automáticamente a la dificultad económica de la partida (Fácil cuesta menos que Difícil).",
+  "Scala tutto ciò che Tornado Physics addebita, come la fattura del traino. Si adatta anche automaticamente alla difficoltà economica del salvataggio (Facile costa meno di Difficile).",
+  "Schaalt alles wat Tornado Physics in rekening brengt, zoals de sleeprekening. Past zich ook automatisch aan de economische moeilijkheid van het spel aan (Makkelijk kost minder dan Moeilijk).")
 t("tp_map_overlay", "Map overlay", "Karten-Overlay", "Superposition de carte", "Nakładka mapy", "Capa del mapa", "Overlay mappa",
   "Kaartoverlay")
 t("tp_tip_mapui", "Show the tornado stats widget on the ESC map.", "Zeigt das Tornado-Infofeld auf der ESC-Karte.",

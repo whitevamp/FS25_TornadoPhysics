@@ -72,6 +72,20 @@ TornadoPageModules = TornadoMenuPage.new("Modules", "Modules", {
             return flipTo(value, TornadoSettings.recoveryEnabled, "cmdSet", "recovery")
         end,
     },
+    {
+        id = "modMoneyScale",
+        kind = Page.KIND_NUMBER,
+        requires = function()
+            return TornadoSettings ~= nil
+        end,
+        min = 25, max = 200, step = 5, format = "%d %%",
+        get = function()
+            return (TornadoSettings.moneyScale or 1.0) * 100
+        end,
+        set = function(value)
+            return console("cmdSet", "money", value)
+        end,
+    },
 
     -- Map overlay
     {

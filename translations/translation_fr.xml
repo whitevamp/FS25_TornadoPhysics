@@ -129,6 +129,8 @@
         <text name="tp_tip_destruction" text="Les véhicules pris dans la tempête perdent des pièces (réparés automatiquement après 24 heures de jeu)."/>
         <text name="tp_recovery" text="Facture de remorquage hardcore"/>
         <text name="tp_tip_recovery" text="Facture le remorquage et la réparation en détail quand un véhicule endommagé par la tornade est renvoyé au magasin. Enregistré immédiatement."/>
+        <text name="tp_money_scale" text="Échelle des coûts"/>
+        <text name="tp_tip_money_scale" text="Ajuste tout ce que Tornado Physics facture, comme la facture de remorquage. S'adapte aussi automatiquement à la difficulté économique de la partie (Facile coûte moins que Difficile)."/>
         <text name="tp_map_overlay" text="Superposition de carte"/>
         <text name="tp_tip_mapui" text="Affiche le widget des statistiques de la tornade sur la carte ESC."/>
         <text name="tp_mapui_sel" text="Seulement si sélectionné"/>

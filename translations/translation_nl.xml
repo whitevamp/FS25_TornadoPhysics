@@ -129,6 +129,8 @@
         <text name="tp_tip_destruction" text="Voertuigen in de storm verliezen onderdelen (automatisch gerepareerd na 24 speluren)."/>
         <text name="tp_recovery" text="Hardcore bergingsrekening"/>
         <text name="tp_tip_recovery" text="Brengt een gespecificeerde sleep- en reparatierekening in rekening wanneer een door de tornado beschadigd voertuig naar de winkel wordt gezet. Direct opgeslagen."/>
+        <text name="tp_money_scale" text="Kostenschaal"/>
+        <text name="tp_tip_money_scale" text="Schaalt alles wat Tornado Physics in rekening brengt, zoals de sleeprekening. Past zich ook automatisch aan de economische moeilijkheid van het spel aan (Makkelijk kost minder dan Moeilijk)."/>
         <text name="tp_map_overlay" text="Kaartoverlay"/>
         <text name="tp_tip_mapui" text="Toont de tornado-info op de ESC-kaart."/>
         <text name="tp_mapui_sel" text="Alleen indien geselecteerd"/>

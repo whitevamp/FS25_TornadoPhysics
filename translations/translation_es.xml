@@ -129,6 +129,8 @@
         <text name="tp_tip_destruction" text="Los vehículos atrapados en la tormenta pierden piezas (se reparan solos tras 24 horas de juego)."/>
         <text name="tp_recovery" text="Factura de rescate hardcore"/>
         <text name="tp_tip_recovery" text="Cobra una factura detallada de remolque y reparación al devolver a la tienda un vehículo dañado por el tornado. Se guarda al instante."/>
+        <text name="tp_money_scale" text="Escala de costes"/>
+        <text name="tp_tip_money_scale" text="Escala todo lo que cobra Tornado Physics, como la factura del remolque. También se ajusta automáticamente a la dificultad económica de la partida (Fácil cuesta menos que Difícil)."/>
         <text name="tp_map_overlay" text="Capa del mapa"/>
         <text name="tp_tip_mapui" text="Muestra el widget de datos del tornado en el mapa ESC."/>
         <text name="tp_mapui_sel" text="Solo al seleccionar"/>

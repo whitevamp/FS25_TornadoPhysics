@@ -69,7 +69,8 @@ end
 --- numbers (e.g. an insurance adjuster's estimate). Returns nil when the tornado has not damaged the vehicle.
 ---   vehiclePrice, towFee,
 ---   structCount / trashCount / wheelCount / trackCount, partsCount (all broken parts),
----   costPerWheel / costPerTrack, structCost / trashCost / wheelCost / trackCost,
+---   costPerStruct / costPerTrash / costPerWheel / costPerTrack, structCost / trashCost / wheelCost / trackCost,
+---   costScale (game difficulty cost multiplier x player money scale, already applied to every amount),
 ---   engineDamage (0..1), isEngineDead, engineCost, total
 function TornadoRecovery:estimateRepairCost(vehicle)
     if vehicle == nil or vehicle.rootNode == nil or TornadoDestruction == nil then
@@ -90,10 +91,15 @@ function TornadoRecovery:estimateRepairCost(vehicle)
     if destructionData.nodes then
         for _, nodeInfo in ipairs(destructionData.nodes) do
             local name = nodeInfo.name or ""
-            if string.sub(name, 1, #wheelPrefix) == wheelPrefix then
+            -- Category recorded when the part was hidden (TornadoDestruction.KIND_*); older saves: guess from the name.
+            if nodeInfo.kind == TornadoDestruction.KIND_WHEEL or string.sub(name, 1, #wheelPrefix) == wheelPrefix then
                 wheelCount = wheelCount + 1
-            elseif string.sub(name, 1, #trackPrefix) == trackPrefix then
+            elseif nodeInfo.kind == TornadoDestruction.KIND_TRACK or string.sub(name, 1, #trackPrefix) == trackPrefix then
                 trackCount = trackCount + 1
+            elseif nodeInfo.kind == TornadoDestruction.KIND_TRASH then
+                trashCount = trashCount + 1
+            elseif nodeInfo.kind == TornadoDestruction.KIND_STRUCT then
+                structCount = structCount + 1
             else
                 local isTrash = false
                 local nameLower = string.lower(name)
@@ -114,19 +120,31 @@ function TornadoRecovery:estimateRepairCost(vehicle)
         vehiclePrice = vehicle:getPrice() or 50000
     end
 
+    -- Everything below is scaled by the game's economic difficulty (cost multiplier) and the player's
+    -- money scale (TornadoSettings:getCostScale), so the bill fits Easy / Normal / Hard and any economy.
+    local costScale = 1.0
+    if TornadoSettings ~= nil and TornadoSettings.getCostScale ~= nil then
+        costScale = TornadoSettings:getCostScale()
+    end
+    local function scaled(amount)
+        return math.floor(amount * costScale + 0.5)
+    end
+
     -- A. Base Towing: Min fee + 0.5% of vehicle purchase value
-    local towFee = self.MIN_TOW_FEE + math.floor(vehiclePrice * self.TOW_PRICE_FACTOR)
+    local towFee = scaled(self.MIN_TOW_FEE + math.floor(vehiclePrice * self.TOW_PRICE_FACTOR))
 
     -- B. Structural: Scale by actual broken i3d nodes
-    local structCost = structCount * self.COST_PER_STRUCT_NODE
-    local trashCost = trashCount * self.COST_TRASH
+    local costPerStruct = scaled(self.COST_PER_STRUCT_NODE)
+    local costPerTrash = scaled(self.COST_TRASH)
+    local structCost = structCount * costPerStruct
+    local trashCost = trashCount * costPerTrash
 
     -- B2. Wheels: a whole tire + rim each, scaled to the vehicle (a tractor wheel costs more than a trailer's)
-    local costPerWheel = math.min(self.WHEEL_MAX_COST, math.max(self.WHEEL_MIN_COST, math.floor(vehiclePrice * self.WHEEL_PRICE_FACTOR)))
+    local costPerWheel = scaled(math.min(self.WHEEL_MAX_COST, math.max(self.WHEEL_MIN_COST, math.floor(vehiclePrice * self.WHEEL_PRICE_FACTOR))))
     local wheelCost = wheelCount * costPerWheel
 
     -- B3. Tracks: a whole track each (belt, rollers, idlers), far more expensive than a tire
-    local costPerTrack = math.min(self.TRACK_MAX_COST, math.max(self.TRACK_MIN_COST, math.floor(vehiclePrice * self.TRACK_PRICE_FACTOR)))
+    local costPerTrack = scaled(math.min(self.TRACK_MAX_COST, math.max(self.TRACK_MIN_COST, math.floor(vehiclePrice * self.TRACK_PRICE_FACTOR))))
     local trackCost = trackCount * costPerTrack
 
     -- C. Engine Overhaul: Scaled to damage severity & vehicle value
@@ -138,10 +156,10 @@ function TornadoRecovery:estimateRepairCost(vehicle)
     local engineCost = 0
     if isEngineDead then
         -- Full overhaul if 100% dead (up to 8% of vehicle value, min $1500)
-        engineCost = math.max(1500, math.floor(vehiclePrice * self.ENGINE_MAX_FACTOR))
+        engineCost = scaled(math.max(1500, math.floor(vehiclePrice * self.ENGINE_MAX_FACTOR)))
     elseif engineDamage > 0.1 then
         -- Pro-rated engine work if partially damaged
-        engineCost = math.floor((vehiclePrice * self.ENGINE_MAX_FACTOR) * engineDamage)
+        engineCost = scaled(math.floor((vehiclePrice * self.ENGINE_MAX_FACTOR) * engineDamage))
     end
 
     return {
@@ -149,7 +167,8 @@ function TornadoRecovery:estimateRepairCost(vehicle)
         towFee = towFee,
         structCount = structCount, trashCount = trashCount, wheelCount = wheelCount, trackCount = trackCount,
         partsCount = structCount + wheelCount + trackCount,
-        costPerWheel = costPerWheel, costPerTrack = costPerTrack,
+        costPerStruct = costPerStruct, costPerTrash = costPerTrash,
+        costPerWheel = costPerWheel, costPerTrack = costPerTrack, costScale = costScale,
         structCost = structCost, trashCost = trashCost, wheelCost = wheelCost, trackCost = trackCost,
         engineDamage = engineDamage, isEngineDead = isEngineDead, engineCost = engineCost,
         total = math.floor(towFee + structCost + trashCost + wheelCost + trackCost + engineCost),
@@ -246,8 +265,9 @@ function TornadoRecovery:processRecovery(vehicle)
     -- Detailed Console Audit Logging
     if TornadoDebug then
         local logBreakdown = string.format("Charged Farm %d exactly $%d for resetting %s (Price: $%d) | MATH: Tow: $%d + (Struct: %d * $%d) + (Trash: %d * $%d) + (Wheels: %d * $%d) + (Tracks: %d * $%d) + (Engine: $%d)",
-            farmId, totalCost, destructionData.filename or "Vehicle", vehiclePrice, towFee, estimate.structCount, self.COST_PER_STRUCT_NODE,
-            estimate.trashCount, self.COST_TRASH, estimate.wheelCount, estimate.costPerWheel, estimate.trackCount, estimate.costPerTrack, engineCost)
+            farmId, totalCost, destructionData.filename or "Vehicle", vehiclePrice, towFee, estimate.structCount, estimate.costPerStruct,
+            estimate.trashCount, estimate.costPerTrash, estimate.wheelCount, estimate.costPerWheel, estimate.trackCount, estimate.costPerTrack, engineCost)
+            .. string.format(" | Cost scale x%.2f", estimate.costScale)
 
         TornadoDebug:log("RECOVERY", logBreakdown)
     end

@@ -35,6 +35,15 @@ TornadoDestruction.CRAWLER_NODE_PREFIX = "crawler#"
 -- The name is checked on load; older saves (name only) still load by name.
 TornadoDestruction.PATH_SEPARATOR = "@"
 
+-- Category of every hidden part, used by the recovery bill (and later insurance) instead of guessing from the
+-- name. Saved after the path as "!trash" / "!struct"; wheels and tracks are known from their "wheel#" /
+-- "crawler#" ids. Older saves have no category and fall back to the name check.
+TornadoDestruction.KIND_TRASH = "trash"
+TornadoDestruction.KIND_STRUCT = "struct"
+TornadoDestruction.KIND_WHEEL = "wheel"
+TornadoDestruction.KIND_TRACK = "track"
+TornadoDestruction.KIND_SEPARATOR = "!"
+
 -- KEYWORDS FOR "ALWAYS HIDE" (Trash / Cosmetic Details)
 TornadoDestruction.TRASH_KEYWORDS = {
     "decal", "sticker", "logo", "lettering", "sign", "warning", "label",
@@ -301,7 +310,7 @@ function TornadoDestruction:destroyTarget(target)
             local child = getChildAt(parentNode, i)
             if getVisibility(child) then
                 setVisibility(child, false)
-                table.insert(finalHiddenNodes, { id = child, name = getName(child) or "sub_child" })
+                table.insert(finalHiddenNodes, { id = child, name = getName(child) or "sub_child", kind = self.KIND_STRUCT })
             end
             hideSubChildren(child)
         end
@@ -452,23 +461,28 @@ function TornadoDestruction:_scanProcedural(rootNode, outTrash, outStructure)
                 end
             end
 
+            -- Structural parts take their LOD group with them so they also vanish at a distance.
+            -- Trash parts (decals, hoses ...) do NOT: a "lod0" parent is usually one detail level of a whole
+            -- section of the model, and hiding it removed far more than the decal.
             local finalNode = currentNode
             local finalName = nodeName
-            local parent = getParent(currentNode)
-            if parent and parent ~= 0 then
-                local parentName = getName(parent) or ""
-                local parentLower = string.lower(parentName)
-                if parentLower == "lod" or parentLower == "lod0" or parentLower == "lod1" then
-                    finalNode = parent
-                    finalName = parentName
+            if isStruct then
+                local parent = getParent(currentNode)
+                if parent and parent ~= 0 then
+                    local parentName = getName(parent) or ""
+                    local parentLower = string.lower(parentName)
+                    if parentLower == "lod" or parentLower == "lod0" or parentLower == "lod1" then
+                        finalNode = parent
+                        finalName = parentName
+                    end
                 end
             end
 
             if isTrash then
-                table.insert(outTrash, { id = finalNode, name = finalName })
+                table.insert(outTrash, { id = finalNode, name = finalName, kind = self.KIND_TRASH })
                 skipChildren = true
             elseif isStruct then
-                table.insert(outStructure, { id = finalNode, name = finalName })
+                table.insert(outStructure, { id = finalNode, name = finalName, kind = self.KIND_STRUCT })
                 skipChildren = true
             end
         end
@@ -543,7 +557,8 @@ function TornadoDestruction:_collectVisualWheels(vehicle)
                 local node = visualWheel.node
                 if node ~= nil and node ~= 0 and entityExists(node) and getVisibility(node)
                     and self:_isRemovableVisualWheel(visualWheel) then
-                    table.insert(result, { id = node, name = self.WHEEL_NODE_PREFIX .. wheelIndex .. "#" .. visualIndex })
+                    table.insert(result, { id = node, name = self.WHEEL_NODE_PREFIX .. wheelIndex .. "#" .. visualIndex,
+                        kind = self.KIND_WHEEL })
                 end
             end
         end
@@ -565,24 +580,39 @@ function TornadoDestruction:_encodeSavedNode(vehicle, nodeInfo)
     if vehicle ~= nil and nodeInfo.id ~= nil and nodeInfo.id ~= 0 and TornadoSync ~= nil and TornadoSync.encodeNodePath ~= nil then
         local entry = TornadoSync.encodeNodePath(vehicle, nodeInfo.id)
         if entry ~= nil then
-            return name .. self.PATH_SEPARATOR .. entry.component .. ":" .. table.concat(entry.path, ".")
+            local text = name .. self.PATH_SEPARATOR .. entry.component .. ":" .. table.concat(entry.path, ".")
+            if nodeInfo.kind == self.KIND_TRASH or nodeInfo.kind == self.KIND_STRUCT then
+                text = text .. self.KIND_SEPARATOR .. nodeInfo.kind
+            end
+            return text
         end
     end
     -- Not linked to a vehicle yet (still pending after a load): keep what was loaded.
     return nodeInfo.saved or name
 end
 
---- Saved text -> { id = 0, name, component, path, saved }.
+--- Saved text -> { id = 0, name, component, path, kind, saved }.
 function TornadoDestruction:_decodeSavedNode(entry)
+    local saved = entry
+    local kind = nil
+    local body, savedKind = string.match(entry, "^(.*)" .. self.KIND_SEPARATOR .. "(%a+)$")
+    if body ~= nil and (savedKind == self.KIND_TRASH or savedKind == self.KIND_STRUCT) then
+        entry, kind = body, savedKind
+    end
+    if string.sub(entry, 1, #self.WHEEL_NODE_PREFIX) == self.WHEEL_NODE_PREFIX then
+        kind = self.KIND_WHEEL
+    elseif string.sub(entry, 1, #self.CRAWLER_NODE_PREFIX) == self.CRAWLER_NODE_PREFIX then
+        kind = self.KIND_TRACK
+    end
     local name, component, pathText = string.match(entry, "^(.*)" .. self.PATH_SEPARATOR .. "(%d+):([%d%.]*)$")
     if name == nil then
-        return { id = 0, name = entry, saved = entry }
+        return { id = 0, name = entry, kind = kind, saved = saved }
     end
     local path = {}
     for index in string.gmatch(pathText, "(%d+)") do
         path[#path + 1] = tonumber(index)
     end
-    return { id = 0, name = name, component = tonumber(component), path = path, saved = entry }
+    return { id = 0, name = name, component = tonumber(component), path = path, kind = kind, saved = saved }
 end
 
 --- Node for a saved part on a loaded vehicle, or 0.
@@ -613,7 +643,7 @@ function TornadoDestruction:_collectCrawlers(vehicle)
     for crawlerIndex, crawler in ipairs(spec.crawlers) do
         local node = crawler.loadedCrawler
         if node ~= nil and node ~= 0 and entityExists(node) and getVisibility(node) then
-            table.insert(result, { id = node, name = self.CRAWLER_NODE_PREFIX .. crawlerIndex })
+            table.insert(result, { id = node, name = self.CRAWLER_NODE_PREFIX .. crawlerIndex, kind = self.KIND_TRACK })
         end
     end
     return result

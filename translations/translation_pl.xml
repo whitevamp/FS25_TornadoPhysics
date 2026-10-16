@@ -129,6 +129,8 @@
         <text name="tp_tip_destruction" text="Pojazdy w burzy tracą części (automatyczna naprawa po 24 godzinach gry)."/>
         <text name="tp_recovery" text="Rachunek za holowanie (hardcore)"/>
         <text name="tp_tip_recovery" text="Nalicza szczegółowy rachunek za holowanie i naprawę, gdy pojazd uszkodzony przez tornado wraca do sklepu. Zapisywane od razu."/>
+        <text name="tp_money_scale" text="Skala kosztów"/>
+        <text name="tp_tip_money_scale" text="Skaluje wszystko, za co Tornado Physics pobiera opłaty, np. rachunek za holowanie. Dodatkowo automatycznie dostosowuje się do poziomu trudności ekonomicznej zapisu (Łatwy kosztuje mniej niż Trudny)."/>
         <text name="tp_map_overlay" text="Nakładka mapy"/>
         <text name="tp_tip_mapui" text="Pokazuje widżet statystyk tornada na mapie ESC."/>
         <text name="tp_mapui_sel" text="Tylko po zaznaczeniu"/>

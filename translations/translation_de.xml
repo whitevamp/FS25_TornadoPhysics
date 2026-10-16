@@ -129,6 +129,8 @@
         <text name="tp_tip_destruction" text="Fahrzeuge im Sturm verlieren Teile (automatische Reparatur nach 24 Spielstunden)."/>
         <text name="tp_recovery" text="Harte Bergungsrechnung"/>
         <text name="tp_tip_recovery" text="Stellt eine detaillierte Abschlepp- und Reparaturrechnung, wenn ein vom Tornado beschädigtes Fahrzeug zum Shop zurückgesetzt wird. Wird sofort gespeichert."/>
+        <text name="tp_money_scale" text="Kostenfaktor"/>
+        <text name="tp_tip_money_scale" text="Skaliert alles, was Tornado Physics berechnet, z. B. die Abschlepprechnung. Wird zusätzlich automatisch an den wirtschaftlichen Schwierigkeitsgrad des Spielstands angepasst (Leicht kostet weniger als Schwer)."/>
         <text name="tp_map_overlay" text="Karten-Overlay"/>
         <text name="tp_tip_mapui" text="Zeigt das Tornado-Infofeld auf der ESC-Karte."/>
         <text name="tp_mapui_sel" text="Nur wenn ausgewählt"/>

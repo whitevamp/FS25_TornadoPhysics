@@ -46,6 +46,13 @@
   [count] spawns wildlife in front of you (the game's own spawn command
   only exists in the developer build).
 
+[ECONOMY] Cost Scale
+- Everything Tornado Physics charges (currently the emergency tow / recovery
+  bill) now follows the savegame's economic difficulty, like the game's own
+  running costs: Easy x0.4, Normal x0.7, Hard x1.0.
+- New "Cost scale" setting (25% - 200%, default 100%) in the Modules tab
+  for further tuning, e.g. with economy mods. Console: t_set money <percent>.
+
 [GAMEPLAY] AI Traffic Roadblocks
 - AI road traffic now stops before driving into a tornado, waiting like at a
   red light at the edge of a keep-out zone around the storm.
@@ -188,6 +195,11 @@ Physics / gameplay
 - The recovery bill now prices lost wheels properly: 0.6% of the vehicle's
   value per wheel (at least $250, at most $8,000), instead of the $30 of a
   small body part.
+- Fixed a removed decal or hose sometimes hiding a whole detail-level group
+  ("lod0") of the vehicle model around it.
+- The recovery bill now counts each removed part in the category it was
+  removed as (trash / structural / wheel / track) instead of guessing from
+  its name; the category is saved with the savegame.
 - Fixed damaged vehicles showing the wrong missing parts after loading a
   savegame when several parts had the same name (e.g. two "glass" parts):
   hidden parts are now saved by their exact position in the vehicle.

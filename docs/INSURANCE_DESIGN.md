@@ -347,6 +347,12 @@ Every money value is formatted in the receiving player's currency (`TornadoText.
 
 Policies themselves are per-farm data, not settings.
 
+**Money scaling (implemented, shared with the recovery bill):** every amount the module charges is
+multiplied by `TornadoSettings:getCostScale()` = the game's cost multiplier for the savegame's economic
+difficulty (`EconomyManager.getCostMultiplier()`: Easy 0.4 / Normal 0.7 / Hard 1.0) × the player's
+"Cost scale" setting (25–200 %). Premiums are already a share of in-game values (crop prices from the
+sell points, vehicle sell prices), so price-changing mods are covered without detecting them.
+
 ## 13. Data and persistence
 
 - **Settings** – `modSettings/TornadoPhysics_Config.xml` like the other modules; synced through

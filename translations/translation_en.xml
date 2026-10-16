@@ -129,6 +129,8 @@
         <text name="tp_tip_destruction" text="Vehicles caught in the storm lose parts (auto-repaired after 24 in-game hours)."/>
         <text name="tp_recovery" text="Hardcore recovery bill"/>
         <text name="tp_tip_recovery" text="Charge an itemized tow and repair bill when a tornado-damaged vehicle is reset to the shop. Saved immediately."/>
+        <text name="tp_money_scale" text="Cost scale"/>
+        <text name="tp_tip_money_scale" text="Scales everything Tornado Physics charges, like the emergency tow bill. It is also adjusted automatically to the savegame's economic difficulty (Easy costs less than Hard)."/>
         <text name="tp_map_overlay" text="Map overlay"/>
         <text name="tp_tip_mapui" text="Show the tornado stats widget on the ESC map."/>
         <text name="tp_mapui_sel" text="Only when selected"/>

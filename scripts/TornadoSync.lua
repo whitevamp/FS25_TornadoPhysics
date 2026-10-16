@@ -75,6 +75,7 @@ TornadoSync.SETTINGS = {
     physicsSetting("purge_interval", "f"),
     -- t_set recovery
     fieldSetting(function() return TornadoSettings end, "recoveryEnabled", "b"),
+    fieldSetting(function() return TornadoSettings end, "moneyScale", "f"),
     -- t_set cargo
     fieldSetting(function() return TornadoCargo end, "isEnabled", "b"),
     fieldSetting(cargoSettings, "spillHeight", "f"),
@@ -232,7 +233,7 @@ function TornadoSync:isGameplayCommand(method, a, b)
     if method == "cmdSet" then
         if a == nil or LOCAL_SET_MODULES[a] then return false end
         if a == "cargo" and b == "verbose" then return false end
-        if (a == "traffic" or a == "climate" or a == "wildlife") and (b == "status" or b == "list") then return false end
+        if (a == "traffic" or a == "climate" or a == "wildlife" or a == "money") and (b == "status" or b == "list") then return false end
         return true
     end
     return false

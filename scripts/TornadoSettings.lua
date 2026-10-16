@@ -10,6 +10,24 @@ TornadoSettings.FILE = TornadoSettings.DIR .. "TornadoPhysics_Config.xml"
 -- Master Gatekeeper for Recovery Bill
 TornadoSettings.recoveryEnabled = false
 
+-- Player scale for everything the mod charges or pays (1.0 = 100 %). See getCostScale().
+TornadoSettings.moneyScale = 1.0
+TornadoSettings.MONEY_SCALE_MIN = 0.25
+TornadoSettings.MONEY_SCALE_MAX = 2.0
+
+--- Factor for every amount the mod CHARGES (tow bill, later insurance premiums):
+--- the game's own cost multiplier for the savegame's economic difficulty (Easy 0.4 / Normal 0.7 / Hard 1.0,
+--- the same one the game uses for helper wages and upkeep) times the player's money scale.
+--- Price-changing mods are covered as well: amounts that are a share of an in-game value scale with it.
+function TornadoSettings:getCostScale()
+    local costMultiplier = 1.0
+    if EconomyManager ~= nil and EconomyManager.getCostMultiplier ~= nil and g_currentMission ~= nil
+        and g_currentMission.missionInfo ~= nil then
+        costMultiplier = EconomyManager.getCostMultiplier() or 1.0
+    end
+    return costMultiplier * (self.moneyScale or 1.0)
+end
+
  -- Emergency Pack Integration Toggle
 -- TornadoSettings.enableEmergencyDLC = false
 
@@ -98,6 +116,7 @@ function TornadoSettings:resetToDefaults(category)
     -- RESET Recovery (the bill is gated by TornadoSettings.recoveryEnabled)
     if category == "all" or category == "recovery" then
         self.recoveryEnabled = false
+        self.moneyScale = 1.0
         print("TORNADO RESET: Recovery defaults restored.")
     end
 
@@ -152,6 +171,7 @@ function TornadoSettings:createDefaultXML()
     setXMLFloat(xmlId, "TornadoPhysics.general.radius", 35.0)
     setXMLBool(xmlId, "TornadoPhysics.general.destruction", false) 
     setXMLBool(xmlId, "TornadoPhysics.general.recovery", false) -- ADD RECOVERY
+    setXMLFloat(xmlId, "TornadoPhysics.general.moneyScale", 1.0)
 
     -- 2. OBJECTS
     setXMLBool(xmlId, "TornadoPhysics.objects.liftBales", true)
@@ -246,7 +266,11 @@ function TornadoSettings:loadFromXML()
         s.destructionEnabled = Utils.getNoNil(getXMLBool(xmlId, "TornadoPhysics.general.destruction"), false) 
         
         -- LOAD RECOVERY
-        self.recoveryEnabled = Utils.getNoNil(getXMLBool(xmlId, "TornadoPhysics.general.recovery"), false) 
+        self.recoveryEnabled = Utils.getNoNil(getXMLBool(xmlId, "TornadoPhysics.general.recovery"), false)
+        local moneyScale = getXMLFloat(xmlId, "TornadoPhysics.general.moneyScale")
+        if moneyScale ~= nil then
+            self.moneyScale = math.max(self.MONEY_SCALE_MIN, math.min(self.MONEY_SCALE_MAX, moneyScale))
+        end
         
         local lb = getXMLBool(xmlId, "TornadoPhysics.objects.liftBales")
         if lb ~= nil then s.lift_bales = lb end
@@ -402,7 +426,8 @@ function TornadoSettings:saveToXML()
         setXMLBool(xmlId, "TornadoPhysics.general.destruction", s.destructionEnabled) 
         
         -- SAVE RECOVERY
-        setXMLBool(xmlId, "TornadoPhysics.general.recovery", self.recoveryEnabled) 
+        setXMLBool(xmlId, "TornadoPhysics.general.recovery", self.recoveryEnabled)
+        setXMLFloat(xmlId, "TornadoPhysics.general.moneyScale", self.moneyScale or 1.0)
         
         setXMLBool(xmlId, "TornadoPhysics.objects.liftBales", s.lift_bales)
         setXMLBool(xmlId, "TornadoPhysics.objects.liftLogs", s.lift_logs)

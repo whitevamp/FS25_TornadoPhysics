@@ -129,6 +129,8 @@
         <text name="tp_tip_destruction" text="I veicoli nella tempesta perdono pezzi (riparati automaticamente dopo 24 ore di gioco)."/>
         <text name="tp_recovery" text="Fattura di recupero hardcore"/>
         <text name="tp_tip_recovery" text="Addebita una fattura dettagliata di traino e riparazione quando un veicolo danneggiato dal tornado viene riportato al negozio. Salvato subito."/>
+        <text name="tp_money_scale" text="Scala dei costi"/>
+        <text name="tp_tip_money_scale" text="Scala tutto ciò che Tornado Physics addebita, come la fattura del traino. Si adatta anche automaticamente alla difficoltà economica del salvataggio (Facile costa meno di Difficile)."/>
         <text name="tp_map_overlay" text="Overlay mappa"/>
         <text name="tp_tip_mapui" text="Mostra il widget dei dati del tornado sulla mappa ESC."/>
         <text name="tp_mapui_sel" text="Solo se selezionato"/>

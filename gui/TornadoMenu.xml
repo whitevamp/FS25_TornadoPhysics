@@ -390,6 +390,12 @@
                     </BinaryOption>
                     <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_recovery"/>
                 </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="modMoneyScale" onClick="onClickNumber">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_money_scale"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_money_scale"/>
+                </Bitmap>
 
                 <Text profile="fs25_settingsSectionHeader" name="sectionHeader" text="$l10n_tp_map_overlay"/>
                 <Bitmap profile="fs25_multiTextOptionContainer">

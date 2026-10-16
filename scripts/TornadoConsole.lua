@@ -124,6 +124,9 @@ function TornadoConsole:cmdHelp(command)
         print("    buffer <meters>     - Distance beyond the tornado radius where cars stop. Ex: t_set traffic buffer 60")
         print("    status              - Shows how many roadblocks are active.")
         print(" ")
+        print("  money [percent|status] - Scale for everything the mod charges (tow bill ...). 25 - 200, default 100.")
+        print("                          Also scaled by the savegame's economic difficulty. Ex: t_set money 50")
+        print(" ")
         print("  wildlife [sub-command] - Wildlife flees the tornado (caught animals vanish); the farm dog runs home.")
         print("    (no sub-command)    - Toggles it ON/OFF.")
         print("    on|off              - Explicitly turns it ON or OFF.")
@@ -348,6 +351,21 @@ end
             s.destructionEnabled = not s.destructionEnabled
         end
         return "Destruction: System Enabled = " .. tostring(s.destructionEnabled)
+    end
+
+    if module == "money" then
+        if not TornadoSettings then return "Error: Settings module missing." end
+        local val = tonumber(subCmd)
+        if val ~= nil then
+            -- Given in per cent (25 - 200)
+            TornadoSettings.moneyScale = math.max(TornadoSettings.MONEY_SCALE_MIN,
+                math.min(TornadoSettings.MONEY_SCALE_MAX, val / 100))
+        elseif subCmd ~= nil and subCmd ~= "status" then
+            return "Usage: t_set money [percent 25-200 | status]"
+        end
+        local costMultiplier = TornadoSettings.moneyScale > 0 and TornadoSettings:getCostScale() / TornadoSettings.moneyScale or 1
+        return string.format("Money: scale = %.0f%% | game difficulty cost multiplier = x%.2f | charges = %.0f%% of normal",
+            TornadoSettings.moneyScale * 100, costMultiplier, TornadoSettings:getCostScale() * 100)
     end
 
     if module == "recovery" then
