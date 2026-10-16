@@ -182,6 +182,18 @@ Cordoba free multi-peril pilot). The file holds (see the ARGENTINA config):
     of the sold mix equals the SSN average (premium / insured capital).
 
 ----------------------------------------------------------------------------
+Chile (DB/CropInsurance_CL.xml)
+----------------------------------------------------------------------------
+State-subsidised named-peril cover through Agroseguros (Ministry of Agriculture): 40 % of the net premium
+plus a fixed 1 UF per policy, with stackable bonuses and caps per policy and per farmer. Drought is covered
+only on rain-fed (secano) land. Uptake is low (2.8 % of the sown area in 2023). The file holds (see the
+CHILE config):
+
+  * Perils, subsidy formula, bonuses, caps, INDAP small-farmer rule.
+  * Rates and sums insured per hectare in UF (unidad de fomento, ISO code CLF): OUR ESTIMATES
+    (isEstimate="true") inside the published examples (4.3 %; fruit 2.6 - 5.2 %). No calibration.
+
+----------------------------------------------------------------------------
 Brazil (DB/CropInsurance_BR.xml)
 ----------------------------------------------------------------------------
 Built from MAPA's PSR open data (SISSER, one row per subsidised policy, Creative Commons Attribution):
@@ -934,6 +946,57 @@ ARGENTINA_GROUPS = {
     "pasture":    (300,     0.020,  0.0),
     "vine":       (8000,    0.080,  0.0),       # Mendoza / San Juan: heavy hail
     "fruit":      (15000,   0.080,  0.0),       # Rio Negro / Neuquen apples and pears
+}
+
+# ============================================================================
+# CHILE  -  Agroseguros subsidy rules (edit when newer figures are out)
+# ============================================================================
+
+CHILE_OUTPUT_XML = os.path.join(TOOLS_DIR, "..", "DB", "CropInsurance_CL.xml")
+
+# ChileAtiende "Subsidio al seguro agricola" + agroseguros.gob.cl.
+CHILE_PERILS = ["DROUGHT", "HEAVY_RAIN", "FROST", "WINDSTORM", "HAIL", "SNOW"]   # drought: rain-fed land only
+CHILE_SUBSIDY = {"base": 0.40, "fixedPerPolicyUf": 1.0, "maxPerPolicyUf": 80, "maxPerCropCommuneUf": 80,
+                 "maxPerFarmerUf": 160, "maxShareOfNetPremium": 0.98, "typicalMax": 0.69}
+CHILE_BONUSES = {"renewalMin": 0.02, "renewalMax": 0.10, "collective": 0.04, "smallPolicy": 0.05,
+                 "smallPolicyMaxInsuredUf": 1000, "cereals": 0.05, "extremeZone": 0.05}
+# Farmers without a tax start but with INDAP / BancoEstado credit: insured value <= 250 UF per season; INDAP
+# adds its own complementary subsidy (amount not published on the pages used).
+CHILE_INDAP = {"maxInsuredUfWithoutTaxStart": 250, "complementarySubsidy": "yes, amount not published"}
+# DIPRES evaluation (Agroseguros 2024): 2.8 % of the sown area insured in 2023, < 7 % of farms; average cost
+# ~7.2 UF/ha. Ministry of Agriculture (answer to the Chamber of Deputies): fruit 2014 net premium 24 234 UF on
+# 464 998 UF insured (5.2 %), 2017 113 836 UF on 4 448 581 UF (2.6 %). Mundoagro example rate 4.3 %.
+CHILE_STATS = {"insuredAreaShare2023": 0.028, "farmShare2023": 0.07, "avgCostPerHaUf": 7.2,
+               "fruitRate2014": 24234 / 464998, "fruitRate2017": 113836 / 4448581, "exampleRate": 0.043}
+
+CHILE_CROPS = {
+    "WHEAT": "cereals", "BARLEY": "cereals", "OAT": "cereals", "SORGHUM": "cereals",
+    "MAIZE": "maize", "CANOLA": "rapeseed", "SUNFLOWER": "rapeseed",
+    "SOYBEAN": "legumes", "PEA": "legumes", "GREENBEAN": "vegetables",
+    "RICE": "rice", "RICELONGGRAIN": "rice",
+    "POTATO": "potatoes", "SUGARBEET": "sugarbeet",
+    "CARROT": "vegetables", "PARSNIP": "vegetables", "REDBEET": "vegetables", "SPINACH": "vegetables",
+    "GRASS": "forage", "GRAPE": "vine", "OLIVE": "olive",
+    "DEFAULT": "cereals",
+}
+CHILE_BORROWED = {"SORGHUM", "SUNFLOWER", "SOYBEAN"}
+CHILE_CEREAL_GROUPS = {"cereals", "maize", "rice"}   # get the +5 % cereals bonus
+
+# Per crop group, OUR ESTIMATES: sum insured per ha (UF, Chilean yields x prices at ~39 000 CLP per UF), rate.
+CHILE_GROUPS = {
+    #              sumPerHaUf  rate
+    "cereals":    (50,        0.045),     # rain-fed wheat incl. drought
+    "maize":      (74,        0.035),
+    "rapeseed":   (58,        0.045),
+    "legumes":    (30,        0.050),
+    "rice":       (60,        0.035),
+    "potatoes":   (225,       0.045),
+    "sugarbeet":  (130,       0.035),
+    "vegetables": (250,       0.050),
+    "forage":     (25,        0.040),
+    "vine":       (300,       0.035),
+    "fruit":      (600,       0.040),     # cherries, apples, blueberries ...
+    "olive":      (150,       0.035),
 }
 
 # ============================================================================
@@ -1862,6 +1925,38 @@ def write_argentina(out_path):
     print("wrote %s (%.1f KB, Argentina, %d crops)" % (out_path, os.path.getsize(out_path) / 1024, len(ARGENTINA_CROPS)))
 
 
+def write_chile(out_path):
+    """Chile: Agroseguros subsidy formula, estimated rates in UF. Needs no raw data."""
+    sub, bonus = CHILE_SUBSIDY, CHILE_BONUSES
+    lines = ['<?xml version="1.0" encoding="utf-8" standalone="no" ?>',
+             '<!-- Generated by tools/build_crop_insurance.py - do not edit by hand. -->',
+             '<!-- Sources: Agroseguros (Comite de Seguros del Agro) / ChileAtiende, DIPRES evaluation, Ministry of -->',
+             '<!-- Agriculture. Values marked isEstimate="true" are our own estimates, not official figures. -->',
+             '<cropInsurance version="1" source="Agroseguros, ChileAtiende, DIPRES" years="2014-2026" currency="CLF">',
+             '    <program type="namedPeril" perils="%s" droughtOnlyRainfed="true">' % " ".join(CHILE_PERILS),
+             '        <subsidy %s/>' % " ".join('%s="%s"' % (k, fmt(v, 2)) for k, v in sub.items()),
+             '        <bonuses %s/>' % " ".join('%s="%s"' % (k, fmt(v, 2)) for k, v in bonus.items()),
+             '        <smallFarmer %s/>' % " ".join('%s=%s' % (k, quoteattr(str(v))) for k, v in CHILE_INDAP.items()),
+             '        <stats %s/>' % " ".join('%s="%s"' % (k, fmt(v, 4)) for k, v in CHILE_STATS.items()),
+             '    </program>',
+             '    <region id="CHL" name="Chile">']
+    for crop, group in CHILE_CROPS.items():
+        sum_per_ha, rate = CHILE_GROUPS[group]
+        lines.append('        <crop fillType=%s group=%s%s%s sumPerHa="%d" sumPerHaIsEstimate="true">' % (
+            quoteattr(crop), quoteattr(group), ' borrowed="true"' if crop in CHILE_BORROWED else "",
+            ' cerealBonus="true"' if group in CHILE_CEREAL_GROUPS else "", sum_per_ha))
+        lines.append('            <rates namedPeril="%s" isEstimate="true"/>' % fmt(rate))
+        lines.append('        </crop>')
+    lines.append('    </region>')
+    lines.append('</cropInsurance>')
+    lines.append('')
+
+    out_path = os.path.abspath(out_path)
+    with open(out_path, "w", encoding="utf-8", newline="\n") as f:
+        f.write("\n".join(lines))
+    print("wrote %s (%.1f KB, Chile, %d crops)" % (out_path, os.path.getsize(out_path) / 1024, len(CHILE_CROPS)))
+
+
 def brazil_num(text):
     """PSR numbers use a decimal comma; "-" = empty."""
     text = text.strip()
@@ -2059,6 +2154,8 @@ def main():
         write_australia(AUSTRALIA_OUTPUT_XML)
     if ARGENTINA_OUTPUT_XML:
         write_argentina(ARGENTINA_OUTPUT_XML)
+    if CHILE_OUTPUT_XML:
+        write_chile(CHILE_OUTPUT_XML)
     print("Reading RMA Summary of Business %d-%d from %s" % (min(YEARS), max(YEARS), os.path.abspath(DATA_DIR)))
     us, state, seen = load()
     missing = [n for names in CROPS.values() for n in names if n not in seen]

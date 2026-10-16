@@ -400,7 +400,7 @@ sell points, vehicle sell prices), so price-changing mods are covered without de
 - **Crop insurance data** – **done:** `tools/build_crop_insurance.py` (standard library only, same
   pattern as the climate builders) turns the USDA RMA *Summary of Business* files into
   `DB/CropInsurance_US.xml` (~86 KB). Public-domain US government data; credit RMA in modDesc / README.
-  Canada: §13.3. Poland: §13.4. Brazil: §13.5. Germany: §13.6. France: §13.7. Netherlands: §13.8. Spain: §13.9. Italy: §13.10. Australia: §13.11. Argentina: §13.12.
+  Canada: §13.3. Poland: §13.4. Brazil: §13.5. Germany: §13.6. France: §13.7. Netherlands: §13.8. Spain: §13.9. Italy: §13.10. Australia: §13.11. Argentina: §13.12. Chile: §13.13.
 
 ### 13.1 RMA source data and processing rules
 
@@ -679,6 +679,26 @@ Encuesta de Seguros en los Sectores Agropecuario y Forestal 2024; provincial sch
 Mendoza and Córdoba. Rates are estimates, not official figures; not affiliated with or endorsed by any of
 them."*
 
+### 13.13 Chile: `DB/CropInsurance_CL.xml`
+
+State-subsidised named-peril cover through **Agroseguros** (Comité de Seguros del Agro, Ministry of
+Agriculture). Amounts are in **UF** (*unidad de fomento*, inflation-indexed, ISO code CLF).
+
+| Item | Value | Source |
+|---|---|---|
+| Perils | drought (**rain-fed land only**), excessive / untimely rain, frost, wind, hail, snow | ChileAtiende |
+| Subsidy | **40 %** of the net premium **+ 1 UF per policy**; caps 80 UF per policy, 80 UF per crop and commune, 160 UF per farmer and year; max 98 % of the net premium (usually 40 – 69 %) | ChileAtiende, Agroseguros |
+| Bonuses (stackable) | renewal +2 – 10 %, collective +4 %, small policy (insured ≤ 1 000 UF) +5 %, cereals +5 %, extreme zones +5 % | same |
+| Small farmers | without a tax start but with INDAP / BancoEstado credit: insured value ≤ 250 UF per season; INDAP adds a complementary subsidy (amount not published) | same |
+| Uptake | 2.8 % of the sown area, < 7 % of farms (2023); average cost ~7.2 UF/ha | DIPRES evaluation |
+| Rates | per crop group, **estimates** inside the published examples: 4.3 % (example), fruit 5.2 % (2014) – 2.6 % (2017); cereals 4.5 %, maize 3.5 %, fruit 4 %. No calibration | Mundoagro, Ministry of Agriculture |
+
+Rain-fed vs. irrigated matters for the game: drought is only insurable on fields without irrigation.
+
+**Credit text:** *"Chilean crop insurance rules from Agroseguros (Comité de Seguros del Agro) and ChileAtiende;
+figures from DIPRES and the Ministerio de Agricultura. Rates are estimates, not official figures; not
+affiliated with or endorsed by any of them."*
+
 ### 13.5 Brazil: `DB/CropInsurance_BR.xml`
 
 Built from MAPA's **PSR open data** (SISSER, https://dados.agricultura.gov.br/dataset/sisser3, Creative
@@ -737,6 +757,45 @@ product."*
 | Base game `MoneyType` | Register own money types for the finance page via `MoneyType.register(name, l10nKey)`, e.g. *Insurance premiums* and *Insurance payouts*. |
 
 **Later:** buildings / placeables (only if the destruction module ever damages them).
+
+### 15.1 Optional: FS25_RealisticWeather (Arrow-kb, GPL-3.0)
+
+Compatibility layer like `TornadoADS` (new `scripts/TornadoRealisticWeather.lua`): detect the mod at runtime
+and **read / hook** it – no code copied, so Tornado Physics keeps its own licence. The original author
+stopped development and allows anyone to continue the mod with credit; a fork (GPL-3.0, own GitHub / ModHub
+upload) can add a small public API where hooking is not enough. Checked against the user's local zip
+**v1.2.1.0** (the GitHub README still describes 1.1.x – compare before forking).
+
+| What | Where in RealisticWeather | Use for insurance / Tornado Physics |
+|---|---|---|
+| Detection | `g_modIsLoaded["FS25_RealisticWeather"]` and `g_currentMission.moistureSystem ~= nil` | `isAvailable` flag |
+| Soil moisture per cell | `g_currentMission.moistureSystem:getValuesAtCoords(x, z, {"moisture", "retention", "trend", "witherChance"})`, `:getCellsInsidePolygon(polygon, targets)` (field polygons) | cause of a yield loss: drought (low) vs. excess water (high); optional: tornado rain adds moisture via `setValuesAtCoords` (server, sync flag) |
+| Yield effect | overwrites `FSBaseMission.getHarvestScaleMultiplier` (moisture factor) | nothing to do: yield-based claims compare the real harvest, so RW's dry / wet losses are paid automatically – moisture only names the cause |
+| Crop withering | `RWUtils.witherArea(sx, sz, wx, wz, hx, hz)` called from `MoistureSystem:onHourChanged` | record withered area per field → DROUGHT claim evidence. `RWUtils` lives in RW's mod environment – reachable as `FS25_RealisticWeather.RWUtils` (to verify in game); otherwise the fork publishes an event |
+| Crop fires | `g_currentMission.fireSystem` (`fires`, `fieldId`, `startFire(x, z, fieldId)`, `endFire()`), `RWUtils.burnArea(...)`, setting `fireEnabled` | FIRE claims (Australia's main peril); optional: tornado debris / power-line hits may start a fire through `startFire` |
+| Droughts / blizzards | `Weather.droughtsEnabled` / `blizzardsEnabled`, current weather `isDraught` / `isBlizzard`, `environment.weather.snowHeight` | drought / snow peril flags in the claim log |
+| Flooding | `g_currentMission.puddleSystem` (visual puddles at high moisture) | FLOOD evidence where a country insures it |
+
+**Suggested fork API** (only if hooking proves fragile): an `apiVersion` field on `g_realisticWeather`;
+`g_messageCenter` messages `RW_CROP_WITHERED (fieldId, x, z, area, fruitTypeIndex)`, `RW_CROP_BURNED (...)`,
+`RW_FIRE_STARTED / RW_FIRE_ENDED (fieldId)`; `getFieldMoisture(fieldId)` (average over the field cells).
+
+**Rules:** server-side only; every call guarded by nil checks (no `pcall` – ModHub rule); all of it optional
+(setting "Use RealisticWeather data", default ON when the mod is present).
+
+### 15.2 Own lightweight perils (no extra mod required)
+
+Decision (2026-10-15): the insurance system must work **without** any other mod. Base game + Tornado
+Physics already cause hail, tornado and wind losses; drought, field fire and flood need a mechanic of our
+own. Write a **small own version, designed from the game mechanics – not from RealisticWeather's code**
+(ideas are free to reuse, code is GPL):
+- per-field **dry spell / wet spell** state driven by the climate data and the game weather (not a
+  full moisture grid), reducing the harvest yield in a mild, setting-controlled way;
+- **field fire** risk during hot, dry spells (optionally lit by tornado debris);
+- **flood** only as a claim cause on wet-spell fields after heavy rain.
+
+When FS25_RealisticWeather is installed, our own drought / fire / flood mechanics **switch off** (both
+change the harvest yield – running both would double the penalty) and §15.1 reads RW's data instead.
 
 ## 16. Open questions
 

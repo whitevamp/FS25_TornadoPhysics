@@ -114,6 +114,13 @@ Italy (CropInsurance_IT.xml)
 - Rates are estimates, not official figures. Not affiliated with or
   endorsed by MASAF or ISMEA.
 
+Chile (CropInsurance_CL.xml)
+- Chilean crop insurance rules from Agroseguros (Comite de Seguros del
+  Agro) and ChileAtiende; figures from DIPRES and the Ministerio de
+  Agricultura.
+- Rates are estimates, not official figures. Not affiliated with or
+  endorsed by any of them.
+
 Argentina (CropInsurance_AR.xml)
 - Argentine crop insurance figures from the Superintendencia de Seguros
   de la Nacion (SSN), Encuesta de Seguros en los Sectores Agropecuario y
