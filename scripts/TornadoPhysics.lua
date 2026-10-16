@@ -336,7 +336,8 @@ function TornadoPhysics:processNearbyObjects(dt, tX, tY, tZ)
 
                 -- 1. Check shop/origin conditions FIRST before doing math
                 local isOrigin = (math.abs(vx) < 0.001 and math.abs(vz) < 0.001)
-                local isShopItem = (vehicle.propertyState == Vehicle.PROPERTY_STATE_SHOP)
+                local isShopItem = (VehiclePropertyState ~= nil and VehiclePropertyState.SHOP_CONFIG ~= nil
+                    and vehicle.propertyState == VehiclePropertyState.SHOP_CONFIG)
 
                 if not isOrigin and not isShopItem then
                     -- 2. Only calculate distance for valid, in-world vehicles
@@ -1037,12 +1038,11 @@ function TornadoPhysics:applyPropPhysics(nodeId, tX, tY, tZ, dtSec, data)
     local vX, vY, vZ = getWorldTranslation(nodeId)
     if vX == nil then return end
 
-    -- 1. Break static/kinematic locks on map props
-    if getIsRigidBodyKinematic and getIsRigidBodyKinematic(nodeId) then
-        setRigidBodyType(nodeId, RigidBodyType.DYNAMIC)
-    end
+    -- Only dynamic bodies get here (see objectScanCallback). Kinematic bodies are never converted: in FS25 they
+    -- are objects other systems hold in place - mounted bales / pallets, growing trees, AI traffic, animated
+    -- doors / gates, and physics objects on multiplayer clients.
 
-    -- 2. Shock stationary props to snap map joints
+    -- Shock stationary props to snap map joints
     local lVx, lVy, lVz = getLinearVelocity(nodeId)
     if lVx ~= nil and (lVx * lVx + lVy * lVy + lVz * lVz) < 0.0001 then
         addImpulse(nodeId, 0, mass * 10.0, 0, 0, 0, 0, true)
@@ -1177,8 +1177,9 @@ function TornadoPhysics:objectScanCallback(nodeId)
     if ClassIds and getHasClassId(nodeId, ClassIds.MESH_SPLIT_SHAPE) then
         self.activeNodes[nodeId] = { type = "LOG" }
 
-        -- 2. Non-static map props (Signs, cones, light debris)
-    elseif getRigidBodyType(nodeId) ~= RigidBodyType.STATIC then
+        -- 2. Dynamic map props (signs, cones, light debris). Only DYNAMIC: kinematic bodies are held by other
+        --    systems (mounts, tree growth, traffic, animations, MP clients) and NONE has no physics at all.
+    elseif getRigidBodyType(nodeId) == RigidBodyType.DYNAMIC then
         -- If it's light, tag it as PROP, otherwise leave heavy debris as LOG
         if mass > 0 and mass < 0.2 then
             self.activeNodes[nodeId] = { type = "PROP" }

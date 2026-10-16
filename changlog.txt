@@ -227,6 +227,12 @@ Physics / gameplay
   new roll, touchdown alert, siren and storm weather (it was silently ignored).
 - Fixed a reloaded savegame re-rolling the tornado that was already on the
   ground and showing its touchdown alert again.
+- Fixed the shop-preview vehicle check never matching (it used a
+  property state that does not exist in FS25).
+- The tornado now only grabs map objects that have real physics. Objects the
+  game holds in place (bales / pallets mounted on a trailer, growing trees,
+  AI traffic, animated doors and gates) are no longer pushed around by the
+  prop / log sweep; loose signs, cones and debris fly as before.
 
 Weather
 - Fixed tornado storm weather permanently changing the map's own rain and
