@@ -12,6 +12,9 @@ BR_insurance/
 # Screenshots
 images/
 
+# pycache in the tools folder
+tools\__pycache__
+
 # Raw NOAA Weather files.
 weather_csv_files_for_tornadophysics
 
