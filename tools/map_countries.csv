@@ -1,0 +1,289 @@
+# Known FS25 maps -> country, for the insurance region detection (tools/build_crop_insurance.py -> DB/InsuranceRegions.xml).
+# Source: GIANTS ModHub map categories (survey 2026-10-16, docs/MAP_SURVEY.md); country from the map title and
+# description, checked by hand. kind: real = a real place, style = fictional but clearly styled on that country,
+# fictional = no country (EU = European-style, NONE = no region). Add new maps at the end; one line per mod zip.
+# modName|country|kind|title
+FS25_NewFrontier|EU|fictional|New Frontier
+FS25_RisouxForest|FR|real|The Risoux Forest
+FS25_CalmLands|NONE|fictional|Calm Lands
+FS25_Silver_Lake_Forest|EU|fictional|Silver Lake Forest
+FS25_FDAYMap4x|DE|style|FrechDachs Map 4x
+FS25_Moss_Valley|GB|real|Moss Valley
+FS25_Sobolewo|PL|real|Sobolewo
+FS25_Riverview|GB|real|Riverview
+FS25_Frankenmuth_Map|US|real|Frankenmuth Farming Map
+FS25_Pallegney|FR|real|Pallegney
+FS25_Dark_Forest_The_Final_Chapter|US|real|Dark Forest The Final Chapter
+FS25_calmsden|EU|fictional|Oak Bridge Farm
+FS25_New_Bartelshagen|DE|real|New Bartelshagen
+FS25_Rancho_Fundo|BR|real|Rancho Fundo
+FS25_Lipinki|PL|real|Lipinki
+FS25_Panhandle_Caprock|US|real|Panhandle Caprock
+FS25_Zacieczki|PL|real|Zacieczki
+FS25_Polanki|PL|style|Polanki
+FS25_Matopiba_Map|BR|real|Matopiba Map 2k25
+FS25_Ladyhill|GB|real|Ladyhill
+FS25_SouthRice|BR|real|South Rice
+FS25_Rhoenplateu|DE|real|Rhönplateu
+FS25_Tassi_Farm|EE|real|Tässi Farm
+FS25_SchwesingBahnhof|DE|real|Schwesing Bahnhof
+FS25_Elmcreek|US|real|Elmcreek
+FS25_Hermanns_Hausen_Map|PL|style|HermannsHausen
+FS25_New_American|US|real|New American
+FS25_theMemory|EU|fictional|The Memory
+FS25_Survival4X|NL|real|Survival4X
+FS25_silverrunForest|US|real|Silverrun Forest
+FS25_Rettenbach|DE|style|Rettenbach
+FS25_Settlers|SEA|real|Settlers
+FS25_Prairie_Farm_Michigan|US|real|Prairie Farm Michigan
+FS25_WasecaCo|US|real|Waseca Co Minnesota
+FS25_TheNetherlands|NL|real|The Netherlands
+FS25_Alma_Missouri|US|real|Alma, Missouri
+FS25_WBH|US|real|WestBridge Hills 25
+FS25_Rottumer_Island|NL|real|Rottumer Island
+FS25_NewHope|NONE|fictional|New Hope
+FS25_fourFields|US|style|FourFields
+FS25_Gnadenthal_crossplay|CA|real|Gnadenthal
+FS25_The_Countryside_Lands|FR|real|The Countryside Lands
+FS25_Nordfriesisches_Land_crossplay|DE|real|North Frisian 25
+FS25_Oberschwaben_crossplay|DE|real|Oberschwaben
+FS25_Starowies|PL|real|Starowies
+FS25_Sunshine_Forest|NONE|fictional|Sunshine Forest
+FS25_Flat_Acres_4X|US|style|Flat Acres 4X
+FS25_Maizy_Lou_Farms|US|style|Maizy Lou Farms
+FS25_Oak_City|US|real|Oak City
+FS25_Louisiana_Map|US|real|Louisiana Map
+FS25_StarValley|EU|fictional|StarValley
+FS25_Chambergo2K25|EU|fictional|Chambergo 2k25
+FS25_Maypole|IE|style|Maypole Farm
+FS25_Rhoenplateu_crossplay|DE|real|Rhönplateu
+FS25_Pfaffenwinkel|DE|real|Pfaffenwinkel
+FS25_Alliklepa|EE|real|Alliklepa
+FS25_3_Marias_Farm|BR|real|3 Marias Farm
+FS25_Nordkirchen|DE|real|Nordkirchen
+FS25_AgroForests|US|real|AgroForests
+FS25_Peaceful_Acres|US|real|Peaceful Acres
+FS25_wampsville|US|real|Wampsville, NY
+FS25_RunForestRun|NONE|fictional|Forest Challenge
+FS25_Daheim|DE|real|Daheim
+FS25_Arkansas_4X|US|real|Arkansas 4X
+FS25_SharonCenter|US|real|Sharon Center, Ohio
+FS25_Pfraunstetten_Crossplay|DE|real|Pfraunstetten
+FS25_Nordermarsch_Reloaded|DE|real|North March Reloaded
+FS25_Courtright_Line|CA|real|Courtright Line
+FS25_Welker_Farms|US|real|Welker Farms
+FS25_Klein_Friesland|DE|real|Klein Friesland
+FS25_WernolauFarm|GB|real|Wernolau Farm
+FS25_4bruecken|NONE|fictional|4 Bridges
+FS25_NoOnesLand|NONE|fictional|Noonesland
+FS25_No_Ones_Land|NONE|fictional|No Ones Land
+FS25_Mecklenburg_Lake_District_crossplay|DE|real|Mecklenburg Lake District
+FS25_NewEndeavour4x|NONE|fictional|New Endeavour4x
+FS25_NDL|DE|real|North German Country
+FS25_Multimap|DE|real|Multimap
+FS25_Homestead|NONE|fictional|Homestead
+FS25_Lehndorf_crossplay|DE|real|Welcome To Lehndorf
+FS25_Alone_In_The_World_2K25|NONE|fictional|Alone In The World 2K25
+FS25_Luettenland|DE|real|Hallig Luettenland
+FS25_New_Horizon_Farm|BR|real|New Horizon Farm
+FS25_Lodygowo|PL|real|Lodygowo
+FS25_Goldcrest_Valley|US|real|Goldcrest Valley
+FS25_Lipka_Wielka|PL|real|Lipka Wielka
+FS25_Cybuchowo|PL|real|Cybuchowo
+FS25_BR163_Brazil|BR|real|BR-163, MS Brazil
+FS25_Portugal_Sul|PT|real|Portugal SOUTH
+FS25_BackRoadsCounty4x|US|real|Back Roads County 4x
+FS25_Alpine|CH|real|The Alps
+FS25_The_Essarts|FR|real|The Essarts
+FS25_RollingMeadow|NONE|fictional|Rolling Meadow
+FS25_Angela_Whispering_Hollow|US|real|Angela Whispering Hollow
+FS25_Horizonte_Argentino|AR|real|Horizonte Argentino
+FS25_farmlands|NONE|fictional|Farmlands
+FS25_Iowa_Plains_View|US|real|Iowa Plains View
+FS25_Dedelow_X4|DE|real|Dedelow X4 In GDR
+FS25_RonidaIsland4x|NONE|fictional|Ronîda Island 4x
+FS25_Hagenstedt|DE|real|Hagenstedt
+FS25_La_Campagne_Angevine|FR|real|The Angevin Countryside
+FS25_Polesine|IT|real|Polesine
+FS25_Schwaadeheim|DE|style|Schwaadeheim
+FS25_Pfaelzerwald|DE|real|Palatinate Forest
+FS25_Starbuck|US|real|Starbuck, MN
+FS25_Owendale_Michigan|US|real|Owendale Michigan
+FS25_Dalberg|DE|real|Dalberg
+FS25_Saxlingham_crossplay|GB|real|Saxlingham Farm Estate
+FS25_Memphis|US|real|Memphis, New York
+FS25_Drumard|GB|real|Drumard Farm
+FS25_Arkansas_Of_American|US|real|Arkansas Of American
+FS25_La_Campagne_Quebecoise|CA|real|The Quebec Countryside
+FS25_Erlengrat2k25|DE|style|Erlengrat 2k25
+FS25_Strasburg_Pennsylvania|US|real|Strasburg Pennsylvania
+FS25_Agrospol_Map|EU|fictional|Agrospol Map
+FS25_pollukyla|EE|real|Põllu Küla
+FS25_chadlington|GB|real|Chadlington
+FS25_Hazelnut_Farms|US|real|Hazelnut Farms
+FS25_ronidaIslandCp|NONE|fictional|Ronîda Island
+FS25_Zacieczki_crossplay|PL|real|Zacieczki
+FS25_GreenwoodForest|EU|fictional|Greenwood Forest
+FS25_goldenLandsMap|NONE|fictional|Golden Lands
+FS25_EFCoast|DE|real|East Frisian Coast
+FS25_HautBeyleron2025|FR|real|Haut Beyleron 2025
+FS25_Mediterranean_Italy|IT|real|Mediterranean Italy
+FS25_Elmcreek25|US|real|Elmcreek 25
+FS25_Des_Cagouilles_Dans_L_Garouil|FR|real|Des Cagouilles Dans L'Garouil
+FS25_Lindsay_Mt|US|real|Lindsay, Montana
+FS25_ASM_Barehaven|US|style|Barehaven
+FS25_InToTheWoods|NONE|fictional|InTo The Woods
+FS25_Riverbend_The_Aftermath|US|real|Riverbend The Aftermath
+FS25_Saaleplatte|DE|real|Saaleplatte
+FS25_cyl|ES|real|Castile And Leon
+FS25_ElmRochester|US|real|The Elm Rochester
+FS25_Rheinlaender|DE|real|Rheinländer
+FS25_Ujret|HU|real|Újrét 2025
+FS25_Lunow_crossplay|DE|real|Lunow
+FS25_Alliklepa_crossplay|EE|real|Alliklepa
+FS25_Geistal|DE|real|Geistal
+FS25_Turvo_Map|BR|real|Turvo Map
+FS25_Vierbach|DE|style|Vierbach
+FS25_Tillamook_OR|US|real|Tillamook OR
+FS25_Przybiernowko|PL|real|Przybiernowko
+FS25_Bellingwolde|NL|real|Bellingwolde
+FS25_Blue_Island_Forest|US|style|Blue Island Forest
+FS25_FieldsOfTyrone|GB|real|Fields Of Tyrone
+FS25_Brown_Pine_Ridge|US|style|Brown Pine Ridge
+FS25_Chipping_Norton|GB|real|Chipping Norton
+FS25_Monteriggioni|IT|real|Monteriggioni
+FS25_Island_Kentucky|US|real|Island Kentucky
+FS25_MuensingerAlb|DE|real|Münsinger Alb
+FS25_Kansas_Map_16x|US|real|Kansas 16x
+FS25_Lagoon_Dry_Andalusia_2_0|ES|real|Lagoon Dry Andalusia 2.0
+FS25_Fenyerpuszta|HU|real|Fenyerpuszta
+FS25_Fenyerpuszta_crossplay|HU|real|Fenyerpuszta
+FS25_Panhandle|US|real|The Panhandle
+FS25_La_Foret_Du_Haut_Doubs|FR|real|The Haut Doubs Forest
+FS25_Osweiler|LU|real|Osweiler
+FS25_VouillyNormandy|FR|real|Vouilly Normandy
+FS25_RedField|RU|real|RedField
+FS25_Submerged_Sanctuary|NONE|fictional|Submerged Sanctuary
+FS25_DH_crossplay|DE|real|Diepholz 25
+FS25_DeFrieseWouden|NL|real|De Friese Wouden
+FS25_Sivita|RO|real|Sivita
+FS25_Sonny_Farm|US|real|Sonny Farm
+FS25_Heptaholm|NONE|fictional|Heptaholm
+FS25_Keno_City|CA|real|Keno City
+FS25_EastVinelandNJ|US|real|East Vineland, NJ USA
+FS25_Rennebu|NO|real|Rennebu 25
+FS25_The_Peasant_Valley|FR|real|The Peasant Valley
+FS25_Great_Grandfathers_Farm|EU|fictional|Great Grandfathers Farm
+FS25_Ratzinger_Hoehe|DE|real|Ratzinger Height
+FS25_UmbreonValley|US|style|Umbreon Valley
+FS25_Oberthal|DE|real|Oberthal
+FS25_oldAmerica|US|real|Old America
+FS25_Lodygowo_crossplay|PL|real|Lodygowo
+FS25_Cows_Farm_4X|NONE|fictional|Cows Farm
+FS25_Cows_Farm|NONE|fictional|Cows Farm
+FS25_Lachem|DE|real|Lachem
+FS25_The_Pichonniere_Valley|FR|real|The Pichonnière Valley
+FS25_Somewhere_in_Thuringia_IV_crossplay|DE|real|Somewhere In Thuringia IV Crossplay
+FS25_Klattenhof|DE|real|Klattenhof
+FS25_Pirambeiras|BR|real|Pirambeiras Map
+FS25_Lipka_Wielka_crossplay|PL|real|Lipka Wielka Crossplay
+FS25_BackRoadsCounty|US|style|Back Roads County
+FS25_Sumidouro_Farm|BR|real|Sumidouro Farm
+FS25_Terre_Haute_Agriculture|EU|fictional|Terre Haute Agriculture
+FS25_Kivikyla|EE|real|Kivi Küla
+FS25_TroutRiver_Valley|US|style|Trout River Valley
+FS25_Birgland|DE|real|Birgland
+FS25_ValleyFalls|EU|fictional|Valley Falls
+FS25_Sosnovka|RU|real|Sosnovka
+FS25_Kreis_Steinfurt|DE|real|Kreis Steinfurt
+FS25_Estancia_Lapacho|AR|real|Estancia Lapacho
+FS25_Chapadao_Farm|BR|real|Chapadão Farm
+FS25_Schellenberg|DE|real|Schellenberg
+FS25_Drensteinfurt|DE|real|District Of Drensteinfurt
+FS25_CarpathianCountryside_crossplay|SK|real|Carpathian Countryside
+FS25_CountrysideFields|EU|fictional|Countryside Fields
+FS25_Wulfhagen|DE|style|Wulfhagen
+FS25_GreenCountryside|NONE|fictional|Green Countryside
+FS25_Homeland|DE|real|Homeland
+FS25_JasperRiverValley|US|real|Jasper River Valley
+FS25_Vast_Country|NONE|fictional|Vast Country
+FS25_Solek|PL|real|Solek
+FS25_The_Hamlet|CH|real|The Hamlet
+FS25_WolaZabierzowska|PL|real|Wola Zabierzowska
+FS25_Ebony_Island|GB|real|Ebony Island
+FS25_Gariep_SouthAfrica|ZA|real|Gariep South Africa
+FS25_The_Combes|FR|real|The Combes
+FS25_WesternAustralia|AU|real|Western Australia
+FS25_Rudniki|PL|real|Rudniki
+FS25_Lanrelas|FR|real|Lanrelas
+FS25_Gaucho_Fields|BR|real|Gaúcho Fieds
+FS25_Clover_Ridge|US|style|Clover Ridge
+FS25_HarvestValley|US|style|Harvest Valley
+FS25_The_Rolling_Farmlands_Of_Michigan|US|real|The Rolling Farmlands Of Michigan
+FS25_Felsbrunn|DE|real|Felsbrunn
+FS25_Helden|DE|real|Helden
+FS25_Pertile|BR|real|Pertile
+FS25_Wollschow25|DE|real|Wollschow 25
+FS25_DeadwoodTheNextChapter|US|real|Deadwood The Next Chapter
+FS25_BallamRoadDairyFarming|GB|real|Ballam Road Dairy Farming
+FS25_Krebach_crossplay|DE|real|Krebach
+FS25_Nordkirchen_x4|DE|real|Nordkirchen Map 4x
+FS25_Am_NOK|DE|real|Along The Kiel Canal
+FS25_Estancia_Sao_Carlos|BR|real|Estância São Carlos
+FS25_Guelzow|DE|real|Gülzow
+FS25_ForestHills|US|real|Forest Hills
+FS25_Leybucht_4x|DE|real|Leybucht 4x
+FS25_The_Mechet|FR|real|The Mechet
+FS25_The_Pomarede|FR|real|The Pomarede
+FS25_The_Majestic_Land|NONE|fictional|The Majestic Land
+FS25_The_Shoreline_Of_Lake_Michigan|US|real|The Shoreline Of Lake Michigan
+FS25_Gigerwald|CH|real|Gigerwald
+FS25_Am_MLK|DE|real|Am Mittellandkanal
+FS25_RusticRoots|NONE|fictional|Rustic Roots
+FS25_Sprucewood_Farmstead|US|style|Sprucewood Farmstead
+FS25_Schmiechtal|DE|real|Schmiechtal
+FS25_Genesee_county_4km|US|real|Genesee County 4km
+FS25_Mindenerwald|DE|real|Mindenerwald – Farming In The Mühlenkreis
+FS25_LoneStar_Plains|US|real|Lone Star Plains 4X
+FS25_Whispering_Pines|US|real|Whispering Pines
+FS25_Kindred_Heart|US|style|Kindred Heart
+FS25_SomewhereMontana|US|real|Somewhere, Montana
+FS25_New_Gloria_Farm|BR|real|New Gloria Farm
+FS25_Grenland|NONE|fictional|Grenland
+FS25_WillowBend|US|real|Willow Bend
+FS25_Wildenberg|DE|real|Wildenberg
+FS25_Smoky_Mountain_Farming|US|real|Smoky Mountain Farming
+FS25_HPFarmingNetwork|US|style|Harvest Plains Farming Network
+FS25_IowaIndependence|US|real|Iowa Independence
+FS25_Holzach_crossplay|DE|real|Holzach
+FS25_ML_StLawrence|CA|real|St. Lawrence
+FS25_Glenleathann|GB|real|Glenleathann
+FS25_Bilk|DE|real|BILK
+FS25_The_Rural_Farmlands_Of_Ohio|US|real|The Rural Farmlands Of Ohio
+FS25_Deppenhausen|DE|real|Deppenhausen
+FS25_Le_Haut_Grimois|FR|real|Le Haut Grimois
+FS25_Porcupine_Mountains_Michigan|US|real|Porcupine Mountains Michigan
+FS25_Redstone_county|US|real|Redstone County-Oklahoma
+FS25_Pogoanele|RO|real|Pogoanele
+FS25_Fazenda_Agua_Limpa|BR|real|Clean Water Farm
+FS25_CreativeHorizon|AT|real|CreativeHorizon
+FS25_Glenleathann_Multifruit|GB|real|Glenleathann Multifruit
+FS25_Beuren|DE|real|Beuren
+FS25_HobosHollow|US|real|Hobo's Hollow 4x
+FS25_2Village_Map|EU|fictional|2 Villages Map
+FS25_Idaho_Tater_Land|US|real|Idaho Tater Land
+FS25_Central_Pennsylvania_Farming|US|real|Central Pennsylvania Farming
+FS25_OldFarm|FR|style|Old Farm
+FS25_BergischLand|DE|real|Bergisch Land FS 25
+FS25_Denton|US|real|Denton North Carolina
+FS25_castlereagh|GB|real|Castlereagh
+FS25_Frontier|NONE|fictional|Frontier
+FS25_Gruenental|DE|real|Grünental
+FS25_Recanto_da_Alvorada|BR|real|Recanto Da Alvorada Map
+FS25_pioneer|NONE|fictional|Pioneer Wilderness Country
+FS25_TyroleanWhitecreekValley|AT|real|Tyrolean Whitecreek Valley
+FS25_Deichblick_crossplay|DE|real|Deichblick 25
+FS25_Lieshof|DE|real|Lieshof 4x Map
+FS25_KrajowLazniki|PL|real|Krajow And Lazniki
+FS25_Flussheim|DE|real|Flussheim
+FS25_Eastern_Washington_Farming|US|real|Eastern Washington Farming

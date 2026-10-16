@@ -55,5 +55,7 @@ Variants of the same map (4x, crossplay, "25") counted once; their number in bra
 3. **South-East Asia** (Hutan Pantai, a base map) needs at least a simple profile.
 4. Small countries (Estonia, Hungary, Romania …) can wait or share a generic EU profile.
 5. Chile (0 maps) and Argentina (2) were low priority in hindsight; keep them for the South America DLC.
-6. **Fictional maps** need a fallback: use the ModHub category of the map (Europe → generic EU / Germany,
-   North America → US, South America → Brazil) or let the player pick the country in the settings.
+6. **Fictional maps:** done – `tools/map_countries.csv` (284 maps incl. their mod names, checked against the
+   descriptions) and the detection chain in `INSURANCE_DESIGN.md` §13.16 / `DB/InsuranceRegions.xml`. With the
+   descriptions the split is: US 73 (incl. US-style), Germany 65, no region 27, France 17, Poland 17, Brazil 16,
+   UK 14, fictional European 13, Estonia 5, Netherlands 5, Canada 5, others ≤ 3.

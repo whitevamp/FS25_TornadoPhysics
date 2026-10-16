@@ -380,6 +380,7 @@ Every money value is formatted in the receiving player's currency (`TornadoText.
 | Group minimum members | 2 | Server |
 | Local co-op membership (single player) | ON, fee to decide | Server |
 | Continuity (renewal) bonus | country value (Spain 5 / 7 points), else 3 % | Server |
+| Insurance region | Auto (detection §13.16) / any profile or sub-region | Server |
 
 Policies themselves are per-farm data, not settings.
 
@@ -400,7 +401,7 @@ sell points, vehicle sell prices), so price-changing mods are covered without de
 - **Crop insurance data** – **done:** `tools/build_crop_insurance.py` (standard library only, same
   pattern as the climate builders) turns the USDA RMA *Summary of Business* files into
   `DB/CropInsurance_US.xml` (~86 KB). Public-domain US government data; credit RMA in modDesc / README.
-  Canada: §13.3. Poland: §13.4. Brazil: §13.5. Germany: §13.6. France: §13.7. Netherlands: §13.8. Spain: §13.9. Italy: §13.10. Australia: §13.11. Argentina: §13.12. Chile: §13.13. United Kingdom: §13.14. South-East Asia: §13.15.
+  Canada: §13.3. Poland: §13.4. Brazil: §13.5. Germany: §13.6. France: §13.7. Netherlands: §13.8. Spain: §13.9. Italy: §13.10. Australia: §13.11. Argentina: §13.12. Chile: §13.13. United Kingdom: §13.14. South-East Asia: §13.15. Region detection: §13.16.
 
 ### 13.1 RMA source data and processing rules
 
@@ -740,6 +741,30 @@ Only rice is covered; every other crop has no state scheme and borrows the rice 
 **Credit text:** *"Indonesian rice insurance (AUTP) figures from the Ministry of Agriculture and PT Asuransi
 Jasa Indonesia (Jasindo); Malaysian padi crop takaful figures from Agrobank and the Ministry of Agriculture
 and Food Security (KPKM), as reported by the press. Not affiliated with or endorsed by any of them."*
+
+### 13.16 Region detection: `DB/InsuranceRegions.xml`
+
+Which country profile a map uses. Generated from the `REGION DETECTION` config and
+`tools/map_countries.csv` (284 ModHub maps, survey 2026-10-16). First hit wins:
+
+| Step | Source in game | Result |
+|---|---|---|
+| 1. Setting | "Insurance region" (Auto / any profile or sub-region), server-owned | that region |
+| 2. Known map | `g_mapManager:getMapById(missionInfo.mapId).customEnvironment` (the map's mod name, e.g. `FS25_Nordkirchen`) → `<knownMaps>` | country of that map |
+| 3. Base map | `mapId` `MapUS` / `MapEU` / `MapAS` | US / Poland / South-East Asia |
+| 4. Keywords | map title + description (`getMapById(...).title / .description`), whole words, longest match wins; plus the sub-region names of the loaded profiles (US states, provinces …) | that country / sub-region |
+| 5. Climate | `g_currentMission.environment.xmlFilename` contains `maps/mapUS/` / `maps/mapEU/` / `maps/mapAS/` | US / EU / South-East Asia |
+| 6. Default | `default="US"` (most complete, real data) | US |
+
+**Country → profile:** a country with its own file uses it; otherwise `<nearest>` (Austria / Switzerland →
+Germany, Ireland → UK, Portugal → Spain, Estonia / Hungary / Romania … → Poland, South Africa → Australia,
+fictional European `EU` → Germany, no region `NONE` → default). Survey result: 73 US, 65 German, 27 no-region,
+17 French, 17 Polish, 16 Brazilian, 14 UK, 13 fictional-European maps …
+
+**UI:** the settings page shows the detected region and *why* ("Known map: Nordkirchen → Germany",
+"Climate: base-game Europe → Germany", "Default → United States") so a wrong guess is easy to fix by hand.
+New maps: add a line to `tools/map_countries.csv` and rebuild. The climate module (`TornadoClimate:detectRegion`)
+can later use the same chain.
 
 ### 13.5 Brazil: `DB/CropInsurance_BR.xml`
 

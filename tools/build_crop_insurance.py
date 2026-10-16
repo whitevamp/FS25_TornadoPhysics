@@ -213,6 +213,20 @@ have no state scheme and borrow the rice terms (borrowedFrom="RICE"). Fixed prem
 hectare and season - no rate tables, no estimates needed except where marked.
 
 ----------------------------------------------------------------------------
+Region detection (DB/InsuranceRegions.xml)
+----------------------------------------------------------------------------
+Which country profile a map uses. The mod tries, in this order (first hit wins):
+  1. the player's / admin's setting (manual region);
+  2. known maps: the map's mod name in tools/map_countries.csv (ModHub survey);
+  3. base-game maps (MapUS / MapEU / MapAS);
+  4. keywords in the map title and description (country names, native names, regions), longest match wins;
+     the sub-region names of the loaded profiles (US states, Canadian provinces ...) count as keywords too;
+  5. the base-game climate the map reuses (map.environment#filename -> $data/maps/mapXX/);
+  6. the default profile.
+A detected country without its own data uses its nearest profile (e.g. Austria -> Germany, Ireland -> UK);
+fictional European maps use the "EU" profile (Germany: by far the most European maps).
+
+----------------------------------------------------------------------------
 Brazil (DB/CropInsurance_BR.xml)
 ----------------------------------------------------------------------------
 Built from MAPA's PSR open data (SISSER, one row per subsidised policy, Creative Commons Attribution):
@@ -1083,6 +1097,69 @@ SEA_INSURED_CROPS = {"RICE", "RICELONGGRAIN"}
 SEA_OTHER_CROPS = ["WHEAT", "BARLEY", "OAT", "SORGHUM", "MAIZE", "CANOLA", "SUNFLOWER", "SOYBEAN", "PEA",
                    "GREENBEAN", "POTATO", "SUGARBEET", "SUGARCANE", "COTTON", "CARROT", "PARSNIP", "REDBEET",
                    "SPINACH", "GRASS", "GRAPE", "OLIVE", "COFFEE", "BANANA", "DEFAULT"]
+
+# ============================================================================
+# REGION DETECTION  -  which profile a map uses (DB/InsuranceRegions.xml)
+# ============================================================================
+
+REGIONS_OUTPUT_XML = os.path.join(TOOLS_DIR, "..", "DB", "InsuranceRegions.xml")
+MAP_COUNTRIES_CSV = os.path.join(TOOLS_DIR, "map_countries.csv")
+
+# Country code -> (data file, region id in that file, display name).
+REGION_PROFILES = {
+    "US": ("CropInsurance_US.xml", "US", "United States"), "CA": ("CropInsurance_CA.xml", "CAN", "Canada"),
+    "PL": ("CropInsurance_PL.xml", "POL", "Poland"), "BR": ("CropInsurance_BR.xml", "BRA", "Brazil"),
+    "DE": ("CropInsurance_DE.xml", "DEU", "Germany"), "FR": ("CropInsurance_FR.xml", "FRA", "France"),
+    "NL": ("CropInsurance_NL.xml", "NLD", "Netherlands"), "ES": ("CropInsurance_ES.xml", "ESP", "Spain"),
+    "IT": ("CropInsurance_IT.xml", "ITA", "Italy"), "AU": ("CropInsurance_AU.xml", "AUS", "Australia"),
+    "AR": ("CropInsurance_AR.xml", "ARG", "Argentina"), "CL": ("CropInsurance_CL.xml", "CHL", "Chile"),
+    "GB": ("CropInsurance_GB.xml", "GBR", "United Kingdom"), "SEA": ("CropInsurance_SEA.xml", "SEA", "South-East Asia"),
+}
+REGION_DEFAULT = "US"            # most complete (real) data
+# Countries without own data -> the closest profile (similar market / climate). EU = fictional European maps.
+REGION_NEAREST = {
+    "EU": "DE", "AT": "DE", "CH": "DE", "LU": "DE", "BE": "NL", "DK": "DE", "NO": "DE", "SE": "DE", "FI": "DE",
+    "IE": "GB", "PT": "ES", "EE": "PL", "LV": "PL", "LT": "PL", "CZ": "PL", "SK": "PL", "HU": "PL", "RO": "PL",
+    "SI": "DE", "HR": "IT", "RS": "PL", "UA": "PL", "RU": "PL", "ZA": "AU", "NZ": "AU", "UY": "AR", "PY": "AR",
+    "MX": "US", "ASIA": "SEA", "SAM": "BR", "NONE": REGION_DEFAULT,
+}
+REGION_BASE_MAPS = {"MapUS": "US", "MapEU": "PL", "MapAS": "SEA"}
+# Base-game climate reused by a mod map (path part of map.environment#filename).
+REGION_ENVIRONMENTS = {"maps/mapUS/": "US", "maps/mapEU/": "EU", "maps/mapAS/": "SEA"}
+# Keywords per country, matched as whole words (case-insensitive) in title + description; longest match wins.
+# Deliberately not used: "english" / "british" (descriptions say "English version"), "america" alone
+# ("South America"), "frisian" alone (Dutch and German Frisia), short place names that are common words.
+REGION_KEYWORDS = {
+    "DE": "germany, german, deutschland, deutsche, deutschen, bavaria, bayern, bavarian, saxony, sachsen, thuringia, "
+          "thüringen, mecklenburg, brandenburg, westphalia, westfalen, niedersachsen, lower saxony, schleswig, holstein, "
+          "east frisia, east frisian, north frisia, north frisian, ostfriesland, nordfriesland, palatinate, pfalz, swabia, "
+          "schwaben, swabian, allgäu, eifel, rhön, harz, gdr, ddr, münsterland, sauerland, odenwald, baden-württemberg, "
+          "württemberg, hessen, rhineland, rheinland, kiel canal, mühlenkreis",
+    "PL": "poland, polish, polska, polski, polskiej, mazury, masuria, podlasie, kujawy, wielkopolska, pomerania, silesia",
+    "FR": "france, french, français, française, normandy, normandie, brittany, bretagne, burgundy, bourgogne, jura, doubs, "
+          "anjou, vosges, picardie, occitanie, auvergne, lorraine, alsace, limousin, charente",
+    "GB": "england, scotland, scottish, wales, welsh, great britain, united kingdom, yorkshire, cotswolds, "
+          "northern ireland, ulster, county antrim, county down, county armagh, tyrone, highlands, devon, cornwall, "
+          "norfolk, suffolk, lincolnshire, lancashire, oxfordshire",
+    "IE": "ireland, irish, republic of ireland",
+    "NL": "netherlands, dutch, holland, nederland, nederlandse, friesland, groningen, drenthe, zeeland, overijssel, limburg",
+    "BE": "belgium, belgian, flanders, wallonia",
+    "IT": "italy, italian, italia, italiana, tuscany, toscana, lombardy, veneto, sicily, sardinia, po valley, piedmont",
+    "ES": "spain, spanish, españa, andalusia, andalucía, castile, castilla, galicia, catalonia, aragon, extremadura",
+    "PT": "portugal, portuguese", "AT": "austria, austrian, österreich, tyrol, tirol, tyrolean",
+    "CH": "switzerland, swiss, schweiz, suisse, helvetian", "CZ": "czech, česko, bohemia, moravia",
+    "SK": "slovakia, slovak", "HU": "hungary, hungarian, magyar, puszta", "RO": "romania, romanian, transylvania",
+    "EE": "estonia, estonian, eesti", "LV": "latvia, latvian", "LT": "lithuania, lithuanian",
+    "FI": "finland, finnish, suomi", "SE": "sweden, swedish", "NO": "norway, norwegian, norge, norsk",
+    "DK": "denmark, danish", "UA": "ukraine, ukrainian", "RU": "russia, russian", "LU": "luxembourg",
+    "US": "united states, usa, american midwest, midwest, new england, appalachia",
+    "CA": "canada, canadian", "BR": "brazil, brasil, brazilian, brasileira, brasileiro, cerrado, matopiba",
+    "AR": "argentina, argentine, argentino, pampa, pampas, patagonia", "CL": "chile, chilean",
+    "UY": "uruguay", "PY": "paraguay", "AU": "australia, australian, outback", "NZ": "new zealand",
+    "ZA": "south africa, south african", "SEA": "indonesia, malaysia, thailand, vietnam, philippines, south-east asia, "
+          "southeast asia, hutan pantai", "ASIA": "japan, china, chinese, india, korea, asia, asian",
+    "SAM": "south america, latin america",
+}
 
 # ============================================================================
 # BRAZIL  -  MAPA PSR open data (SISSER)
@@ -2109,6 +2186,63 @@ def write_sea(out_path):
                                                      ", ".join(SEA_SCHEMES)))
 
 
+def write_regions(out_path):
+    """Region detection data: profiles, fallbacks, keywords and the known maps from tools/map_countries.csv."""
+    known = []
+    with open(MAP_COUNTRIES_CSV, encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith("#"):
+                continue
+            mod, country, kind, title = (line.split("|") + ["", "", "", ""])[:4]
+            known.append((mod, country, kind, title))
+    countries = set(REGION_PROFILES) | set(REGION_NEAREST)
+    unknown = sorted({c for _, c, _, _ in known if c not in countries})
+    if unknown:
+        print("  [WARNING] map_countries.csv: countries without profile / nearest rule: %s" % ", ".join(unknown))
+
+    lines = ['<?xml version="1.0" encoding="utf-8" standalone="no" ?>',
+             '<!-- Generated by tools/build_crop_insurance.py - do not edit by hand (edit tools/map_countries.csv / the -->',
+             '<!-- REGION DETECTION config instead). Order: setting, knownMap, baseMap, keywords, environment, default. -->',
+             '<insuranceRegions version="1" default="%s" order="setting knownMap baseMap keywords environment default">'
+             % REGION_DEFAULT]
+    lines.append('    <profiles>')
+    for code, (filename, region, name) in REGION_PROFILES.items():
+        lines.append('        <profile country="%s" file="%s" region="%s" name=%s/>' % (code, filename, region, quoteattr(name)))
+    lines.append('    </profiles>')
+    lines.append('    <nearest>')
+    for code, target in REGION_NEAREST.items():
+        lines.append('        <country id="%s" useProfile="%s"/>' % (code, target))
+    lines.append('    </nearest>')
+    lines.append('    <baseMaps>')
+    for map_id, code in REGION_BASE_MAPS.items():
+        lines.append('        <map id="%s" country="%s"/>' % (map_id, code))
+    lines.append('    </baseMaps>')
+    lines.append('    <environments>')
+    for path, code in REGION_ENVIRONMENTS.items():
+        lines.append('        <environment pathContains="%s" country="%s"/>' % (path, code))
+    lines.append('    </environments>')
+    lines.append('    <keywords match="wholeWord" rule="longestMatch">')
+    for code, words in REGION_KEYWORDS.items():
+        lines.append('        <country id="%s" words=%s/>' % (code, quoteattr(", ".join(w.strip() for w in words.split(",")))))
+    lines.append('    </keywords>')
+    lines.append('    <knownMaps source="GIANTS ModHub survey 2026-10-16" count="%d">' % len(known))
+    for mod, country, kind, title in known:
+        lines.append('        <map mod="%s" country="%s" kind="%s" title=%s/>' % (mod, country, kind, quoteattr(title)))
+    lines.append('    </knownMaps>')
+    lines.append('</insuranceRegions>')
+    lines.append('')
+
+    out_path = os.path.abspath(out_path)
+    with open(out_path, "w", encoding="utf-8", newline="\n") as f:
+        f.write("\n".join(lines))
+    per = {}
+    for _, country, _, _ in known:
+        per[country] = per.get(country, 0) + 1
+    print("wrote %s (%.0f KB, %d known maps: %s)" % (out_path, os.path.getsize(out_path) / 1024, len(known),
+          ", ".join("%s %d" % kv for kv in sorted(per.items(), key=lambda kv: -kv[1]))))
+
+
 def brazil_num(text):
     """PSR numbers use a decimal comma; "-" = empty."""
     text = text.strip()
@@ -2312,6 +2446,8 @@ def main():
         write_uk(UK_OUTPUT_XML)
     if SEA_OUTPUT_XML:
         write_sea(SEA_OUTPUT_XML)
+    if REGIONS_OUTPUT_XML:
+        write_regions(REGIONS_OUTPUT_XML)
     print("Reading RMA Summary of Business %d-%d from %s" % (min(YEARS), max(YEARS), os.path.abspath(DATA_DIR)))
     us, state, seen = load()
     missing = [n for names in CROPS.values() for n in names if n not in seen]
