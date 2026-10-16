@@ -261,7 +261,7 @@ crops with sell points) is respected automatically:
 
 - **farmerRate** – the real farmer-paid premium per dollar insured, from `DB/CropInsurance_US.xml`
   (US curves per crop, plan and coverage level). It already includes the real **subsidy**, which falls
-  as coverage rises. US 2020–2024 averages:
+  as coverage rises. Raw US 2020–2024 averages (the XML curves are smoothed, see §13.2):
 
   | Coverage | 50 % | 60 % | 70 % | 75 % | 80 % | 85 % |
   |---|---|---|---|---|---|---|
@@ -404,6 +404,51 @@ Policies themselves are per-farm data, not settings.
 
 `claimShare` (share of policies with a payout in a year) can drive how often the adjuster finds a
 payable loss in balancing tests; it is not used for gameplay decisions directly.
+
+**Smoothing:** in the raw national averages the premium rate often *falls* at high coverage (low-risk
+farms choose high coverage – selection bias), which would make 80 % cover cheaper per acre than 70 %.
+The builder smooths every curve to the closest non-decreasing curve with the same liability-weighted
+average (weighted pool-adjacent-violators). `premiumRate` and `farmerRate` therefore never fall as
+coverage rises; `subsidyShare` is derived from them. `lossRatio`, `claimShare` and `farmerPerAcre`
+stay raw.
+
+### 13.3 Canada: `DB/CropInsurance_CA.xml`
+
+Canadian AgriInsurance is provincial and publishes programme totals, not per-crop rates. The builder's
+`CANADA` section turns a few published numbers into curves:
+
+| Item | Value | Source |
+|---|---|---|
+| Plan | Yield cover only (written as `YP`) | SCIC / AFSC programme pages |
+| Coverage levels | 50 / 60 / 70 / 80 % (potatoes, soybeans, grain corn, green beans max 70 %) | SCIC |
+| Producer share | 40 % flat (federal 36 %, provincial 24 %) | SCIC annual report 2024-25 p. 33 / 63 |
+| Average total rate | 8.08 % of liability, crop years 2020-21 – 2024-25 | SCIC p. 69 |
+| Coverage mix (calibration) | 50 %: 6.8 %, 60 %: 5.6 %, 70 %: 33.6 %, 80 %: 54.8 % of acres | SCIC p. 62 |
+| Loss ratio | 1.46 (5 years, 2021 drought), 0.95 (10 years) | SCIC p. 69 |
+| Curve shape | US YP curves (APH for crops without YP) × the neighbouring US state's rateFactor (AB←MT, SK←ND, MB←MN, ON←MI, QC←NY) | RMA |
+| Level | one calibration factor (×0.674) so Saskatchewan's acre-weighted average at its coverage mix equals 8.08 %; used for all provinces | builder |
+| Hail-only (Alberta) | `hailPolicy`: full-cover rate 3–14 % (typical 6 %), 10 % deductible ×0.75, 25 % ×0.5 | AFSC 2026 Full Cover Hail rates |
+
+Region ids match the climate file (`CAN`, `CAN_AB`, `CAN_SK`, …). `CAN` uses the Saskatchewan curves
+(the largest programme). Other provinces have no published totals yet: they share Saskatchewan's
+calibration. Raw PDFs live in `CA_insurance/` (never shipped).
+
+**Reuse terms:**
+- **AFSC** (https://afsc.ca/disclaimer/): non-commercial reproduction allowed if the materials are not
+  modified, AFSC is named as the source, and the use is not presented as official or AFSC-endorsed. Only
+  published figures are used (the hail rate range and deductible factors, unchanged); `rateTypical` is our
+  own estimate and is marked `rateTypicalIsEstimate="true"`.
+- **SCIC:** no reuse terms on scic.ca (only a privacy statement). SCIC is a Crown corporation of the
+  Government of Saskatchewan, whose copyright page (https://www.saskatchewan.ca/copyright) allows
+  non-commercial reproduction if reproduced accurately, not represented as an official version, and
+  acknowledged as "© 2026, Government of Saskatchewan" (no government logos). Whether this covers SCIC's own
+  publications is not stated; only published figures are used. For certainty: ask SCIC
+  (customer.service@scic.ca) or the King's Printer (publications@gov.sk.ca).
+- **Credit text when shipping** (modDesc + README): *"Alberta hail insurance rates from Agriculture
+  Financial Services Corporation (AFSC), 2026 Full Cover Hail Insurance premium rates. Saskatchewan crop
+  insurance figures from the Saskatchewan Crop Insurance Corporation (SCIC) 2024-25 annual report. Used for
+  a free, non-commercial mod; not an official version and not affiliated with or endorsed by AFSC or SCIC.
+  SCIC figures © 2026, Government of Saskatchewan."*
 
 ## 14. Multiplayer
 

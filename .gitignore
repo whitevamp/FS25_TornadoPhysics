@@ -4,6 +4,10 @@ emergency/
 
 # Raw USDA RMA data (the builder output DB/CropInsurance_US.xml is committed)
 USDA_RMA/
+CA_insurance/
+
+#Raw Canada crop data for the builder
+CA_insurance/
 
 # Screenshots
 images/
@@ -17,3 +21,6 @@ weather_csv_files_for_tornadophysics
 
 # Australia climate data - not cleared to ship yet (BoM licence)
 DB/TornadoClimate_AU.xml
+
+# Draft e-mails (personal)
+email_*.txt
