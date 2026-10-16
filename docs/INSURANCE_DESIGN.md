@@ -364,7 +364,7 @@ sell points, vehicle sell prices), so price-changing mods are covered without de
 - **Crop insurance data** – **done:** `tools/build_crop_insurance.py` (standard library only, same
   pattern as the climate builders) turns the USDA RMA *Summary of Business* files into
   `DB/CropInsurance_US.xml` (~86 KB). Public-domain US government data; credit RMA in modDesc / README.
-  Canada: §13.3. Poland: §13.4. Brazil: §13.5. Germany: §13.6.
+  Canada: §13.3. Poland: §13.4. Brazil: §13.5. Germany: §13.6. France: §13.7.
 
 ### 13.1 RMA source data and processing rules
 
@@ -514,6 +514,29 @@ files have no German regions.
 programmes of Baden-Württemberg, Lower Saxony and Saxony; market figures from published Vereinigte Hagel
 reports; insurance tax from DLG-Merkblatt 434. Rates are estimates, not official figures; not affiliated with
 or endorsed by any of them."*
+
+### 13.7 France: `DB/CropInsurance_FR.xml`
+
+Since the 2023 reform (loi n° 2022-298) France runs **three tiers**: small losses stay with the farmer,
+a subsidised multi-risk policy (MRC) covers the middle, and **national solidarity (ISN)** pays above a
+threshold – the whole loss for insured farms (state 90 % + insurer 10 %), a falling share for uninsured
+ones. A good fit for an optional "state disaster aid" rule. The builder's `FRANCE` section:
+
+| Item | Value | Source |
+|---|---|---|
+| Plan | `multiRisk`: ≥ 17 climatic perils (drought, heat, frost, excess water, hail, storm, whirlwind …); hail-only / hail + storm cover is **not** subsidised (`hailOnly`) | agriculture.gouv.fr FAQ 2026 |
+| Subsidy | 70 % of the premium | same |
+| Franchise (deductible) | 20 % minimum, up to 25 / 40 % by crop group; rate factors 1 / 0.8 / 0.63 / 0.37 for 20 / 25 / 30 / 40 % from the loss model (§13.2) | same + builder |
+| Insured yield | 70 – 100 % of the historical yield (olympic average of 5 years, or average of 3) | same |
+| ISN thresholds | 50 % field crops, vegetables, vine; 30 % orchards, grassland | same |
+| ISN uninsured rates | field crops 28 / 21 / 14 % (2026 / 27 / 28); vine, vegetables, orchards, grassland 31.5 / 28 / 24.5 % (grassland: ministry table ambiguous, press gives 31.5 % for 2026) | same, echangesassurances.org |
+| Insured area | field crops 31.1 → 36.6 %, vine 31.2 → 36.8 %, orchards 1.5 → 14.4 %, grassland 0.5 → 9.1 % (2022 → 2024) | Assemblée nationale, Jan. 2026 |
+| Rates | anchored on cereals 2.7 % and orchards 14.8 % of the sum insured (La France Agricole, pre-reform), other groups **estimates**; ×1.412 so the total equals the 2024 subsidised premium (365.8 M € aid ÷ 70 % = 523 M €) over the insured area (sector areas = rounded estimates). Wheat 3.8 %, vine 7.1 %, orchards 20.9 % | builder |
+
+**Credit text:** *"French crop insurance rules from the Ministère de l'Agriculture et de la Souveraineté
+alimentaire (agriculture.gouv.fr); figures from the Assemblée nationale (commission des affaires économiques,
+January 2026) and La France Agricole. Rates are estimates, not official figures; not affiliated with or
+endorsed by any of them."*
 
 ### 13.5 Brazil: `DB/CropInsurance_BR.xml`
 

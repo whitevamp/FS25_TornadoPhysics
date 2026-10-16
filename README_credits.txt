@@ -77,6 +77,14 @@ Poland (CropInsurance_PL.xml)
   sums insured regulations (Dz.U. 2025 poz. 1628, Dz.U. 2024 poz. 1695).
 - Premium rates are estimates, not official figures.
 
+France (CropInsurance_FR.xml)
+- French crop insurance rules from the Ministere de l'Agriculture et de
+  la Souverainete alimentaire (agriculture.gouv.fr).
+- Figures from the Assemblee nationale (commission des affaires
+  economiques, January 2026) and La France Agricole.
+- Rates are estimates, not official figures. Not affiliated with or
+  endorsed by any of them.
+
 Germany (CropInsurance_DE.xml)
 - German crop insurance rules from the Bavarian State Ministry for
   Food, Agriculture, Forestry and Tourism (StMELF) and the state

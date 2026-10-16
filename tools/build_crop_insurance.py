@@ -96,6 +96,22 @@ German crop insurance is private and unsubsidised at federal level: hail cover i
     area-weighted premium per hectare equals Vereinigte Hagel's 2022 German average (premium / insured area).
 
 ----------------------------------------------------------------------------
+France (DB/CropInsurance_FR.xml)
+----------------------------------------------------------------------------
+Since the 2023 reform (loi n. 2022-298) France has three tiers: small losses stay with the farmer, a
+subsidised multi-risk policy ("multirisque climatique", MRC) covers the middle, and the state pays losses
+above a threshold through national solidarity (ISN) - fully for insured farms, at a falling rate for
+uninsured ones. The file holds (see the FRANCE config):
+
+  * Plan "multiRisk": >= 17 climatic perils, 70 % subsidy, deductible (franchise) 20 - 40 %; hail-only cover
+    is not subsidised ("hailOnly").
+  * ISN thresholds and uninsured indemnity rates per sector and year (2026 - 2028).
+  * Insured yield 70 - 100 % of the historical yield (olympic average of 5 years or average of 3).
+  * Rates and sums insured per hectare: OUR ESTIMATES (isEstimate="true"), anchored on published averages
+    (cereals 2.7 %, orchards 14.8 % of the sum insured) and scaled so the total matches the 2024 premium
+    subsidy paid (Ministry of Agriculture via the Assemblee nationale report, January 2026).
+
+----------------------------------------------------------------------------
 Brazil (DB/CropInsurance_BR.xml)
 ----------------------------------------------------------------------------
 Built from MAPA's PSR open data (SISSER, one row per subsidised policy, Creative Commons Attribution):
@@ -427,6 +443,79 @@ GERMANY_STATES = {
     "SN": {"name": "Saxony", "share": 0.50, "source": "Vereinigte Hagel, Foerderprogramme (wine growing)",
            "packages": [("vine", "HAIL SEVERE_FROST WINDSTORM HEAVY_RAIN", 2, "vine")]},
 }
+
+# ============================================================================
+# FRANCE  -  published rules + one market figure (edit when newer figures are out)
+# ============================================================================
+
+FRANCE_OUTPUT_XML = os.path.join(TOOLS_DIR, "..", "DB", "CropInsurance_FR.xml")
+
+# agriculture.gouv.fr "Assurance recolte : reponses aux questions frequemment posees" (12 January 2026).
+FRANCE_SUBSIDY_SHARE = 0.70
+FRANCE_FRANCHISES = [0.20, 0.25, 0.30, 0.40]        # subsidised deductible / trigger: 20 % up to 25 or 40 %
+FRANCE_MIN_PERILS = 17                               # drought, heat, frost, excess water, hail, storm, ...
+FRANCE_INSURED_YIELD = (0.70, 1.00)                  # share of the historical (olympic 5 / average 3) yield
+
+# ISN (national solidarity): threshold = loss share above which the state pays. Insured farms: 90 % state +
+# 10 % insurer = the whole loss above the threshold. Uninsured: share of the loss above the threshold, per year.
+# Grassland uninsured rates: the ministry table is ambiguous (45 % for "other productions"); 2026 press
+# (echangesassurances.org) gives 31.5 % for grassland, so grassland follows the vine / orchard trajectory.
+FRANCE_ISN = {
+    "fieldCrops": {"threshold": 0.50, "uninsured": {2026: 0.28, 2027: 0.21, 2028: 0.14}},
+    "vegetables": {"threshold": 0.50, "uninsured": {2026: 0.315, 2027: 0.28, 2028: 0.245}},
+    "vine":       {"threshold": 0.50, "uninsured": {2026: 0.315, 2027: 0.28, 2028: 0.245}},
+    "orchards":   {"threshold": 0.30, "uninsured": {2026: 0.315, 2027: 0.28, 2028: 0.245}},
+    "grassland":  {"threshold": 0.30, "uninsured": {2026: 0.315, 2027: 0.28, 2028: 0.245}},
+}
+# Assemblee nationale, commission des affaires economiques (January 2026): share of the area insured.
+FRANCE_INSURED_SHARE = {2022: {"fieldCrops": 0.311, "vine": 0.312, "orchards": 0.015, "grassland": 0.005},
+                        2024: {"fieldCrops": 0.366, "vine": 0.368, "orchards": 0.144, "grassland": 0.091}}
+
+# FS25 fill type -> crop group; group -> ISN sector. OLIVE borrows orchards, SORGHUM cereals.
+FRANCE_CROPS = {
+    "WHEAT": "cereals", "BARLEY": "cereals", "OAT": "cereals", "SORGHUM": "cereals", "RICE": "cereals",
+    "RICELONGGRAIN": "cereals",
+    "CANOLA": "rapeseed", "SUNFLOWER": "sunflower", "MAIZE": "maize",
+    "SOYBEAN": "legumes", "PEA": "legumes", "GREENBEAN": "vegetables",
+    "POTATO": "potatoes", "SUGARBEET": "sugarbeet",
+    "CARROT": "vegetables", "PARSNIP": "vegetables", "REDBEET": "vegetables", "SPINACH": "vegetables",
+    "GRASS": "grassland", "GRAPE": "vine", "OLIVE": "fruit",
+    "DEFAULT": "cereals",
+}
+FRANCE_BORROWED = {"OLIVE", "SORGHUM", "RICE", "RICELONGGRAIN"}
+FRANCE_SECTOR = {"cereals": "fieldCrops", "rapeseed": "fieldCrops", "sunflower": "fieldCrops",
+                 "maize": "fieldCrops", "legumes": "fieldCrops", "potatoes": "fieldCrops",
+                 "sugarbeet": "fieldCrops", "vegetables": "vegetables", "grassland": "grassland",
+                 "vine": "vine", "fruit": "orchards"}
+
+# Per crop group: sum insured per ha (EUR) and multi-risk rate at a 20 % franchise, hail-only rate.
+# Anchors (La France Agricole, "Comprendre l'assurance multirisque climatique"): cereals 36 EUR/ha = 2.7 %,
+# orchards 1 514 EUR/ha = 14.8 % of the sum insured (pre-reform, 25 - 30 % franchise). Everything else is OUR
+# ESTIMATE relative to those.
+FRANCE_GROUPS = {
+    #              sumPerHa  multiRisk  hailOnly
+    "cereals":    (1330,    0.027,     0.010),
+    "rapeseed":   (1500,    0.040,     0.018),
+    "sunflower":  (1100,    0.030,     0.012),
+    "maize":      (1700,    0.030,     0.010),
+    "legumes":    (1000,    0.035,     0.012),
+    "potatoes":   (6000,    0.025,     0.010),
+    "sugarbeet":  (3000,    0.020,     0.006),
+    "vegetables": (15000,   0.060,     0.030),
+    "grassland":  (600,     0.060,     0.004),
+    "vine":       (8000,    0.050,     0.025),
+    "fruit":      (10200,   0.148,     0.040),
+}
+
+# Calibration: 2024 premium subsidy paid 365.8 M EUR (70 %) -> subsidised premium. Insured area = sector area
+# (OUR ESTIMATE, rounded Agreste orders of magnitude) x insured share 2024. Within field crops the group mix is
+# also OUR ESTIMATE. One factor scales all multi-risk rates (the 2023 reform lowered the franchise to 20 %, so
+# rates above the older anchors are expected).
+FRANCE_CALIBRATION = {"subsidyPaidEur": 365.8e6, "year": 2024,
+                      "sectorAreaHa": {"fieldCrops": 12.0e6, "vine": 0.75e6, "orchards": 0.17e6, "grassland": 12.6e6},
+                      "fieldCropMix": {"cereals": 0.70, "rapeseed": 0.10, "maize": 0.10, "sunflower": 0.05,
+                                       "legumes": 0.02, "sugarbeet": 0.02, "potatoes": 0.01},
+                      "sectorGroup": {"vine": "vine", "orchards": "fruit", "grassland": "grassland"}}
 
 # ============================================================================
 # BRAZIL  -  MAPA PSR open data (SISSER)
@@ -1025,6 +1114,73 @@ def write_germany(out_path):
     print("wrote %s (%.1f KB, Germany + %d states)" % (out_path, os.path.getsize(out_path) / 1024, len(GERMANY_STATES)))
 
 
+def write_france(out_path):
+    """France: three-tier multi-risk system (MRC + ISN), estimated rates. Needs no raw data."""
+    cal = FRANCE_CALIBRATION
+    shares = FRANCE_INSURED_SHARE[cal["year"]]
+    target = cal["subsidyPaidEur"] / FRANCE_SUBSIDY_SHARE
+
+    def per_ha(group):
+        return FRANCE_GROUPS[group][0] * FRANCE_GROUPS[group][1]
+
+    estimated = 0.0
+    for sector, area in cal["sectorAreaHa"].items():
+        insured = area * shares[sector]
+        if sector == "fieldCrops":
+            mix = cal["fieldCropMix"]
+            estimated += insured * sum(per_ha(g) * w for g, w in mix.items()) / sum(mix.values())
+        else:
+            estimated += insured * per_ha(cal["sectorGroup"][sector])
+    calibration = target / estimated
+    print("  France: subsidised premium %.0f M EUR, estimated %.0f M EUR -> calibration x%.3f" % (
+        target / 1e6, estimated / 1e6, calibration))
+
+    base_shape = coverage_shape(1 - FRANCE_FRANCHISES[0])
+    lines = ['<?xml version="1.0" encoding="utf-8" standalone="no" ?>',
+             '<!-- Generated by tools/build_crop_insurance.py - do not edit by hand. -->',
+             '<!-- Sources: Ministere de l\'Agriculture (agriculture.gouv.fr, assurance recolte FAQ 2026), Assemblee -->',
+             '<!-- nationale commission des affaires economiques (January 2026), La France Agricole. Values marked -->',
+             '<!-- isEstimate="true" are our own estimates, not official figures. -->',
+             '<cropInsurance version="1" source="French Ministry of Agriculture, Assemblee nationale" years="2024-2028" currency="EUR">',
+             '    <program type="multiRisk" subsidyShare="%s" minPerils="%d" insuredYieldMin="%s" insuredYieldMax="%s" '
+             'referenceYield="olympic5 average3" calibration="%s" isEstimate="true">' % (
+                 fmt(FRANCE_SUBSIDY_SHARE, 2), FRANCE_MIN_PERILS, fmt(FRANCE_INSURED_YIELD[0], 2),
+                 fmt(FRANCE_INSURED_YIELD[1], 2), fmt(calibration, 3))]
+    # Deductible choices; the rate factor follows the same loss model as the coverage curves.
+    for franchise in FRANCE_FRANCHISES:
+        lines.append('        <franchise share="%s" rateFactor="%s" shape="lossModel"/>' % (
+            fmt(franchise, 2), fmt(coverage_shape(1 - franchise) / base_shape, 3)))
+    lines.append('        <hailOnly subsidised="false"/>')
+    lines.append('    </program>')
+
+    lines.append('    <solidarity id="ISN" stateShareInsured="0.9" insurerShareInsured="0.1">')
+    for sector, isn in FRANCE_ISN.items():
+        years = " ".join('%d:%s' % (y, fmt(r, 3)) for y, r in sorted(isn["uninsured"].items()))
+        insured = "".join(' insuredShare%d="%s"' % (y, fmt(v[sector], 3))
+                          for y, v in sorted(FRANCE_INSURED_SHARE.items()) if sector in v)   # none published: left out
+        lines.append('        <sector id="%s" threshold="%s" uninsuredRates="%s"%s/>' % (
+            sector, fmt(isn["threshold"], 2), years, insured))
+    lines.append('    </solidarity>')
+
+    lines.append('    <region id="FRA" name="France">')
+    for crop, group in FRANCE_CROPS.items():
+        sum_per_ha, multi, hail = FRANCE_GROUPS[group]
+        lines.append('        <crop fillType=%s group=%s sector="%s"%s sumPerHa="%d" sumPerHaIsEstimate="true">' % (
+            quoteattr(crop), quoteattr(group), FRANCE_SECTOR[group],
+            ' borrowed="true"' if crop in FRANCE_BORROWED else "", sum_per_ha))
+        lines.append('            <rates multiRisk="%s" hailOnly="%s" isEstimate="true"/>' % (
+            fmt(multi * calibration), fmt(hail)))
+        lines.append('        </crop>')
+    lines.append('    </region>')
+    lines.append('</cropInsurance>')
+    lines.append('')
+
+    out_path = os.path.abspath(out_path)
+    with open(out_path, "w", encoding="utf-8", newline="\n") as f:
+        f.write("\n".join(lines))
+    print("wrote %s (%.1f KB, France, %d crops)" % (out_path, os.path.getsize(out_path) / 1024, len(FRANCE_CROPS)))
+
+
 def brazil_num(text):
     """PSR numbers use a decimal comma; "-" = empty."""
     text = text.strip()
@@ -1210,6 +1366,8 @@ def main():
         write_poland(POLAND_OUTPUT_XML)
     if GERMANY_OUTPUT_XML:
         write_germany(GERMANY_OUTPUT_XML)
+    if FRANCE_OUTPUT_XML:
+        write_france(FRANCE_OUTPUT_XML)
     print("Reading RMA Summary of Business %d-%d from %s" % (min(YEARS), max(YEARS), os.path.abspath(DATA_DIR)))
     us, state, seen = load()
     missing = [n for names in CROPS.values() for n in names if n not in seen]
