@@ -400,7 +400,7 @@ sell points, vehicle sell prices), so price-changing mods are covered without de
 - **Crop insurance data** – **done:** `tools/build_crop_insurance.py` (standard library only, same
   pattern as the climate builders) turns the USDA RMA *Summary of Business* files into
   `DB/CropInsurance_US.xml` (~86 KB). Public-domain US government data; credit RMA in modDesc / README.
-  Canada: §13.3. Poland: §13.4. Brazil: §13.5. Germany: §13.6. France: §13.7. Netherlands: §13.8. Spain: §13.9. Italy: §13.10. Australia: §13.11. Argentina: §13.12. Chile: §13.13. United Kingdom: §13.14.
+  Canada: §13.3. Poland: §13.4. Brazil: §13.5. Germany: §13.6. France: §13.7. Netherlands: §13.8. Spain: §13.9. Italy: §13.10. Australia: §13.11. Argentina: §13.12. Chile: §13.13. United Kingdom: §13.14. South-East Asia: §13.15.
 
 ### 13.1 RMA source data and processing rules
 
@@ -717,6 +717,29 @@ One region `GBR` (England, Scotland, Wales, Northern Ireland – no published re
 **Credit text:** *"UK crop insurance figures from the Northern Ireland Assembly research paper 'Agricultural
 insurance' and Farmers Weekly; Insurance Premium Tax from HMRC. Rates are estimates, not official figures; not
 affiliated with or endorsed by any of them."*
+
+### 13.15 South-East Asia: `DB/CropInsurance_SEA.xml` (Hutan Pantai)
+
+For the base-game map **Hutan Pantai** (fictional South-East Asia). Two real **state rice schemes** as
+profiles; region `SEA` defaults to Indonesia. Both have a fixed premium and sum insured per hectare and
+season, so no rate tables are needed.
+
+| Item | Indonesia – AUTP (default) | Malaysia – Skim Takaful Tanaman Padi |
+|---|---|---|
+| Premium | Rp 180 000 / ha / season | RM 120 / ha / year (two seasons → RM 60 / season) |
+| Subsidy | government **80 %** (farmer pays Rp 36 000) | government pays **100 %** in the first year |
+| Sum insured | Rp 6 000 000 / ha / season → rate **3 %** | up to RM 3 000 / ha / season (natural disasters), RM 1 500 (pests / diseases) → **2 %** |
+| Perils | pests and diseases, flood, drought | flood (natural disasters), pests / diseases; drought not confirmed |
+| Claim threshold | commonly stated ≥ 75 % damage – **not confirmed** (`damageThresholdIsEstimate`) | – |
+| Scale | ~305 000 ha insured in 2024; uptake low, compulsory cover under discussion | from Sept 2024; Selangor: 330 of 9 000+ farmers registered (Nov 2024) |
+| Sources | Jasindo via Kontan, IDX Channel, Investortrust | Bernama, New Straits Times, The Star |
+
+Only rice is covered; every other crop has no state scheme and borrows the rice terms
+(`borrowedFrom="RICE" noStateScheme="true"`) – a setting could instead mark them "not insurable".
+
+**Credit text:** *"Indonesian rice insurance (AUTP) figures from the Ministry of Agriculture and PT Asuransi
+Jasa Indonesia (Jasindo); Malaysian padi crop takaful figures from Agrobank and the Ministry of Agriculture
+and Food Security (KPKM), as reported by the press. Not affiliated with or endorsed by any of them."*
 
 ### 13.5 Brazil: `DB/CropInsurance_BR.xml`
 

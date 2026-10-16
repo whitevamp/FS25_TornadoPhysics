@@ -114,6 +114,13 @@ Italy (CropInsurance_IT.xml)
 - Rates are estimates, not official figures. Not affiliated with or
   endorsed by MASAF or ISMEA.
 
+South-East Asia (CropInsurance_SEA.xml, for Hutan Pantai)
+- Indonesian rice insurance (AUTP) figures from the Ministry of
+  Agriculture and PT Asuransi Jasa Indonesia (Jasindo); Malaysian padi
+  crop takaful figures from Agrobank and the Ministry of Agriculture and
+  Food Security (KPKM), as reported by the press.
+- Not affiliated with or endorsed by any of them.
+
 United Kingdom (CropInsurance_GB.xml)
 - UK crop insurance figures from the Northern Ireland Assembly research
   paper "Agricultural insurance" and Farmers Weekly; Insurance Premium Tax

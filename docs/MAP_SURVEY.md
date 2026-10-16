@@ -43,7 +43,7 @@ Variants of the same map (4x, crossplay, "25") counted once; their number in bra
 
 - **Riverbend Springs** (USA) – US data.
 - **Zielonka** (Poland) – Polish data.
-- **Hutan Pantai** (South-East Asia) – **no data yet**; every player owns it.
+- **Hutan Pantai** (South-East Asia) – Indonesia / Malaysia rice schemes (§13.15).
 - **Highlands Fishing Expansion** (Scotland) – UK data would cover it.
 - **South America DLC** (coffee, bananas; announced) – Brazil data, plus Argentina / Chile if set there.
 
