@@ -3,162 +3,162 @@
 <!-- Sources: SCIC annual report 2024-25 (Saskatchewan Crop Insurance Corporation), AFSC 2026 hail rates -->
 <!-- (Agriculture Financial Services Corporation, Alberta); curve shapes from USDA RMA 2020-2024 (public domain). -->
 <cropInsurance version="1" source="SCIC annual report 2024-25, AFSC, USDA RMA" years="2020-2024" currency="CAD">
-    <program plans="YP" coverageLevels="0.5 0.6 0.7 0.8" producerShare="0.4" max70="GREENBEAN MAIZE POTATO SOYBEAN" calibration="0.674"/>
+    <program plans="YP" coverageLevels="0.5 0.6 0.7 0.8" producerShare="0.4" max70="GREENBEAN MAIZE POTATO SOYBEAN" calibration="0.574"/>
     <region id="CAN" name="Canada" lossRatio="1.464" lossRatio10y="0.95" curvesFrom="US_ND">
         <crop fillType="WHEAT">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0337" farmerRate="0.0135" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0679" farmerRate="0.0272" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0691" farmerRate="0.0276" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0691" farmerRate="0.0276" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0181" farmerRate="0.0073" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0323" farmerRate="0.0129" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0545" farmerRate="0.0218" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0864" farmerRate="0.0346" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="BARLEY">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0258" farmerRate="0.0103" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0623" farmerRate="0.0249" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0697" farmerRate="0.0279" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0697" farmerRate="0.0279" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0161" farmerRate="0.0064" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0286" farmerRate="0.0115" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0482" farmerRate="0.0193" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0766" farmerRate="0.0306" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="OAT">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0943" farmerRate="0.0377" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.112" farmerRate="0.0448" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.112" farmerRate="0.0448" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.112" farmerRate="0.0448" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0325" farmerRate="0.013" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.058" farmerRate="0.0232" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0977" farmerRate="0.0391" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.155" farmerRate="0.062" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="CANOLA">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0546" farmerRate="0.0218" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0807" farmerRate="0.0323" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0981" farmerRate="0.0393" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0981" farmerRate="0.0393" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0244" farmerRate="0.0098" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0435" farmerRate="0.0174" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0733" farmerRate="0.0293" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.1163" farmerRate="0.0465" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="SORGHUM">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.1515" farmerRate="0.0606" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.1652" farmerRate="0.0661" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.1666" farmerRate="0.0666" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.2485" farmerRate="0.0994" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0647" farmerRate="0.0259" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.1153" farmerRate="0.0461" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.1943" farmerRate="0.0777" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.3083" farmerRate="0.1233" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="SUNFLOWER">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.13" farmerRate="0.052" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.13" farmerRate="0.052" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.1306" farmerRate="0.0522" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.1549" farmerRate="0.0619" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0687" farmerRate="0.0275" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0687" farmerRate="0.0275" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.1157" farmerRate="0.0463" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.1468" farmerRate="0.0587" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="SOYBEAN">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0317" farmerRate="0.0127" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0511" farmerRate="0.0204" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0589" farmerRate="0.0236" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0179" farmerRate="0.0072" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.032" farmerRate="0.0128" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0539" farmerRate="0.0215" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="MAIZE">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0469" farmerRate="0.0188" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0643" farmerRate="0.0257" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0643" farmerRate="0.0257" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.019" farmerRate="0.0076" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0339" farmerRate="0.0135" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.057" farmerRate="0.0228" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="POTATO">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0515" farmerRate="0.0206" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.1127" farmerRate="0.0451" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.1127" farmerRate="0.0451" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0397" farmerRate="0.0159" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0708" farmerRate="0.0283" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.1193" farmerRate="0.0477" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="SUGARBEET">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.01" farmerRate="0.004" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.028" farmerRate="0.0112" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0434" farmerRate="0.0173" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0485" farmerRate="0.0194" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.011" farmerRate="0.0044" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0196" farmerRate="0.0078" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.033" farmerRate="0.0132" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0523" farmerRate="0.0209" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="SUGARCANE">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0197" farmerRate="0.0079" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0201" farmerRate="0.008" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0299" farmerRate="0.012" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0337" farmerRate="0.0135" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0097" farmerRate="0.0039" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0173" farmerRate="0.0069" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0292" farmerRate="0.0117" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0463" farmerRate="0.0185" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="COTTON">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.045" farmerRate="0.018" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0824" farmerRate="0.033" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.1212" farmerRate="0.0485" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.1212" farmerRate="0.0485" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0393" farmerRate="0.0157" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.07" farmerRate="0.028" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.118" farmerRate="0.0472" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.1872" farmerRate="0.0749" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="RICE">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0442" farmerRate="0.0177" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0479" farmerRate="0.0192" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0534" farmerRate="0.0213" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0534" farmerRate="0.0213" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0137" farmerRate="0.0055" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0244" farmerRate="0.0098" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0411" farmerRate="0.0165" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0653" farmerRate="0.0261" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="RICELONGGRAIN">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0442" farmerRate="0.0177" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0479" farmerRate="0.0192" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0534" farmerRate="0.0213" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0534" farmerRate="0.0213" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0137" farmerRate="0.0055" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0244" farmerRate="0.0098" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0411" farmerRate="0.0165" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0653" farmerRate="0.0261" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="GRAPE">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0213" farmerRate="0.0085" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0319" farmerRate="0.0127" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0474" farmerRate="0.019" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.058" farmerRate="0.0232" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0143" farmerRate="0.0057" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0254" farmerRate="0.0102" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0429" farmerRate="0.0171" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.068" farmerRate="0.0272" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="OLIVE">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.1541" farmerRate="0.0616" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.1541" farmerRate="0.0616" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.1541" farmerRate="0.0616" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.1541" farmerRate="0.0616" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.1518" farmerRate="0.0607" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.1518" farmerRate="0.0607" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.1518" farmerRate="0.0607" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.1518" farmerRate="0.0607" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="PEA">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0522" farmerRate="0.0209" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.1046" farmerRate="0.0418" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.1046" farmerRate="0.0418" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.1046" farmerRate="0.0418" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0288" farmerRate="0.0115" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0513" farmerRate="0.0205" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0863" farmerRate="0.0345" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.137" farmerRate="0.0548" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="GREENBEAN">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0513" farmerRate="0.0205" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0756" farmerRate="0.0302" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.1182" farmerRate="0.0473" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0363" farmerRate="0.0145" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0647" farmerRate="0.0259" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.109" farmerRate="0.0436" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="GRASS">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.071" farmerRate="0.0284" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.1343" farmerRate="0.0537" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.1343" farmerRate="0.0537" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.1361" farmerRate="0.0544" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.051" farmerRate="0.0204" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0909" farmerRate="0.0364" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.1532" farmerRate="0.0613" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.1944" farmerRate="0.0778" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="DEFAULT">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0401" farmerRate="0.016" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0637" farmerRate="0.0255" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0708" farmerRate="0.0283" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0708" farmerRate="0.0283" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0201" farmerRate="0.008" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0358" farmerRate="0.0143" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0603" farmerRate="0.0241" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0956" farmerRate="0.0383" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="SPINACH" borrowedFrom="POTATO"/>
@@ -168,159 +168,159 @@
     </region>
     <region id="CAN_AB" name="Alberta" parent="CAN" lossRatio="1.464" lossRatio10y="0.95" curvesFrom="US_MT">
         <crop fillType="WHEAT">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0354" farmerRate="0.0142" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0713" farmerRate="0.0285" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0725" farmerRate="0.029" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0725" farmerRate="0.029" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0207" farmerRate="0.0083" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0369" farmerRate="0.0147" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0621" farmerRate="0.0248" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0986" farmerRate="0.0394" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="BARLEY">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0317" farmerRate="0.0127" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0766" farmerRate="0.0306" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0857" farmerRate="0.0343" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0857" farmerRate="0.0343" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0216" farmerRate="0.0086" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0385" farmerRate="0.0154" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0649" farmerRate="0.026" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.103" farmerRate="0.0412" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="OAT">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.1074" farmerRate="0.043" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.1275" farmerRate="0.051" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.1275" farmerRate="0.051" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.1275" farmerRate="0.051" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.036" farmerRate="0.0144" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0641" farmerRate="0.0257" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.1081" farmerRate="0.0432" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.1715" farmerRate="0.0686" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="CANOLA">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0627" farmerRate="0.0251" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0927" farmerRate="0.0371" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.1128" farmerRate="0.0451" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.1128" farmerRate="0.0451" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0295" farmerRate="0.0118" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0526" farmerRate="0.021" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0886" farmerRate="0.0354" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.1406" farmerRate="0.0563" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="SORGHUM">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.178" farmerRate="0.0712" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.1941" farmerRate="0.0776" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.1957" farmerRate="0.0783" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.2919" farmerRate="0.1168" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0834" farmerRate="0.0334" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.1487" farmerRate="0.0595" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.2504" farmerRate="0.1002" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.3975" farmerRate="0.159" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="SUNFLOWER">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.1092" farmerRate="0.0437" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.1092" farmerRate="0.0437" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.1097" farmerRate="0.0439" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.13" farmerRate="0.052" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0581" farmerRate="0.0232" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0581" farmerRate="0.0232" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0979" farmerRate="0.0392" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.1243" farmerRate="0.0497" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="SOYBEAN">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0368" farmerRate="0.0147" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0593" farmerRate="0.0237" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0684" farmerRate="0.0274" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0228" farmerRate="0.0091" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0407" farmerRate="0.0163" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0685" farmerRate="0.0274" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="MAIZE">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0276" farmerRate="0.011" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0379" farmerRate="0.0151" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0379" farmerRate="0.0152" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.011" farmerRate="0.0044" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0197" farmerRate="0.0079" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0331" farmerRate="0.0133" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="POTATO">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0453" farmerRate="0.0181" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0991" farmerRate="0.0396" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0991" farmerRate="0.0396" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0356" farmerRate="0.0142" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0634" farmerRate="0.0254" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.1068" farmerRate="0.0427" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="SUGARBEET">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0083" farmerRate="0.0033" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0231" farmerRate="0.0092" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0358" farmerRate="0.0143" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0401" farmerRate="0.016" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0087" farmerRate="0.0035" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0155" farmerRate="0.0062" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0261" farmerRate="0.0104" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0414" farmerRate="0.0166" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="SUGARCANE">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0231" farmerRate="0.0092" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0236" farmerRate="0.0094" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0351" farmerRate="0.0141" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0396" farmerRate="0.0158" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0125" farmerRate="0.005" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0223" farmerRate="0.0089" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0376" farmerRate="0.015" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0597" farmerRate="0.0239" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="COTTON">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0528" farmerRate="0.0211" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0968" farmerRate="0.0387" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.1423" farmerRate="0.0569" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.1423" farmerRate="0.0569" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0507" farmerRate="0.0203" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0903" farmerRate="0.0361" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.1521" farmerRate="0.0608" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.2413" farmerRate="0.0965" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="RICE">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0519" farmerRate="0.0208" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0563" farmerRate="0.0225" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0627" farmerRate="0.0251" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0627" farmerRate="0.0251" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0177" farmerRate="0.0071" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0315" farmerRate="0.0126" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.053" farmerRate="0.0212" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0842" farmerRate="0.0337" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="RICELONGGRAIN">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0519" farmerRate="0.0208" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0563" farmerRate="0.0225" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0627" farmerRate="0.0251" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0627" farmerRate="0.0251" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0177" farmerRate="0.0071" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0315" farmerRate="0.0126" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.053" farmerRate="0.0212" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0842" farmerRate="0.0337" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="GRAPE">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.025" farmerRate="0.01" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0374" farmerRate="0.015" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0557" farmerRate="0.0223" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0681" farmerRate="0.0272" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0184" farmerRate="0.0074" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0328" farmerRate="0.0131" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0553" farmerRate="0.0221" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0877" farmerRate="0.0351" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="OLIVE">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.181" farmerRate="0.0724" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.181" farmerRate="0.0724" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.181" farmerRate="0.0724" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.181" farmerRate="0.0724" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.1957" farmerRate="0.0783" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.1957" farmerRate="0.0783" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.1957" farmerRate="0.0783" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.1957" farmerRate="0.0783" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="PEA">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0632" farmerRate="0.0253" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.1266" farmerRate="0.0506" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.1266" farmerRate="0.0506" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.1266" farmerRate="0.0506" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.037" farmerRate="0.0148" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0658" farmerRate="0.0263" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.1109" farmerRate="0.0444" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.176" farmerRate="0.0704" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="GREENBEAN">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0603" farmerRate="0.0241" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0888" farmerRate="0.0355" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.1388" farmerRate="0.0555" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0468" farmerRate="0.0187" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0834" farmerRate="0.0334" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.1405" farmerRate="0.0562" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="GRASS">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0776" farmerRate="0.031" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.1469" farmerRate="0.0588" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.1469" farmerRate="0.0588" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.1488" farmerRate="0.0595" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0521" farmerRate="0.0208" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0928" farmerRate="0.0371" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.1563" farmerRate="0.0625" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.1984" farmerRate="0.0793" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="DEFAULT">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0471" farmerRate="0.0188" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0748" farmerRate="0.0299" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0831" farmerRate="0.0332" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0831" farmerRate="0.0332" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0259" farmerRate="0.0104" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0461" farmerRate="0.0184" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0777" farmerRate="0.0311" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.1233" farmerRate="0.0493" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="SPINACH" borrowedFrom="POTATO"/>
@@ -335,159 +335,159 @@
     </region>
     <region id="CAN_MB" name="Manitoba" parent="CAN" lossRatio="1.464" lossRatio10y="0.95" curvesFrom="US_MN">
         <crop fillType="WHEAT">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0252" farmerRate="0.0101" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0508" farmerRate="0.0203" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0517" farmerRate="0.0207" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0517" farmerRate="0.0207" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0137" farmerRate="0.0055" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0243" farmerRate="0.0097" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.041" farmerRate="0.0164" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.065" farmerRate="0.026" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="BARLEY">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0285" farmerRate="0.0114" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0688" farmerRate="0.0275" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0769" farmerRate="0.0308" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0769" farmerRate="0.0308" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0186" farmerRate="0.0074" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0331" farmerRate="0.0132" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0558" farmerRate="0.0223" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0885" farmerRate="0.0354" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="OAT">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0712" farmerRate="0.0285" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0846" farmerRate="0.0338" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0846" farmerRate="0.0338" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0846" farmerRate="0.0338" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0226" farmerRate="0.0091" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0403" farmerRate="0.0161" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.068" farmerRate="0.0272" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.1079" farmerRate="0.0431" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="CANOLA">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0604" farmerRate="0.0241" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0892" farmerRate="0.0357" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.1085" farmerRate="0.0434" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.1085" farmerRate="0.0434" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0285" farmerRate="0.0114" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0508" farmerRate="0.0203" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0856" farmerRate="0.0342" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.1358" farmerRate="0.0543" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="SORGHUM">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0778" farmerRate="0.0311" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0848" farmerRate="0.0339" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0855" farmerRate="0.0342" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.1275" farmerRate="0.051" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0262" farmerRate="0.0105" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0467" farmerRate="0.0187" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0786" farmerRate="0.0314" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.1247" farmerRate="0.0499" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="SUNFLOWER">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.1427" farmerRate="0.0571" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.1427" farmerRate="0.0571" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.1433" farmerRate="0.0573" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.1699" farmerRate="0.068" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0773" farmerRate="0.0309" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0773" farmerRate="0.0309" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.1302" farmerRate="0.0521" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.1652" farmerRate="0.0661" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="SOYBEAN">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0205" farmerRate="0.0082" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.033" farmerRate="0.0132" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.038" farmerRate="0.0152" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0093" farmerRate="0.0037" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0166" farmerRate="0.0066" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0279" farmerRate="0.0112" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="MAIZE">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0214" farmerRate="0.0086" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0293" farmerRate="0.0117" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0293" farmerRate="0.0117" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0069" farmerRate="0.0028" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0123" farmerRate="0.0049" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0208" farmerRate="0.0083" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="POTATO">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0495" farmerRate="0.0198" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.1081" farmerRate="0.0433" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.1081" farmerRate="0.0433" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0363" farmerRate="0.0145" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0646" farmerRate="0.0259" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.1089" farmerRate="0.0436" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="SUGARBEET">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0108" farmerRate="0.0043" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0303" farmerRate="0.0121" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0469" farmerRate="0.0188" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0525" farmerRate="0.021" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0117" farmerRate="0.0047" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0209" farmerRate="0.0083" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0352" farmerRate="0.0141" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0558" farmerRate="0.0223" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="SUGARCANE">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0101" farmerRate="0.004" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0103" farmerRate="0.0041" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0154" farmerRate="0.0061" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0173" farmerRate="0.0069" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0039" farmerRate="0.0016" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.007" farmerRate="0.0028" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0118" farmerRate="0.0047" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0187" farmerRate="0.0075" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="COTTON">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0231" farmerRate="0.0092" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0423" farmerRate="0.0169" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0622" farmerRate="0.0249" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0622" farmerRate="0.0249" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0159" farmerRate="0.0064" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0283" farmerRate="0.0113" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0477" farmerRate="0.0191" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0757" farmerRate="0.0303" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="RICE">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0227" farmerRate="0.0091" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0246" farmerRate="0.0098" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0274" farmerRate="0.011" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0274" farmerRate="0.011" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0055" farmerRate="0.0022" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0099" farmerRate="0.004" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0166" farmerRate="0.0067" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0264" farmerRate="0.0106" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="RICELONGGRAIN">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0227" farmerRate="0.0091" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0246" farmerRate="0.0098" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0274" farmerRate="0.011" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0274" farmerRate="0.011" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0055" farmerRate="0.0022" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0099" farmerRate="0.004" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0166" farmerRate="0.0067" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0264" farmerRate="0.0106" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="GRAPE">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0109" farmerRate="0.0044" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0164" farmerRate="0.0065" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0243" farmerRate="0.0097" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0298" farmerRate="0.0119" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0058" farmerRate="0.0023" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0103" farmerRate="0.0041" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0173" farmerRate="0.0069" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0275" farmerRate="0.011" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="OLIVE">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0791" farmerRate="0.0316" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0791" farmerRate="0.0316" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0791" farmerRate="0.0316" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0791" farmerRate="0.0316" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0614" farmerRate="0.0246" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0614" farmerRate="0.0246" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0614" farmerRate="0.0246" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0614" farmerRate="0.0246" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="PEA">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0404" farmerRate="0.0162" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0809" farmerRate="0.0324" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0809" farmerRate="0.0324" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0809" farmerRate="0.0324" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0191" farmerRate="0.0076" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0341" farmerRate="0.0136" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0574" farmerRate="0.0229" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0911" farmerRate="0.0364" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="GREENBEAN">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0263" farmerRate="0.0105" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0388" farmerRate="0.0155" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0606" farmerRate="0.0243" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0147" farmerRate="0.0059" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0262" farmerRate="0.0105" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0441" farmerRate="0.0176" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="GRASS">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0346" farmerRate="0.0138" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0655" farmerRate="0.0262" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0655" farmerRate="0.0262" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0663" farmerRate="0.0265" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0198" farmerRate="0.0079" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0353" farmerRate="0.0141" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0594" farmerRate="0.0238" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0754" farmerRate="0.0302" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="DEFAULT">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0206" farmerRate="0.0082" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0327" farmerRate="0.0131" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0363" farmerRate="0.0145" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0363" farmerRate="0.0145" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0081" farmerRate="0.0032" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0145" farmerRate="0.0058" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0244" farmerRate="0.0098" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0387" farmerRate="0.0155" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="SPINACH" borrowedFrom="POTATO"/>
@@ -497,159 +497,159 @@
     </region>
     <region id="CAN_ON" name="Ontario" parent="CAN" lossRatio="1.464" lossRatio10y="0.95" curvesFrom="US_MI">
         <crop fillType="WHEAT">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0265" farmerRate="0.0106" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0534" farmerRate="0.0214" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0543" farmerRate="0.0217" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0543" farmerRate="0.0217" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0132" farmerRate="0.0053" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0236" farmerRate="0.0094" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0397" farmerRate="0.0159" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.063" farmerRate="0.0252" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="BARLEY">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0216" farmerRate="0.0087" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0522" farmerRate="0.0209" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0584" farmerRate="0.0234" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0584" farmerRate="0.0234" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0135" farmerRate="0.0054" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0241" farmerRate="0.0096" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0406" farmerRate="0.0162" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0644" farmerRate="0.0258" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="OAT">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0691" farmerRate="0.0276" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.082" farmerRate="0.0328" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.082" farmerRate="0.0328" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.082" farmerRate="0.0328" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0231" farmerRate="0.0092" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0411" farmerRate="0.0164" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0692" farmerRate="0.0277" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.1099" farmerRate="0.044" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="CANOLA">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0464" farmerRate="0.0186" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0685" farmerRate="0.0274" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0834" farmerRate="0.0334" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0834" farmerRate="0.0334" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0208" farmerRate="0.0083" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0371" farmerRate="0.0148" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0625" farmerRate="0.025" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0992" farmerRate="0.0397" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="SORGHUM">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0874" farmerRate="0.0349" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0952" farmerRate="0.0381" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.096" farmerRate="0.0384" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.1433" farmerRate="0.0573" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.033" farmerRate="0.0132" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0589" farmerRate="0.0236" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0992" farmerRate="0.0397" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.1574" farmerRate="0.063" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="SUNFLOWER">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.1081" farmerRate="0.0432" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.1081" farmerRate="0.0432" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.1085" farmerRate="0.0434" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.1287" farmerRate="0.0515" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0605" farmerRate="0.0242" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0605" farmerRate="0.0242" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.102" farmerRate="0.0408" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.1294" farmerRate="0.0518" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="SOYBEAN">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.023" farmerRate="0.0092" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.037" farmerRate="0.0148" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0427" farmerRate="0.0171" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0115" farmerRate="0.0046" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0204" farmerRate="0.0082" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0344" farmerRate="0.0138" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="MAIZE">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0242" farmerRate="0.0097" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0332" farmerRate="0.0133" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0332" farmerRate="0.0133" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.009" farmerRate="0.0036" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.016" farmerRate="0.0064" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0269" farmerRate="0.0108" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="POTATO">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0222" farmerRate="0.0089" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0486" farmerRate="0.0194" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0486" farmerRate="0.0194" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0141" farmerRate="0.0056" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0251" farmerRate="0.01" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0423" farmerRate="0.0169" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="SUGARBEET">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0051" farmerRate="0.0021" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0144" farmerRate="0.0058" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0223" farmerRate="0.0089" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.025" farmerRate="0.01" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0048" farmerRate="0.0019" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0086" farmerRate="0.0034" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0144" farmerRate="0.0058" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0229" farmerRate="0.0092" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="SUGARCANE">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0113" farmerRate="0.0045" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0116" farmerRate="0.0046" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0172" farmerRate="0.0069" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0194" farmerRate="0.0078" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.005" farmerRate="0.002" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0088" farmerRate="0.0035" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0149" farmerRate="0.006" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0236" farmerRate="0.0095" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="COTTON">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0259" farmerRate="0.0104" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0475" farmerRate="0.019" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0698" farmerRate="0.0279" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0698" farmerRate="0.0279" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0201" farmerRate="0.008" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0358" farmerRate="0.0143" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0602" farmerRate="0.0241" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0956" farmerRate="0.0382" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="RICE">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0255" farmerRate="0.0102" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0276" farmerRate="0.0111" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0308" farmerRate="0.0123" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0308" farmerRate="0.0123" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.007" farmerRate="0.0028" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0125" farmerRate="0.005" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.021" farmerRate="0.0084" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0333" farmerRate="0.0133" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="RICELONGGRAIN">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0255" farmerRate="0.0102" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0276" farmerRate="0.0111" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0308" farmerRate="0.0123" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0308" farmerRate="0.0123" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.007" farmerRate="0.0028" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0125" farmerRate="0.005" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.021" farmerRate="0.0084" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0333" farmerRate="0.0133" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="GRAPE">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0687" farmerRate="0.0275" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.1029" farmerRate="0.0412" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.153" farmerRate="0.0612" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.1872" farmerRate="0.0749" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0427" farmerRate="0.0171" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0762" farmerRate="0.0305" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.1283" farmerRate="0.0513" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.2036" farmerRate="0.0814" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="OLIVE">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0888" farmerRate="0.0355" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0888" farmerRate="0.0355" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0888" farmerRate="0.0355" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0888" farmerRate="0.0355" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0775" farmerRate="0.031" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0775" farmerRate="0.031" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0775" farmerRate="0.031" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0775" farmerRate="0.031" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="PEA">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0454" farmerRate="0.0182" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0909" farmerRate="0.0364" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0909" farmerRate="0.0364" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0909" farmerRate="0.0364" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0241" farmerRate="0.0096" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.043" farmerRate="0.0172" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0724" farmerRate="0.029" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.1149" farmerRate="0.046" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="GREENBEAN">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0296" farmerRate="0.0118" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0436" farmerRate="0.0174" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0681" farmerRate="0.0273" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0185" farmerRate="0.0074" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.033" farmerRate="0.0132" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0557" farmerRate="0.0223" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="GRASS">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0552" farmerRate="0.0221" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.1044" farmerRate="0.0418" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.1044" farmerRate="0.0418" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.1058" farmerRate="0.0423" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0373" farmerRate="0.0149" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0664" farmerRate="0.0266" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.1118" farmerRate="0.0447" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.1419" farmerRate="0.0568" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="DEFAULT">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0231" farmerRate="0.0092" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0367" farmerRate="0.0147" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0408" farmerRate="0.0163" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0408" farmerRate="0.0163" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0102" farmerRate="0.0041" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0183" farmerRate="0.0073" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0308" farmerRate="0.0123" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0488" farmerRate="0.0195" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="SPINACH" borrowedFrom="POTATO"/>
@@ -659,159 +659,159 @@
     </region>
     <region id="CAN_QC" name="Quebec" parent="CAN" lossRatio="1.464" lossRatio10y="0.95" curvesFrom="US_NY">
         <crop fillType="WHEAT">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0282" farmerRate="0.0113" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0569" farmerRate="0.0228" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0578" farmerRate="0.0231" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0578" farmerRate="0.0231" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0152" farmerRate="0.0061" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0271" farmerRate="0.0108" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0456" farmerRate="0.0182" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0724" farmerRate="0.0289" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="BARLEY">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.023" farmerRate="0.0092" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0556" farmerRate="0.0222" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0622" farmerRate="0.0249" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0622" farmerRate="0.0249" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0156" farmerRate="0.0062" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0278" farmerRate="0.0111" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0469" farmerRate="0.0187" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0744" farmerRate="0.0297" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="OAT">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0543" farmerRate="0.0217" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0645" farmerRate="0.0258" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0645" farmerRate="0.0258" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0645" farmerRate="0.0258" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.017" farmerRate="0.0068" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0302" farmerRate="0.0121" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0509" farmerRate="0.0204" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0808" farmerRate="0.0323" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="CANOLA">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0494" farmerRate="0.0197" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0729" farmerRate="0.0292" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0887" farmerRate="0.0355" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0887" farmerRate="0.0355" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.024" farmerRate="0.0096" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0428" farmerRate="0.0171" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0721" farmerRate="0.0288" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.1145" farmerRate="0.0458" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="SORGHUM">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.093" farmerRate="0.0372" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.1014" farmerRate="0.0405" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.1022" farmerRate="0.0409" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.1525" farmerRate="0.061" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0381" farmerRate="0.0153" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0679" farmerRate="0.0272" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.1144" farmerRate="0.0458" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.1816" farmerRate="0.0727" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="SUNFLOWER">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.115" farmerRate="0.046" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.115" farmerRate="0.046" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.1155" farmerRate="0.0462" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.137" farmerRate="0.0548" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0699" farmerRate="0.0279" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0699" farmerRate="0.0279" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.1177" farmerRate="0.0471" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.1494" farmerRate="0.0597" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="SOYBEAN">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0269" farmerRate="0.0108" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0434" farmerRate="0.0174" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.05" farmerRate="0.02" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0145" farmerRate="0.0058" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0259" farmerRate="0.0104" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0436" farmerRate="0.0175" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="MAIZE">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0261" farmerRate="0.0105" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0358" farmerRate="0.0143" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0358" farmerRate="0.0143" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0104" farmerRate="0.0042" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0185" farmerRate="0.0074" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0312" farmerRate="0.0125" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="POTATO">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0491" farmerRate="0.0196" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.1072" farmerRate="0.0429" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.1072" farmerRate="0.0429" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0352" farmerRate="0.0141" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0628" farmerRate="0.0251" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.1057" farmerRate="0.0423" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="SUGARBEET">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0087" farmerRate="0.0035" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0244" farmerRate="0.0097" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0378" farmerRate="0.0151" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0422" farmerRate="0.0169" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0102" farmerRate="0.0041" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0182" farmerRate="0.0073" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0306" farmerRate="0.0122" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0485" farmerRate="0.0194" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="SUGARCANE">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0121" farmerRate="0.0048" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0123" farmerRate="0.0049" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0184" farmerRate="0.0073" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0207" farmerRate="0.0083" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0057" farmerRate="0.0023" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0102" farmerRate="0.0041" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0172" farmerRate="0.0069" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0273" farmerRate="0.0109" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="COTTON">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0276" farmerRate="0.011" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0506" farmerRate="0.0202" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0743" farmerRate="0.0297" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0743" farmerRate="0.0297" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0232" farmerRate="0.0093" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0413" farmerRate="0.0165" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0695" farmerRate="0.0278" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.1103" farmerRate="0.0441" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="RICE">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0271" farmerRate="0.0109" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0294" farmerRate="0.0118" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0327" farmerRate="0.0131" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0327" farmerRate="0.0131" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0081" farmerRate="0.0032" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0144" farmerRate="0.0058" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0242" farmerRate="0.0097" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0385" farmerRate="0.0154" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="RICELONGGRAIN">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0271" farmerRate="0.0109" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0294" farmerRate="0.0118" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0327" farmerRate="0.0131" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0327" farmerRate="0.0131" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0081" farmerRate="0.0032" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0144" farmerRate="0.0058" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0242" farmerRate="0.0097" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0385" farmerRate="0.0154" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="GRAPE">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0309" farmerRate="0.0123" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0462" farmerRate="0.0185" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0687" farmerRate="0.0275" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0841" farmerRate="0.0336" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0188" farmerRate="0.0075" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0335" farmerRate="0.0134" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0564" farmerRate="0.0226" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0895" farmerRate="0.0358" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="OLIVE">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0945" farmerRate="0.0378" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0945" farmerRate="0.0378" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0945" farmerRate="0.0378" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0945" farmerRate="0.0378" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0894" farmerRate="0.0358" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0894" farmerRate="0.0358" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0894" farmerRate="0.0358" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0894" farmerRate="0.0358" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="PEA">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0483" farmerRate="0.0193" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0968" farmerRate="0.0387" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0968" farmerRate="0.0387" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0968" farmerRate="0.0387" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0278" farmerRate="0.0111" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0496" farmerRate="0.0198" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0835" farmerRate="0.0334" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.1326" farmerRate="0.053" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="GREENBEAN">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0483" farmerRate="0.0193" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0711" farmerRate="0.0284" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.1112" farmerRate="0.0445" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0309" farmerRate="0.0123" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.055" farmerRate="0.022" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0926" farmerRate="0.0371" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="GRASS">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0587" farmerRate="0.0235" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.1111" farmerRate="0.0445" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.1111" farmerRate="0.0445" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.1126" farmerRate="0.045" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.043" farmerRate="0.0172" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0766" farmerRate="0.0306" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.129" farmerRate="0.0516" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.1638" farmerRate="0.0655" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="DEFAULT">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0246" farmerRate="0.0098" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0391" farmerRate="0.0156" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0434" farmerRate="0.0174" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0434" farmerRate="0.0174" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0118" farmerRate="0.0047" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0211" farmerRate="0.0084" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0355" farmerRate="0.0142" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0563" farmerRate="0.0225" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="SPINACH" borrowedFrom="POTATO"/>
@@ -821,159 +821,159 @@
     </region>
     <region id="CAN_SK" name="Saskatchewan" parent="CAN" lossRatio="1.464" lossRatio10y="0.95" curvesFrom="US_ND">
         <crop fillType="WHEAT">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0337" farmerRate="0.0135" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0679" farmerRate="0.0272" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0691" farmerRate="0.0276" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0691" farmerRate="0.0276" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0181" farmerRate="0.0073" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0323" farmerRate="0.0129" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0545" farmerRate="0.0218" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0864" farmerRate="0.0346" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="BARLEY">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0258" farmerRate="0.0103" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0623" farmerRate="0.0249" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0697" farmerRate="0.0279" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0697" farmerRate="0.0279" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0161" farmerRate="0.0064" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0286" farmerRate="0.0115" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0482" farmerRate="0.0193" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0766" farmerRate="0.0306" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="OAT">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0943" farmerRate="0.0377" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.112" farmerRate="0.0448" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.112" farmerRate="0.0448" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.112" farmerRate="0.0448" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0325" farmerRate="0.013" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.058" farmerRate="0.0232" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0977" farmerRate="0.0391" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.155" farmerRate="0.062" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="CANOLA">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0546" farmerRate="0.0218" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0807" farmerRate="0.0323" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0981" farmerRate="0.0393" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0981" farmerRate="0.0393" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0244" farmerRate="0.0098" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0435" farmerRate="0.0174" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0733" farmerRate="0.0293" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.1163" farmerRate="0.0465" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="SORGHUM">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.1515" farmerRate="0.0606" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.1652" farmerRate="0.0661" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.1666" farmerRate="0.0666" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.2485" farmerRate="0.0994" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0647" farmerRate="0.0259" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.1153" farmerRate="0.0461" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.1943" farmerRate="0.0777" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.3083" farmerRate="0.1233" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="SUNFLOWER">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.13" farmerRate="0.052" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.13" farmerRate="0.052" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.1306" farmerRate="0.0522" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.1549" farmerRate="0.0619" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0687" farmerRate="0.0275" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0687" farmerRate="0.0275" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.1157" farmerRate="0.0463" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.1468" farmerRate="0.0587" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="SOYBEAN">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0317" farmerRate="0.0127" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0511" farmerRate="0.0204" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0589" farmerRate="0.0236" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0179" farmerRate="0.0072" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.032" farmerRate="0.0128" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0539" farmerRate="0.0215" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="MAIZE">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0469" farmerRate="0.0188" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0643" farmerRate="0.0257" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0643" farmerRate="0.0257" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.019" farmerRate="0.0076" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0339" farmerRate="0.0135" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.057" farmerRate="0.0228" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="POTATO">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0515" farmerRate="0.0206" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.1127" farmerRate="0.0451" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.1127" farmerRate="0.0451" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0397" farmerRate="0.0159" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0708" farmerRate="0.0283" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.1193" farmerRate="0.0477" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="SUGARBEET">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.01" farmerRate="0.004" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.028" farmerRate="0.0112" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0434" farmerRate="0.0173" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0485" farmerRate="0.0194" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.011" farmerRate="0.0044" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0196" farmerRate="0.0078" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.033" farmerRate="0.0132" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0523" farmerRate="0.0209" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="SUGARCANE">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0197" farmerRate="0.0079" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0201" farmerRate="0.008" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0299" farmerRate="0.012" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0337" farmerRate="0.0135" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0097" farmerRate="0.0039" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0173" farmerRate="0.0069" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0292" farmerRate="0.0117" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0463" farmerRate="0.0185" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="COTTON">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.045" farmerRate="0.018" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0824" farmerRate="0.033" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.1212" farmerRate="0.0485" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.1212" farmerRate="0.0485" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0393" farmerRate="0.0157" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.07" farmerRate="0.028" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.118" farmerRate="0.0472" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.1872" farmerRate="0.0749" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="RICE">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0442" farmerRate="0.0177" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0479" farmerRate="0.0192" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0534" farmerRate="0.0213" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0534" farmerRate="0.0213" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0137" farmerRate="0.0055" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0244" farmerRate="0.0098" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0411" farmerRate="0.0165" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0653" farmerRate="0.0261" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="RICELONGGRAIN">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0442" farmerRate="0.0177" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0479" farmerRate="0.0192" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0534" farmerRate="0.0213" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0534" farmerRate="0.0213" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0137" farmerRate="0.0055" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0244" farmerRate="0.0098" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0411" farmerRate="0.0165" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0653" farmerRate="0.0261" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="GRAPE">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0213" farmerRate="0.0085" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0319" farmerRate="0.0127" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0474" farmerRate="0.019" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.058" farmerRate="0.0232" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0143" farmerRate="0.0057" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0254" farmerRate="0.0102" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0429" farmerRate="0.0171" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.068" farmerRate="0.0272" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="OLIVE">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.1541" farmerRate="0.0616" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.1541" farmerRate="0.0616" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.1541" farmerRate="0.0616" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.1541" farmerRate="0.0616" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.1518" farmerRate="0.0607" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.1518" farmerRate="0.0607" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.1518" farmerRate="0.0607" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.1518" farmerRate="0.0607" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="PEA">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0522" farmerRate="0.0209" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.1046" farmerRate="0.0418" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.1046" farmerRate="0.0418" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.1046" farmerRate="0.0418" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0288" farmerRate="0.0115" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0513" farmerRate="0.0205" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0863" farmerRate="0.0345" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.137" farmerRate="0.0548" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="GREENBEAN">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0513" farmerRate="0.0205" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0756" farmerRate="0.0302" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.1182" farmerRate="0.0473" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0363" farmerRate="0.0145" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0647" farmerRate="0.0259" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.109" farmerRate="0.0436" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="GRASS">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.071" farmerRate="0.0284" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.1343" farmerRate="0.0537" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.1343" farmerRate="0.0537" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.1361" farmerRate="0.0544" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.051" farmerRate="0.0204" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0909" farmerRate="0.0364" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.1532" farmerRate="0.0613" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.1944" farmerRate="0.0778" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="DEFAULT">
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0401" farmerRate="0.016" subsidyShare="0.6"/>
-                <level coverage="0.6" premiumRate="0.0637" farmerRate="0.0255" subsidyShare="0.6"/>
-                <level coverage="0.7" premiumRate="0.0708" farmerRate="0.0283" subsidyShare="0.6"/>
-                <level coverage="0.8" premiumRate="0.0708" farmerRate="0.0283" subsidyShare="0.6"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0201" farmerRate="0.008" subsidyShare="0.6"/>
+                <level coverage="0.6" premiumRate="0.0358" farmerRate="0.0143" subsidyShare="0.6"/>
+                <level coverage="0.7" premiumRate="0.0603" farmerRate="0.0241" subsidyShare="0.6"/>
+                <level coverage="0.8" premiumRate="0.0956" farmerRate="0.0383" subsidyShare="0.6"/>
             </plan>
         </crop>
         <crop fillType="SPINACH" borrowedFrom="POTATO"/>

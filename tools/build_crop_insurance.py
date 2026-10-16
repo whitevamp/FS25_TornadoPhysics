@@ -27,7 +27,8 @@ What ends up in the XML
   US-wide, per game crop, per plan (RP / RPHPE / YP / APH), per coverage level (50 % - 85 %):
     premiumRate     total premium / liability                  (price of the cover before subsidy)
     farmerRate      farmer-paid premium / liability            (what the player pays, per $ insured)
-                    Both are smoothed so they never fall as coverage rises (see smoothed_rates).
+                    premiumRate keeps the curve's average but rises with coverage by a loss model;
+                    farmerRate uses the measured subsidy share per level (see shaped_rates).
     subsidyShare    government + state/private subsidy / total premium
     lossRatio       indemnity / total premium                  (payouts per $ of premium)
     claimShare      policies with a payout / policies earning premium
@@ -93,9 +94,8 @@ folder (BR_insurance/) is git-ignored and never shipped.
   * Coverage levels rounded to the nearest 5 %, 50 - 95 %. 100 % policies (mostly fruit, named-peril style
     cover with few claims) are written as their own plan "FULL" so they do not flatten the other curves.
   * Per crop / plan / level: the same attributes as the US file, per hectare instead of per acre
-    (farmerPerHa, hectares). YP / COST rates: Brazil's average rate for the crop and plan, shaped by a
-    yield-loss model (shape="lossModel", see coverage_shape) - Brazil's own rates fall with coverage
-    (selection), see brazil_shaped_rates. lossRatio / claimShare / farmerPerHa stay the raw values.
+    (farmerPerHa, hectares), shaped the same way (shaped_rates). lossRatio / claimShare / farmerPerHa
+    stay the raw values.
   * Per state (BRA_xx): rateFactor and lossRatio against the national curves, like the US states.
   * Per crop: perils = share of the payouts and claims per cause of loss (EVENTO_PREPONDERANTE): drought,
     hail, frost, excessive rain, windstorm ("VENTOS FORTES/FRIOS"), flood ...
@@ -186,6 +186,9 @@ DEFAULT_COMMODITIES = {"Wheat", "Barley", "Oats", "Canola", "Grain Sorghum", "Su
                        "Corn", "Cotton", "Rice", "Dry Peas", "Dry Beans", "Rye", "Flax", "Millet"}
 
 DECIMALS = 4
+
+# Yield variability (coefficient of variation) of the loss model that shapes every rate curve (coverage_shape).
+COVERAGE_SHAPE_CV = 0.30
 
 # ============================================================================
 # CANADA  -  published numbers (edit when newer reports are out)
@@ -341,8 +344,6 @@ BRAZIL_COVERAGE_LEVELS = [0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 
 BRAZIL_PLANS = {"PRODUTIVIDADE": "YP", "CUSTEIO": "COST"}
 BRAZIL_MIN_HECTARES = 2000     # per crop / plan / level (summed over the years); state: per crop
 BRAZIL_MIN_POLICIES = 30
-# Yield variability (coefficient of variation) of the loss model that shapes the rate curves (coverage_shape).
-COVERAGE_SHAPE_CV = 0.30
 
 # FS25 fill type -> PSR crop names (NM_CULTURA_GLOBAL). COFFEE / BANANA: South America DLC.
 BRAZIL_CROPS = {
@@ -547,41 +548,45 @@ def state_names():
     return names
 
 
-def pav(values, weights):
-    """Weighted pool-adjacent-violators: the closest non-decreasing sequence (keeps the weighted average)."""
-    blocks = []  # [value, weight, count]
-    for v, w in zip(values, weights):
-        blocks.append([v, w, 1])
-        while len(blocks) > 1 and blocks[-2][0] > blocks[-1][0]:
-            v2, w2, n2 = blocks.pop()
-            v1, w1, n1 = blocks.pop()
-            blocks.append([(v1 * w1 + v2 * w2) / (w1 + w2), w1 + w2, n1 + n2])
-    out = []
-    for v, _, n in blocks:
-        out += [v] * n
-    return out
+def coverage_shape(level, cv=None):
+    """Relative premium rate of yield cover at a coverage level, from a simple loss model.
+
+    Yield ~ Normal(mean 1, sd cv); guarantee g = level; rate = expected shortfall E[max(g - Y, 0)] / g.
+    With cv 0.30 the rate at 70 / 75 / 80 % is ~1.3 / 1.6 / 2.0 x the 65 % rate - the usual step-up of real
+    rate tables (and close to the US data at 50 - 65 %, where selection does not distort it)."""
+    cv = cv or COVERAGE_SHAPE_CV
+    z = (level - 1.0) / cv
+    pdf = math.exp(-0.5 * z * z) / math.sqrt(2 * math.pi)
+    cdf = 0.5 * (1 + math.erf(z / math.sqrt(2)))
+    return ((level - 1.0) * cdf + cv * pdf) / level
 
 
-def smoothed_rates(us, levels=None, is_usable=None):
-    """(crop, plan, level) -> (premiumRate, farmerRate), both non-decreasing with the coverage level.
+def shaped_rates(totals, levels=None, is_usable=None):
+    """(crop, plan, level) -> (premiumRate, farmerRate), rising with the coverage level.
 
-    The raw national averages often FALL at high coverage: low-risk farms pick high coverage
-    (selection bias), so 80 % looked cheaper per acre than 70 %. Real rates rise with coverage, so
-    each curve is smoothed to the closest rising curve with the same liability-weighted average."""
+    The raw averages FALL at high coverage: low-risk farms buy high coverage (selection bias), while the
+    loss ratio of those policies climbs (US / Brazil soybeans: payouts per $ of premium several times higher
+    at 80 % than at 65 %). Real rate tables rise with coverage, so per crop and plan:
+      premiumRate = the curve's liability-weighted average premium rate, spread over the levels by
+                    coverage_shape (the average itself is kept);
+      farmerRate  = premiumRate x (1 - the measured subsidy share at that level) - the subsidy share is set
+                    per level by law (US: ~59 % at 70 %, ~38 % at 85 %) and is not distorted by selection."""
     levels = levels or COVERAGE_LEVELS
     is_usable = is_usable or usable
     result = {}
-    keys = {(crop, plan) for (crop, plan, _) in us}
-    for crop, plan in keys:
-        rows = [(level, us[(crop, plan, level)]) for level in levels
-                if (crop, plan, level) in us and is_usable(us[(crop, plan, level)])]
+    for crop, plan in {(c, p) for (c, p, _) in totals}:
+        rows = [(lv, totals[(crop, plan, lv)]) for lv in levels
+                if (crop, plan, lv) in totals and is_usable(totals[(crop, plan, lv)])]
         if not rows:
             continue
-        weights = [t.liability for _, t in rows]
-        premium = pav([t.premium / t.liability for _, t in rows], weights)
-        farmer = pav([(t.premium - t.subsidy) / t.liability for _, t in rows], weights)
-        for (level, _), p_rate, f_rate in zip(rows, premium, farmer):
-            result[(crop, plan, level)] = (p_rate, min(f_rate, p_rate))
+        liability = sum(t.liability for _, t in rows)
+        premium_avg = sum(t.premium for _, t in rows) / liability
+        shape = [coverage_shape(lv) for lv, _ in rows]
+        shape_avg = sum(t.liability * sh for (_, t), sh in zip(rows, shape)) / liability
+        for (lv, t), sh in zip(rows, shape):
+            rate = premium_avg * sh / shape_avg
+            subsidy_share = min(max(t.subsidy / t.premium, 0.0), 1.0)
+            result[(crop, plan, lv)] = (rate, rate * (1 - subsidy_share))
     return result
 
 
@@ -611,7 +616,7 @@ def write(us, state, out_path):
              % (min(YEARS), max(YEARS))]
 
     # ---- US curves
-    smooth = smoothed_rates(us)
+    smooth = shaped_rates(us)
     us_rate = {}
     lines.append('    <region id="US" name="United States">')
     for crop in crops:
@@ -625,7 +630,7 @@ def write(us, state, out_path):
                     level_lines.append('                <level coverage="%s" %s/>' % (
                         fmt(level, 2), level_attrs(t, smooth[(crop, plan, level)])))
             if level_lines:
-                plan_lines.append('            <plan id="%s">' % plan)
+                plan_lines.append('            <plan id="%s"%s>' % (plan, (' shape="lossModel" shapeCv="%s"' % fmt(COVERAGE_SHAPE_CV, 2))))
                 plan_lines += level_lines
                 plan_lines.append('            </plan>')
         if plan_lines:
@@ -674,8 +679,8 @@ def write(us, state, out_path):
 
 
 def compute_us_rates(us):
-    """(crop, plan, level) -> smoothed total premium rate for usable US entries."""
-    return {key: rates[0] for key, rates in smoothed_rates(us).items()}
+    """(crop, plan, level) -> shaped total premium rate for usable US entries."""
+    return {key: rates[0] for key, rates in shaped_rates(us).items()}
 
 
 def compute_state_factors(state, us_rate):
@@ -766,7 +771,7 @@ def write_canada(us, state, out_path):
                     fmt(level, 2), fmt(rate), fmt(rate * CANADA_PRODUCER_SHARE), fmt(1 - CANADA_PRODUCER_SHARE, 3)))
             if level_lines:
                 out.append('        <crop fillType=%s>' % quoteattr(crop))
-                out.append('            <plan id="YP">')
+                out.append('            <plan id="YP"%s>' % (' shape="lossModel" shapeCv="%s"' % fmt(COVERAGE_SHAPE_CV, 2)))
                 out += level_lines
                 out.append('            </plan>')
                 out.append('        </crop>')
@@ -944,46 +949,9 @@ def brazil_usable(t, min_hectares=BRAZIL_MIN_HECTARES):
     return t.acres >= min_hectares and t.policies >= BRAZIL_MIN_POLICIES and t.liability > 0 and t.premium > 0
 
 
-def coverage_shape(level, cv=None):
-    """Relative premium rate of yield cover at a coverage level, from a simple loss model.
-
-    Yield ~ Normal(mean 1, sd cv); guarantee g = level; rate = expected shortfall E[max(g - Y, 0)] / g.
-    With cv 0.30 the rate at 70 / 75 / 80 % is ~1.3 / 1.6 / 2.0 x the 65 % rate - the usual step-up of real
-    rate tables. Used where the data's own curve is flat (selection bias, see brazil_shaped_rates)."""
-    cv = cv or COVERAGE_SHAPE_CV
-    z = (level - 1.0) / cv
-    pdf = math.exp(-0.5 * z * z) / math.sqrt(2 * math.pi)
-    cdf = 0.5 * (1 + math.erf(z / math.sqrt(2)))
-    return ((level - 1.0) * cdf + cv * pdf) / level
-
-
-def brazil_shaped_rates(nat):
-    """(crop, plan, level) -> (premiumRate, farmerRate) for the YP / COST curves.
-
-    Brazil's raw rates FALL with coverage (high coverage is mostly bought in low-risk areas, while its loss
-    ratio climbs from ~1.1 at 65 % to ~6 at 80 % for soybeans), so smoothing alone gives a flat curve and
-    every player would pick the highest level. Level = Brazil's liability-weighted average for the crop and
-    plan; shape = coverage_shape (the US curves are flat above ~65 % for the same reason)."""
-    result = {}
-    for crop, plan in {(c, p) for (c, p, _) in nat if p in ("YP", "COST")}:
-        rows = [(lv, nat[(crop, plan, lv)]) for lv in BRAZIL_COVERAGE_LEVELS
-                if (crop, plan, lv) in nat and brazil_usable(nat[(crop, plan, lv)])]
-        shape = [coverage_shape(lv) for lv, _ in rows]
-        if not rows:
-            continue
-        liability = sum(t.liability for _, t in rows)
-        premium_avg = sum(t.premium for _, t in rows) / liability
-        farmer_avg = sum(t.premium - t.subsidy for _, t in rows) / liability
-        shape_avg = sum(t.liability * sh for (_, t), sh in zip(rows, shape)) / liability
-        for (lv, _), sh in zip(rows, shape):
-            result[(crop, plan, lv)] = (premium_avg * sh / shape_avg, farmer_avg * sh / shape_avg)
-    return result
-
-
 def write_brazil(path, out_path):
     nat, state, perils = load_brazil(path)
-    smooth = smoothed_rates(nat, BRAZIL_COVERAGE_LEVELS, brazil_usable)   # FULL (one level each)
-    smooth.update(brazil_shaped_rates(nat))
+    smooth = shaped_rates(nat, BRAZIL_COVERAGE_LEVELS, brazil_usable)   # FULL: one level, raw average
     crops = list(BRAZIL_CROPS) + ["DEFAULT"]
     prog = BRAZIL_PROGRAM
     lines = ['<?xml version="1.0" encoding="utf-8" standalone="no" ?>',

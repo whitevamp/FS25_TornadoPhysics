@@ -4,414 +4,414 @@
 <cropInsurance version="1" source="USDA RMA Summary of Business" years="2020-2024" currency="USD">
     <region id="US" name="United States">
         <crop fillType="WHEAT" rma="Wheat">
-            <plan id="RP">
-                <level coverage="0.5" premiumRate="0.0968" farmerRate="0.0279" subsidyShare="0.712" lossRatio="0.871" claimShare="0.24" farmerPerAcre="4.36" acres="1859823" policies="9851"/>
-                <level coverage="0.55" premiumRate="0.1356" farmerRate="0.0436" subsidyShare="0.678" lossRatio="1.076" claimShare="0.271" farmerPerAcre="6.42" acres="356598" policies="1553"/>
-                <level coverage="0.6" premiumRate="0.1639" farmerRate="0.0576" subsidyShare="0.648" lossRatio="1.016" claimShare="0.392" farmerPerAcre="9.59" acres="6078666" policies="24225"/>
-                <level coverage="0.65" premiumRate="0.1639" farmerRate="0.0576" subsidyShare="0.648" lossRatio="1.053" claimShare="0.375" farmerPerAcre="11.07" acres="11620431" policies="52495"/>
-                <level coverage="0.7" premiumRate="0.1639" farmerRate="0.0576" subsidyShare="0.648" lossRatio="1.006" claimShare="0.406" farmerPerAcre="12.68" acres="60033887" policies="198562"/>
-                <level coverage="0.75" premiumRate="0.1639" farmerRate="0.0576" subsidyShare="0.648" lossRatio="0.941" claimShare="0.391" farmerPerAcre="13.56" acres="64812078" policies="201816"/>
-                <level coverage="0.8" premiumRate="0.1639" farmerRate="0.0582" subsidyShare="0.645" lossRatio="1.17" claimShare="0.404" farmerPerAcre="19.26" acres="16320560" policies="59871"/>
-                <level coverage="0.85" premiumRate="0.1639" farmerRate="0.0669" subsidyShare="0.592" lossRatio="1.702" claimShare="0.532" farmerPerAcre="27.55" acres="8568178" policies="25718"/>
+            <plan id="RP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0438" farmerRate="0.0126" subsidyShare="0.712" lossRatio="0.871" claimShare="0.24" farmerPerAcre="4.36" acres="1859823" policies="9851"/>
+                <level coverage="0.55" premiumRate="0.0589" farmerRate="0.019" subsidyShare="0.678" lossRatio="1.076" claimShare="0.271" farmerPerAcre="6.42" acres="356598" policies="1553"/>
+                <level coverage="0.6" premiumRate="0.0781" farmerRate="0.0258" subsidyShare="0.67" lossRatio="1.016" claimShare="0.392" farmerPerAcre="9.59" acres="6078666" policies="24225"/>
+                <level coverage="0.65" premiumRate="0.1021" farmerRate="0.0382" subsidyShare="0.626" lossRatio="1.053" claimShare="0.375" farmerPerAcre="11.07" acres="11620431" policies="52495"/>
+                <level coverage="0.7" premiumRate="0.1316" farmerRate="0.0458" subsidyShare="0.652" lossRatio="1.006" claimShare="0.406" farmerPerAcre="12.68" acres="60033887" policies="198562"/>
+                <level coverage="0.75" premiumRate="0.167" farmerRate="0.053" subsidyShare="0.683" lossRatio="0.941" claimShare="0.391" farmerPerAcre="13.56" acres="64812078" policies="201816"/>
+                <level coverage="0.8" premiumRate="0.2089" farmerRate="0.0853" subsidyShare="0.592" lossRatio="1.17" claimShare="0.404" farmerPerAcre="19.26" acres="16320560" policies="59871"/>
+                <level coverage="0.85" premiumRate="0.2573" farmerRate="0.1484" subsidyShare="0.423" lossRatio="1.702" claimShare="0.532" farmerPerAcre="27.55" acres="8568178" policies="25718"/>
             </plan>
-            <plan id="RPHPE">
-                <level coverage="0.6" premiumRate="0.0733" farmerRate="0.0247" subsidyShare="0.664" lossRatio="0.181" claimShare="0.07" farmerPerAcre="9.3" acres="32299" policies="200"/>
-                <level coverage="0.65" premiumRate="0.1114" farmerRate="0.0442" subsidyShare="0.603" lossRatio="0.488" claimShare="0.242" farmerPerAcre="9.49" acres="45875" policies="124"/>
-                <level coverage="0.7" premiumRate="0.1174" farmerRate="0.0442" subsidyShare="0.623" lossRatio="0.546" claimShare="0.251" farmerPerAcre="12.39" acres="118208" policies="382"/>
-                <level coverage="0.75" premiumRate="0.1174" farmerRate="0.0442" subsidyShare="0.623" lossRatio="0.44" claimShare="0.184" farmerPerAcre="10.1" acres="89409" policies="353"/>
-                <level coverage="0.8" premiumRate="0.1174" farmerRate="0.0442" subsidyShare="0.623" lossRatio="1.276" claimShare="0.319" farmerPerAcre="14.91" acres="56602" policies="254"/>
-                <level coverage="0.85" premiumRate="0.1174" farmerRate="0.0547" subsidyShare="0.534" lossRatio="1.503" claimShare="0.269" farmerPerAcre="24.44" acres="20553" policies="130"/>
+            <plan id="RPHPE" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.6" premiumRate="0.0546" farmerRate="0.0184" subsidyShare="0.664" lossRatio="0.181" claimShare="0.07" farmerPerAcre="9.3" acres="32299" policies="200"/>
+                <level coverage="0.65" premiumRate="0.0714" farmerRate="0.0288" subsidyShare="0.597" lossRatio="0.488" claimShare="0.242" farmerPerAcre="9.49" acres="45875" policies="124"/>
+                <level coverage="0.7" premiumRate="0.0919" farmerRate="0.0363" subsidyShare="0.605" lossRatio="0.546" claimShare="0.251" farmerPerAcre="12.39" acres="118208" policies="382"/>
+                <level coverage="0.75" premiumRate="0.1167" farmerRate="0.0368" subsidyShare="0.685" lossRatio="0.44" claimShare="0.184" farmerPerAcre="10.1" acres="89409" policies="353"/>
+                <level coverage="0.8" premiumRate="0.1459" farmerRate="0.0574" subsidyShare="0.607" lossRatio="1.276" claimShare="0.319" farmerPerAcre="14.91" acres="56602" policies="254"/>
+                <level coverage="0.85" premiumRate="0.1798" farmerRate="0.1006" subsidyShare="0.44" lossRatio="1.503" claimShare="0.269" farmerPerAcre="24.44" acres="20553" policies="130"/>
             </plan>
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0526" farmerRate="0.0154" subsidyShare="0.708" lossRatio="0.819" claimShare="0.177" farmerPerAcre="3.29" acres="1623695" policies="9997"/>
-                <level coverage="0.55" premiumRate="0.0732" farmerRate="0.0232" subsidyShare="0.682" lossRatio="0.804" claimShare="0.244" farmerPerAcre="4.2" acres="169115" policies="933"/>
-                <level coverage="0.6" premiumRate="0.1061" farmerRate="0.0344" subsidyShare="0.676" lossRatio="0.907" claimShare="0.269" farmerPerAcre="6.42" acres="1195016" policies="4817"/>
-                <level coverage="0.65" premiumRate="0.1079" farmerRate="0.0439" subsidyShare="0.593" lossRatio="1.187" claimShare="0.298" farmerPerAcre="8" acres="2477924" policies="16319"/>
-                <level coverage="0.7" premiumRate="0.1079" farmerRate="0.0439" subsidyShare="0.593" lossRatio="1.096" claimShare="0.338" farmerPerAcre="8.92" acres="3398209" policies="13183"/>
-                <level coverage="0.75" premiumRate="0.1079" farmerRate="0.0439" subsidyShare="0.593" lossRatio="1.261" claimShare="0.326" farmerPerAcre="11.46" acres="2030422" policies="8937"/>
-                <level coverage="0.8" premiumRate="0.1079" farmerRate="0.0439" subsidyShare="0.593" lossRatio="1.254" claimShare="0.365" farmerPerAcre="16.51" acres="877243" policies="2705"/>
-                <level coverage="0.85" premiumRate="0.1079" farmerRate="0.0452" subsidyShare="0.581" lossRatio="1.717" claimShare="0.445" farmerPerAcre="19.93" acres="603500" policies="1864"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0316" farmerRate="0.0092" subsidyShare="0.708" lossRatio="0.819" claimShare="0.177" farmerPerAcre="3.29" acres="1623695" policies="9997"/>
+                <level coverage="0.55" premiumRate="0.0424" farmerRate="0.0135" subsidyShare="0.682" lossRatio="0.804" claimShare="0.244" farmerPerAcre="4.2" acres="169115" policies="933"/>
+                <level coverage="0.6" premiumRate="0.0563" farmerRate="0.0182" subsidyShare="0.676" lossRatio="0.907" claimShare="0.269" farmerPerAcre="6.42" acres="1195016" policies="4817"/>
+                <level coverage="0.65" premiumRate="0.0736" farmerRate="0.0286" subsidyShare="0.611" lossRatio="1.187" claimShare="0.298" farmerPerAcre="8" acres="2477924" policies="16319"/>
+                <level coverage="0.7" premiumRate="0.0948" farmerRate="0.0349" subsidyShare="0.632" lossRatio="1.096" claimShare="0.338" farmerPerAcre="8.92" acres="3398209" policies="13183"/>
+                <level coverage="0.75" premiumRate="0.1203" farmerRate="0.0464" subsidyShare="0.615" lossRatio="1.261" claimShare="0.326" farmerPerAcre="11.46" acres="2030422" policies="8937"/>
+                <level coverage="0.8" premiumRate="0.1505" farmerRate="0.0702" subsidyShare="0.533" lossRatio="1.254" claimShare="0.365" farmerPerAcre="16.51" acres="877243" policies="2705"/>
+                <level coverage="0.85" premiumRate="0.1853" farmerRate="0.1114" subsidyShare="0.399" lossRatio="1.717" claimShare="0.445" farmerPerAcre="19.93" acres="603500" policies="1864"/>
             </plan>
         </crop>
         <crop fillType="BARLEY" rma="Barley">
-            <plan id="RP">
-                <level coverage="0.5" premiumRate="0.1112" farmerRate="0.0297" subsidyShare="0.733" lossRatio="0.62" claimShare="0.201" farmerPerAcre="4.71" acres="55381" policies="339"/>
-                <level coverage="0.6" premiumRate="0.144" farmerRate="0.0444" subsidyShare="0.691" lossRatio="0.854" claimShare="0.304" farmerPerAcre="6.03" acres="60858" policies="391"/>
-                <level coverage="0.65" premiumRate="0.1564" farmerRate="0.0515" subsidyShare="0.671" lossRatio="1.177" claimShare="0.404" farmerPerAcre="9.14" acres="213387" policies="900"/>
-                <level coverage="0.7" premiumRate="0.1692" farmerRate="0.0515" subsidyShare="0.696" lossRatio="0.926" claimShare="0.395" farmerPerAcre="11.5" acres="1145709" policies="4366"/>
-                <level coverage="0.75" premiumRate="0.1692" farmerRate="0.0515" subsidyShare="0.696" lossRatio="0.941" claimShare="0.461" farmerPerAcre="11.8" acres="2082674" policies="6406"/>
-                <level coverage="0.8" premiumRate="0.1692" farmerRate="0.0654" subsidyShare="0.614" lossRatio="1.497" claimShare="0.511" farmerPerAcre="18.29" acres="332492" policies="1251"/>
-                <level coverage="0.85" premiumRate="0.1692" farmerRate="0.081" subsidyShare="0.522" lossRatio="2.308" claimShare="0.588" farmerPerAcre="20.43" acres="98530" policies="695"/>
+            <plan id="RP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0459" farmerRate="0.0123" subsidyShare="0.733" lossRatio="0.62" claimShare="0.201" farmerPerAcre="4.71" acres="55381" policies="339"/>
+                <level coverage="0.6" premiumRate="0.0817" farmerRate="0.0252" subsidyShare="0.691" lossRatio="0.854" claimShare="0.304" farmerPerAcre="6.03" acres="60858" policies="391"/>
+                <level coverage="0.65" premiumRate="0.1068" farmerRate="0.0378" subsidyShare="0.646" lossRatio="1.177" claimShare="0.404" farmerPerAcre="9.14" acres="213387" policies="900"/>
+                <level coverage="0.7" premiumRate="0.1376" farmerRate="0.0454" subsidyShare="0.67" lossRatio="0.926" claimShare="0.395" farmerPerAcre="11.5" acres="1145709" policies="4366"/>
+                <level coverage="0.75" premiumRate="0.1747" farmerRate="0.0502" subsidyShare="0.712" lossRatio="0.941" claimShare="0.461" farmerPerAcre="11.8" acres="2082674" policies="6406"/>
+                <level coverage="0.8" premiumRate="0.2185" farmerRate="0.0846" subsidyShare="0.613" lossRatio="1.497" claimShare="0.511" farmerPerAcre="18.29" acres="332492" policies="1251"/>
+                <level coverage="0.85" premiumRate="0.2691" farmerRate="0.1565" subsidyShare="0.418" lossRatio="2.308" claimShare="0.588" farmerPerAcre="20.43" acres="98530" policies="695"/>
             </plan>
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0375" farmerRate="0.0115" subsidyShare="0.693" lossRatio="0.804" claimShare="0.123" farmerPerAcre="2.8" acres="253113" policies="1238"/>
-                <level coverage="0.55" premiumRate="0.0565" farmerRate="0.0199" subsidyShare="0.648" lossRatio="1.084" claimShare="0.202" farmerPerAcre="5.6" acres="27967" policies="119"/>
-                <level coverage="0.6" premiumRate="0.0905" farmerRate="0.0312" subsidyShare="0.655" lossRatio="0.944" claimShare="0.261" farmerPerAcre="6.56" acres="166241" policies="625"/>
-                <level coverage="0.65" premiumRate="0.1013" farmerRate="0.0403" subsidyShare="0.603" lossRatio="0.964" claimShare="0.306" farmerPerAcre="8.49" acres="372181" policies="1684"/>
-                <level coverage="0.7" premiumRate="0.1013" farmerRate="0.0403" subsidyShare="0.603" lossRatio="0.976" claimShare="0.338" farmerPerAcre="11.7" acres="1400807" policies="4993"/>
-                <level coverage="0.75" premiumRate="0.1013" farmerRate="0.0403" subsidyShare="0.603" lossRatio="0.931" claimShare="0.353" farmerPerAcre="12.48" acres="1443873" policies="4729"/>
-                <level coverage="0.8" premiumRate="0.1013" farmerRate="0.0404" subsidyShare="0.601" lossRatio="1.128" claimShare="0.37" farmerPerAcre="18.01" acres="654116" policies="1571"/>
-                <level coverage="0.85" premiumRate="0.1013" farmerRate="0.0495" subsidyShare="0.511" lossRatio="1.761" claimShare="0.461" farmerPerAcre="21.57" acres="176277" policies="878"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0269" farmerRate="0.0083" subsidyShare="0.693" lossRatio="0.804" claimShare="0.123" farmerPerAcre="2.8" acres="253113" policies="1238"/>
+                <level coverage="0.55" premiumRate="0.0361" farmerRate="0.0127" subsidyShare="0.648" lossRatio="1.084" claimShare="0.202" farmerPerAcre="5.6" acres="27967" policies="119"/>
+                <level coverage="0.6" premiumRate="0.0479" farmerRate="0.0165" subsidyShare="0.655" lossRatio="0.944" claimShare="0.261" farmerPerAcre="6.56" acres="166241" policies="625"/>
+                <level coverage="0.65" premiumRate="0.0626" farmerRate="0.0238" subsidyShare="0.62" lossRatio="0.964" claimShare="0.306" farmerPerAcre="8.49" acres="372181" policies="1684"/>
+                <level coverage="0.7" premiumRate="0.0807" farmerRate="0.0304" subsidyShare="0.623" lossRatio="0.976" claimShare="0.338" farmerPerAcre="11.7" acres="1400807" policies="4993"/>
+                <level coverage="0.75" premiumRate="0.1024" farmerRate="0.0374" subsidyShare="0.635" lossRatio="0.931" claimShare="0.353" farmerPerAcre="12.48" acres="1443873" policies="4729"/>
+                <level coverage="0.8" premiumRate="0.1281" farmerRate="0.062" subsidyShare="0.516" lossRatio="1.128" claimShare="0.37" farmerPerAcre="18.01" acres="654116" policies="1571"/>
+                <level coverage="0.85" premiumRate="0.1578" farmerRate="0.0957" subsidyShare="0.393" lossRatio="1.761" claimShare="0.461" farmerPerAcre="21.57" acres="176277" policies="878"/>
             </plan>
         </crop>
         <crop fillType="OAT" rma="Oats">
-            <plan id="RP">
-                <level coverage="0.5" premiumRate="0.1518" farmerRate="0.046" subsidyShare="0.697" lossRatio="0.519" claimShare="0.193" farmerPerAcre="6.24" acres="20250" policies="145"/>
-                <level coverage="0.6" premiumRate="0.1948" farmerRate="0.0575" subsidyShare="0.705" lossRatio="0.689" claimShare="0.273" farmerPerAcre="9.87" acres="44915" policies="366"/>
-                <level coverage="0.65" premiumRate="0.1948" farmerRate="0.0575" subsidyShare="0.705" lossRatio="0.787" claimShare="0.318" farmerPerAcre="9.73" acres="62768" policies="484"/>
-                <level coverage="0.7" premiumRate="0.1948" farmerRate="0.0578" subsidyShare="0.704" lossRatio="0.819" claimShare="0.306" farmerPerAcre="11.33" acres="147925" policies="1282"/>
-                <level coverage="0.75" premiumRate="0.1948" farmerRate="0.0601" subsidyShare="0.692" lossRatio="0.766" claimShare="0.374" farmerPerAcre="13.37" acres="217931" policies="1520"/>
-                <level coverage="0.8" premiumRate="0.1948" farmerRate="0.0664" subsidyShare="0.659" lossRatio="0.905" claimShare="0.365" farmerPerAcre="16.96" acres="30229" policies="364"/>
+            <plan id="RP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0588" farmerRate="0.0178" subsidyShare="0.697" lossRatio="0.519" claimShare="0.193" farmerPerAcre="6.24" acres="20250" policies="145"/>
+                <level coverage="0.6" premiumRate="0.1049" farmerRate="0.0311" subsidyShare="0.703" lossRatio="0.689" claimShare="0.273" farmerPerAcre="9.87" acres="44915" policies="366"/>
+                <level coverage="0.65" premiumRate="0.1371" farmerRate="0.0391" subsidyShare="0.715" lossRatio="0.787" claimShare="0.318" farmerPerAcre="9.73" acres="62768" policies="484"/>
+                <level coverage="0.7" premiumRate="0.1766" farmerRate="0.0511" subsidyShare="0.711" lossRatio="0.819" claimShare="0.306" farmerPerAcre="11.33" acres="147925" policies="1282"/>
+                <level coverage="0.75" premiumRate="0.2242" farmerRate="0.0689" subsidyShare="0.693" lossRatio="0.766" claimShare="0.374" farmerPerAcre="13.37" acres="217931" policies="1520"/>
+                <level coverage="0.8" premiumRate="0.2803" farmerRate="0.1131" subsidyShare="0.596" lossRatio="0.905" claimShare="0.365" farmerPerAcre="16.96" acres="30229" policies="364"/>
             </plan>
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.1198" farmerRate="0.039" subsidyShare="0.674" lossRatio="0.892" claimShare="0.182" farmerPerAcre="5.11" acres="35684" policies="439"/>
-                <level coverage="0.6" premiumRate="0.1423" farmerRate="0.0551" subsidyShare="0.613" lossRatio="0.59" claimShare="0.195" farmerPerAcre="8.86" acres="42298" policies="477"/>
-                <level coverage="0.65" premiumRate="0.1423" farmerRate="0.0576" subsidyShare="0.595" lossRatio="0.988" claimShare="0.278" farmerPerAcre="9.87" acres="53300" policies="830"/>
-                <level coverage="0.7" premiumRate="0.1423" farmerRate="0.0576" subsidyShare="0.595" lossRatio="0.915" claimShare="0.301" farmerPerAcre="10.49" acres="94337" policies="1024"/>
-                <level coverage="0.75" premiumRate="0.1423" farmerRate="0.0576" subsidyShare="0.595" lossRatio="1.565" claimShare="0.323" farmerPerAcre="12.59" acres="78994" policies="1155"/>
-                <level coverage="0.8" premiumRate="0.1423" farmerRate="0.0576" subsidyShare="0.595" lossRatio="1.784" claimShare="0.313" farmerPerAcre="18.27" acres="20940" policies="323"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0458" farmerRate="0.0149" subsidyShare="0.674" lossRatio="0.892" claimShare="0.182" farmerPerAcre="5.11" acres="35684" policies="439"/>
+                <level coverage="0.6" premiumRate="0.0817" farmerRate="0.0278" subsidyShare="0.66" lossRatio="0.59" claimShare="0.195" farmerPerAcre="8.86" acres="42298" policies="477"/>
+                <level coverage="0.65" premiumRate="0.1068" farmerRate="0.0421" subsidyShare="0.605" lossRatio="0.988" claimShare="0.278" farmerPerAcre="9.87" acres="53300" policies="830"/>
+                <level coverage="0.7" premiumRate="0.1376" farmerRate="0.0531" subsidyShare="0.614" lossRatio="0.915" claimShare="0.301" farmerPerAcre="10.49" acres="94337" policies="1024"/>
+                <level coverage="0.75" premiumRate="0.1746" farmerRate="0.0752" subsidyShare="0.57" lossRatio="1.565" claimShare="0.323" farmerPerAcre="12.59" acres="78994" policies="1155"/>
+                <level coverage="0.8" premiumRate="0.2183" farmerRate="0.1044" subsidyShare="0.522" lossRatio="1.784" claimShare="0.313" farmerPerAcre="18.27" acres="20940" policies="323"/>
             </plan>
-            <plan id="APH">
-                <level coverage="0.5" premiumRate="0.1537" farmerRate="0.0507" subsidyShare="0.67" lossRatio="0.847" claimShare="0.279" farmerPerAcre="5.45" acres="206697" policies="1928"/>
-                <level coverage="0.55" premiumRate="0.161" farmerRate="0.058" subsidyShare="0.64" lossRatio="1.102" claimShare="0.317" farmerPerAcre="6.45" acres="24211" policies="243"/>
-                <level coverage="0.6" premiumRate="0.1756" farmerRate="0.0682" subsidyShare="0.612" lossRatio="1.058" claimShare="0.358" farmerPerAcre="9.05" acres="190615" policies="1555"/>
-                <level coverage="0.65" premiumRate="0.1756" farmerRate="0.0743" subsidyShare="0.577" lossRatio="1.296" claimShare="0.368" farmerPerAcre="9.94" acres="247891" policies="2929"/>
-                <level coverage="0.7" premiumRate="0.1756" farmerRate="0.0743" subsidyShare="0.577" lossRatio="1.183" claimShare="0.381" farmerPerAcre="12" acres="398638" policies="3911"/>
-                <level coverage="0.75" premiumRate="0.1756" farmerRate="0.0743" subsidyShare="0.577" lossRatio="1.132" claimShare="0.357" farmerPerAcre="12.55" acres="259256" policies="3323"/>
-                <level coverage="0.8" premiumRate="0.1756" farmerRate="0.0743" subsidyShare="0.577" lossRatio="1.184" claimShare="0.319" farmerPerAcre="13.57" acres="33338" policies="626"/>
-                <level coverage="0.85" premiumRate="0.1756" farmerRate="0.0743" subsidyShare="0.577" lossRatio="1.367" claimShare="0.308" farmerPerAcre="15.96" acres="30026" policies="522"/>
+            <plan id="APH" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0608" farmerRate="0.0201" subsidyShare="0.67" lossRatio="0.847" claimShare="0.279" farmerPerAcre="5.45" acres="206697" policies="1928"/>
+                <level coverage="0.55" premiumRate="0.0817" farmerRate="0.0294" subsidyShare="0.64" lossRatio="1.102" claimShare="0.317" farmerPerAcre="6.45" acres="24211" policies="243"/>
+                <level coverage="0.6" premiumRate="0.1084" farmerRate="0.0388" subsidyShare="0.642" lossRatio="1.058" claimShare="0.358" farmerPerAcre="9.05" acres="190615" policies="1555"/>
+                <level coverage="0.65" premiumRate="0.1417" farmerRate="0.0579" subsidyShare="0.591" lossRatio="1.296" claimShare="0.368" farmerPerAcre="9.94" acres="247891" policies="2929"/>
+                <level coverage="0.7" premiumRate="0.1826" farmerRate="0.0746" subsidyShare="0.591" lossRatio="1.183" claimShare="0.381" farmerPerAcre="12" acres="398638" policies="3911"/>
+                <level coverage="0.75" premiumRate="0.2318" farmerRate="0.1039" subsidyShare="0.552" lossRatio="1.132" claimShare="0.357" farmerPerAcre="12.55" acres="259256" policies="3323"/>
+                <level coverage="0.8" premiumRate="0.2898" farmerRate="0.1497" subsidyShare="0.484" lossRatio="1.184" claimShare="0.319" farmerPerAcre="13.57" acres="33338" policies="626"/>
+                <level coverage="0.85" premiumRate="0.357" farmerRate="0.2201" subsidyShare="0.384" lossRatio="1.367" claimShare="0.308" farmerPerAcre="15.96" acres="30026" policies="522"/>
             </plan>
         </crop>
         <crop fillType="CANOLA" rma="Canola">
-            <plan id="RP">
-                <level coverage="0.5" premiumRate="0.11" farmerRate="0.0312" subsidyShare="0.716" lossRatio="0.294" claimShare="0.145" farmerPerAcre="5.65" acres="43340" policies="138"/>
-                <level coverage="0.6" premiumRate="0.1694" farmerRate="0.0545" subsidyShare="0.679" lossRatio="0.403" claimShare="0.374" farmerPerAcre="13.8" acres="210225" policies="457"/>
-                <level coverage="0.65" premiumRate="0.1694" farmerRate="0.0545" subsidyShare="0.679" lossRatio="0.677" claimShare="0.369" farmerPerAcre="16.47" acres="559498" policies="1636"/>
-                <level coverage="0.7" premiumRate="0.1772" farmerRate="0.0545" subsidyShare="0.693" lossRatio="0.613" claimShare="0.422" farmerPerAcre="18.54" acres="3557663" policies="9005"/>
-                <level coverage="0.75" premiumRate="0.1772" farmerRate="0.0545" subsidyShare="0.693" lossRatio="0.704" claimShare="0.469" farmerPerAcre="15.1" acres="5177720" policies="12668"/>
-                <level coverage="0.8" premiumRate="0.1772" farmerRate="0.0612" subsidyShare="0.655" lossRatio="0.832" claimShare="0.513" farmerPerAcre="20.22" acres="897211" policies="2370"/>
-                <level coverage="0.85" premiumRate="0.1772" farmerRate="0.0788" subsidyShare="0.555" lossRatio="1.478" claimShare="0.545" farmerPerAcre="27.01" acres="212188" policies="1225"/>
+            <plan id="RP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0493" farmerRate="0.014" subsidyShare="0.716" lossRatio="0.294" claimShare="0.145" farmerPerAcre="5.65" acres="43340" policies="138"/>
+                <level coverage="0.6" premiumRate="0.0879" farmerRate="0.0288" subsidyShare="0.672" lossRatio="0.403" claimShare="0.374" farmerPerAcre="13.8" acres="210225" policies="457"/>
+                <level coverage="0.65" premiumRate="0.1149" farmerRate="0.0431" subsidyShare="0.625" lossRatio="0.677" claimShare="0.369" farmerPerAcre="16.47" acres="559498" policies="1636"/>
+                <level coverage="0.7" premiumRate="0.148" farmerRate="0.0499" subsidyShare="0.663" lossRatio="0.613" claimShare="0.422" farmerPerAcre="18.54" acres="3557663" policies="9005"/>
+                <level coverage="0.75" premiumRate="0.1879" farmerRate="0.0516" subsidyShare="0.725" lossRatio="0.704" claimShare="0.469" farmerPerAcre="15.1" acres="5177720" policies="12668"/>
+                <level coverage="0.8" premiumRate="0.2349" farmerRate="0.0878" subsidyShare="0.626" lossRatio="0.832" claimShare="0.513" farmerPerAcre="20.22" acres="897211" policies="2370"/>
+                <level coverage="0.85" premiumRate="0.2894" farmerRate="0.1658" subsidyShare="0.427" lossRatio="1.478" claimShare="0.545" farmerPerAcre="27.01" acres="212188" policies="1225"/>
             </plan>
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0804" farmerRate="0.023" subsidyShare="0.714" lossRatio="0.458" claimShare="0.187" farmerPerAcre="3.76" acres="51292" policies="294"/>
-                <level coverage="0.6" premiumRate="0.1188" farmerRate="0.0382" subsidyShare="0.679" lossRatio="0.523" claimShare="0.271" farmerPerAcre="7.91" acres="34258" policies="140"/>
-                <level coverage="0.65" premiumRate="0.1446" farmerRate="0.0566" subsidyShare="0.609" lossRatio="1.006" claimShare="0.315" farmerPerAcre="11.2" acres="135172" policies="720"/>
-                <level coverage="0.7" premiumRate="0.1446" farmerRate="0.0566" subsidyShare="0.609" lossRatio="0.813" claimShare="0.322" farmerPerAcre="12.48" acres="187014" policies="743"/>
-                <level coverage="0.75" premiumRate="0.1446" farmerRate="0.0566" subsidyShare="0.609" lossRatio="1.147" claimShare="0.397" farmerPerAcre="15.96" acres="112673" policies="594"/>
-                <level coverage="0.8" premiumRate="0.1446" farmerRate="0.0566" subsidyShare="0.609" lossRatio="0.829" claimShare="0.382" farmerPerAcre="14.02" acres="39905" policies="306"/>
-                <level coverage="0.85" premiumRate="0.1446" farmerRate="0.066" subsidyShare="0.543" lossRatio="1.285" claimShare="0.483" farmerPerAcre="21.19" acres="53804" policies="207"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0414" farmerRate="0.0119" subsidyShare="0.714" lossRatio="0.458" claimShare="0.187" farmerPerAcre="3.76" acres="51292" policies="294"/>
+                <level coverage="0.6" premiumRate="0.0737" farmerRate="0.0237" subsidyShare="0.679" lossRatio="0.523" claimShare="0.271" farmerPerAcre="7.91" acres="34258" policies="140"/>
+                <level coverage="0.65" premiumRate="0.0964" farmerRate="0.0387" subsidyShare="0.598" lossRatio="1.006" claimShare="0.315" farmerPerAcre="11.2" acres="135172" policies="720"/>
+                <level coverage="0.7" premiumRate="0.1242" farmerRate="0.0428" subsidyShare="0.656" lossRatio="0.813" claimShare="0.322" farmerPerAcre="12.48" acres="187014" policies="743"/>
+                <level coverage="0.75" premiumRate="0.1576" farmerRate="0.0607" subsidyShare="0.615" lossRatio="1.147" claimShare="0.397" farmerPerAcre="15.96" acres="112673" policies="594"/>
+                <level coverage="0.8" premiumRate="0.1971" farmerRate="0.0899" subsidyShare="0.544" lossRatio="0.829" claimShare="0.382" farmerPerAcre="14.02" acres="39905" policies="306"/>
+                <level coverage="0.85" premiumRate="0.2428" farmerRate="0.1448" subsidyShare="0.404" lossRatio="1.285" claimShare="0.483" farmerPerAcre="21.19" acres="53804" policies="207"/>
             </plan>
         </crop>
         <crop fillType="SORGHUM" rma="Grain Sorghum">
-            <plan id="RP">
-                <level coverage="0.5" premiumRate="0.1859" farmerRate="0.0559" subsidyShare="0.699" lossRatio="0.955" claimShare="0.346" farmerPerAcre="8.02" acres="350296" policies="2346"/>
-                <level coverage="0.55" premiumRate="0.1859" farmerRate="0.0559" subsidyShare="0.699" lossRatio="1.066" claimShare="0.361" farmerPerAcre="9.18" acres="79126" policies="579"/>
-                <level coverage="0.6" premiumRate="0.2164" farmerRate="0.0752" subsidyShare="0.653" lossRatio="0.996" claimShare="0.489" farmerPerAcre="13.14" acres="1330772" policies="8552"/>
-                <level coverage="0.65" premiumRate="0.2164" farmerRate="0.0752" subsidyShare="0.653" lossRatio="1.009" claimShare="0.442" farmerPerAcre="15.99" acres="2582844" policies="21136"/>
-                <level coverage="0.7" premiumRate="0.2164" farmerRate="0.0752" subsidyShare="0.653" lossRatio="1.155" claimShare="0.498" farmerPerAcre="17.32" acres="9494428" policies="57903"/>
-                <level coverage="0.75" premiumRate="0.2185" farmerRate="0.0752" subsidyShare="0.656" lossRatio="1.219" claimShare="0.518" farmerPerAcre="18.59" acres="8190238" policies="37261"/>
-                <level coverage="0.8" premiumRate="0.2185" farmerRate="0.0813" subsidyShare="0.628" lossRatio="1.404" claimShare="0.557" farmerPerAcre="24.65" acres="1567719" policies="6838"/>
-                <level coverage="0.85" premiumRate="0.2419" farmerRate="0.1299" subsidyShare="0.463" lossRatio="1.917" claimShare="0.634" farmerPerAcre="40.99" acres="138076" policies="596"/>
+            <plan id="RP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.065" farmerRate="0.0193" subsidyShare="0.702" lossRatio="0.955" claimShare="0.346" farmerPerAcre="8.02" acres="350296" policies="2346"/>
+                <level coverage="0.55" premiumRate="0.0873" farmerRate="0.0274" subsidyShare="0.686" lossRatio="1.066" claimShare="0.361" farmerPerAcre="9.18" acres="79126" policies="579"/>
+                <level coverage="0.6" premiumRate="0.1157" farmerRate="0.0395" subsidyShare="0.659" lossRatio="0.996" claimShare="0.489" farmerPerAcre="13.14" acres="1330772" policies="8552"/>
+                <level coverage="0.65" premiumRate="0.1513" farmerRate="0.0572" subsidyShare="0.622" lossRatio="1.009" claimShare="0.442" farmerPerAcre="15.99" acres="2582844" policies="21136"/>
+                <level coverage="0.7" premiumRate="0.195" farmerRate="0.0683" subsidyShare="0.65" lossRatio="1.155" claimShare="0.498" farmerPerAcre="17.32" acres="9494428" policies="57903"/>
+                <level coverage="0.75" premiumRate="0.2475" farmerRate="0.0822" subsidyShare="0.668" lossRatio="1.219" claimShare="0.518" farmerPerAcre="18.59" acres="8190238" policies="37261"/>
+                <level coverage="0.8" premiumRate="0.3094" farmerRate="0.1188" subsidyShare="0.616" lossRatio="1.404" claimShare="0.557" farmerPerAcre="24.65" acres="1567719" policies="6838"/>
+                <level coverage="0.85" premiumRate="0.3812" farmerRate="0.2048" subsidyShare="0.463" lossRatio="1.917" claimShare="0.634" farmerPerAcre="40.99" acres="138076" policies="596"/>
             </plan>
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.1515" farmerRate="0.0462" subsidyShare="0.695" lossRatio="0.786" claimShare="0.292" farmerPerAcre="7.47" acres="224205" policies="2044"/>
-                <level coverage="0.55" premiumRate="0.1515" farmerRate="0.0491" subsidyShare="0.676" lossRatio="0.619" claimShare="0.305" farmerPerAcre="9.2" acres="27633" policies="200"/>
-                <level coverage="0.6" premiumRate="0.1651" farmerRate="0.0588" subsidyShare="0.644" lossRatio="0.775" claimShare="0.369" farmerPerAcre="10.98" acres="224053" policies="1750"/>
-                <level coverage="0.65" premiumRate="0.1651" farmerRate="0.0625" subsidyShare="0.622" lossRatio="0.998" claimShare="0.346" farmerPerAcre="12.82" acres="670138" policies="8342"/>
-                <level coverage="0.7" premiumRate="0.1665" farmerRate="0.0625" subsidyShare="0.625" lossRatio="0.986" claimShare="0.387" farmerPerAcre="13.42" acres="485303" policies="4317"/>
-                <level coverage="0.75" premiumRate="0.1982" farmerRate="0.071" subsidyShare="0.642" lossRatio="1.068" claimShare="0.458" farmerPerAcre="15.59" acres="297657" policies="1560"/>
-                <level coverage="0.8" premiumRate="0.2484" farmerRate="0.1151" subsidyShare="0.536" lossRatio="1.428" claimShare="0.398" farmerPerAcre="23.9" acres="27861" policies="118"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0657" farmerRate="0.02" subsidyShare="0.695" lossRatio="0.786" claimShare="0.292" farmerPerAcre="7.47" acres="224205" policies="2044"/>
+                <level coverage="0.55" premiumRate="0.0882" farmerRate="0.0286" subsidyShare="0.676" lossRatio="0.619" claimShare="0.305" farmerPerAcre="9.2" acres="27633" policies="200"/>
+                <level coverage="0.6" premiumRate="0.117" farmerRate="0.0401" subsidyShare="0.657" lossRatio="0.775" claimShare="0.369" farmerPerAcre="10.98" acres="224053" policies="1750"/>
+                <level coverage="0.65" premiumRate="0.153" farmerRate="0.0605" subsidyShare="0.605" lossRatio="0.998" claimShare="0.346" farmerPerAcre="12.82" acres="670138" policies="8342"/>
+                <level coverage="0.7" premiumRate="0.1971" farmerRate="0.071" subsidyShare="0.64" lossRatio="0.986" claimShare="0.387" farmerPerAcre="13.42" acres="485303" policies="4317"/>
+                <level coverage="0.75" premiumRate="0.2501" farmerRate="0.0896" subsidyShare="0.642" lossRatio="1.068" claimShare="0.458" farmerPerAcre="15.59" acres="297657" policies="1560"/>
+                <level coverage="0.8" premiumRate="0.3128" farmerRate="0.145" subsidyShare="0.536" lossRatio="1.428" claimShare="0.398" farmerPerAcre="23.9" acres="27861" policies="118"/>
             </plan>
         </crop>
         <crop fillType="SUNFLOWER" rma="Sunflowers">
-            <plan id="RP">
-                <level coverage="0.5" premiumRate="0.1423" farmerRate="0.0419" subsidyShare="0.706" lossRatio="0.256" claimShare="0.202" farmerPerAcre="8.08" acres="54145" policies="208"/>
-                <level coverage="0.6" premiumRate="0.175" farmerRate="0.0544" subsidyShare="0.689" lossRatio="0.505" claimShare="0.379" farmerPerAcre="16.06" acres="380487" policies="882"/>
-                <level coverage="0.65" premiumRate="0.1809" farmerRate="0.0544" subsidyShare="0.699" lossRatio="0.504" claimShare="0.331" farmerPerAcre="15.58" acres="482271" policies="1696"/>
-                <level coverage="0.7" premiumRate="0.1934" farmerRate="0.0544" subsidyShare="0.719" lossRatio="0.549" claimShare="0.352" farmerPerAcre="16" acres="1962972" policies="6074"/>
-                <level coverage="0.75" premiumRate="0.1934" farmerRate="0.0544" subsidyShare="0.719" lossRatio="0.615" claimShare="0.379" farmerPerAcre="17.47" acres="2759071" policies="7324"/>
-                <level coverage="0.8" premiumRate="0.197" farmerRate="0.0687" subsidyShare="0.651" lossRatio="0.907" claimShare="0.461" farmerPerAcre="24.71" acres="245434" policies="618"/>
+            <plan id="RP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0567" farmerRate="0.0167" subsidyShare="0.706" lossRatio="0.256" claimShare="0.202" farmerPerAcre="8.08" acres="54145" policies="208"/>
+                <level coverage="0.6" premiumRate="0.101" farmerRate="0.0348" subsidyShare="0.655" lossRatio="0.505" claimShare="0.379" farmerPerAcre="16.06" acres="380487" policies="882"/>
+                <level coverage="0.65" premiumRate="0.132" farmerRate="0.0455" subsidyShare="0.655" lossRatio="0.504" claimShare="0.331" farmerPerAcre="15.58" acres="482271" policies="1696"/>
+                <level coverage="0.7" premiumRate="0.1701" farmerRate="0.0491" subsidyShare="0.711" lossRatio="0.549" claimShare="0.352" farmerPerAcre="16" acres="1962972" policies="6074"/>
+                <level coverage="0.75" premiumRate="0.2159" farmerRate="0.0579" subsidyShare="0.732" lossRatio="0.615" claimShare="0.379" farmerPerAcre="17.47" acres="2759071" policies="7324"/>
+                <level coverage="0.8" premiumRate="0.2699" farmerRate="0.0941" subsidyShare="0.651" lossRatio="0.907" claimShare="0.461" farmerPerAcre="24.71" acres="245434" policies="618"/>
             </plan>
-            <plan id="YP">
-                <level coverage="0.6" premiumRate="0.1874" farmerRate="0.0616" subsidyShare="0.671" lossRatio="0.502" claimShare="0.375" farmerPerAcre="10.75" acres="29883" policies="120"/>
-                <level coverage="0.65" premiumRate="0.1882" farmerRate="0.0639" subsidyShare="0.66" lossRatio="1.081" claimShare="0.365" farmerPerAcre="13.88" acres="113156" policies="513"/>
-                <level coverage="0.7" premiumRate="0.1882" farmerRate="0.0639" subsidyShare="0.66" lossRatio="0.597" claimShare="0.396" farmerPerAcre="15.27" acres="111827" policies="508"/>
-                <level coverage="0.75" premiumRate="0.2231" farmerRate="0.0639" subsidyShare="0.714" lossRatio="0.371" claimShare="0.361" farmerPerAcre="14.68" acres="82851" policies="269"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.6" premiumRate="0.1203" farmerRate="0.0396" subsidyShare="0.671" lossRatio="0.502" claimShare="0.375" farmerPerAcre="10.75" acres="29883" policies="120"/>
+                <level coverage="0.65" premiumRate="0.1573" farmerRate="0.0552" subsidyShare="0.649" lossRatio="1.081" claimShare="0.365" farmerPerAcre="13.88" acres="113156" policies="513"/>
+                <level coverage="0.7" premiumRate="0.2026" farmerRate="0.0703" subsidyShare="0.653" lossRatio="0.597" claimShare="0.396" farmerPerAcre="15.27" acres="111827" policies="508"/>
+                <level coverage="0.75" premiumRate="0.2572" farmerRate="0.0687" subsidyShare="0.733" lossRatio="0.371" claimShare="0.361" farmerPerAcre="14.68" acres="82851" policies="269"/>
             </plan>
         </crop>
         <crop fillType="SOYBEAN" rma="Soybeans">
-            <plan id="RP">
-                <level coverage="0.5" premiumRate="0.0345" farmerRate="0.0084" subsidyShare="0.757" lossRatio="0.444" claimShare="0.202" farmerPerAcre="2.7" acres="6154068" policies="17689"/>
-                <level coverage="0.55" premiumRate="0.044" farmerRate="0.0123" subsidyShare="0.72" lossRatio="0.54" claimShare="0.26" farmerPerAcre="4.21" acres="824701" policies="2847"/>
-                <level coverage="0.6" premiumRate="0.0638" farmerRate="0.0185" subsidyShare="0.71" lossRatio="0.607" claimShare="0.279" farmerPerAcre="6.74" acres="5654287" policies="20591"/>
-                <level coverage="0.65" premiumRate="0.0749" farmerRate="0.025" subsidyShare="0.666" lossRatio="0.743" claimShare="0.288" farmerPerAcre="9.28" acres="8770995" policies="47818"/>
-                <level coverage="0.7" premiumRate="0.082" farmerRate="0.0279" subsidyShare="0.66" lossRatio="0.75" claimShare="0.347" farmerPerAcre="11.07" acres="47424397" policies="223685"/>
-                <level coverage="0.75" premiumRate="0.082" farmerRate="0.0279" subsidyShare="0.66" lossRatio="0.708" claimShare="0.349" farmerPerAcre="11.82" acres="127598268" policies="505923"/>
-                <level coverage="0.8" premiumRate="0.082" farmerRate="0.0287" subsidyShare="0.65" lossRatio="0.583" claimShare="0.296" farmerPerAcre="14.93" acres="107635098" policies="484385"/>
-                <level coverage="0.85" premiumRate="0.082" farmerRate="0.0361" subsidyShare="0.559" lossRatio="0.538" claimShare="0.302" farmerPerAcre="21.66" acres="57379889" policies="278853"/>
+            <plan id="RP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0186" farmerRate="0.0045" subsidyShare="0.757" lossRatio="0.444" claimShare="0.202" farmerPerAcre="2.7" acres="6154068" policies="17689"/>
+                <level coverage="0.55" premiumRate="0.025" farmerRate="0.007" subsidyShare="0.72" lossRatio="0.54" claimShare="0.26" farmerPerAcre="4.21" acres="824701" policies="2847"/>
+                <level coverage="0.6" premiumRate="0.0331" farmerRate="0.0096" subsidyShare="0.71" lossRatio="0.607" claimShare="0.279" farmerPerAcre="6.74" acres="5654287" policies="20591"/>
+                <level coverage="0.65" premiumRate="0.0433" farmerRate="0.0145" subsidyShare="0.666" lossRatio="0.743" claimShare="0.288" farmerPerAcre="9.28" acres="8770995" policies="47818"/>
+                <level coverage="0.7" premiumRate="0.0557" farmerRate="0.0175" subsidyShare="0.686" lossRatio="0.75" claimShare="0.347" farmerPerAcre="11.07" acres="47424397" policies="223685"/>
+                <level coverage="0.75" premiumRate="0.0708" farmerRate="0.0211" subsidyShare="0.702" lossRatio="0.708" claimShare="0.349" farmerPerAcre="11.82" acres="127598268" policies="505923"/>
+                <level coverage="0.8" premiumRate="0.0885" farmerRate="0.033" subsidyShare="0.627" lossRatio="0.583" claimShare="0.296" farmerPerAcre="14.93" acres="107635098" policies="484385"/>
+                <level coverage="0.85" premiumRate="0.109" farmerRate="0.0577" subsidyShare="0.47" lossRatio="0.538" claimShare="0.302" farmerPerAcre="21.66" acres="57379889" policies="278853"/>
             </plan>
-            <plan id="RPHPE">
-                <level coverage="0.5" premiumRate="0.0115" farmerRate="0.0029" subsidyShare="0.753" lossRatio="1.073" claimShare="0.152" farmerPerAcre="0.93" acres="69740" policies="375"/>
-                <level coverage="0.6" premiumRate="0.0199" farmerRate="0.0054" subsidyShare="0.726" lossRatio="0.432" claimShare="0.158" farmerPerAcre="2.26" acres="62402" policies="253"/>
-                <level coverage="0.65" premiumRate="0.0313" farmerRate="0.0102" subsidyShare="0.673" lossRatio="0.353" claimShare="0.122" farmerPerAcre="4.53" acres="45982" policies="386"/>
-                <level coverage="0.7" premiumRate="0.0398" farmerRate="0.0134" subsidyShare="0.663" lossRatio="0.578" claimShare="0.199" farmerPerAcre="7.07" acres="179889" policies="903"/>
-                <level coverage="0.75" premiumRate="0.0398" farmerRate="0.0134" subsidyShare="0.663" lossRatio="0.509" claimShare="0.2" farmerPerAcre="6.62" acres="463412" policies="2175"/>
-                <level coverage="0.8" premiumRate="0.0398" farmerRate="0.015" subsidyShare="0.623" lossRatio="0.437" claimShare="0.179" farmerPerAcre="8.77" acres="559911" policies="2644"/>
-                <level coverage="0.85" premiumRate="0.0398" farmerRate="0.02" subsidyShare="0.499" lossRatio="0.584" claimShare="0.244" farmerPerAcre="12.61" acres="901434" policies="3859"/>
+            <plan id="RPHPE" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0081" farmerRate="0.002" subsidyShare="0.753" lossRatio="1.073" claimShare="0.152" farmerPerAcre="0.93" acres="69740" policies="375"/>
+                <level coverage="0.6" premiumRate="0.0144" farmerRate="0.0039" subsidyShare="0.726" lossRatio="0.432" claimShare="0.158" farmerPerAcre="2.26" acres="62402" policies="253"/>
+                <level coverage="0.65" premiumRate="0.0188" farmerRate="0.0062" subsidyShare="0.673" lossRatio="0.353" claimShare="0.122" farmerPerAcre="4.53" acres="45982" policies="386"/>
+                <level coverage="0.7" premiumRate="0.0243" farmerRate="0.0075" subsidyShare="0.691" lossRatio="0.578" claimShare="0.199" farmerPerAcre="7.07" acres="179889" policies="903"/>
+                <level coverage="0.75" premiumRate="0.0308" farmerRate="0.0094" subsidyShare="0.696" lossRatio="0.509" claimShare="0.2" farmerPerAcre="6.62" acres="463412" policies="2175"/>
+                <level coverage="0.8" premiumRate="0.0385" farmerRate="0.0146" subsidyShare="0.622" lossRatio="0.437" claimShare="0.179" farmerPerAcre="8.77" acres="559911" policies="2644"/>
+                <level coverage="0.85" premiumRate="0.0475" farmerRate="0.0252" subsidyShare="0.469" lossRatio="0.584" claimShare="0.244" farmerPerAcre="12.61" acres="901434" policies="3859"/>
             </plan>
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0313" farmerRate="0.0076" subsidyShare="0.756" lossRatio="0.557" claimShare="0.223" farmerPerAcre="2.36" acres="6254165" policies="20919"/>
-                <level coverage="0.55" premiumRate="0.0404" farmerRate="0.0113" subsidyShare="0.721" lossRatio="0.66" claimShare="0.22" farmerPerAcre="3.64" acres="332591" policies="1431"/>
-                <level coverage="0.6" premiumRate="0.0505" farmerRate="0.0136" subsidyShare="0.73" lossRatio="0.685" claimShare="0.289" farmerPerAcre="5.19" acres="2631123" policies="8602"/>
-                <level coverage="0.65" premiumRate="0.0582" farmerRate="0.0218" subsidyShare="0.625" lossRatio="1.003" claimShare="0.253" farmerPerAcre="8.67" acres="2128280" policies="18042"/>
-                <level coverage="0.7" premiumRate="0.0582" farmerRate="0.0218" subsidyShare="0.625" lossRatio="0.889" claimShare="0.284" farmerPerAcre="8.68" acres="3035515" policies="18530"/>
-                <level coverage="0.75" premiumRate="0.0582" farmerRate="0.0218" subsidyShare="0.625" lossRatio="0.922" claimShare="0.265" farmerPerAcre="10.1" acres="2947725" policies="18074"/>
-                <level coverage="0.8" premiumRate="0.0582" farmerRate="0.0218" subsidyShare="0.625" lossRatio="0.865" claimShare="0.238" farmerPerAcre="11.33" acres="1332160" policies="8098"/>
-                <level coverage="0.85" premiumRate="0.0582" farmerRate="0.0218" subsidyShare="0.625" lossRatio="0.71" claimShare="0.221" farmerPerAcre="13.33" acres="962005" policies="5730"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.018" farmerRate="0.0044" subsidyShare="0.756" lossRatio="0.557" claimShare="0.223" farmerPerAcre="2.36" acres="6254165" policies="20919"/>
+                <level coverage="0.55" premiumRate="0.0241" farmerRate="0.0067" subsidyShare="0.721" lossRatio="0.66" claimShare="0.22" farmerPerAcre="3.64" acres="332591" policies="1431"/>
+                <level coverage="0.6" premiumRate="0.032" farmerRate="0.0086" subsidyShare="0.73" lossRatio="0.685" claimShare="0.289" farmerPerAcre="5.19" acres="2631123" policies="8602"/>
+                <level coverage="0.65" premiumRate="0.0419" farmerRate="0.0154" subsidyShare="0.633" lossRatio="1.003" claimShare="0.253" farmerPerAcre="8.67" acres="2128280" policies="18042"/>
+                <level coverage="0.7" premiumRate="0.0539" farmerRate="0.018" subsidyShare="0.666" lossRatio="0.889" claimShare="0.284" farmerPerAcre="8.68" acres="3035515" policies="18530"/>
+                <level coverage="0.75" premiumRate="0.0685" farmerRate="0.0238" subsidyShare="0.652" lossRatio="0.922" claimShare="0.265" farmerPerAcre="10.1" acres="2947725" policies="18074"/>
+                <level coverage="0.8" premiumRate="0.0856" farmerRate="0.0361" subsidyShare="0.578" lossRatio="0.865" claimShare="0.238" farmerPerAcre="11.33" acres="1332160" policies="8098"/>
+                <level coverage="0.85" premiumRate="0.1054" farmerRate="0.0582" subsidyShare="0.448" lossRatio="0.71" claimShare="0.221" farmerPerAcre="13.33" acres="962005" policies="5730"/>
             </plan>
         </crop>
         <crop fillType="MAIZE" rma="Corn">
-            <plan id="RP">
-                <level coverage="0.5" premiumRate="0.0418" farmerRate="0.0104" subsidyShare="0.75" lossRatio="0.435" claimShare="0.155" farmerPerAcre="4.89" acres="5518232" policies="16947"/>
-                <level coverage="0.55" premiumRate="0.0532" farmerRate="0.0146" subsidyShare="0.725" lossRatio="0.552" claimShare="0.186" farmerPerAcre="6.98" acres="722544" policies="2926"/>
-                <level coverage="0.6" premiumRate="0.0678" farmerRate="0.0203" subsidyShare="0.701" lossRatio="0.606" claimShare="0.225" farmerPerAcre="10.59" acres="5700963" policies="23821"/>
-                <level coverage="0.65" premiumRate="0.0757" farmerRate="0.0252" subsidyShare="0.667" lossRatio="0.712" claimShare="0.26" farmerPerAcre="13.61" acres="9578270" policies="52133"/>
-                <level coverage="0.7" premiumRate="0.0894" farmerRate="0.0308" subsidyShare="0.655" lossRatio="0.774" claimShare="0.315" farmerPerAcre="17.6" acres="51180245" policies="238013"/>
-                <level coverage="0.75" premiumRate="0.0894" farmerRate="0.0308" subsidyShare="0.655" lossRatio="0.759" claimShare="0.32" farmerPerAcre="18.93" acres="128857104" policies="517781"/>
-                <level coverage="0.8" premiumRate="0.0894" farmerRate="0.0308" subsidyShare="0.655" lossRatio="0.596" claimShare="0.27" farmerPerAcre="22.68" acres="115479010" policies="495980"/>
-                <level coverage="0.85" premiumRate="0.0894" farmerRate="0.0386" subsidyShare="0.569" lossRatio="0.585" claimShare="0.313" farmerPerAcre="32.63" acres="68577448" policies="290367"/>
+            <plan id="RP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.02" farmerRate="0.005" subsidyShare="0.75" lossRatio="0.435" claimShare="0.155" farmerPerAcre="4.89" acres="5518232" policies="16947"/>
+                <level coverage="0.55" premiumRate="0.0269" farmerRate="0.0074" subsidyShare="0.725" lossRatio="0.552" claimShare="0.186" farmerPerAcre="6.98" acres="722544" policies="2926"/>
+                <level coverage="0.6" premiumRate="0.0357" farmerRate="0.0107" subsidyShare="0.701" lossRatio="0.606" claimShare="0.225" farmerPerAcre="10.59" acres="5700963" policies="23821"/>
+                <level coverage="0.65" premiumRate="0.0467" farmerRate="0.0156" subsidyShare="0.667" lossRatio="0.712" claimShare="0.26" farmerPerAcre="13.61" acres="9578270" policies="52133"/>
+                <level coverage="0.7" premiumRate="0.0601" farmerRate="0.019" subsidyShare="0.684" lossRatio="0.774" claimShare="0.315" farmerPerAcre="17.6" acres="51180245" policies="238013"/>
+                <level coverage="0.75" premiumRate="0.0763" farmerRate="0.0224" subsidyShare="0.706" lossRatio="0.759" claimShare="0.32" farmerPerAcre="18.93" acres="128857104" policies="517781"/>
+                <level coverage="0.8" premiumRate="0.0954" farmerRate="0.0355" subsidyShare="0.628" lossRatio="0.596" claimShare="0.27" farmerPerAcre="22.68" acres="115479010" policies="495980"/>
+                <level coverage="0.85" premiumRate="0.1176" farmerRate="0.0615" subsidyShare="0.477" lossRatio="0.585" claimShare="0.313" farmerPerAcre="32.63" acres="68577448" policies="290367"/>
             </plan>
-            <plan id="RPHPE">
-                <level coverage="0.5" premiumRate="0.0169" farmerRate="0.0043" subsidyShare="0.744" lossRatio="0.053" claimShare="0.05" farmerPerAcre="2.11" acres="51308" policies="238"/>
-                <level coverage="0.6" premiumRate="0.029" farmerRate="0.0081" subsidyShare="0.72" lossRatio="0.407" claimShare="0.119" farmerPerAcre="4.72" acres="75149" policies="286"/>
-                <level coverage="0.65" premiumRate="0.0344" farmerRate="0.012" subsidyShare="0.653" lossRatio="0.652" claimShare="0.101" farmerPerAcre="7.59" acres="73799" policies="396"/>
-                <level coverage="0.7" premiumRate="0.0409" farmerRate="0.0125" subsidyShare="0.694" lossRatio="0.514" claimShare="0.191" farmerPerAcre="9.05" acres="247587" policies="1067"/>
-                <level coverage="0.75" premiumRate="0.0409" farmerRate="0.0125" subsidyShare="0.694" lossRatio="0.536" claimShare="0.168" farmerPerAcre="9.1" acres="686626" policies="2552"/>
-                <level coverage="0.8" premiumRate="0.0409" farmerRate="0.0152" subsidyShare="0.628" lossRatio="0.64" claimShare="0.2" farmerPerAcre="12.39" acres="865035" policies="3225"/>
-                <level coverage="0.85" premiumRate="0.0409" farmerRate="0.0208" subsidyShare="0.493" lossRatio="1.167" claimShare="0.291" farmerPerAcre="18.04" acres="1235856" policies="4289"/>
+            <plan id="RPHPE" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0084" farmerRate="0.0022" subsidyShare="0.744" lossRatio="0.053" claimShare="0.05" farmerPerAcre="2.11" acres="51308" policies="238"/>
+                <level coverage="0.6" premiumRate="0.015" farmerRate="0.0042" subsidyShare="0.72" lossRatio="0.407" claimShare="0.119" farmerPerAcre="4.72" acres="75149" policies="286"/>
+                <level coverage="0.65" premiumRate="0.0196" farmerRate="0.0068" subsidyShare="0.653" lossRatio="0.652" claimShare="0.101" farmerPerAcre="7.59" acres="73799" policies="396"/>
+                <level coverage="0.7" premiumRate="0.0253" farmerRate="0.0074" subsidyShare="0.707" lossRatio="0.514" claimShare="0.191" farmerPerAcre="9.05" acres="247587" policies="1067"/>
+                <level coverage="0.75" premiumRate="0.0321" farmerRate="0.0094" subsidyShare="0.708" lossRatio="0.536" claimShare="0.168" farmerPerAcre="9.1" acres="686626" policies="2552"/>
+                <level coverage="0.8" premiumRate="0.0402" farmerRate="0.015" subsidyShare="0.625" lossRatio="0.64" claimShare="0.2" farmerPerAcre="12.39" acres="865035" policies="3225"/>
+                <level coverage="0.85" premiumRate="0.0495" farmerRate="0.0257" subsidyShare="0.48" lossRatio="1.167" claimShare="0.291" farmerPerAcre="18.04" acres="1235856" policies="4289"/>
             </plan>
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0398" farmerRate="0.0102" subsidyShare="0.743" lossRatio="0.523" claimShare="0.149" farmerPerAcre="4.48" acres="3951834" policies="19269"/>
-                <level coverage="0.55" premiumRate="0.0398" farmerRate="0.0119" subsidyShare="0.701" lossRatio="0.516" claimShare="0.144" farmerPerAcre="5.7" acres="332891" policies="1547"/>
-                <level coverage="0.6" premiumRate="0.0545" farmerRate="0.0157" subsidyShare="0.712" lossRatio="0.679" claimShare="0.209" farmerPerAcre="8.25" acres="1906442" policies="9347"/>
-                <level coverage="0.65" premiumRate="0.0545" farmerRate="0.0198" subsidyShare="0.637" lossRatio="0.842" claimShare="0.189" farmerPerAcre="10.65" acres="2449645" policies="19928"/>
-                <level coverage="0.7" premiumRate="0.0546" farmerRate="0.0209" subsidyShare="0.617" lossRatio="0.848" claimShare="0.243" farmerPerAcre="12.12" acres="3537729" policies="20907"/>
-                <level coverage="0.75" premiumRate="0.0546" farmerRate="0.0209" subsidyShare="0.617" lossRatio="0.969" claimShare="0.249" farmerPerAcre="13.59" acres="3673782" policies="20013"/>
-                <level coverage="0.8" premiumRate="0.0546" farmerRate="0.0209" subsidyShare="0.617" lossRatio="1.236" claimShare="0.245" farmerPerAcre="16.05" acres="1918545" policies="9621"/>
-                <level coverage="0.85" premiumRate="0.0546" farmerRate="0.0223" subsidyShare="0.591" lossRatio="1.356" claimShare="0.246" farmerPerAcre="20.17" acres="1437778" policies="6775"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0162" farmerRate="0.0042" subsidyShare="0.743" lossRatio="0.523" claimShare="0.149" farmerPerAcre="4.48" acres="3951834" policies="19269"/>
+                <level coverage="0.55" premiumRate="0.0218" farmerRate="0.0065" subsidyShare="0.701" lossRatio="0.516" claimShare="0.144" farmerPerAcre="5.7" acres="332891" policies="1547"/>
+                <level coverage="0.6" premiumRate="0.0289" farmerRate="0.0083" subsidyShare="0.713" lossRatio="0.679" claimShare="0.209" farmerPerAcre="8.25" acres="1906442" policies="9347"/>
+                <level coverage="0.65" premiumRate="0.0378" farmerRate="0.0137" subsidyShare="0.636" lossRatio="0.842" claimShare="0.189" farmerPerAcre="10.65" acres="2449645" policies="19928"/>
+                <level coverage="0.7" premiumRate="0.0487" farmerRate="0.0164" subsidyShare="0.662" lossRatio="0.848" claimShare="0.243" farmerPerAcre="12.12" acres="3537729" policies="20907"/>
+                <level coverage="0.75" premiumRate="0.0618" farmerRate="0.0217" subsidyShare="0.649" lossRatio="0.969" claimShare="0.249" farmerPerAcre="13.59" acres="3673782" policies="20013"/>
+                <level coverage="0.8" premiumRate="0.0772" farmerRate="0.033" subsidyShare="0.573" lossRatio="1.236" claimShare="0.245" farmerPerAcre="16.05" acres="1918545" policies="9621"/>
+                <level coverage="0.85" premiumRate="0.0951" farmerRate="0.0529" subsidyShare="0.444" lossRatio="1.356" claimShare="0.246" farmerPerAcre="20.17" acres="1437778" policies="6775"/>
             </plan>
         </crop>
         <crop fillType="POTATO" rma="Potatoes">
-            <plan id="APH">
-                <level coverage="0.5" premiumRate="0.0386" farmerRate="0.0126" subsidyShare="0.672" lossRatio="0.427" claimShare="0.103" farmerPerAcre="25.89" acres="285796" policies="682"/>
-                <level coverage="0.55" premiumRate="0.0754" farmerRate="0.0271" subsidyShare="0.64" lossRatio="0.307" claimShare="0.169" farmerPerAcre="54.08" acres="22778" policies="77"/>
-                <level coverage="0.6" premiumRate="0.0843" farmerRate="0.034" subsidyShare="0.597" lossRatio="0.544" claimShare="0.289" farmerPerAcre="85.73" acres="329949" policies="812"/>
-                <level coverage="0.65" premiumRate="0.0843" farmerRate="0.034" subsidyShare="0.597" lossRatio="0.662" claimShare="0.372" farmerPerAcre="101.04" acres="167574" policies="500"/>
-                <level coverage="0.7" premiumRate="0.0843" farmerRate="0.034" subsidyShare="0.597" lossRatio="0.701" claimShare="0.41" farmerPerAcre="98.97" acres="457416" policies="1153"/>
-                <level coverage="0.75" premiumRate="0.0843" farmerRate="0.034" subsidyShare="0.597" lossRatio="1.476" claimShare="0.485" farmerPerAcre="89.27" acres="441990" policies="1344"/>
-                <level coverage="0.8" premiumRate="0.1108" farmerRate="0.0572" subsidyShare="0.483" lossRatio="2.391" claimShare="0.745" farmerPerAcre="201.65" acres="70552" policies="345"/>
-                <level coverage="0.85" premiumRate="0.1108" farmerRate="0.0646" subsidyShare="0.417" lossRatio="3.228" claimShare="0.832" farmerPerAcre="227.39" acres="44930" policies="184"/>
+            <plan id="APH" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.028" farmerRate="0.0092" subsidyShare="0.672" lossRatio="0.427" claimShare="0.103" farmerPerAcre="25.89" acres="285796" policies="682"/>
+                <level coverage="0.55" premiumRate="0.0376" farmerRate="0.0135" subsidyShare="0.64" lossRatio="0.307" claimShare="0.169" farmerPerAcre="54.08" acres="22778" policies="77"/>
+                <level coverage="0.6" premiumRate="0.0499" farmerRate="0.0178" subsidyShare="0.643" lossRatio="0.544" claimShare="0.289" farmerPerAcre="85.73" acres="329949" policies="812"/>
+                <level coverage="0.65" premiumRate="0.0652" farmerRate="0.0265" subsidyShare="0.594" lossRatio="0.662" claimShare="0.372" farmerPerAcre="101.04" acres="167574" policies="500"/>
+                <level coverage="0.7" premiumRate="0.0841" farmerRate="0.034" subsidyShare="0.595" lossRatio="0.701" claimShare="0.41" farmerPerAcre="98.97" acres="457416" policies="1153"/>
+                <level coverage="0.75" premiumRate="0.1067" farmerRate="0.0472" subsidyShare="0.558" lossRatio="1.476" claimShare="0.485" farmerPerAcre="89.27" acres="441990" policies="1344"/>
+                <level coverage="0.8" premiumRate="0.1334" farmerRate="0.0682" subsidyShare="0.489" lossRatio="2.391" claimShare="0.745" farmerPerAcre="201.65" acres="70552" policies="345"/>
+                <level coverage="0.85" premiumRate="0.1643" farmerRate="0.0974" subsidyShare="0.408" lossRatio="3.228" claimShare="0.832" farmerPerAcre="227.39" acres="44930" policies="184"/>
             </plan>
         </crop>
         <crop fillType="SUGARBEET" rma="Sugar Beets">
-            <plan id="APH">
-                <level coverage="0.5" premiumRate="0.0142" farmerRate="0.0047" subsidyShare="0.669" lossRatio="1.424" claimShare="0.295" farmerPerAcre="4.8" acres="724226" policies="2362"/>
-                <level coverage="0.55" premiumRate="0.0229" farmerRate="0.0082" subsidyShare="0.641" lossRatio="0.362" claimShare="0.278" farmerPerAcre="8.65" acres="28866" policies="72"/>
-                <level coverage="0.6" premiumRate="0.0397" farmerRate="0.0143" subsidyShare="0.641" lossRatio="0.563" claimShare="0.162" farmerPerAcre="15.21" acres="597188" policies="3417"/>
-                <level coverage="0.65" premiumRate="0.0513" farmerRate="0.0211" subsidyShare="0.59" lossRatio="0.348" claimShare="0.143" farmerPerAcre="23.79" acres="277042" policies="1818"/>
-                <level coverage="0.7" premiumRate="0.0615" farmerRate="0.0252" subsidyShare="0.59" lossRatio="0.285" claimShare="0.151" farmerPerAcre="30.02" acres="1383144" policies="8047"/>
-                <level coverage="0.75" premiumRate="0.0688" farmerRate="0.032" subsidyShare="0.535" lossRatio="0.384" claimShare="0.199" farmerPerAcre="39.34" acres="1441103" policies="8756"/>
-                <level coverage="0.8" premiumRate="0.0688" farmerRate="0.036" subsidyShare="0.477" lossRatio="0.563" claimShare="0.261" farmerPerAcre="49.14" acres="537010" policies="2601"/>
-                <level coverage="0.85" premiumRate="0.0688" farmerRate="0.036" subsidyShare="0.477" lossRatio="1.074" claimShare="0.471" farmerPerAcre="56.88" acres="247628" policies="1052"/>
+            <plan id="APH" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0175" farmerRate="0.0058" subsidyShare="0.669" lossRatio="1.424" claimShare="0.295" farmerPerAcre="4.8" acres="724226" policies="2362"/>
+                <level coverage="0.55" premiumRate="0.0236" farmerRate="0.0085" subsidyShare="0.641" lossRatio="0.362" claimShare="0.278" farmerPerAcre="8.65" acres="28866" policies="72"/>
+                <level coverage="0.6" premiumRate="0.0313" farmerRate="0.0112" subsidyShare="0.641" lossRatio="0.563" claimShare="0.162" farmerPerAcre="15.21" acres="597188" policies="3417"/>
+                <level coverage="0.65" premiumRate="0.0409" farmerRate="0.0168" subsidyShare="0.59" lossRatio="0.348" claimShare="0.143" farmerPerAcre="23.79" acres="277042" policies="1818"/>
+                <level coverage="0.7" premiumRate="0.0526" farmerRate="0.0216" subsidyShare="0.59" lossRatio="0.285" claimShare="0.151" farmerPerAcre="30.02" acres="1383144" policies="8047"/>
+                <level coverage="0.75" premiumRate="0.0668" farmerRate="0.0301" subsidyShare="0.55" lossRatio="0.384" claimShare="0.199" farmerPerAcre="39.34" acres="1441103" policies="8756"/>
+                <level coverage="0.8" premiumRate="0.0836" farmerRate="0.0435" subsidyShare="0.48" lossRatio="0.563" claimShare="0.261" farmerPerAcre="49.14" acres="537010" policies="2601"/>
+                <level coverage="0.85" premiumRate="0.1029" farmerRate="0.0638" subsidyShare="0.38" lossRatio="1.074" claimShare="0.471" farmerPerAcre="56.88" acres="247628" policies="1052"/>
             </plan>
         </crop>
         <crop fillType="SUGARCANE" rma="Sugarcane">
-            <plan id="APH">
-                <level coverage="0.5" premiumRate="0.0196" farmerRate="0.0057" subsidyShare="0.711" lossRatio="0.967" claimShare="0.154" farmerPerAcre="3.39" acres="116571" policies="260"/>
-                <level coverage="0.6" premiumRate="0.0201" farmerRate="0.0058" subsidyShare="0.711" lossRatio="1.034" claimShare="0.166" farmerPerAcre="4.43" acres="433364" policies="592"/>
-                <level coverage="0.65" premiumRate="0.0278" farmerRate="0.0096" subsidyShare="0.656" lossRatio="1.479" claimShare="0.37" farmerPerAcre="8.04" acres="242225" policies="513"/>
-                <level coverage="0.7" premiumRate="0.0299" farmerRate="0.0096" subsidyShare="0.68" lossRatio="1.11" claimShare="0.241" farmerPerAcre="7.73" acres="536914" policies="830"/>
-                <level coverage="0.75" premiumRate="0.0311" farmerRate="0.0105" subsidyShare="0.663" lossRatio="0.935" claimShare="0.162" farmerPerAcre="9.37" acres="346537" policies="437"/>
-                <level coverage="0.8" premiumRate="0.0337" farmerRate="0.0142" subsidyShare="0.58" lossRatio="0.504" claimShare="0.152" farmerPerAcre="14.69" acres="42156" policies="79"/>
+            <plan id="APH" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0099" farmerRate="0.0029" subsidyShare="0.711" lossRatio="0.967" claimShare="0.154" farmerPerAcre="3.39" acres="116571" policies="260"/>
+                <level coverage="0.6" premiumRate="0.0176" farmerRate="0.0051" subsidyShare="0.711" lossRatio="1.034" claimShare="0.166" farmerPerAcre="4.43" acres="433364" policies="592"/>
+                <level coverage="0.65" premiumRate="0.023" farmerRate="0.0083" subsidyShare="0.637" lossRatio="1.479" claimShare="0.37" farmerPerAcre="8.04" acres="242225" policies="513"/>
+                <level coverage="0.7" premiumRate="0.0296" farmerRate="0.0092" subsidyShare="0.688" lossRatio="1.11" claimShare="0.241" farmerPerAcre="7.73" acres="536914" policies="830"/>
+                <level coverage="0.75" premiumRate="0.0376" farmerRate="0.0127" subsidyShare="0.663" lossRatio="0.935" claimShare="0.162" farmerPerAcre="9.37" acres="346537" policies="437"/>
+                <level coverage="0.8" premiumRate="0.047" farmerRate="0.0197" subsidyShare="0.58" lossRatio="0.504" claimShare="0.152" farmerPerAcre="14.69" acres="42156" policies="79"/>
             </plan>
         </crop>
         <crop fillType="COTTON" rma="Cotton">
-            <plan id="RP">
-                <level coverage="0.5" premiumRate="0.0857" farmerRate="0.0235" subsidyShare="0.726" lossRatio="0.958" claimShare="0.411" farmerPerAcre="10.04" acres="1331815" policies="5113"/>
-                <level coverage="0.55" premiumRate="0.1403" farmerRate="0.0438" subsidyShare="0.688" lossRatio="1.555" claimShare="0.603" farmerPerAcre="17.35" acres="200911" policies="1145"/>
-                <level coverage="0.6" premiumRate="0.2117" farmerRate="0.0655" subsidyShare="0.691" lossRatio="1.464" claimShare="0.678" farmerPerAcre="28.11" acres="5504333" policies="30296"/>
-                <level coverage="0.65" premiumRate="0.2117" farmerRate="0.0655" subsidyShare="0.691" lossRatio="1.408" claimShare="0.638" farmerPerAcre="33.53" acres="4984138" policies="24827"/>
-                <level coverage="0.7" premiumRate="0.2187" farmerRate="0.0655" subsidyShare="0.701" lossRatio="1.575" claimShare="0.682" farmerPerAcre="31.34" acres="22104407" policies="66254"/>
-                <level coverage="0.75" premiumRate="0.2187" farmerRate="0.0655" subsidyShare="0.701" lossRatio="1.577" claimShare="0.594" farmerPerAcre="29.82" acres="12314436" policies="30154"/>
-                <level coverage="0.8" premiumRate="0.2187" farmerRate="0.0655" subsidyShare="0.701" lossRatio="1.557" claimShare="0.564" farmerPerAcre="40.33" acres="2638181" policies="6421"/>
-                <level coverage="0.85" premiumRate="0.2187" farmerRate="0.0856" subsidyShare="0.609" lossRatio="2.585" claimShare="0.777" farmerPerAcre="66.04" acres="353890" policies="911"/>
+            <plan id="RP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0674" farmerRate="0.0185" subsidyShare="0.726" lossRatio="0.958" claimShare="0.411" farmerPerAcre="10.04" acres="1331815" policies="5113"/>
+                <level coverage="0.55" premiumRate="0.0905" farmerRate="0.0283" subsidyShare="0.688" lossRatio="1.555" claimShare="0.603" farmerPerAcre="17.35" acres="200911" policies="1145"/>
+                <level coverage="0.6" premiumRate="0.1201" farmerRate="0.04" subsidyShare="0.667" lossRatio="1.464" claimShare="0.678" farmerPerAcre="28.11" acres="5504333" policies="30296"/>
+                <level coverage="0.65" premiumRate="0.157" farmerRate="0.0558" subsidyShare="0.644" lossRatio="1.408" claimShare="0.638" farmerPerAcre="33.53" acres="4984138" policies="24827"/>
+                <level coverage="0.7" premiumRate="0.2023" farmerRate="0.0576" subsidyShare="0.715" lossRatio="1.575" claimShare="0.682" farmerPerAcre="31.34" acres="22104407" policies="66254"/>
+                <level coverage="0.75" premiumRate="0.2567" farmerRate="0.0717" subsidyShare="0.721" lossRatio="1.577" claimShare="0.594" farmerPerAcre="29.82" acres="12314436" policies="30154"/>
+                <level coverage="0.8" premiumRate="0.321" farmerRate="0.1238" subsidyShare="0.614" lossRatio="1.557" claimShare="0.564" farmerPerAcre="40.33" acres="2638181" policies="6421"/>
+                <level coverage="0.85" premiumRate="0.3954" farmerRate="0.2098" subsidyShare="0.469" lossRatio="2.585" claimShare="0.777" farmerPerAcre="66.04" acres="353890" policies="911"/>
             </plan>
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.045" farmerRate="0.0119" subsidyShare="0.735" lossRatio="0.733" claimShare="0.181" farmerPerAcre="5.71" acres="1144144" policies="5099"/>
-                <level coverage="0.55" premiumRate="0.0723" farmerRate="0.023" subsidyShare="0.682" lossRatio="1.533" claimShare="0.327" farmerPerAcre="11" acres="81040" policies="309"/>
-                <level coverage="0.6" premiumRate="0.0824" farmerRate="0.0258" subsidyShare="0.687" lossRatio="1.127" claimShare="0.412" farmerPerAcre="13.54" acres="751572" policies="3445"/>
-                <level coverage="0.65" premiumRate="0.1211" farmerRate="0.0411" subsidyShare="0.66" lossRatio="1.134" claimShare="0.406" farmerPerAcre="25.72" acres="713048" policies="5888"/>
-                <level coverage="0.7" premiumRate="0.1211" farmerRate="0.0411" subsidyShare="0.66" lossRatio="1.026" claimShare="0.377" farmerPerAcre="20.84" acres="863128" policies="3730"/>
-                <level coverage="0.75" premiumRate="0.1211" farmerRate="0.0411" subsidyShare="0.66" lossRatio="1.372" claimShare="0.428" farmerPerAcre="22.4" acres="544621" policies="1625"/>
-                <level coverage="0.8" premiumRate="0.1211" farmerRate="0.0443" subsidyShare="0.634" lossRatio="1.413" claimShare="0.392" farmerPerAcre="31.16" acres="114559" policies="314"/>
-                <level coverage="0.85" premiumRate="0.1629" farmerRate="0.0934" subsidyShare="0.427" lossRatio="3.918" claimShare="0.785" farmerPerAcre="79.56" acres="39218" policies="93"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0399" farmerRate="0.0106" subsidyShare="0.735" lossRatio="0.733" claimShare="0.181" farmerPerAcre="5.71" acres="1144144" policies="5099"/>
+                <level coverage="0.55" premiumRate="0.0536" farmerRate="0.017" subsidyShare="0.682" lossRatio="1.533" claimShare="0.327" farmerPerAcre="11" acres="81040" policies="309"/>
+                <level coverage="0.6" premiumRate="0.071" farmerRate="0.0223" subsidyShare="0.687" lossRatio="1.127" claimShare="0.412" farmerPerAcre="13.54" acres="751572" policies="3445"/>
+                <level coverage="0.65" premiumRate="0.0929" farmerRate="0.0348" subsidyShare="0.626" lossRatio="1.134" claimShare="0.406" farmerPerAcre="25.72" acres="713048" policies="5888"/>
+                <level coverage="0.7" premiumRate="0.1197" farmerRate="0.0385" subsidyShare="0.679" lossRatio="1.026" claimShare="0.377" farmerPerAcre="20.84" acres="863128" policies="3730"/>
+                <level coverage="0.75" premiumRate="0.1519" farmerRate="0.0475" subsidyShare="0.687" lossRatio="1.372" claimShare="0.428" farmerPerAcre="22.4" acres="544621" policies="1625"/>
+                <level coverage="0.8" premiumRate="0.1899" farmerRate="0.0787" subsidyShare="0.586" lossRatio="1.413" claimShare="0.392" farmerPerAcre="31.16" acres="114559" policies="314"/>
+                <level coverage="0.85" premiumRate="0.234" farmerRate="0.1342" subsidyShare="0.427" lossRatio="3.918" claimShare="0.785" farmerPerAcre="79.56" acres="39218" policies="93"/>
             </plan>
         </crop>
         <crop fillType="RICE" rma="Rice">
-            <plan id="RP">
-                <level coverage="0.5" premiumRate="0.0592" farmerRate="0.0201" subsidyShare="0.66" lossRatio="0.73" claimShare="0.371" farmerPerAcre="12.28" acres="616311" policies="1957"/>
-                <level coverage="0.55" premiumRate="0.0592" farmerRate="0.0219" subsidyShare="0.63" lossRatio="0.865" claimShare="0.43" farmerPerAcre="13.75" acres="25840" policies="128"/>
-                <level coverage="0.6" premiumRate="0.07" farmerRate="0.0235" subsidyShare="0.664" lossRatio="0.848" claimShare="0.436" farmerPerAcre="17.4" acres="462057" policies="1414"/>
-                <level coverage="0.65" premiumRate="0.07" farmerRate="0.0235" subsidyShare="0.664" lossRatio="0.867" claimShare="0.376" farmerPerAcre="17.37" acres="261687" policies="1034"/>
-                <level coverage="0.7" premiumRate="0.0901" farmerRate="0.0281" subsidyShare="0.688" lossRatio="1.088" claimShare="0.477" farmerPerAcre="21.91" acres="1300386" policies="4216"/>
-                <level coverage="0.75" premiumRate="0.1023" farmerRate="0.0344" subsidyShare="0.663" lossRatio="1.616" claimShare="0.565" farmerPerAcre="28.68" acres="2235846" policies="5950"/>
-                <level coverage="0.8" premiumRate="0.1212" farmerRate="0.0545" subsidyShare="0.55" lossRatio="2.665" claimShare="0.727" farmerPerAcre="49.27" acres="873477" policies="2334"/>
-                <level coverage="0.85" premiumRate="0.1212" farmerRate="0.0664" subsidyShare="0.452" lossRatio="3.601" claimShare="0.785" farmerPerAcre="63.65" acres="287092" policies="721"/>
+            <plan id="RP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0278" farmerRate="0.0094" subsidyShare="0.66" lossRatio="0.73" claimShare="0.371" farmerPerAcre="12.28" acres="616311" policies="1957"/>
+                <level coverage="0.55" premiumRate="0.0373" farmerRate="0.0138" subsidyShare="0.63" lossRatio="0.865" claimShare="0.43" farmerPerAcre="13.75" acres="25840" policies="128"/>
+                <level coverage="0.6" premiumRate="0.0495" farmerRate="0.0163" subsidyShare="0.67" lossRatio="0.848" claimShare="0.436" farmerPerAcre="17.4" acres="462057" policies="1414"/>
+                <level coverage="0.65" premiumRate="0.0647" farmerRate="0.0224" subsidyShare="0.654" lossRatio="0.867" claimShare="0.376" farmerPerAcre="17.37" acres="261687" policies="1034"/>
+                <level coverage="0.7" premiumRate="0.0834" farmerRate="0.026" subsidyShare="0.688" lossRatio="1.088" claimShare="0.477" farmerPerAcre="21.91" acres="1300386" policies="4216"/>
+                <level coverage="0.75" premiumRate="0.1058" farmerRate="0.0356" subsidyShare="0.663" lossRatio="1.616" claimShare="0.565" farmerPerAcre="28.68" acres="2235846" policies="5950"/>
+                <level coverage="0.8" premiumRate="0.1323" farmerRate="0.0588" subsidyShare="0.556" lossRatio="2.665" claimShare="0.727" farmerPerAcre="49.27" acres="873477" policies="2334"/>
+                <level coverage="0.85" premiumRate="0.163" farmerRate="0.0926" subsidyShare="0.432" lossRatio="3.601" claimShare="0.785" farmerPerAcre="63.65" acres="287092" policies="721"/>
             </plan>
-            <plan id="RPHPE">
-                <level coverage="0.75" premiumRate="0.0439" farmerRate="0.0134" subsidyShare="0.696" lossRatio="2.679" claimShare="0.282" farmerPerAcre="15.56" acres="23761" policies="71"/>
-                <level coverage="0.85" premiumRate="0.0439" farmerRate="0.0223" subsidyShare="0.492" lossRatio="4.173" claimShare="0.597" farmerPerAcre="45.27" acres="32415" policies="77"/>
+            <plan id="RPHPE" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.75" premiumRate="0.0318" farmerRate="0.0092" subsidyShare="0.711" lossRatio="2.679" claimShare="0.282" farmerPerAcre="15.56" acres="23761" policies="71"/>
+                <level coverage="0.85" premiumRate="0.049" farmerRate="0.0255" subsidyShare="0.48" lossRatio="4.173" claimShare="0.597" farmerPerAcre="45.27" acres="32415" policies="77"/>
             </plan>
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0442" farmerRate="0.0148" subsidyShare="0.665" lossRatio="0.788" claimShare="0.271" farmerPerAcre="9.54" acres="1463206" policies="5966"/>
-                <level coverage="0.55" premiumRate="0.0442" farmerRate="0.0148" subsidyShare="0.665" lossRatio="0.715" claimShare="0.218" farmerPerAcre="8.42" acres="52634" policies="220"/>
-                <level coverage="0.6" premiumRate="0.0479" farmerRate="0.0149" subsidyShare="0.69" lossRatio="0.741" claimShare="0.278" farmerPerAcre="13.53" acres="648961" policies="2049"/>
-                <level coverage="0.65" premiumRate="0.0479" farmerRate="0.0149" subsidyShare="0.69" lossRatio="1.245" claimShare="0.301" farmerPerAcre="12.67" acres="485486" policies="1460"/>
-                <level coverage="0.7" premiumRate="0.0533" farmerRate="0.0181" subsidyShare="0.66" lossRatio="1.252" claimShare="0.397" farmerPerAcre="16.84" acres="1151163" policies="3821"/>
-                <level coverage="0.75" premiumRate="0.0533" farmerRate="0.0181" subsidyShare="0.66" lossRatio="2.334" claimShare="0.457" farmerPerAcre="19.54" acres="1454332" policies="4223"/>
-                <level coverage="0.8" premiumRate="0.0533" farmerRate="0.0231" subsidyShare="0.568" lossRatio="2.988" claimShare="0.541" farmerPerAcre="32.53" acres="524712" policies="1493"/>
-                <level coverage="0.85" premiumRate="0.0533" farmerRate="0.0288" subsidyShare="0.46" lossRatio="5.435" claimShare="0.584" farmerPerAcre="50.65" acres="1046611" policies="2682"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0139" farmerRate="0.0047" subsidyShare="0.665" lossRatio="0.788" claimShare="0.271" farmerPerAcre="9.54" acres="1463206" policies="5966"/>
+                <level coverage="0.55" premiumRate="0.0187" farmerRate="0.0062" subsidyShare="0.666" lossRatio="0.715" claimShare="0.218" farmerPerAcre="8.42" acres="52634" policies="220"/>
+                <level coverage="0.6" premiumRate="0.0248" farmerRate="0.0074" subsidyShare="0.7" lossRatio="0.741" claimShare="0.278" farmerPerAcre="13.53" acres="648961" policies="2049"/>
+                <level coverage="0.65" premiumRate="0.0324" farmerRate="0.0106" subsidyShare="0.674" lossRatio="1.245" claimShare="0.301" farmerPerAcre="12.67" acres="485486" policies="1460"/>
+                <level coverage="0.7" premiumRate="0.0417" farmerRate="0.0129" subsidyShare="0.691" lossRatio="1.252" claimShare="0.397" farmerPerAcre="16.84" acres="1151163" policies="3821"/>
+                <level coverage="0.75" premiumRate="0.053" farmerRate="0.0183" subsidyShare="0.654" lossRatio="2.334" claimShare="0.457" farmerPerAcre="19.54" acres="1454332" policies="4223"/>
+                <level coverage="0.8" premiumRate="0.0662" farmerRate="0.0276" subsidyShare="0.583" lossRatio="2.988" claimShare="0.541" farmerPerAcre="32.53" acres="524712" policies="1493"/>
+                <level coverage="0.85" premiumRate="0.0816" farmerRate="0.0467" subsidyShare="0.428" lossRatio="5.435" claimShare="0.584" farmerPerAcre="50.65" acres="1046611" policies="2682"/>
             </plan>
         </crop>
         <crop fillType="RICELONGGRAIN" rma="Rice">
-            <plan id="RP">
-                <level coverage="0.5" premiumRate="0.0592" farmerRate="0.0201" subsidyShare="0.66" lossRatio="0.73" claimShare="0.371" farmerPerAcre="12.28" acres="616311" policies="1957"/>
-                <level coverage="0.55" premiumRate="0.0592" farmerRate="0.0219" subsidyShare="0.63" lossRatio="0.865" claimShare="0.43" farmerPerAcre="13.75" acres="25840" policies="128"/>
-                <level coverage="0.6" premiumRate="0.07" farmerRate="0.0235" subsidyShare="0.664" lossRatio="0.848" claimShare="0.436" farmerPerAcre="17.4" acres="462057" policies="1414"/>
-                <level coverage="0.65" premiumRate="0.07" farmerRate="0.0235" subsidyShare="0.664" lossRatio="0.867" claimShare="0.376" farmerPerAcre="17.37" acres="261687" policies="1034"/>
-                <level coverage="0.7" premiumRate="0.0901" farmerRate="0.0281" subsidyShare="0.688" lossRatio="1.088" claimShare="0.477" farmerPerAcre="21.91" acres="1300386" policies="4216"/>
-                <level coverage="0.75" premiumRate="0.1023" farmerRate="0.0344" subsidyShare="0.663" lossRatio="1.616" claimShare="0.565" farmerPerAcre="28.68" acres="2235846" policies="5950"/>
-                <level coverage="0.8" premiumRate="0.1212" farmerRate="0.0545" subsidyShare="0.55" lossRatio="2.665" claimShare="0.727" farmerPerAcre="49.27" acres="873477" policies="2334"/>
-                <level coverage="0.85" premiumRate="0.1212" farmerRate="0.0664" subsidyShare="0.452" lossRatio="3.601" claimShare="0.785" farmerPerAcre="63.65" acres="287092" policies="721"/>
+            <plan id="RP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0278" farmerRate="0.0094" subsidyShare="0.66" lossRatio="0.73" claimShare="0.371" farmerPerAcre="12.28" acres="616311" policies="1957"/>
+                <level coverage="0.55" premiumRate="0.0373" farmerRate="0.0138" subsidyShare="0.63" lossRatio="0.865" claimShare="0.43" farmerPerAcre="13.75" acres="25840" policies="128"/>
+                <level coverage="0.6" premiumRate="0.0495" farmerRate="0.0163" subsidyShare="0.67" lossRatio="0.848" claimShare="0.436" farmerPerAcre="17.4" acres="462057" policies="1414"/>
+                <level coverage="0.65" premiumRate="0.0647" farmerRate="0.0224" subsidyShare="0.654" lossRatio="0.867" claimShare="0.376" farmerPerAcre="17.37" acres="261687" policies="1034"/>
+                <level coverage="0.7" premiumRate="0.0834" farmerRate="0.026" subsidyShare="0.688" lossRatio="1.088" claimShare="0.477" farmerPerAcre="21.91" acres="1300386" policies="4216"/>
+                <level coverage="0.75" premiumRate="0.1058" farmerRate="0.0356" subsidyShare="0.663" lossRatio="1.616" claimShare="0.565" farmerPerAcre="28.68" acres="2235846" policies="5950"/>
+                <level coverage="0.8" premiumRate="0.1323" farmerRate="0.0588" subsidyShare="0.556" lossRatio="2.665" claimShare="0.727" farmerPerAcre="49.27" acres="873477" policies="2334"/>
+                <level coverage="0.85" premiumRate="0.163" farmerRate="0.0926" subsidyShare="0.432" lossRatio="3.601" claimShare="0.785" farmerPerAcre="63.65" acres="287092" policies="721"/>
             </plan>
-            <plan id="RPHPE">
-                <level coverage="0.75" premiumRate="0.0439" farmerRate="0.0134" subsidyShare="0.696" lossRatio="2.679" claimShare="0.282" farmerPerAcre="15.56" acres="23761" policies="71"/>
-                <level coverage="0.85" premiumRate="0.0439" farmerRate="0.0223" subsidyShare="0.492" lossRatio="4.173" claimShare="0.597" farmerPerAcre="45.27" acres="32415" policies="77"/>
+            <plan id="RPHPE" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.75" premiumRate="0.0318" farmerRate="0.0092" subsidyShare="0.711" lossRatio="2.679" claimShare="0.282" farmerPerAcre="15.56" acres="23761" policies="71"/>
+                <level coverage="0.85" premiumRate="0.049" farmerRate="0.0255" subsidyShare="0.48" lossRatio="4.173" claimShare="0.597" farmerPerAcre="45.27" acres="32415" policies="77"/>
             </plan>
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0442" farmerRate="0.0148" subsidyShare="0.665" lossRatio="0.788" claimShare="0.271" farmerPerAcre="9.54" acres="1463206" policies="5966"/>
-                <level coverage="0.55" premiumRate="0.0442" farmerRate="0.0148" subsidyShare="0.665" lossRatio="0.715" claimShare="0.218" farmerPerAcre="8.42" acres="52634" policies="220"/>
-                <level coverage="0.6" premiumRate="0.0479" farmerRate="0.0149" subsidyShare="0.69" lossRatio="0.741" claimShare="0.278" farmerPerAcre="13.53" acres="648961" policies="2049"/>
-                <level coverage="0.65" premiumRate="0.0479" farmerRate="0.0149" subsidyShare="0.69" lossRatio="1.245" claimShare="0.301" farmerPerAcre="12.67" acres="485486" policies="1460"/>
-                <level coverage="0.7" premiumRate="0.0533" farmerRate="0.0181" subsidyShare="0.66" lossRatio="1.252" claimShare="0.397" farmerPerAcre="16.84" acres="1151163" policies="3821"/>
-                <level coverage="0.75" premiumRate="0.0533" farmerRate="0.0181" subsidyShare="0.66" lossRatio="2.334" claimShare="0.457" farmerPerAcre="19.54" acres="1454332" policies="4223"/>
-                <level coverage="0.8" premiumRate="0.0533" farmerRate="0.0231" subsidyShare="0.568" lossRatio="2.988" claimShare="0.541" farmerPerAcre="32.53" acres="524712" policies="1493"/>
-                <level coverage="0.85" premiumRate="0.0533" farmerRate="0.0288" subsidyShare="0.46" lossRatio="5.435" claimShare="0.584" farmerPerAcre="50.65" acres="1046611" policies="2682"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0139" farmerRate="0.0047" subsidyShare="0.665" lossRatio="0.788" claimShare="0.271" farmerPerAcre="9.54" acres="1463206" policies="5966"/>
+                <level coverage="0.55" premiumRate="0.0187" farmerRate="0.0062" subsidyShare="0.666" lossRatio="0.715" claimShare="0.218" farmerPerAcre="8.42" acres="52634" policies="220"/>
+                <level coverage="0.6" premiumRate="0.0248" farmerRate="0.0074" subsidyShare="0.7" lossRatio="0.741" claimShare="0.278" farmerPerAcre="13.53" acres="648961" policies="2049"/>
+                <level coverage="0.65" premiumRate="0.0324" farmerRate="0.0106" subsidyShare="0.674" lossRatio="1.245" claimShare="0.301" farmerPerAcre="12.67" acres="485486" policies="1460"/>
+                <level coverage="0.7" premiumRate="0.0417" farmerRate="0.0129" subsidyShare="0.691" lossRatio="1.252" claimShare="0.397" farmerPerAcre="16.84" acres="1151163" policies="3821"/>
+                <level coverage="0.75" premiumRate="0.053" farmerRate="0.0183" subsidyShare="0.654" lossRatio="2.334" claimShare="0.457" farmerPerAcre="19.54" acres="1454332" policies="4223"/>
+                <level coverage="0.8" premiumRate="0.0662" farmerRate="0.0276" subsidyShare="0.583" lossRatio="2.988" claimShare="0.541" farmerPerAcre="32.53" acres="524712" policies="1493"/>
+                <level coverage="0.85" premiumRate="0.0816" farmerRate="0.0467" subsidyShare="0.428" lossRatio="5.435" claimShare="0.584" farmerPerAcre="50.65" acres="1046611" policies="2682"/>
             </plan>
         </crop>
         <crop fillType="GRAPE" rma="Grapes">
-            <plan id="APH">
-                <level coverage="0.5" premiumRate="0.0213" farmerRate="0.007" subsidyShare="0.669" lossRatio="2.271" claimShare="0.175" farmerPerAcre="23.44" acres="378199" policies="2346"/>
-                <level coverage="0.55" premiumRate="0.0249" farmerRate="0.009" subsidyShare="0.64" lossRatio="2.254" claimShare="0.158" farmerPerAcre="30.31" acres="51905" policies="387"/>
-                <level coverage="0.6" premiumRate="0.0319" farmerRate="0.0115" subsidyShare="0.638" lossRatio="1.618" claimShare="0.228" farmerPerAcre="50.94" acres="233952" policies="2246"/>
-                <level coverage="0.65" premiumRate="0.038" farmerRate="0.0156" subsidyShare="0.59" lossRatio="2.108" claimShare="0.286" farmerPerAcre="78.23" acres="314732" policies="2957"/>
-                <level coverage="0.7" premiumRate="0.0474" farmerRate="0.0194" subsidyShare="0.589" lossRatio="1.871" claimShare="0.36" farmerPerAcre="91.73" acres="368277" policies="4781"/>
-                <level coverage="0.75" premiumRate="0.0519" farmerRate="0.0234" subsidyShare="0.549" lossRatio="2.064" claimShare="0.432" farmerPerAcre="128.95" acres="452627" policies="6904"/>
-                <level coverage="0.8" premiumRate="0.058" farmerRate="0.0302" subsidyShare="0.48" lossRatio="2.16" claimShare="0.47" farmerPerAcre="202.71" acres="78122" policies="1952"/>
-                <level coverage="0.85" premiumRate="0.066" farmerRate="0.0409" subsidyShare="0.38" lossRatio="2.686" claimShare="0.548" farmerPerAcre="296.38" acres="109989" policies="2803"/>
+            <plan id="APH" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0145" farmerRate="0.0048" subsidyShare="0.669" lossRatio="2.271" claimShare="0.175" farmerPerAcre="23.44" acres="378199" policies="2346"/>
+                <level coverage="0.55" premiumRate="0.0195" farmerRate="0.007" subsidyShare="0.64" lossRatio="2.254" claimShare="0.158" farmerPerAcre="30.31" acres="51905" policies="387"/>
+                <level coverage="0.6" premiumRate="0.0258" farmerRate="0.0093" subsidyShare="0.638" lossRatio="1.618" claimShare="0.228" farmerPerAcre="50.94" acres="233952" policies="2246"/>
+                <level coverage="0.65" premiumRate="0.0337" farmerRate="0.0138" subsidyShare="0.59" lossRatio="2.108" claimShare="0.286" farmerPerAcre="78.23" acres="314732" policies="2957"/>
+                <level coverage="0.7" premiumRate="0.0435" farmerRate="0.0178" subsidyShare="0.589" lossRatio="1.871" claimShare="0.36" farmerPerAcre="91.73" acres="368277" policies="4781"/>
+                <level coverage="0.75" premiumRate="0.0552" farmerRate="0.0249" subsidyShare="0.549" lossRatio="2.064" claimShare="0.432" farmerPerAcre="128.95" acres="452627" policies="6904"/>
+                <level coverage="0.8" premiumRate="0.069" farmerRate="0.0359" subsidyShare="0.48" lossRatio="2.16" claimShare="0.47" farmerPerAcre="202.71" acres="78122" policies="1952"/>
+                <level coverage="0.85" premiumRate="0.085" farmerRate="0.0527" subsidyShare="0.38" lossRatio="2.686" claimShare="0.548" farmerPerAcre="296.38" acres="109989" policies="2803"/>
             </plan>
         </crop>
         <crop fillType="OLIVE" rma="Olives">
-            <plan id="APH">
+            <plan id="APH" shape="lossModel" shapeCv="0.3">
                 <level coverage="0.75" premiumRate="0.154" farmerRate="0.0694" subsidyShare="0.55" lossRatio="1.481" claimShare="0.474" farmerPerAcre="135.47" acres="41895" policies="422"/>
             </plan>
         </crop>
         <crop fillType="PEA" rma="Dry Peas">
-            <plan id="RP">
-                <level coverage="0.5" premiumRate="0.115" farmerRate="0.0346" subsidyShare="0.699" lossRatio="0.607" claimShare="0.166" farmerPerAcre="4.9" acres="37956" policies="145"/>
-                <level coverage="0.6" premiumRate="0.1874" farmerRate="0.0645" subsidyShare="0.656" lossRatio="1.045" claimShare="0.33" farmerPerAcre="11.36" acres="236455" policies="446"/>
-                <level coverage="0.65" premiumRate="0.1926" farmerRate="0.0666" subsidyShare="0.654" lossRatio="0.946" claimShare="0.388" farmerPerAcre="14.57" acres="603372" policies="1120"/>
-                <level coverage="0.7" premiumRate="0.1926" farmerRate="0.0666" subsidyShare="0.654" lossRatio="1.195" claimShare="0.462" farmerPerAcre="15.22" acres="2713783" policies="5074"/>
-                <level coverage="0.75" premiumRate="0.1926" farmerRate="0.0666" subsidyShare="0.654" lossRatio="1.194" claimShare="0.501" farmerPerAcre="14.08" acres="2385256" policies="4909"/>
-                <level coverage="0.8" premiumRate="0.1926" farmerRate="0.0666" subsidyShare="0.654" lossRatio="1.599" claimShare="0.627" farmerPerAcre="18.86" acres="462906" policies="1439"/>
-                <level coverage="0.85" premiumRate="0.1926" farmerRate="0.0666" subsidyShare="0.654" lossRatio="2.132" claimShare="0.683" farmerPerAcre="23.05" acres="434880" policies="1914"/>
+            <plan id="RP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0529" farmerRate="0.0159" subsidyShare="0.699" lossRatio="0.607" claimShare="0.166" farmerPerAcre="4.9" acres="37956" policies="145"/>
+                <level coverage="0.6" premiumRate="0.0942" farmerRate="0.0324" subsidyShare="0.656" lossRatio="1.045" claimShare="0.33" farmerPerAcre="11.36" acres="236455" policies="446"/>
+                <level coverage="0.65" premiumRate="0.1232" farmerRate="0.047" subsidyShare="0.618" lossRatio="0.946" claimShare="0.388" farmerPerAcre="14.57" acres="603372" policies="1120"/>
+                <level coverage="0.7" premiumRate="0.1587" farmerRate="0.0541" subsidyShare="0.659" lossRatio="1.195" claimShare="0.462" farmerPerAcre="15.22" acres="2713783" policies="5074"/>
+                <level coverage="0.75" premiumRate="0.2014" farmerRate="0.0597" subsidyShare="0.704" lossRatio="1.194" claimShare="0.501" farmerPerAcre="14.08" acres="2385256" policies="4909"/>
+                <level coverage="0.8" premiumRate="0.2519" farmerRate="0.1" subsidyShare="0.603" lossRatio="1.599" claimShare="0.627" farmerPerAcre="18.86" acres="462906" policies="1439"/>
+                <level coverage="0.85" premiumRate="0.3103" farmerRate="0.1856" subsidyShare="0.402" lossRatio="2.132" claimShare="0.683" farmerPerAcre="23.05" acres="434880" policies="1914"/>
             </plan>
-            <plan id="RPHPE">
+            <plan id="RPHPE" shape="lossModel" shapeCv="0.3">
                 <level coverage="0.85" premiumRate="0.0879" farmerRate="0.0536" subsidyShare="0.39" lossRatio="2.007" claimShare="0.652" farmerPerAcre="16.36" acres="26301" policies="46"/>
             </plan>
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0788" farmerRate="0.0257" subsidyShare="0.673" lossRatio="1.098" claimShare="0.248" farmerPerAcre="4.28" acres="118157" policies="463"/>
-                <level coverage="0.55" premiumRate="0.135" farmerRate="0.0473" subsidyShare="0.65" lossRatio="1.619" claimShare="0.303" farmerPerAcre="7.29" acres="24271" policies="76"/>
-                <level coverage="0.6" premiumRate="0.1577" farmerRate="0.0555" subsidyShare="0.648" lossRatio="1.099" claimShare="0.348" farmerPerAcre="9.29" acres="199697" policies="471"/>
-                <level coverage="0.65" premiumRate="0.1577" farmerRate="0.061" subsidyShare="0.613" lossRatio="1.037" claimShare="0.404" farmerPerAcre="11.05" acres="540862" policies="1504"/>
-                <level coverage="0.7" premiumRate="0.1577" farmerRate="0.061" subsidyShare="0.613" lossRatio="1.325" claimShare="0.467" farmerPerAcre="12.26" acres="755952" policies="1891"/>
-                <level coverage="0.75" premiumRate="0.1577" farmerRate="0.061" subsidyShare="0.613" lossRatio="1.819" claimShare="0.482" farmerPerAcre="12.49" acres="391454" policies="1472"/>
-                <level coverage="0.8" premiumRate="0.1577" farmerRate="0.061" subsidyShare="0.613" lossRatio="1.719" claimShare="0.532" farmerPerAcre="15.36" acres="109710" policies="410"/>
-                <level coverage="0.85" premiumRate="0.1577" farmerRate="0.061" subsidyShare="0.613" lossRatio="2.193" claimShare="0.621" farmerPerAcre="16.01" acres="105053" policies="512"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0479" farmerRate="0.0157" subsidyShare="0.673" lossRatio="1.098" claimShare="0.248" farmerPerAcre="4.28" acres="118157" policies="463"/>
+                <level coverage="0.55" premiumRate="0.0644" farmerRate="0.0225" subsidyShare="0.65" lossRatio="1.619" claimShare="0.303" farmerPerAcre="7.29" acres="24271" policies="76"/>
+                <level coverage="0.6" premiumRate="0.0854" farmerRate="0.0289" subsidyShare="0.661" lossRatio="1.099" claimShare="0.348" farmerPerAcre="9.29" acres="199697" policies="471"/>
+                <level coverage="0.65" premiumRate="0.1116" farmerRate="0.0442" subsidyShare="0.604" lossRatio="1.037" claimShare="0.404" farmerPerAcre="11.05" acres="540862" policies="1504"/>
+                <level coverage="0.7" premiumRate="0.1438" farmerRate="0.0521" subsidyShare="0.638" lossRatio="1.325" claimShare="0.467" farmerPerAcre="12.26" acres="755952" policies="1891"/>
+                <level coverage="0.75" premiumRate="0.1826" farmerRate="0.0676" subsidyShare="0.63" lossRatio="1.819" claimShare="0.482" farmerPerAcre="12.49" acres="391454" policies="1472"/>
+                <level coverage="0.8" premiumRate="0.2283" farmerRate="0.1013" subsidyShare="0.556" lossRatio="1.719" claimShare="0.532" farmerPerAcre="15.36" acres="109710" policies="410"/>
+                <level coverage="0.85" premiumRate="0.2812" farmerRate="0.1673" subsidyShare="0.405" lossRatio="2.193" claimShare="0.621" farmerPerAcre="16.01" acres="105053" policies="512"/>
             </plan>
-            <plan id="APH">
-                <level coverage="0.7" premiumRate="0.1592" farmerRate="0.0616" subsidyShare="0.613" lossRatio="1.536" claimShare="0.484" farmerPerAcre="11.94" acres="55110" policies="320"/>
-                <level coverage="0.75" premiumRate="0.1595" farmerRate="0.0619" subsidyShare="0.612" lossRatio="1.989" claimShare="0.451" farmerPerAcre="12.82" acres="53163" policies="257"/>
+            <plan id="APH" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.7" premiumRate="0.1402" farmerRate="0.0543" subsidyShare="0.613" lossRatio="1.536" claimShare="0.484" farmerPerAcre="11.94" acres="55110" policies="320"/>
+                <level coverage="0.75" premiumRate="0.1779" farmerRate="0.0691" subsidyShare="0.612" lossRatio="1.989" claimShare="0.451" farmerPerAcre="12.82" acres="53163" policies="257"/>
             </plan>
         </crop>
         <crop fillType="GREENBEAN" rma="Processing Beans">
-            <plan id="APH">
-                <level coverage="0.5" premiumRate="0.0513" farmerRate="0.0167" subsidyShare="0.675" lossRatio="0.814" claimShare="0.203" farmerPerAcre="6.87" acres="20572" policies="128"/>
-                <level coverage="0.6" premiumRate="0.0755" farmerRate="0.027" subsidyShare="0.643" lossRatio="0.793" claimShare="0.272" farmerPerAcre="13.49" acres="38407" policies="180"/>
-                <level coverage="0.65" premiumRate="0.1046" farmerRate="0.0428" subsidyShare="0.59" lossRatio="0.552" claimShare="0.231" farmerPerAcre="23.34" acres="20085" policies="156"/>
-                <level coverage="0.7" premiumRate="0.1181" farmerRate="0.0483" subsidyShare="0.591" lossRatio="1.007" claimShare="0.398" farmerPerAcre="30.44" acres="164193" policies="782"/>
-                <level coverage="0.75" premiumRate="0.1181" farmerRate="0.0527" subsidyShare="0.554" lossRatio="1.006" claimShare="0.385" farmerPerAcre="29.29" acres="104944" policies="724"/>
+            <plan id="APH" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0368" farmerRate="0.012" subsidyShare="0.675" lossRatio="0.814" claimShare="0.203" farmerPerAcre="6.87" acres="20572" policies="128"/>
+                <level coverage="0.6" premiumRate="0.0657" farmerRate="0.0234" subsidyShare="0.643" lossRatio="0.793" claimShare="0.272" farmerPerAcre="13.49" acres="38407" policies="180"/>
+                <level coverage="0.65" premiumRate="0.0858" farmerRate="0.0352" subsidyShare="0.59" lossRatio="0.552" claimShare="0.231" farmerPerAcre="23.34" acres="20085" policies="156"/>
+                <level coverage="0.7" premiumRate="0.1106" farmerRate="0.0452" subsidyShare="0.592" lossRatio="1.007" claimShare="0.398" farmerPerAcre="30.44" acres="164193" policies="782"/>
+                <level coverage="0.75" premiumRate="0.1404" farmerRate="0.0628" subsidyShare="0.553" lossRatio="1.006" claimShare="0.385" farmerPerAcre="29.29" acres="104944" policies="724"/>
             </plan>
         </crop>
         <crop fillType="GRASS" rma="Forage Production">
-            <plan id="APH">
-                <level coverage="0.5" premiumRate="0.0957" farmerRate="0.0314" subsidyShare="0.671" lossRatio="0.93" claimShare="0.317" farmerPerAcre="6.43" acres="1319476" policies="5655"/>
-                <level coverage="0.55" premiumRate="0.1664" farmerRate="0.0595" subsidyShare="0.642" lossRatio="0.872" claimShare="0.327" farmerPerAcre="9.63" acres="130887" policies="559"/>
-                <level coverage="0.6" premiumRate="0.1811" farmerRate="0.0672" subsidyShare="0.629" lossRatio="0.793" claimShare="0.382" farmerPerAcre="10.38" acres="1735575" policies="5075"/>
-                <level coverage="0.65" premiumRate="0.1811" farmerRate="0.0679" subsidyShare="0.625" lossRatio="0.978" claimShare="0.388" farmerPerAcre="13.72" acres="711725" policies="2824"/>
-                <level coverage="0.7" premiumRate="0.1811" farmerRate="0.0679" subsidyShare="0.625" lossRatio="0.901" claimShare="0.421" farmerPerAcre="18.95" acres="697676" policies="2803"/>
-                <level coverage="0.75" premiumRate="0.1834" farmerRate="0.0775" subsidyShare="0.577" lossRatio="0.907" claimShare="0.408" farmerPerAcre="28.16" acres="373350" policies="1572"/>
+            <plan id="APH" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.074" farmerRate="0.0243" subsidyShare="0.671" lossRatio="0.93" claimShare="0.317" farmerPerAcre="6.43" acres="1319476" policies="5655"/>
+                <level coverage="0.55" premiumRate="0.0995" farmerRate="0.0356" subsidyShare="0.642" lossRatio="0.872" claimShare="0.327" farmerPerAcre="9.63" acres="130887" policies="559"/>
+                <level coverage="0.6" premiumRate="0.1319" farmerRate="0.0456" subsidyShare="0.654" lossRatio="0.793" claimShare="0.382" farmerPerAcre="10.38" acres="1735575" policies="5075"/>
+                <level coverage="0.65" premiumRate="0.1725" farmerRate="0.0698" subsidyShare="0.595" lossRatio="0.978" claimShare="0.388" farmerPerAcre="13.72" acres="711725" policies="2824"/>
+                <level coverage="0.7" premiumRate="0.2222" farmerRate="0.0874" subsidyShare="0.607" lossRatio="0.901" claimShare="0.421" farmerPerAcre="18.95" acres="697676" policies="2803"/>
+                <level coverage="0.75" premiumRate="0.282" farmerRate="0.1192" subsidyShare="0.577" lossRatio="0.907" claimShare="0.408" farmerPerAcre="28.16" acres="373350" policies="1572"/>
             </plan>
         </crop>
         <crop fillType="DEFAULT" rma="all field crops">
-            <plan id="RP">
-                <level coverage="0.5" premiumRate="0.0493" farmerRate="0.0131" subsidyShare="0.735" lossRatio="0.606" claimShare="0.226" farmerPerAcre="4.8" acres="16086806" policies="55084"/>
-                <level coverage="0.55" premiumRate="0.0672" farmerRate="0.0198" subsidyShare="0.706" lossRatio="0.859" claimShare="0.289" farmerPerAcre="7" acres="2258782" policies="9379"/>
-                <level coverage="0.6" premiumRate="0.1014" farmerRate="0.0353" subsidyShare="0.652" lossRatio="1.057" claimShare="0.42" farmerPerAcre="13.68" acres="25846971" policies="112087"/>
-                <level coverage="0.65" premiumRate="0.1014" farmerRate="0.0353" subsidyShare="0.652" lossRatio="1.004" claimShare="0.364" farmerPerAcre="14.73" acres="39994093" policies="206302"/>
-                <level coverage="0.7" premiumRate="0.1014" farmerRate="0.0353" subsidyShare="0.652" lossRatio="1.029" claimShare="0.393" farmerPerAcre="16.13" acres="202432597" policies="819120"/>
-                <level coverage="0.75" premiumRate="0.1014" farmerRate="0.0353" subsidyShare="0.652" lossRatio="0.852" claimShare="0.358" farmerPerAcre="15.75" acres="358875220" policies="1338401"/>
-                <level coverage="0.8" premiumRate="0.1014" farmerRate="0.0353" subsidyShare="0.652" lossRatio="0.675" claimShare="0.296" farmerPerAcre="19.38" acres="246954047" policies="1063363"/>
-                <level coverage="0.85" premiumRate="0.1014" farmerRate="0.0391" subsidyShare="0.615" lossRatio="0.668" claimShare="0.321" farmerPerAcre="27.81" acres="136143445" policies="601445"/>
+            <plan id="RP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0237" farmerRate="0.0063" subsidyShare="0.735" lossRatio="0.606" claimShare="0.226" farmerPerAcre="4.8" acres="16086806" policies="55084"/>
+                <level coverage="0.55" premiumRate="0.0319" farmerRate="0.0094" subsidyShare="0.706" lossRatio="0.859" claimShare="0.289" farmerPerAcre="7" acres="2258782" policies="9379"/>
+                <level coverage="0.6" premiumRate="0.0423" farmerRate="0.0136" subsidyShare="0.678" lossRatio="1.057" claimShare="0.42" farmerPerAcre="13.68" acres="25846971" policies="112087"/>
+                <level coverage="0.65" premiumRate="0.0553" farmerRate="0.0195" subsidyShare="0.647" lossRatio="1.004" claimShare="0.364" farmerPerAcre="14.73" acres="39994093" policies="206302"/>
+                <level coverage="0.7" premiumRate="0.0712" farmerRate="0.0226" subsidyShare="0.683" lossRatio="1.029" claimShare="0.393" farmerPerAcre="16.13" acres="202432597" policies="819120"/>
+                <level coverage="0.75" premiumRate="0.0904" farmerRate="0.027" subsidyShare="0.702" lossRatio="0.852" claimShare="0.358" farmerPerAcre="15.75" acres="358875220" policies="1338401"/>
+                <level coverage="0.8" premiumRate="0.113" farmerRate="0.0425" subsidyShare="0.624" lossRatio="0.675" claimShare="0.296" farmerPerAcre="19.38" acres="246954047" policies="1063363"/>
+                <level coverage="0.85" premiumRate="0.1393" farmerRate="0.0736" subsidyShare="0.471" lossRatio="0.668" claimShare="0.321" farmerPerAcre="27.81" acres="136143445" policies="601445"/>
             </plan>
-            <plan id="RPHPE">
-                <level coverage="0.5" premiumRate="0.0183" farmerRate="0.0048" subsidyShare="0.736" lossRatio="0.937" claimShare="0.114" farmerPerAcre="1.86" acres="143627" policies="690"/>
-                <level coverage="0.6" premiumRate="0.0333" farmerRate="0.0101" subsidyShare="0.697" lossRatio="0.311" claimShare="0.124" farmerPerAcre="5.37" acres="185185" policies="781"/>
-                <level coverage="0.65" premiumRate="0.0432" farmerRate="0.0152" subsidyShare="0.648" lossRatio="0.775" claimShare="0.146" farmerPerAcre="8.41" acres="181635" policies="959"/>
-                <level coverage="0.7" premiumRate="0.0432" farmerRate="0.0152" subsidyShare="0.648" lossRatio="0.584" claimShare="0.211" farmerPerAcre="9.67" acres="581508" policies="2477"/>
-                <level coverage="0.75" premiumRate="0.0432" farmerRate="0.0152" subsidyShare="0.648" lossRatio="0.606" claimShare="0.188" farmerPerAcre="8.54" acres="1292241" policies="5282"/>
-                <level coverage="0.8" premiumRate="0.0432" farmerRate="0.0158" subsidyShare="0.634" lossRatio="0.637" claimShare="0.2" farmerPerAcre="11.24" acres="1502618" policies="6211"/>
-                <level coverage="0.85" premiumRate="0.0432" farmerRate="0.021" subsidyShare="0.515" lossRatio="1.121" claimShare="0.276" farmerPerAcre="16.29" acres="2223031" policies="8452"/>
+            <plan id="RPHPE" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.009" farmerRate="0.0024" subsidyShare="0.736" lossRatio="0.937" claimShare="0.114" farmerPerAcre="1.86" acres="143627" policies="690"/>
+                <level coverage="0.6" premiumRate="0.016" farmerRate="0.0049" subsidyShare="0.697" lossRatio="0.311" claimShare="0.124" farmerPerAcre="5.37" acres="185185" policies="781"/>
+                <level coverage="0.65" premiumRate="0.021" farmerRate="0.0071" subsidyShare="0.659" lossRatio="0.775" claimShare="0.146" farmerPerAcre="8.41" acres="181635" policies="959"/>
+                <level coverage="0.7" premiumRate="0.027" farmerRate="0.0088" subsidyShare="0.674" lossRatio="0.584" claimShare="0.211" farmerPerAcre="9.67" acres="581508" policies="2477"/>
+                <level coverage="0.75" premiumRate="0.0343" farmerRate="0.0102" subsidyShare="0.702" lossRatio="0.606" claimShare="0.188" farmerPerAcre="8.54" acres="1292241" policies="5282"/>
+                <level coverage="0.8" premiumRate="0.0429" farmerRate="0.0162" subsidyShare="0.623" lossRatio="0.637" claimShare="0.2" farmerPerAcre="11.24" acres="1502618" policies="6211"/>
+                <level coverage="0.85" premiumRate="0.0528" farmerRate="0.0277" subsidyShare="0.475" lossRatio="1.121" claimShare="0.276" farmerPerAcre="16.29" acres="2223031" policies="8452"/>
             </plan>
-            <plan id="YP">
-                <level coverage="0.5" premiumRate="0.0401" farmerRate="0.011" subsidyShare="0.726" lossRatio="0.641" claimShare="0.195" farmerPerAcre="4.08" acres="15178356" policies="66069"/>
-                <level coverage="0.55" premiumRate="0.0491" farmerRate="0.0151" subsidyShare="0.693" lossRatio="0.78" claimShare="0.212" farmerPerAcre="5.56" acres="1071519" policies="4999"/>
-                <level coverage="0.6" premiumRate="0.0637" farmerRate="0.019" subsidyShare="0.701" lossRatio="0.797" claimShare="0.279" farmerPerAcre="8.09" acres="7912463" policies="32184"/>
-                <level coverage="0.65" premiumRate="0.0707" farmerRate="0.0275" subsidyShare="0.611" lossRatio="1.025" claimShare="0.275" farmerPerAcre="10.97" acres="10232662" policies="75779"/>
-                <level coverage="0.7" premiumRate="0.0707" farmerRate="0.0275" subsidyShare="0.611" lossRatio="0.985" claimShare="0.308" farmerPerAcre="11.88" acres="15389822" policies="75656"/>
-                <level coverage="0.75" premiumRate="0.0707" farmerRate="0.0275" subsidyShare="0.611" lossRatio="1.248" claimShare="0.306" farmerPerAcre="13.9" acres="13486280" policies="64840"/>
-                <level coverage="0.8" premiumRate="0.0707" farmerRate="0.0275" subsidyShare="0.611" lossRatio="1.476" claimShare="0.293" farmerPerAcre="17.47" acres="5769229" policies="25699"/>
-                <level coverage="0.85" premiumRate="0.0707" farmerRate="0.0281" subsidyShare="0.603" lossRatio="3.227" claimShare="0.333" farmerPerAcre="26.51" acres="4479712" policies="19138"/>
+            <plan id="YP" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0204" farmerRate="0.0056" subsidyShare="0.726" lossRatio="0.641" claimShare="0.195" farmerPerAcre="4.08" acres="15178356" policies="66069"/>
+                <level coverage="0.55" premiumRate="0.0274" farmerRate="0.0084" subsidyShare="0.693" lossRatio="0.78" claimShare="0.212" farmerPerAcre="5.56" acres="1071519" policies="4999"/>
+                <level coverage="0.6" premiumRate="0.0363" farmerRate="0.0108" subsidyShare="0.701" lossRatio="0.797" claimShare="0.279" farmerPerAcre="8.09" acres="7912463" policies="32184"/>
+                <level coverage="0.65" premiumRate="0.0474" farmerRate="0.0177" subsidyShare="0.627" lossRatio="1.025" claimShare="0.275" farmerPerAcre="10.97" acres="10232662" policies="75779"/>
+                <level coverage="0.7" premiumRate="0.0611" farmerRate="0.0211" subsidyShare="0.656" lossRatio="0.985" claimShare="0.308" farmerPerAcre="11.88" acres="15389822" policies="75656"/>
+                <level coverage="0.75" premiumRate="0.0776" farmerRate="0.0276" subsidyShare="0.644" lossRatio="1.248" claimShare="0.306" farmerPerAcre="13.9" acres="13486280" policies="64840"/>
+                <level coverage="0.8" premiumRate="0.097" farmerRate="0.0424" subsidyShare="0.562" lossRatio="1.476" claimShare="0.293" farmerPerAcre="17.47" acres="5769229" policies="25699"/>
+                <level coverage="0.85" premiumRate="0.1195" farmerRate="0.0681" subsidyShare="0.43" lossRatio="3.227" claimShare="0.333" farmerPerAcre="26.51" acres="4479712" policies="19138"/>
             </plan>
-            <plan id="APH">
-                <level coverage="0.5" premiumRate="0.1076" farmerRate="0.0352" subsidyShare="0.673" lossRatio="0.899" claimShare="0.298" farmerPerAcre="5.82" acres="472093" policies="3296"/>
-                <level coverage="0.55" premiumRate="0.1406" farmerRate="0.0498" subsidyShare="0.646" lossRatio="1.139" claimShare="0.349" farmerPerAcre="7.17" acres="51081" policies="387"/>
-                <level coverage="0.6" premiumRate="0.1741" farmerRate="0.0654" subsidyShare="0.625" lossRatio="0.925" claimShare="0.393" farmerPerAcre="10.22" acres="614154" policies="3511"/>
-                <level coverage="0.65" premiumRate="0.1741" farmerRate="0.0714" subsidyShare="0.59" lossRatio="1.166" claimShare="0.424" farmerPerAcre="11.34" acres="1148642" policies="7421"/>
-                <level coverage="0.7" premiumRate="0.1741" farmerRate="0.0727" subsidyShare="0.582" lossRatio="1.147" claimShare="0.462" farmerPerAcre="14.02" acres="2523033" policies="13188"/>
-                <level coverage="0.75" premiumRate="0.1741" farmerRate="0.0727" subsidyShare="0.582" lossRatio="1.203" claimShare="0.423" farmerPerAcre="18.57" acres="1244590" policies="8006"/>
-                <level coverage="0.8" premiumRate="0.1741" farmerRate="0.0727" subsidyShare="0.582" lossRatio="1.362" claimShare="0.347" farmerPerAcre="29.36" acres="102725" policies="1053"/>
-                <level coverage="0.85" premiumRate="0.1741" farmerRate="0.0727" subsidyShare="0.582" lossRatio="2.43" claimShare="0.368" farmerPerAcre="34.58" acres="70265" policies="712"/>
+            <plan id="APH" shape="lossModel" shapeCv="0.3">
+                <level coverage="0.5" premiumRate="0.0554" farmerRate="0.0181" subsidyShare="0.673" lossRatio="0.899" claimShare="0.298" farmerPerAcre="5.82" acres="472093" policies="3296"/>
+                <level coverage="0.55" premiumRate="0.0744" farmerRate="0.0263" subsidyShare="0.646" lossRatio="1.139" claimShare="0.349" farmerPerAcre="7.17" acres="51081" policies="387"/>
+                <level coverage="0.6" premiumRate="0.0987" farmerRate="0.0352" subsidyShare="0.643" lossRatio="0.925" claimShare="0.393" farmerPerAcre="10.22" acres="614154" policies="3511"/>
+                <level coverage="0.65" premiumRate="0.129" farmerRate="0.0528" subsidyShare="0.591" lossRatio="1.166" claimShare="0.424" farmerPerAcre="11.34" acres="1148642" policies="7421"/>
+                <level coverage="0.7" premiumRate="0.1662" farmerRate="0.0671" subsidyShare="0.596" lossRatio="1.147" claimShare="0.462" farmerPerAcre="14.02" acres="2523033" policies="13188"/>
+                <level coverage="0.75" premiumRate="0.2109" farmerRate="0.0895" subsidyShare="0.576" lossRatio="1.203" claimShare="0.423" farmerPerAcre="18.57" acres="1244590" policies="8006"/>
+                <level coverage="0.8" premiumRate="0.2637" farmerRate="0.1302" subsidyShare="0.506" lossRatio="1.362" claimShare="0.347" farmerPerAcre="29.36" acres="102725" policies="1053"/>
+                <level coverage="0.85" premiumRate="0.3249" farmerRate="0.1953" subsidyShare="0.399" lossRatio="2.43" claimShare="0.368" farmerPerAcre="34.58" acres="70265" policies="712"/>
             </plan>
         </crop>
         <crop fillType="SPINACH" borrowedFrom="POTATO"/>
@@ -420,402 +420,402 @@
         <crop fillType="REDBEET" borrowedFrom="SUGARBEET"/>
     </region>
     <region id="US_AL" name="Alabama" parent="US">
-        <crop fillType="WHEAT" rateFactor="0.483" lossRatio="1.208" acres="468455"/>
-        <crop fillType="SOYBEAN" rateFactor="1.363" lossRatio="0.998" acres="1322373"/>
-        <crop fillType="MAIZE" rateFactor="1.157" lossRatio="1.054" acres="1230387"/>
-        <crop fillType="COTTON" rateFactor="0.62" lossRatio="0.932" acres="1798250"/>
-        <crop fillType="DEFAULT" rateFactor="1.156" lossRatio="0.986" acres="4843656"/>
+        <crop fillType="WHEAT" rateFactor="0.549" lossRatio="1.208" acres="468455"/>
+        <crop fillType="SOYBEAN" rateFactor="1.624" lossRatio="0.998" acres="1322373"/>
+        <crop fillType="MAIZE" rateFactor="1.391" lossRatio="1.054" acres="1230387"/>
+        <crop fillType="COTTON" rateFactor="0.589" lossRatio="0.932" acres="1798250"/>
+        <crop fillType="DEFAULT" rateFactor="1.402" lossRatio="0.986" acres="4843656"/>
     </region>
     <region id="US_AR" name="Arkansas" parent="US">
-        <crop fillType="WHEAT" rateFactor="1.533" lossRatio="0.816" acres="562547"/>
-        <crop fillType="SORGHUM" rateFactor="1.138" lossRatio="0.625" acres="90696"/>
-        <crop fillType="SOYBEAN" rateFactor="1.138" lossRatio="0.861" acres="12359307"/>
-        <crop fillType="MAIZE" rateFactor="1.711" lossRatio="1.308" acres="3513422"/>
-        <crop fillType="COTTON" rateFactor="0.459" lossRatio="1.111" acres="1571436"/>
-        <crop fillType="RICE" rateFactor="1.106" lossRatio="1.543" acres="6286183"/>
-        <crop fillType="RICELONGGRAIN" rateFactor="1.106" lossRatio="1.543" acres="6286183"/>
-        <crop fillType="DEFAULT" rateFactor="1.042" lossRatio="1.24" acres="24389359"/>
+        <crop fillType="WHEAT" rateFactor="1.692" lossRatio="0.816" acres="562547"/>
+        <crop fillType="SORGHUM" rateFactor="1.384" lossRatio="0.625" acres="90696"/>
+        <crop fillType="SOYBEAN" rateFactor="1.519" lossRatio="0.861" acres="12359307"/>
+        <crop fillType="MAIZE" rateFactor="2.242" lossRatio="1.308" acres="3513422"/>
+        <crop fillType="COTTON" rateFactor="0.427" lossRatio="1.111" acres="1571436"/>
+        <crop fillType="RICE" rateFactor="1.194" lossRatio="1.543" acres="6286183"/>
+        <crop fillType="RICELONGGRAIN" rateFactor="1.194" lossRatio="1.543" acres="6286183"/>
+        <crop fillType="DEFAULT" rateFactor="1.332" lossRatio="1.24" acres="24389359"/>
     </region>
     <region id="US_AZ" name="Arizona" parent="US">
-        <crop fillType="WHEAT" rateFactor="0.918" lossRatio="1.64" acres="123625"/>
-        <crop fillType="BARLEY" rateFactor="0.343" lossRatio="3.925" acres="41837"/>
-        <crop fillType="MAIZE" rateFactor="1.108" lossRatio="2.492" acres="214346"/>
-        <crop fillType="COTTON" rateFactor="0.595" lossRatio="2.029" acres="561447"/>
-        <crop fillType="GRASS" rateFactor="0.331" lossRatio="0" acres="88008"/>
-        <crop fillType="DEFAULT" rateFactor="1.19" lossRatio="2.063" acres="964167"/>
+        <crop fillType="WHEAT" rateFactor="0.882" lossRatio="1.64" acres="123625"/>
+        <crop fillType="BARLEY" rateFactor="0.338" lossRatio="3.925" acres="41837"/>
+        <crop fillType="MAIZE" rateFactor="1.115" lossRatio="2.492" acres="214346"/>
+        <crop fillType="COTTON" rateFactor="0.445" lossRatio="2.029" acres="561447"/>
+        <crop fillType="GRASS" rateFactor="0.427" lossRatio="0" acres="88008"/>
+        <crop fillType="DEFAULT" rateFactor="1.158" lossRatio="2.063" acres="964167"/>
     </region>
     <region id="US_CA" name="California" parent="US">
-        <crop fillType="WHEAT" rateFactor="1.656" lossRatio="1.692" acres="286596"/>
-        <crop fillType="BARLEY" rateFactor="1.84" lossRatio="1.57" acres="78291"/>
-        <crop fillType="MAIZE" rateFactor="0.705" lossRatio="1.469" acres="226600"/>
-        <crop fillType="POTATO" rateFactor="1.046" lossRatio="3.554" acres="78774"/>
-        <crop fillType="SUGARBEET" rateFactor="0.607" lossRatio="1.041" acres="58026"/>
-        <crop fillType="COTTON" rateFactor="0.647" lossRatio="1.414" acres="59565"/>
-        <crop fillType="RICE" rateFactor="0.731" lossRatio="4.063" acres="2420969"/>
-        <crop fillType="RICELONGGRAIN" rateFactor="0.731" lossRatio="4.063" acres="2420969"/>
+        <crop fillType="WHEAT" rateFactor="1.638" lossRatio="1.692" acres="286596"/>
+        <crop fillType="BARLEY" rateFactor="1.895" lossRatio="1.57" acres="78291"/>
+        <crop fillType="MAIZE" rateFactor="0.855" lossRatio="1.469" acres="226600"/>
+        <crop fillType="POTATO" rateFactor="0.897" lossRatio="3.554" acres="78774"/>
+        <crop fillType="SUGARBEET" rateFactor="0.463" lossRatio="1.041" acres="58026"/>
+        <crop fillType="COTTON" rateFactor="0.536" lossRatio="1.414" acres="59565"/>
+        <crop fillType="RICE" rateFactor="0.614" lossRatio="4.063" acres="2420969"/>
+        <crop fillType="RICELONGGRAIN" rateFactor="0.614" lossRatio="4.063" acres="2420969"/>
         <crop fillType="GRAPE" rateFactor="0.951" lossRatio="2.158" acres="1506374"/>
         <crop fillType="OLIVE" rateFactor="1" lossRatio="1.481" acres="41895"/>
-        <crop fillType="GRASS" rateFactor="0.369" lossRatio="0.82" acres="30516"/>
-        <crop fillType="DEFAULT" rateFactor="0.641" lossRatio="3.549" acres="3140220"/>
+        <crop fillType="GRASS" rateFactor="0.366" lossRatio="0.82" acres="30516"/>
+        <crop fillType="DEFAULT" rateFactor="0.5" lossRatio="3.549" acres="3140220"/>
     </region>
     <region id="US_CO" name="Colorado" parent="US">
-        <crop fillType="WHEAT" rateFactor="1.385" lossRatio="1.361" acres="9264854"/>
-        <crop fillType="BARLEY" rateFactor="0.758" lossRatio="1.632" acres="220645"/>
-        <crop fillType="OAT" rateFactor="1.084" lossRatio="1.113" acres="23114"/>
-        <crop fillType="SORGHUM" rateFactor="1.789" lossRatio="0.995" acres="1939180"/>
-        <crop fillType="SUNFLOWER" rateFactor="1.612" lossRatio="1.207" acres="232723"/>
-        <crop fillType="SOYBEAN" rateFactor="1.473" lossRatio="1.668" acres="34735"/>
-        <crop fillType="MAIZE" rateFactor="1.716" lossRatio="1.118" acres="6807892"/>
-        <crop fillType="POTATO" rateFactor="0.96" lossRatio="1.044" acres="187397"/>
-        <crop fillType="SUGARBEET" rateFactor="1.336" lossRatio="0.943" acres="108997"/>
-        <crop fillType="DEFAULT" rateFactor="1.808" lossRatio="1.212" acres="20389229"/>
+        <crop fillType="WHEAT" rateFactor="1.545" lossRatio="1.361" acres="9264854"/>
+        <crop fillType="BARLEY" rateFactor="0.823" lossRatio="1.632" acres="220645"/>
+        <crop fillType="OAT" rateFactor="0.932" lossRatio="1.113" acres="23114"/>
+        <crop fillType="SORGHUM" rateFactor="1.803" lossRatio="0.995" acres="1939180"/>
+        <crop fillType="SUNFLOWER" rateFactor="1.673" lossRatio="1.207" acres="232723"/>
+        <crop fillType="SOYBEAN" rateFactor="2.01" lossRatio="1.668" acres="34735"/>
+        <crop fillType="MAIZE" rateFactor="2.186" lossRatio="1.118" acres="6807892"/>
+        <crop fillType="POTATO" rateFactor="0.891" lossRatio="1.044" acres="187397"/>
+        <crop fillType="SUGARBEET" rateFactor="1.569" lossRatio="0.943" acres="108997"/>
+        <crop fillType="DEFAULT" rateFactor="2.219" lossRatio="1.212" acres="20389229"/>
     </region>
     <region id="US_CT" name="Connecticut" parent="US">
-        <crop fillType="MAIZE" rateFactor="1.017" lossRatio="1.478" acres="25771"/>
-        <crop fillType="DEFAULT" rateFactor="0.83" lossRatio="1.478" acres="25771"/>
+        <crop fillType="MAIZE" rateFactor="1.225" lossRatio="1.478" acres="25771"/>
+        <crop fillType="DEFAULT" rateFactor="0.998" lossRatio="1.478" acres="25771"/>
     </region>
     <region id="US_DE" name="Delaware" parent="US">
-        <crop fillType="WHEAT" rateFactor="0.485" lossRatio="0.429" acres="142568"/>
-        <crop fillType="BARLEY" rateFactor="0.344" lossRatio="0.707" acres="42119"/>
-        <crop fillType="SOYBEAN" rateFactor="1.248" lossRatio="0.415" acres="589090"/>
-        <crop fillType="MAIZE" rateFactor="0.933" lossRatio="0.274" acres="653230"/>
-        <crop fillType="GREENBEAN" rateFactor="0.542" lossRatio="1.333" acres="28599"/>
-        <crop fillType="DEFAULT" rateFactor="0.856" lossRatio="0.344" acres="1441807"/>
+        <crop fillType="WHEAT" rateFactor="0.467" lossRatio="0.429" acres="142568"/>
+        <crop fillType="BARLEY" rateFactor="0.352" lossRatio="0.707" acres="42119"/>
+        <crop fillType="SOYBEAN" rateFactor="1.479" lossRatio="0.415" acres="589090"/>
+        <crop fillType="MAIZE" rateFactor="1.116" lossRatio="0.274" acres="653230"/>
+        <crop fillType="GREENBEAN" rateFactor="0.579" lossRatio="1.333" acres="28599"/>
+        <crop fillType="DEFAULT" rateFactor="1.009" lossRatio="0.344" acres="1441807"/>
     </region>
     <region id="US_FL" name="Florida" parent="US">
-        <crop fillType="SOYBEAN" rateFactor="2.538" lossRatio="1.261" acres="61268"/>
-        <crop fillType="MAIZE" rateFactor="1.136" lossRatio="0.937" acres="193118"/>
-        <crop fillType="POTATO" rateFactor="0.738" lossRatio="0.508" acres="51981"/>
-        <crop fillType="SUGARCANE" rateFactor="0.537" lossRatio="0.036" acres="40774"/>
-        <crop fillType="COTTON" rateFactor="0.969" lossRatio="1.15" acres="429949"/>
-        <crop fillType="DEFAULT" rateFactor="1.744" lossRatio="1.124" acres="702288"/>
+        <crop fillType="SOYBEAN" rateFactor="3.523" lossRatio="1.261" acres="61268"/>
+        <crop fillType="MAIZE" rateFactor="1.286" lossRatio="0.937" acres="193118"/>
+        <crop fillType="POTATO" rateFactor="0.913" lossRatio="0.508" acres="51981"/>
+        <crop fillType="SUGARCANE" rateFactor="0.773" lossRatio="0.036" acres="40774"/>
+        <crop fillType="COTTON" rateFactor="1.04" lossRatio="1.15" acres="429949"/>
+        <crop fillType="DEFAULT" rateFactor="2.318" lossRatio="1.124" acres="702288"/>
     </region>
     <region id="US_GA" name="Georgia" parent="US">
-        <crop fillType="WHEAT" rateFactor="1.228" lossRatio="0.527" acres="227291"/>
-        <crop fillType="SORGHUM" rateFactor="1.844" lossRatio="0.496" acres="33366"/>
-        <crop fillType="SOYBEAN" rateFactor="1.952" lossRatio="1.076" acres="420484"/>
-        <crop fillType="MAIZE" rateFactor="1.068" lossRatio="0.962" acres="1417947"/>
-        <crop fillType="COTTON" rateFactor="0.602" lossRatio="0.837" acres="5405503"/>
-        <crop fillType="DEFAULT" rateFactor="1.218" lossRatio="0.855" acres="7517587"/>
+        <crop fillType="WHEAT" rateFactor="1.449" lossRatio="0.527" acres="227291"/>
+        <crop fillType="SORGHUM" rateFactor="2.158" lossRatio="0.496" acres="33366"/>
+        <crop fillType="SOYBEAN" rateFactor="2.548" lossRatio="1.076" acres="420484"/>
+        <crop fillType="MAIZE" rateFactor="1.434" lossRatio="0.962" acres="1417947"/>
+        <crop fillType="COTTON" rateFactor="0.591" lossRatio="0.837" acres="5405503"/>
+        <crop fillType="DEFAULT" rateFactor="1.589" lossRatio="0.855" acres="7517587"/>
     </region>
     <region id="US_IA" name="Iowa" parent="US">
-        <crop fillType="WHEAT" rateFactor="1.465" lossRatio="0.264" acres="20387"/>
-        <crop fillType="OAT" rateFactor="0.404" lossRatio="0.915" acres="53124"/>
-        <crop fillType="SOYBEAN" rateFactor="0.73" lossRatio="0.373" acres="47138002"/>
-        <crop fillType="MAIZE" rateFactor="0.685" lossRatio="0.569" acres="61579149"/>
-        <crop fillType="DEFAULT" rateFactor="0.598" lossRatio="0.502" acres="108802387"/>
+        <crop fillType="WHEAT" rateFactor="1.397" lossRatio="0.264" acres="20387"/>
+        <crop fillType="OAT" rateFactor="0.265" lossRatio="0.915" acres="53124"/>
+        <crop fillType="SOYBEAN" rateFactor="0.64" lossRatio="0.373" acres="47138002"/>
+        <crop fillType="MAIZE" rateFactor="0.599" lossRatio="0.569" acres="61579149"/>
+        <crop fillType="DEFAULT" rateFactor="0.504" lossRatio="0.502" acres="108802387"/>
     </region>
     <region id="US_ID" name="Idaho" parent="US">
-        <crop fillType="WHEAT" rateFactor="0.685" lossRatio="1.632" acres="4020554"/>
-        <crop fillType="BARLEY" rateFactor="0.759" lossRatio="1.089" acres="1406416"/>
-        <crop fillType="CANOLA" rateFactor="0.885" lossRatio="1.095" acres="304272"/>
-        <crop fillType="MAIZE" rateFactor="0.71" lossRatio="1.872" acres="338025"/>
-        <crop fillType="POTATO" rateFactor="0.431" lossRatio="0.817" acres="501876"/>
-        <crop fillType="SUGARBEET" rateFactor="0.531" lossRatio="1.469" acres="666567"/>
-        <crop fillType="PEA" rateFactor="0.635" lossRatio="1.727" acres="519176"/>
-        <crop fillType="GRASS" rateFactor="0.318" lossRatio="0.109" acres="31109"/>
-        <crop fillType="DEFAULT" rateFactor="1.071" lossRatio="1.518" acres="6676769"/>
+        <crop fillType="WHEAT" rateFactor="0.534" lossRatio="1.632" acres="4020554"/>
+        <crop fillType="BARLEY" rateFactor="0.664" lossRatio="1.089" acres="1406416"/>
+        <crop fillType="CANOLA" rateFactor="0.757" lossRatio="1.095" acres="304272"/>
+        <crop fillType="MAIZE" rateFactor="0.722" lossRatio="1.872" acres="338025"/>
+        <crop fillType="POTATO" rateFactor="0.389" lossRatio="0.817" acres="501876"/>
+        <crop fillType="SUGARBEET" rateFactor="0.456" lossRatio="1.469" acres="666567"/>
+        <crop fillType="PEA" rateFactor="0.523" lossRatio="1.727" acres="519176"/>
+        <crop fillType="GRASS" rateFactor="0.241" lossRatio="0.109" acres="31109"/>
+        <crop fillType="DEFAULT" rateFactor="0.947" lossRatio="1.518" acres="6676769"/>
     </region>
     <region id="US_IL" name="Illinois" parent="US">
-        <crop fillType="WHEAT" rateFactor="0.989" lossRatio="0.338" acres="2362617"/>
-        <crop fillType="SORGHUM" rateFactor="0.709" lossRatio="0.538" acres="30193"/>
-        <crop fillType="SOYBEAN" rateFactor="0.639" lossRatio="0.275" acres="45748851"/>
-        <crop fillType="MAIZE" rateFactor="0.788" lossRatio="0.193" acres="48315350"/>
-        <crop fillType="DEFAULT" rateFactor="0.634" lossRatio="0.224" acres="96484918"/>
+        <crop fillType="WHEAT" rateFactor="0.959" lossRatio="0.338" acres="2362617"/>
+        <crop fillType="SORGHUM" rateFactor="0.622" lossRatio="0.538" acres="30193"/>
+        <crop fillType="SOYBEAN" rateFactor="0.574" lossRatio="0.275" acres="45748851"/>
+        <crop fillType="MAIZE" rateFactor="0.703" lossRatio="0.193" acres="48315350"/>
+        <crop fillType="DEFAULT" rateFactor="0.549" lossRatio="0.224" acres="96484918"/>
     </region>
     <region id="US_IN" name="Indiana" parent="US">
-        <crop fillType="WHEAT" rateFactor="0.85" lossRatio="0.295" acres="854469"/>
-        <crop fillType="SORGHUM" rateFactor="0.564" lossRatio="0.254" acres="28182"/>
-        <crop fillType="SOYBEAN" rateFactor="0.822" lossRatio="0.263" acres="23017827"/>
-        <crop fillType="MAIZE" rateFactor="0.895" lossRatio="0.142" acres="21957032"/>
-        <crop fillType="DEFAULT" rateFactor="0.739" lossRatio="0.192" acres="45859253"/>
+        <crop fillType="WHEAT" rateFactor="0.735" lossRatio="0.295" acres="854469"/>
+        <crop fillType="SORGHUM" rateFactor="0.484" lossRatio="0.254" acres="28182"/>
+        <crop fillType="SOYBEAN" rateFactor="0.743" lossRatio="0.263" acres="23017827"/>
+        <crop fillType="MAIZE" rateFactor="0.815" lossRatio="0.142" acres="21957032"/>
+        <crop fillType="DEFAULT" rateFactor="0.649" lossRatio="0.192" acres="45859253"/>
     </region>
     <region id="US_KS" name="Kansas" parent="US">
-        <crop fillType="WHEAT" rateFactor="1.102" lossRatio="1.071" acres="32529453"/>
-        <crop fillType="BARLEY" rateFactor="1.401" lossRatio="0.449" acres="27976"/>
-        <crop fillType="OAT" rateFactor="1.519" lossRatio="0.964" acres="32430"/>
-        <crop fillType="CANOLA" rateFactor="2.37" lossRatio="0.831" acres="21395"/>
-        <crop fillType="SORGHUM" rateFactor="0.921" lossRatio="1.267" acres="12898348"/>
-        <crop fillType="SUNFLOWER" rateFactor="1.142" lossRatio="1.137" acres="121010"/>
-        <crop fillType="SOYBEAN" rateFactor="1.455" lossRatio="1.402" acres="21281443"/>
-        <crop fillType="MAIZE" rateFactor="1.551" lossRatio="1.066" acres="27794956"/>
-        <crop fillType="COTTON" rateFactor="0.78" lossRatio="1.321" acres="642607"/>
-        <crop fillType="DEFAULT" rateFactor="1.475" lossRatio="1.164" acres="95424690"/>
+        <crop fillType="WHEAT" rateFactor="1.184" lossRatio="1.071" acres="32529453"/>
+        <crop fillType="BARLEY" rateFactor="1.635" lossRatio="0.449" acres="27976"/>
+        <crop fillType="OAT" rateFactor="1.463" lossRatio="0.964" acres="32430"/>
+        <crop fillType="CANOLA" rateFactor="2.495" lossRatio="0.831" acres="21395"/>
+        <crop fillType="SORGHUM" rateFactor="0.898" lossRatio="1.267" acres="12898348"/>
+        <crop fillType="SUNFLOWER" rateFactor="1.14" lossRatio="1.137" acres="121010"/>
+        <crop fillType="SOYBEAN" rateFactor="1.702" lossRatio="1.402" acres="21281443"/>
+        <crop fillType="MAIZE" rateFactor="1.862" lossRatio="1.066" acres="27794956"/>
+        <crop fillType="COTTON" rateFactor="0.771" lossRatio="1.321" acres="642607"/>
+        <crop fillType="DEFAULT" rateFactor="1.742" lossRatio="1.164" acres="95424690"/>
     </region>
     <region id="US_KY" name="Kentucky" parent="US">
-        <crop fillType="WHEAT" rateFactor="0.713" lossRatio="0.34" acres="1863737"/>
-        <crop fillType="SOYBEAN" rateFactor="1.025" lossRatio="0.519" acres="8212679"/>
-        <crop fillType="MAIZE" rateFactor="1.095" lossRatio="0.445" acres="6451678"/>
-        <crop fillType="DEFAULT" rateFactor="0.917" lossRatio="0.464" acres="16549337"/>
+        <crop fillType="WHEAT" rateFactor="0.656" lossRatio="0.34" acres="1863737"/>
+        <crop fillType="SOYBEAN" rateFactor="1.056" lossRatio="0.519" acres="8212679"/>
+        <crop fillType="MAIZE" rateFactor="1.155" lossRatio="0.445" acres="6451678"/>
+        <crop fillType="DEFAULT" rateFactor="0.928" lossRatio="0.464" acres="16549337"/>
     </region>
     <region id="US_LA" name="Louisiana" parent="US">
-        <crop fillType="WHEAT" rateFactor="1.611" lossRatio="0.901" acres="164329"/>
-        <crop fillType="SORGHUM" rateFactor="0.787" lossRatio="0.913" acres="134974"/>
-        <crop fillType="SOYBEAN" rateFactor="1.407" lossRatio="1.152" acres="5105010"/>
-        <crop fillType="MAIZE" rateFactor="1.151" lossRatio="1.206" acres="2853223"/>
-        <crop fillType="SUGARCANE" rateFactor="0.955" lossRatio="0.863" acres="1554758"/>
-        <crop fillType="COTTON" rateFactor="0.486" lossRatio="1.19" acres="675514"/>
-        <crop fillType="RICE" rateFactor="0.667" lossRatio="2.345" acres="1959073"/>
-        <crop fillType="RICELONGGRAIN" rateFactor="0.667" lossRatio="2.345" acres="1959073"/>
-        <crop fillType="DEFAULT" rateFactor="0.96" lossRatio="1.337" acres="10898678"/>
+        <crop fillType="WHEAT" rateFactor="1.97" lossRatio="0.901" acres="164329"/>
+        <crop fillType="SORGHUM" rateFactor="0.872" lossRatio="0.913" acres="134974"/>
+        <crop fillType="SOYBEAN" rateFactor="1.828" lossRatio="1.152" acres="5105010"/>
+        <crop fillType="MAIZE" rateFactor="1.571" lossRatio="1.206" acres="2853223"/>
+        <crop fillType="SUGARCANE" rateFactor="0.939" lossRatio="0.863" acres="1554758"/>
+        <crop fillType="COTTON" rateFactor="0.471" lossRatio="1.19" acres="675514"/>
+        <crop fillType="RICE" rateFactor="0.716" lossRatio="2.345" acres="1959073"/>
+        <crop fillType="RICELONGGRAIN" rateFactor="0.716" lossRatio="2.345" acres="1959073"/>
+        <crop fillType="DEFAULT" rateFactor="1.226" lossRatio="1.337" acres="10898678"/>
     </region>
     <region id="US_MA" name="Massachusetts" parent="US">
-        <crop fillType="MAIZE" rateFactor="1.054" lossRatio="1.817" acres="20742"/>
-        <crop fillType="DEFAULT" rateFactor="0.875" lossRatio="1.817" acres="20742"/>
+        <crop fillType="MAIZE" rateFactor="0.995" lossRatio="1.817" acres="20742"/>
+        <crop fillType="DEFAULT" rateFactor="0.814" lossRatio="1.817" acres="20742"/>
     </region>
     <region id="US_MD" name="Maryland" parent="US">
-        <crop fillType="WHEAT" rateFactor="0.539" lossRatio="0.393" acres="418995"/>
-        <crop fillType="BARLEY" rateFactor="0.439" lossRatio="0.51" acres="37346"/>
-        <crop fillType="SORGHUM" rateFactor="0.934" lossRatio="0.743" acres="24038"/>
-        <crop fillType="SOYBEAN" rateFactor="1.212" lossRatio="0.503" acres="1780045"/>
-        <crop fillType="MAIZE" rateFactor="1.165" lossRatio="0.493" acres="1618663"/>
-        <crop fillType="DEFAULT" rateFactor="0.981" lossRatio="0.492" acres="3879743"/>
+        <crop fillType="WHEAT" rateFactor="0.578" lossRatio="0.393" acres="418995"/>
+        <crop fillType="BARLEY" rateFactor="0.485" lossRatio="0.51" acres="37346"/>
+        <crop fillType="SORGHUM" rateFactor="0.926" lossRatio="0.743" acres="24038"/>
+        <crop fillType="SOYBEAN" rateFactor="1.399" lossRatio="0.503" acres="1780045"/>
+        <crop fillType="MAIZE" rateFactor="1.331" lossRatio="0.493" acres="1618663"/>
+        <crop fillType="DEFAULT" rateFactor="1.111" lossRatio="0.492" acres="3879743"/>
     </region>
     <region id="US_ME" name="Maine" parent="US">
-        <crop fillType="BARLEY" rateFactor="1.097" lossRatio="1.498" acres="47084"/>
-        <crop fillType="OAT" rateFactor="0.587" lossRatio="1.402" acres="78735"/>
-        <crop fillType="POTATO" rateFactor="1.873" lossRatio="0.717" acres="129311"/>
-        <crop fillType="DEFAULT" rateFactor="1.101" lossRatio="1.444" acres="136210"/>
+        <crop fillType="BARLEY" rateFactor="1.148" lossRatio="1.498" acres="47084"/>
+        <crop fillType="OAT" rateFactor="0.565" lossRatio="1.402" acres="78735"/>
+        <crop fillType="POTATO" rateFactor="2.4" lossRatio="0.717" acres="129311"/>
+        <crop fillType="DEFAULT" rateFactor="1.173" lossRatio="1.444" acres="136210"/>
     </region>
     <region id="US_MI" name="Michigan" parent="US">
-        <crop fillType="WHEAT" rateFactor="0.746" lossRatio="0.519" acres="1740069"/>
-        <crop fillType="SOYBEAN" rateFactor="1.088" lossRatio="0.483" acres="8177505"/>
-        <crop fillType="MAIZE" rateFactor="0.903" lossRatio="0.366" acres="8276813"/>
-        <crop fillType="SUGARBEET" rateFactor="0.538" lossRatio="0.965" acres="658184"/>
-        <crop fillType="GRAPE" rateFactor="4.791" lossRatio="1.194" acres="20945"/>
-        <crop fillType="DEFAULT" rateFactor="0.855" lossRatio="0.428" acres="19130753"/>
+        <crop fillType="WHEAT" rateFactor="0.729" lossRatio="0.519" acres="1740069"/>
+        <crop fillType="SOYBEAN" rateFactor="1.112" lossRatio="0.483" acres="8177505"/>
+        <crop fillType="MAIZE" rateFactor="0.963" lossRatio="0.366" acres="8276813"/>
+        <crop fillType="SUGARBEET" rateFactor="0.477" lossRatio="0.965" acres="658184"/>
+        <crop fillType="GRAPE" rateFactor="5.137" lossRatio="1.194" acres="20945"/>
+        <crop fillType="DEFAULT" rateFactor="0.876" lossRatio="0.428" acres="19130753"/>
     </region>
     <region id="US_MN" name="Minnesota" parent="US">
-        <crop fillType="WHEAT" rateFactor="0.71" lossRatio="0.746" acres="6149887"/>
-        <crop fillType="BARLEY" rateFactor="1.126" lossRatio="0.655" acres="177780"/>
-        <crop fillType="OAT" rateFactor="0.882" lossRatio="0.886" acres="244939"/>
-        <crop fillType="CANOLA" rateFactor="1.113" lossRatio="0.445" acres="350490"/>
-        <crop fillType="SUNFLOWER" rateFactor="1.13" lossRatio="0.459" acres="287106"/>
-        <crop fillType="SOYBEAN" rateFactor="0.969" lossRatio="0.675" acres="36020885"/>
-        <crop fillType="MAIZE" rateFactor="0.797" lossRatio="0.787" acres="39597350"/>
-        <crop fillType="POTATO" rateFactor="1.903" lossRatio="1.036" acres="53818"/>
-        <crop fillType="SUGARBEET" rateFactor="1.131" lossRatio="0.315" acres="2117540"/>
-        <crop fillType="GRASS" rateFactor="0.536" lossRatio="1.053" acres="136421"/>
-        <crop fillType="DEFAULT" rateFactor="0.761" lossRatio="0.742" acres="83992380"/>
+        <crop fillType="WHEAT" rateFactor="0.753" lossRatio="0.746" acres="6149887"/>
+        <crop fillType="BARLEY" rateFactor="1.204" lossRatio="0.655" acres="177780"/>
+        <crop fillType="OAT" rateFactor="0.86" lossRatio="0.886" acres="244939"/>
+        <crop fillType="CANOLA" rateFactor="1.2" lossRatio="0.445" acres="350490"/>
+        <crop fillType="SUNFLOWER" rateFactor="1.119" lossRatio="0.459" acres="287106"/>
+        <crop fillType="SOYBEAN" rateFactor="0.902" lossRatio="0.675" acres="36020885"/>
+        <crop fillType="MAIZE" rateFactor="0.744" lossRatio="0.787" acres="39597350"/>
+        <crop fillType="POTATO" rateFactor="2.256" lossRatio="1.036" acres="53818"/>
+        <crop fillType="SUGARBEET" rateFactor="1.163" lossRatio="0.315" acres="2117540"/>
+        <crop fillType="GRASS" rateFactor="0.466" lossRatio="1.053" acres="136421"/>
+        <crop fillType="DEFAULT" rateFactor="0.694" lossRatio="0.742" acres="83992380"/>
     </region>
     <region id="US_MO" name="Missouri" parent="US">
-        <crop fillType="WHEAT" rateFactor="1.063" lossRatio="0.556" acres="2250770"/>
-        <crop fillType="SORGHUM" rateFactor="0.713" lossRatio="0.708" acres="132285"/>
-        <crop fillType="SOYBEAN" rateFactor="1.285" lossRatio="0.515" acres="25929627"/>
-        <crop fillType="MAIZE" rateFactor="1.41" lossRatio="0.512" acres="16386827"/>
-        <crop fillType="POTATO" rateFactor="0.878" lossRatio="1.338" acres="25586"/>
-        <crop fillType="COTTON" rateFactor="0.375" lossRatio="0.83" acres="1267898"/>
-        <crop fillType="RICE" rateFactor="1.186" lossRatio="0.877" acres="873464"/>
-        <crop fillType="RICELONGGRAIN" rateFactor="1.186" lossRatio="0.877" acres="873464"/>
-        <crop fillType="DEFAULT" rateFactor="1.131" lossRatio="0.531" acres="46842023"/>
+        <crop fillType="WHEAT" rateFactor="1.111" lossRatio="0.556" acres="2250770"/>
+        <crop fillType="SORGHUM" rateFactor="0.664" lossRatio="0.708" acres="132285"/>
+        <crop fillType="SOYBEAN" rateFactor="1.416" lossRatio="0.515" acres="25929627"/>
+        <crop fillType="MAIZE" rateFactor="1.546" lossRatio="0.512" acres="16386827"/>
+        <crop fillType="POTATO" rateFactor="0.737" lossRatio="1.338" acres="25586"/>
+        <crop fillType="COTTON" rateFactor="0.353" lossRatio="0.83" acres="1267898"/>
+        <crop fillType="RICE" rateFactor="1.322" lossRatio="0.877" acres="873464"/>
+        <crop fillType="RICELONGGRAIN" rateFactor="1.322" lossRatio="0.877" acres="873464"/>
+        <crop fillType="DEFAULT" rateFactor="1.222" lossRatio="0.531" acres="46842023"/>
     </region>
     <region id="US_MS" name="Mississippi" parent="US">
-        <crop fillType="WHEAT" rateFactor="1.246" lossRatio="0.747" acres="238285"/>
-        <crop fillType="SORGHUM" rateFactor="1.381" lossRatio="0.816" acres="24835"/>
-        <crop fillType="SOYBEAN" rateFactor="1.069" lossRatio="0.947" acres="9906525"/>
-        <crop fillType="MAIZE" rateFactor="1.526" lossRatio="1.089" acres="3496332"/>
-        <crop fillType="COTTON" rateFactor="0.429" lossRatio="0.718" acres="1981469"/>
-        <crop fillType="RICE" rateFactor="0.837" lossRatio="1.483" acres="579574"/>
-        <crop fillType="RICELONGGRAIN" rateFactor="0.837" lossRatio="1.483" acres="579574"/>
-        <crop fillType="DEFAULT" rateFactor="0.965" lossRatio="0.978" acres="16233661"/>
+        <crop fillType="WHEAT" rateFactor="1.326" lossRatio="0.747" acres="238285"/>
+        <crop fillType="SORGHUM" rateFactor="1.417" lossRatio="0.816" acres="24835"/>
+        <crop fillType="SOYBEAN" rateFactor="1.331" lossRatio="0.947" acres="9906525"/>
+        <crop fillType="MAIZE" rateFactor="1.938" lossRatio="1.089" acres="3496332"/>
+        <crop fillType="COTTON" rateFactor="0.421" lossRatio="0.718" acres="1981469"/>
+        <crop fillType="RICE" rateFactor="0.874" lossRatio="1.483" acres="579574"/>
+        <crop fillType="RICELONGGRAIN" rateFactor="0.874" lossRatio="1.483" acres="579574"/>
+        <crop fillType="DEFAULT" rateFactor="1.204" lossRatio="0.978" acres="16233661"/>
     </region>
     <region id="US_MT" name="Montana" parent="US">
-        <crop fillType="WHEAT" rateFactor="0.997" lossRatio="1.261" acres="23846000"/>
-        <crop fillType="BARLEY" rateFactor="1.254" lossRatio="1.018" acres="3365208"/>
-        <crop fillType="OAT" rateFactor="1.33" lossRatio="1.519" acres="80399"/>
-        <crop fillType="CANOLA" rateFactor="1.157" lossRatio="1.53" acres="629468"/>
-        <crop fillType="SUNFLOWER" rateFactor="0.864" lossRatio="0.761" acres="21341"/>
-        <crop fillType="MAIZE" rateFactor="1.03" lossRatio="1.317" acres="281996"/>
-        <crop fillType="SUGARBEET" rateFactor="0.864" lossRatio="0.916" acres="140333"/>
-        <crop fillType="PEA" rateFactor="1.191" lossRatio="1.298" acres="5614595"/>
-        <crop fillType="GRASS" rateFactor="1.203" lossRatio="1.24" acres="1667287"/>
-        <crop fillType="DEFAULT" rateFactor="1.743" lossRatio="1.262" acres="34259702"/>
+        <crop fillType="WHEAT" rateFactor="1.141" lossRatio="1.261" acres="23846000"/>
+        <crop fillType="BARLEY" rateFactor="1.401" lossRatio="1.018" acres="3365208"/>
+        <crop fillType="OAT" rateFactor="1.368" lossRatio="1.519" acres="80399"/>
+        <crop fillType="CANOLA" rateFactor="1.242" lossRatio="1.53" acres="629468"/>
+        <crop fillType="SUNFLOWER" rateFactor="0.841" lossRatio="0.761" acres="21341"/>
+        <crop fillType="MAIZE" rateFactor="1.186" lossRatio="1.317" acres="281996"/>
+        <crop fillType="SUGARBEET" rateFactor="0.863" lossRatio="0.916" acres="140333"/>
+        <crop fillType="PEA" rateFactor="1.343" lossRatio="1.298" acres="5614595"/>
+        <crop fillType="GRASS" rateFactor="1.225" lossRatio="1.24" acres="1667287"/>
+        <crop fillType="DEFAULT" rateFactor="2.213" lossRatio="1.262" acres="34259702"/>
     </region>
     <region id="US_NC" name="North Carolina" parent="US">
-        <crop fillType="WHEAT" rateFactor="0.998" lossRatio="0.6" acres="1799084"/>
-        <crop fillType="SORGHUM" rateFactor="1.035" lossRatio="1.27" acres="35008"/>
-        <crop fillType="SOYBEAN" rateFactor="1.841" lossRatio="0.646" acres="7189399"/>
-        <crop fillType="MAIZE" rateFactor="1.309" lossRatio="1.159" acres="3961018"/>
-        <crop fillType="POTATO" rateFactor="1.099" lossRatio="0.86" acres="36194"/>
-        <crop fillType="COTTON" rateFactor="0.565" lossRatio="0.612" acres="1971004"/>
-        <crop fillType="DEFAULT" rateFactor="1.313" lossRatio="0.776" acres="14991277"/>
+        <crop fillType="WHEAT" rateFactor="1.105" lossRatio="0.6" acres="1799084"/>
+        <crop fillType="SORGHUM" rateFactor="1.06" lossRatio="1.27" acres="35008"/>
+        <crop fillType="SOYBEAN" rateFactor="2.256" lossRatio="0.646" acres="7189399"/>
+        <crop fillType="MAIZE" rateFactor="1.606" lossRatio="1.159" acres="3961018"/>
+        <crop fillType="POTATO" rateFactor="1.016" lossRatio="0.86" acres="36194"/>
+        <crop fillType="COTTON" rateFactor="0.466" lossRatio="0.612" acres="1971004"/>
+        <crop fillType="DEFAULT" rateFactor="1.549" lossRatio="0.776" acres="14991277"/>
     </region>
     <region id="US_ND" name="North Dakota" parent="US">
-        <crop fillType="WHEAT" rateFactor="0.95" lossRatio="0.762" acres="32543149"/>
-        <crop fillType="BARLEY" rateFactor="1.021" lossRatio="0.849" acres="2338519"/>
-        <crop fillType="OAT" rateFactor="1.167" lossRatio="0.945" acres="764267"/>
-        <crop fillType="CANOLA" rateFactor="1.007" lossRatio="0.64" acres="9335525"/>
-        <crop fillType="SUNFLOWER" rateFactor="1.029" lossRatio="0.452" acres="2736295"/>
-        <crop fillType="SOYBEAN" rateFactor="1.5" lossRatio="0.895" acres="32670563"/>
-        <crop fillType="MAIZE" rateFactor="1.748" lossRatio="1.172" acres="19983232"/>
-        <crop fillType="POTATO" rateFactor="1.982" lossRatio="0.503" acres="304598"/>
-        <crop fillType="SUGARBEET" rateFactor="1.045" lossRatio="0.371" acres="1114961"/>
-        <crop fillType="PEA" rateFactor="0.984" lossRatio="0.876" acres="2022483"/>
-        <crop fillType="GRASS" rateFactor="1.1" lossRatio="0.874" acres="710519"/>
-        <crop fillType="DEFAULT" rateFactor="1.484" lossRatio="0.905" acres="106737912"/>
+        <crop fillType="WHEAT" rateFactor="1" lossRatio="0.762" acres="32543149"/>
+        <crop fillType="BARLEY" rateFactor="1.041" lossRatio="0.849" acres="2338519"/>
+        <crop fillType="OAT" rateFactor="1.236" lossRatio="0.945" acres="764267"/>
+        <crop fillType="CANOLA" rateFactor="1.027" lossRatio="0.64" acres="9335525"/>
+        <crop fillType="SUNFLOWER" rateFactor="0.994" lossRatio="0.452" acres="2736295"/>
+        <crop fillType="SOYBEAN" rateFactor="1.739" lossRatio="0.895" acres="32670563"/>
+        <crop fillType="MAIZE" rateFactor="2.042" lossRatio="1.172" acres="19983232"/>
+        <crop fillType="POTATO" rateFactor="2.471" lossRatio="0.503" acres="304598"/>
+        <crop fillType="SUGARBEET" rateFactor="1.09" lossRatio="0.371" acres="1114961"/>
+        <crop fillType="PEA" rateFactor="1.045" lossRatio="0.876" acres="2022483"/>
+        <crop fillType="GRASS" rateFactor="1.2" lossRatio="0.874" acres="710519"/>
+        <crop fillType="DEFAULT" rateFactor="1.717" lossRatio="0.905" acres="106737912"/>
     </region>
     <region id="US_NE" name="Nebraska" parent="US">
-        <crop fillType="WHEAT" rateFactor="0.951" lossRatio="1.149" acres="4416865"/>
-        <crop fillType="OAT" rateFactor="1.024" lossRatio="1.441" acres="67190"/>
-        <crop fillType="SORGHUM" rateFactor="0.878" lossRatio="1.515" acres="818904"/>
-        <crop fillType="SUNFLOWER" rateFactor="1.05" lossRatio="0.919" acres="187094"/>
-        <crop fillType="SOYBEAN" rateFactor="0.815" lossRatio="0.956" acres="25532302"/>
-        <crop fillType="MAIZE" rateFactor="0.882" lossRatio="0.85" acres="46600949"/>
-        <crop fillType="SUGARBEET" rateFactor="1.524" lossRatio="0.703" acres="207244"/>
-        <crop fillType="PEA" rateFactor="1.203" lossRatio="1.723" acres="90364"/>
-        <crop fillType="DEFAULT" rateFactor="0.759" lossRatio="0.899" acres="78879289"/>
+        <crop fillType="WHEAT" rateFactor="1.005" lossRatio="1.149" acres="4416865"/>
+        <crop fillType="OAT" rateFactor="0.917" lossRatio="1.441" acres="67190"/>
+        <crop fillType="SORGHUM" rateFactor="0.786" lossRatio="1.515" acres="818904"/>
+        <crop fillType="SUNFLOWER" rateFactor="1.139" lossRatio="0.919" acres="187094"/>
+        <crop fillType="SOYBEAN" rateFactor="0.892" lossRatio="0.956" acres="25532302"/>
+        <crop fillType="MAIZE" rateFactor="1.001" lossRatio="0.85" acres="46600949"/>
+        <crop fillType="SUGARBEET" rateFactor="1.842" lossRatio="0.703" acres="207244"/>
+        <crop fillType="PEA" rateFactor="1.232" lossRatio="1.723" acres="90364"/>
+        <crop fillType="DEFAULT" rateFactor="0.832" lossRatio="0.899" acres="78879289"/>
     </region>
     <region id="US_NJ" name="New Jersey" parent="US">
-        <crop fillType="WHEAT" rateFactor="0.531" lossRatio="0.367" acres="54294"/>
-        <crop fillType="SOYBEAN" rateFactor="1.357" lossRatio="1.009" acres="311645"/>
-        <crop fillType="MAIZE" rateFactor="1.027" lossRatio="1.148" acres="231299"/>
-        <crop fillType="DEFAULT" rateFactor="0.98" lossRatio="1.037" acres="599586"/>
+        <crop fillType="WHEAT" rateFactor="0.504" lossRatio="0.367" acres="54294"/>
+        <crop fillType="SOYBEAN" rateFactor="1.435" lossRatio="1.009" acres="311645"/>
+        <crop fillType="MAIZE" rateFactor="1.086" lossRatio="1.148" acres="231299"/>
+        <crop fillType="DEFAULT" rateFactor="1.01" lossRatio="1.037" acres="599586"/>
     </region>
     <region id="US_NM" name="New Mexico" parent="US">
-        <crop fillType="WHEAT" rateFactor="2.27" lossRatio="1.658" acres="643878"/>
-        <crop fillType="SORGHUM" rateFactor="1.543" lossRatio="2.184" acres="205694"/>
-        <crop fillType="MAIZE" rateFactor="1.403" lossRatio="2.694" acres="272111"/>
-        <crop fillType="COTTON" rateFactor="1.404" lossRatio="1.8" acres="207761"/>
-        <crop fillType="DEFAULT" rateFactor="2.206" lossRatio="2.065" acres="1329660"/>
+        <crop fillType="WHEAT" rateFactor="2.772" lossRatio="1.658" acres="643878"/>
+        <crop fillType="SORGHUM" rateFactor="1.647" lossRatio="2.184" acres="205694"/>
+        <crop fillType="MAIZE" rateFactor="1.426" lossRatio="2.694" acres="272111"/>
+        <crop fillType="COTTON" rateFactor="1.427" lossRatio="1.8" acres="207761"/>
+        <crop fillType="DEFAULT" rateFactor="2.504" lossRatio="2.065" acres="1329660"/>
     </region>
     <region id="US_NV" name="Nevada" parent="US">
-        <crop fillType="WHEAT" rateFactor="1.527" lossRatio="1.455" acres="23684"/>
-        <crop fillType="GRASS" rateFactor="1.662" lossRatio="0.58" acres="76465"/>
-        <crop fillType="DEFAULT" rateFactor="1.999" lossRatio="2.312" acres="38172"/>
+        <crop fillType="WHEAT" rateFactor="1.347" lossRatio="1.455" acres="23684"/>
+        <crop fillType="GRASS" rateFactor="1.262" lossRatio="0.58" acres="76465"/>
+        <crop fillType="DEFAULT" rateFactor="1.784" lossRatio="2.312" acres="38172"/>
     </region>
     <region id="US_NY" name="New York" parent="US">
-        <crop fillType="WHEAT" rateFactor="0.795" lossRatio="0.541" acres="353272"/>
-        <crop fillType="OAT" rateFactor="0.672" lossRatio="0.759" acres="23889"/>
-        <crop fillType="SOYBEAN" rateFactor="1.275" lossRatio="0.396" acres="1156735"/>
-        <crop fillType="MAIZE" rateFactor="0.974" lossRatio="0.39" acres="2514203"/>
-        <crop fillType="POTATO" rateFactor="1.887" lossRatio="0.856" acres="20559"/>
-        <crop fillType="GRAPE" rateFactor="2.152" lossRatio="1.56" acres="83327"/>
-        <crop fillType="GREENBEAN" rateFactor="1.396" lossRatio="0.822" acres="64363"/>
-        <crop fillType="DEFAULT" rateFactor="0.91" lossRatio="0.405" acres="4066591"/>
+        <crop fillType="WHEAT" rateFactor="0.838" lossRatio="0.541" acres="353272"/>
+        <crop fillType="OAT" rateFactor="0.644" lossRatio="0.759" acres="23889"/>
+        <crop fillType="SOYBEAN" rateFactor="1.409" lossRatio="0.396" acres="1156735"/>
+        <crop fillType="MAIZE" rateFactor="1.118" lossRatio="0.39" acres="2514203"/>
+        <crop fillType="POTATO" rateFactor="2.19" lossRatio="0.856" acres="20559"/>
+        <crop fillType="GRAPE" rateFactor="2.258" lossRatio="1.56" acres="83327"/>
+        <crop fillType="GREENBEAN" rateFactor="1.459" lossRatio="0.822" acres="64363"/>
+        <crop fillType="DEFAULT" rateFactor="1.011" lossRatio="0.405" acres="4066591"/>
     </region>
     <region id="US_OH" name="Ohio" parent="US">
-        <crop fillType="WHEAT" rateFactor="0.791" lossRatio="0.185" acres="1515750"/>
-        <crop fillType="SOYBEAN" rateFactor="0.898" lossRatio="0.388" acres="19626704"/>
-        <crop fillType="MAIZE" rateFactor="0.832" lossRatio="0.247" acres="14105321"/>
-        <crop fillType="DEFAULT" rateFactor="0.742" lossRatio="0.312" acres="35256686"/>
+        <crop fillType="WHEAT" rateFactor="0.681" lossRatio="0.185" acres="1515750"/>
+        <crop fillType="SOYBEAN" rateFactor="0.859" lossRatio="0.388" acres="19626704"/>
+        <crop fillType="MAIZE" rateFactor="0.793" lossRatio="0.247" acres="14105321"/>
+        <crop fillType="DEFAULT" rateFactor="0.686" lossRatio="0.312" acres="35256686"/>
     </region>
     <region id="US_OK" name="Oklahoma" parent="US">
-        <crop fillType="WHEAT" rateFactor="1.378" lossRatio="1.131" acres="14564322"/>
-        <crop fillType="CANOLA" rateFactor="2.223" lossRatio="1.072" acres="54077"/>
-        <crop fillType="SORGHUM" rateFactor="1.437" lossRatio="1.381" acres="1638801"/>
-        <crop fillType="SOYBEAN" rateFactor="2.652" lossRatio="1.709" acres="2243013"/>
-        <crop fillType="MAIZE" rateFactor="1.441" lossRatio="0.965" acres="1554293"/>
-        <crop fillType="COTTON" rateFactor="1.134" lossRatio="2.084" acres="2319820"/>
-        <crop fillType="DEFAULT" rateFactor="2.149" lossRatio="1.427" acres="22471732"/>
+        <crop fillType="WHEAT" rateFactor="1.557" lossRatio="1.131" acres="14564322"/>
+        <crop fillType="CANOLA" rateFactor="2.603" lossRatio="1.072" acres="54077"/>
+        <crop fillType="SORGHUM" rateFactor="1.47" lossRatio="1.381" acres="1638801"/>
+        <crop fillType="SOYBEAN" rateFactor="3.393" lossRatio="1.709" acres="2243013"/>
+        <crop fillType="MAIZE" rateFactor="1.769" lossRatio="0.965" acres="1554293"/>
+        <crop fillType="COTTON" rateFactor="1.162" lossRatio="2.084" acres="2319820"/>
+        <crop fillType="DEFAULT" rateFactor="2.764" lossRatio="1.427" acres="22471732"/>
     </region>
     <region id="US_OR" name="Oregon" parent="US">
-        <crop fillType="WHEAT" rateFactor="0.748" lossRatio="1.437" acres="3154314"/>
-        <crop fillType="BARLEY" rateFactor="1.309" lossRatio="1.914" acres="76267"/>
-        <crop fillType="MAIZE" rateFactor="0.742" lossRatio="2.497" acres="75739"/>
-        <crop fillType="POTATO" rateFactor="0.787" lossRatio="5.204" acres="62926"/>
-        <crop fillType="SUGARBEET" rateFactor="0.827" lossRatio="2.146" acres="28299"/>
-        <crop fillType="GRAPE" rateFactor="0.809" lossRatio="1.163" acres="59277"/>
-        <crop fillType="DEFAULT" rateFactor="1.18" lossRatio="1.482" acres="3369113"/>
+        <crop fillType="WHEAT" rateFactor="0.564" lossRatio="1.437" acres="3154314"/>
+        <crop fillType="BARLEY" rateFactor="1.067" lossRatio="1.914" acres="76267"/>
+        <crop fillType="MAIZE" rateFactor="0.763" lossRatio="2.497" acres="75739"/>
+        <crop fillType="POTATO" rateFactor="0.667" lossRatio="5.204" acres="62926"/>
+        <crop fillType="SUGARBEET" rateFactor="0.726" lossRatio="2.146" acres="28299"/>
+        <crop fillType="GRAPE" rateFactor="0.794" lossRatio="1.163" acres="59277"/>
+        <crop fillType="DEFAULT" rateFactor="1.012" lossRatio="1.482" acres="3369113"/>
     </region>
     <region id="US_PA" name="Pennsylvania" parent="US">
-        <crop fillType="WHEAT" rateFactor="0.613" lossRatio="0.288" acres="277682"/>
-        <crop fillType="SOYBEAN" rateFactor="1.216" lossRatio="0.8" acres="1753499"/>
-        <crop fillType="MAIZE" rateFactor="1.247" lossRatio="0.607" acres="3023969"/>
-        <crop fillType="GRAPE" rateFactor="2.379" lossRatio="0.396" acres="35403"/>
-        <crop fillType="DEFAULT" rateFactor="1.048" lossRatio="0.649" acres="5097954"/>
+        <crop fillType="WHEAT" rateFactor="0.609" lossRatio="0.288" acres="277682"/>
+        <crop fillType="SOYBEAN" rateFactor="1.398" lossRatio="0.8" acres="1753499"/>
+        <crop fillType="MAIZE" rateFactor="1.47" lossRatio="0.607" acres="3023969"/>
+        <crop fillType="GRAPE" rateFactor="2.556" lossRatio="0.396" acres="35403"/>
+        <crop fillType="DEFAULT" rateFactor="1.193" lossRatio="0.649" acres="5097954"/>
     </region>
     <region id="US_SC" name="South Carolina" parent="US">
-        <crop fillType="WHEAT" rateFactor="1.014" lossRatio="0.599" acres="392464"/>
-        <crop fillType="SORGHUM" rateFactor="1.357" lossRatio="1.091" acres="24198"/>
-        <crop fillType="SOYBEAN" rateFactor="2.677" lossRatio="0.644" acres="1680122"/>
-        <crop fillType="MAIZE" rateFactor="1.822" lossRatio="0.967" acres="1539208"/>
-        <crop fillType="COTTON" rateFactor="0.767" lossRatio="0.497" acres="1049388"/>
-        <crop fillType="DEFAULT" rateFactor="1.726" lossRatio="0.705" acres="4698785"/>
+        <crop fillType="WHEAT" rateFactor="1.135" lossRatio="0.599" acres="392464"/>
+        <crop fillType="SORGHUM" rateFactor="1.498" lossRatio="1.091" acres="24198"/>
+        <crop fillType="SOYBEAN" rateFactor="3.398" lossRatio="0.644" acres="1680122"/>
+        <crop fillType="MAIZE" rateFactor="2.324" lossRatio="0.967" acres="1539208"/>
+        <crop fillType="COTTON" rateFactor="0.757" lossRatio="0.497" acres="1049388"/>
+        <crop fillType="DEFAULT" rateFactor="2.197" lossRatio="0.705" acres="4698785"/>
     </region>
     <region id="US_SD" name="South Dakota" parent="US">
-        <crop fillType="WHEAT" rateFactor="1.27" lossRatio="0.788" acres="7154843"/>
-        <crop fillType="BARLEY" rateFactor="1.489" lossRatio="1.299" acres="55868"/>
-        <crop fillType="OAT" rateFactor="1.044" lossRatio="1.034" acres="579538"/>
-        <crop fillType="SORGHUM" rateFactor="1.142" lossRatio="0.422" acres="1076931"/>
-        <crop fillType="SUNFLOWER" rateFactor="0.905" lossRatio="0.684" acres="2451449"/>
-        <crop fillType="SOYBEAN" rateFactor="1.32" lossRatio="0.68" acres="26321098"/>
-        <crop fillType="MAIZE" rateFactor="1.515" lossRatio="0.802" acres="30127168"/>
-        <crop fillType="PEA" rateFactor="1.079" lossRatio="0.707" acres="105210"/>
-        <crop fillType="GRASS" rateFactor="1.413" lossRatio="0.786" acres="1426185"/>
-        <crop fillType="DEFAULT" rateFactor="1.291" lossRatio="0.758" acres="68194091"/>
+        <crop fillType="WHEAT" rateFactor="1.511" lossRatio="0.788" acres="7154843"/>
+        <crop fillType="BARLEY" rateFactor="1.638" lossRatio="1.299" acres="55868"/>
+        <crop fillType="OAT" rateFactor="1.11" lossRatio="1.034" acres="579538"/>
+        <crop fillType="SORGHUM" rateFactor="1.209" lossRatio="0.422" acres="1076931"/>
+        <crop fillType="SUNFLOWER" rateFactor="0.937" lossRatio="0.684" acres="2451449"/>
+        <crop fillType="SOYBEAN" rateFactor="1.469" lossRatio="0.68" acres="26321098"/>
+        <crop fillType="MAIZE" rateFactor="1.755" lossRatio="0.802" acres="30127168"/>
+        <crop fillType="PEA" rateFactor="1.201" lossRatio="0.707" acres="105210"/>
+        <crop fillType="GRASS" rateFactor="1.649" lossRatio="0.786" acres="1426185"/>
+        <crop fillType="DEFAULT" rateFactor="1.446" lossRatio="0.758" acres="68194091"/>
     </region>
     <region id="US_TN" name="Tennessee" parent="US">
-        <crop fillType="WHEAT" rateFactor="0.741" lossRatio="0.389" acres="1306870"/>
-        <crop fillType="SOYBEAN" rateFactor="1.003" lossRatio="0.702" acres="6638853"/>
-        <crop fillType="MAIZE" rateFactor="1.004" lossRatio="0.934" acres="3509082"/>
-        <crop fillType="COTTON" rateFactor="0.422" lossRatio="0.652" acres="1165047"/>
-        <crop fillType="DEFAULT" rateFactor="0.868" lossRatio="0.748" acres="12649188"/>
+        <crop fillType="WHEAT" rateFactor="0.748" lossRatio="0.389" acres="1306870"/>
+        <crop fillType="SOYBEAN" rateFactor="1.153" lossRatio="0.702" acres="6638853"/>
+        <crop fillType="MAIZE" rateFactor="1.143" lossRatio="0.934" acres="3509082"/>
+        <crop fillType="COTTON" rateFactor="0.402" lossRatio="0.652" acres="1165047"/>
+        <crop fillType="DEFAULT" rateFactor="0.983" lossRatio="0.748" acres="12649188"/>
     </region>
     <region id="US_TX" name="Texas" parent="US">
-        <crop fillType="WHEAT" rateFactor="1.815" lossRatio="1.212" acres="14517391"/>
-        <crop fillType="BARLEY" rateFactor="2.495" lossRatio="1.798" acres="39028"/>
-        <crop fillType="OAT" rateFactor="0.969" lossRatio="1.158" acres="80725"/>
-        <crop fillType="SORGHUM" rateFactor="0.973" lossRatio="1.051" acres="6483428"/>
-        <crop fillType="SUNFLOWER" rateFactor="1.186" lossRatio="0.802" acres="136745"/>
-        <crop fillType="SOYBEAN" rateFactor="2.856" lossRatio="2.061" acres="556411"/>
-        <crop fillType="MAIZE" rateFactor="1.473" lossRatio="1.241" acres="10386588"/>
-        <crop fillType="SUGARCANE" rateFactor="1.914" lossRatio="2.944" acres="122235"/>
-        <crop fillType="COTTON" rateFactor="1.367" lossRatio="1.724" acres="32170520"/>
-        <crop fillType="RICE" rateFactor="1.859" lossRatio="2.612" acres="798693"/>
-        <crop fillType="RICELONGGRAIN" rateFactor="1.859" lossRatio="2.612" acres="798693"/>
-        <crop fillType="DEFAULT" rateFactor="2.457" lossRatio="1.598" acres="65273473"/>
+        <crop fillType="WHEAT" rateFactor="2.228" lossRatio="1.212" acres="14517391"/>
+        <crop fillType="BARLEY" rateFactor="3.055" lossRatio="1.798" acres="39028"/>
+        <crop fillType="OAT" rateFactor="1.16" lossRatio="1.158" acres="80725"/>
+        <crop fillType="SORGHUM" rateFactor="1.049" lossRatio="1.051" acres="6483428"/>
+        <crop fillType="SUNFLOWER" rateFactor="1.193" lossRatio="0.802" acres="136745"/>
+        <crop fillType="SOYBEAN" rateFactor="3.461" lossRatio="2.061" acres="556411"/>
+        <crop fillType="MAIZE" rateFactor="1.799" lossRatio="1.241" acres="10386588"/>
+        <crop fillType="SUGARCANE" rateFactor="2.301" lossRatio="2.944" acres="122235"/>
+        <crop fillType="COTTON" rateFactor="1.458" lossRatio="1.724" acres="32170520"/>
+        <crop fillType="RICE" rateFactor="1.822" lossRatio="2.612" acres="798693"/>
+        <crop fillType="RICELONGGRAIN" rateFactor="1.822" lossRatio="2.612" acres="798693"/>
+        <crop fillType="DEFAULT" rateFactor="3.29" lossRatio="1.598" acres="65273473"/>
     </region>
     <region id="US_UT" name="Utah" parent="US">
-        <crop fillType="WHEAT" rateFactor="1.422" lossRatio="1.666" acres="291995"/>
-        <crop fillType="MAIZE" rateFactor="0.864" lossRatio="0.95" acres="27165"/>
-        <crop fillType="GRASS" rateFactor="1.11" lossRatio="1.284" acres="26469"/>
-        <crop fillType="DEFAULT" rateFactor="1.952" lossRatio="1.594" acres="333315"/>
+        <crop fillType="WHEAT" rateFactor="1.614" lossRatio="1.666" acres="291995"/>
+        <crop fillType="MAIZE" rateFactor="1.112" lossRatio="0.95" acres="27165"/>
+        <crop fillType="GRASS" rateFactor="0.983" lossRatio="1.284" acres="26469"/>
+        <crop fillType="DEFAULT" rateFactor="2.347" lossRatio="1.594" acres="333315"/>
     </region>
     <region id="US_VA" name="Virginia" parent="US">
-        <crop fillType="WHEAT" rateFactor="0.732" lossRatio="0.647" acres="441525"/>
-        <crop fillType="BARLEY" rateFactor="0.559" lossRatio="1.171" acres="25940"/>
-        <crop fillType="SOYBEAN" rateFactor="1.661" lossRatio="0.534" acres="2268104"/>
-        <crop fillType="MAIZE" rateFactor="1.552" lossRatio="0.91" acres="1504016"/>
-        <crop fillType="COTTON" rateFactor="0.373" lossRatio="0.457" acres="406263"/>
-        <crop fillType="DEFAULT" rateFactor="1.246" lossRatio="0.694" acres="4657796"/>
+        <crop fillType="WHEAT" rateFactor="0.832" lossRatio="0.647" acres="441525"/>
+        <crop fillType="BARLEY" rateFactor="0.605" lossRatio="1.171" acres="25940"/>
+        <crop fillType="SOYBEAN" rateFactor="2.014" lossRatio="0.534" acres="2268104"/>
+        <crop fillType="MAIZE" rateFactor="1.791" lossRatio="0.91" acres="1504016"/>
+        <crop fillType="COTTON" rateFactor="0.279" lossRatio="0.457" acres="406263"/>
+        <crop fillType="DEFAULT" rateFactor="1.41" lossRatio="0.694" acres="4657796"/>
     </region>
     <region id="US_VT" name="Vermont" parent="US">
-        <crop fillType="SOYBEAN" rateFactor="1.907" lossRatio="0.987" acres="26381"/>
-        <crop fillType="MAIZE" rateFactor="1.958" lossRatio="0.883" acres="165743"/>
-        <crop fillType="DEFAULT" rateFactor="1.574" lossRatio="0.894" acres="192167"/>
+        <crop fillType="SOYBEAN" rateFactor="2.359" lossRatio="0.987" acres="26381"/>
+        <crop fillType="MAIZE" rateFactor="2.007" lossRatio="0.883" acres="165743"/>
+        <crop fillType="DEFAULT" rateFactor="1.642" lossRatio="0.894" acres="192167"/>
     </region>
     <region id="US_WA" name="Washington" parent="US">
-        <crop fillType="WHEAT" rateFactor="0.6" lossRatio="1.987" acres="10322248"/>
-        <crop fillType="BARLEY" rateFactor="0.573" lossRatio="2.288" acres="222035"/>
-        <crop fillType="CANOLA" rateFactor="0.647" lossRatio="1.202" acres="526097"/>
-        <crop fillType="MAIZE" rateFactor="0.218" lossRatio="1.215" acres="130519"/>
-        <crop fillType="POTATO" rateFactor="0.345" lossRatio="1.456" acres="91862"/>
-        <crop fillType="GRAPE" rateFactor="0.9" lossRatio="2.724" acres="265297"/>
-        <crop fillType="PEA" rateFactor="0.473" lossRatio="2.246" acres="863652"/>
-        <crop fillType="DEFAULT" rateFactor="0.935" lossRatio="1.966" acres="12173851"/>
+        <crop fillType="WHEAT" rateFactor="0.416" lossRatio="1.987" acres="10322248"/>
+        <crop fillType="BARLEY" rateFactor="0.4" lossRatio="2.288" acres="222035"/>
+        <crop fillType="CANOLA" rateFactor="0.47" lossRatio="1.202" acres="526097"/>
+        <crop fillType="MAIZE" rateFactor="0.193" lossRatio="1.215" acres="130519"/>
+        <crop fillType="POTATO" rateFactor="0.408" lossRatio="1.456" acres="91862"/>
+        <crop fillType="GRAPE" rateFactor="0.891" lossRatio="2.724" acres="265297"/>
+        <crop fillType="PEA" rateFactor="0.332" lossRatio="2.246" acres="863652"/>
+        <crop fillType="DEFAULT" rateFactor="0.739" lossRatio="1.966" acres="12173851"/>
     </region>
     <region id="US_WI" name="Wisconsin" parent="US">
-        <crop fillType="WHEAT" rateFactor="0.766" lossRatio="0.431" acres="582482"/>
-        <crop fillType="OAT" rateFactor="0.58" lossRatio="1.382" acres="62762"/>
-        <crop fillType="SOYBEAN" rateFactor="1.203" lossRatio="0.411" acres="8188605"/>
-        <crop fillType="MAIZE" rateFactor="1.107" lossRatio="0.317" acres="14705785"/>
-        <crop fillType="POTATO" rateFactor="0.869" lossRatio="0.823" acres="213807"/>
-        <crop fillType="GREENBEAN" rateFactor="0.827" lossRatio="1.171" acres="190186"/>
-        <crop fillType="GRASS" rateFactor="0.714" lossRatio="0.655" acres="514077"/>
-        <crop fillType="DEFAULT" rateFactor="0.969" lossRatio="0.346" acres="23569011"/>
+        <crop fillType="WHEAT" rateFactor="0.799" lossRatio="0.431" acres="582482"/>
+        <crop fillType="OAT" rateFactor="0.517" lossRatio="1.382" acres="62762"/>
+        <crop fillType="SOYBEAN" rateFactor="1.287" lossRatio="0.411" acres="8188605"/>
+        <crop fillType="MAIZE" rateFactor="1.215" lossRatio="0.317" acres="14705785"/>
+        <crop fillType="POTATO" rateFactor="0.865" lossRatio="0.823" acres="213807"/>
+        <crop fillType="GREENBEAN" rateFactor="0.811" lossRatio="1.171" acres="190186"/>
+        <crop fillType="GRASS" rateFactor="0.67" lossRatio="0.655" acres="514077"/>
+        <crop fillType="DEFAULT" rateFactor="1.023" lossRatio="0.346" acres="23569011"/>
     </region>
     <region id="US_WV" name="West Virginia" parent="US">
-        <crop fillType="SOYBEAN" rateFactor="0.938" lossRatio="1.09" acres="62539"/>
-        <crop fillType="MAIZE" rateFactor="1.406" lossRatio="1.22" acres="85720"/>
-        <crop fillType="DEFAULT" rateFactor="1.028" lossRatio="1.144" acres="160510"/>
+        <crop fillType="SOYBEAN" rateFactor="1.084" lossRatio="1.09" acres="62539"/>
+        <crop fillType="MAIZE" rateFactor="1.727" lossRatio="1.22" acres="85720"/>
+        <crop fillType="DEFAULT" rateFactor="1.23" lossRatio="1.144" acres="160510"/>
     </region>
     <region id="US_WY" name="Wyoming" parent="US">
-        <crop fillType="WHEAT" rateFactor="1.042" lossRatio="1.284" acres="472038"/>
-        <crop fillType="BARLEY" rateFactor="0.599" lossRatio="0.616" acres="176984"/>
-        <crop fillType="SUNFLOWER" rateFactor="1.3" lossRatio="1.005" acres="37709"/>
-        <crop fillType="MAIZE" rateFactor="1.581" lossRatio="0.478" acres="288468"/>
-        <crop fillType="SUGARBEET" rateFactor="1.152" lossRatio="0.356" acres="136056"/>
-        <crop fillType="GRASS" rateFactor="1.656" lossRatio="1.222" acres="212305"/>
-        <crop fillType="DEFAULT" rateFactor="1.354" lossRatio="0.828" acres="1102943"/>
+        <crop fillType="WHEAT" rateFactor="1.188" lossRatio="1.284" acres="472038"/>
+        <crop fillType="BARLEY" rateFactor="0.653" lossRatio="0.616" acres="176984"/>
+        <crop fillType="SUNFLOWER" rateFactor="1.277" lossRatio="1.005" acres="37709"/>
+        <crop fillType="MAIZE" rateFactor="1.937" lossRatio="0.478" acres="288468"/>
+        <crop fillType="SUGARBEET" rateFactor="1.266" lossRatio="0.356" acres="136056"/>
+        <crop fillType="GRASS" rateFactor="1.963" lossRatio="1.222" acres="212305"/>
+        <crop fillType="DEFAULT" rateFactor="1.538" lossRatio="0.828" acres="1102943"/>
     </region>
 </cropInsurance>

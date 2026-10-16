@@ -261,7 +261,7 @@ crops with sell points) is respected automatically:
 
 - **farmerRate** – the real farmer-paid premium per dollar insured, from `DB/CropInsurance_US.xml`
   (US curves per crop, plan and coverage level). It already includes the real **subsidy**, which falls
-  as coverage rises. Raw US 2020–2024 averages (the XML curves are smoothed, see §13.2):
+  as coverage rises. Raw US 2020–2024 averages (the XML curves are shaped, see §13.2):
 
   | Coverage | 50 % | 60 % | 70 % | 75 % | 80 % | 85 % |
   |---|---|---|---|---|---|---|
@@ -411,12 +411,20 @@ sell points, vehicle sell prices), so price-changing mods are covered without de
 `claimShare` (share of policies with a payout in a year) can drive how often the adjuster finds a
 payable loss in balancing tests; it is not used for gameplay decisions directly.
 
-**Smoothing:** in the raw national averages the premium rate often *falls* at high coverage (low-risk
-farms choose high coverage – selection bias), which would make 80 % cover cheaper per acre than 70 %.
-The builder smooths every curve to the closest non-decreasing curve with the same liability-weighted
-average (weighted pool-adjacent-violators). `premiumRate` and `farmerRate` therefore never fall as
-coverage rises; `subsidyShare` is derived from them. `lossRatio`, `claimShare` and `farmerPerAcre`
-stay raw.
+**Curve shape:** in the raw averages the premium rate *falls* at high coverage (low-risk farms choose
+high coverage – selection bias), while the loss ratio of those policies climbs. Smoothing alone (the first
+version, weighted pool-adjacent-violators) left the curves flat above ~65 – 70 %, so higher coverage cost
+nothing extra and every player would pick the top level. The builder now shapes every curve
+(`shaped_rates`, all countries; plans carry `shape="lossModel" shapeCv="0.3"`):
+- `premiumRate` = the curve's liability-weighted average, spread over the levels by a yield-loss model
+  (`coverage_shape`: yield ~ Normal(1, 0.30), rate = expected shortfall below the guarantee ÷ guarantee).
+  Relative to 65 %: 50 % ≈ 0.43×, 70 % ≈ 1.3×, 75 % ≈ 1.6×, 80 % ≈ 2.0×, 85 % ≈ 2.5×.
+- `farmerRate` = `premiumRate` × (1 − the measured subsidy share at that level) – the subsidy share is set
+  per level by law and is kept as measured.
+- `lossRatio`, `claimShare` and `farmerPerAcre` stay raw.
+
+Example, US soybean YP: 50 % 1.80 %, 65 % 4.19 %, 80 % 8.56 %, 85 % 10.54 % premium rate (farmer 0.44 %,
+1.54 %, 3.61 %, 5.82 %) – the flat smoothed curve was 5.82 % from 65 % to 85 %.
 
 ### 13.3 Canada: `DB/CropInsurance_CA.xml`
 
@@ -432,7 +440,7 @@ Canadian AgriInsurance is provincial and publishes programme totals, not per-cro
 | Coverage mix (calibration) | 50 %: 6.8 %, 60 %: 5.6 %, 70 %: 33.6 %, 80 %: 54.8 % of acres | SCIC p. 62 |
 | Loss ratio | 1.46 (5 years, 2021 drought), 0.95 (10 years) | SCIC p. 69 |
 | Curve shape | US YP curves (APH for crops without YP) × the neighbouring US state's rateFactor (AB←MT, SK←ND, MB←MN, ON←MI, QC←NY) | RMA |
-| Level | one calibration factor (×0.674) so Saskatchewan's acre-weighted average at its coverage mix equals 8.08 %; used for all provinces | builder |
+| Level | one calibration factor (×0.574) so Saskatchewan's acre-weighted average at its coverage mix equals 8.08 %; used for all provinces | builder |
 | Hail-only (Alberta) | `hailPolicy`: full-cover rate 3–14 % (typical 6 %), 10 % deductible ×0.75, 25 % ×0.5 | AFSC 2026 Full Cover Hail rates |
 
 Region ids match the climate file (`CAN`, `CAN_AB`, `CAN_SK`, …). `CAN` uses the Saskatchewan curves
@@ -496,7 +504,7 @@ the builder never reads those columns and writes totals only.
 | Coverage levels | rounded to 5 %; in practice 65 – 85 % |
 | Subsidy (measured) | soybeans ~21 %, other crops ~38 – 40 % — matches the rules |
 | Program rules | `<program>`: 20 % soy / 40 % others, 30 % / 45 % in the North + Northeast (`northNortheast="true"` on those states), max R$ 60 000 per modality and R$ 120 000 per farmer and year (Plano Trienal 2025-2027) |
-| Curve shape | Brazil's average rate per crop and plan, shaped by a yield-loss model (`shape="lossModel"`, normal yield, CV 0.30: 70 / 75 / 80 % ≈ 1.3 / 1.6 / 2.0 × the 65 % rate). The raw rates fall with coverage (selection) while loss ratios climb (soy YP 1.1 at 65 % → 5.9 at 80 %) |
+| Curve shape | Brazil's average rate per crop and plan, shaped by the yield-loss model of §13.2 (`shape="lossModel"`). The raw rates fall with coverage (selection) while loss ratios climb (soy YP 1.1 at 65 % → 5.9 at 80 %) |
 | Perils | per crop `payoutShare` / `claimShare` by cause: drought, hail, frost, excessive rain, **windstorm**, flood/waterspout, temperature, fire, lightning, trellis collapse, other |
 | States | `BRA_xx` rateFactor / lossRatio like the US states (21 states with enough data) |
 | DLC crops | `COFFEE` (frost 38 % / drought 38 % / hail 12 % / wind 2.5 % of payouts), `BANANA` (`FULL` only, rate 9.7 %; **windstorm 90 %** of payouts) |
@@ -508,9 +516,7 @@ data), pea → green bean, spinach / parsnip → carrot, olive → grape.
 Pecuária (MAPA), PSR open data (SISSER), licensed under Creative Commons Attribution. Not an official MAPA
 product."*
 
-**Note for the US / Canada curves:** the RMA averages have the same selection bias — after smoothing, the US
-curves are flat above ~65 – 70 % (e.g. soybean YP 5.82 % from 65 % to 85 %), so higher coverage costs no more
-per dollar insured. `coverage_shape` could shape those too (open question, §16).
+**US / Canada curves:** reshaped with the same loss model (§13.2).
 
 ## 14. Multiplayer
 
@@ -549,8 +555,6 @@ per dollar insured. `coverage_shape` could shape those too (open question, §16)
 5. Does a write-off require the player to clear the field before replanting, or is that left to them?
 6. Equipment policy: all vehicles (simple) or per-vehicle opt-in (more control, more UI)?
 7. What happens to open claims when a farm is deleted or a vehicle is sold before the decision?
-8. US / Canada rate curves are flat above ~65 – 70 % after smoothing (selection bias in the RMA averages).
-   Shape them with the same loss model as Brazil (`coverage_shape`, keeps each curve's average)?
 
 ## 17. Real-life references to verify before release
 
