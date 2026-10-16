@@ -114,6 +114,14 @@ Italy (CropInsurance_IT.xml)
 - Rates are estimates, not official figures. Not affiliated with or
   endorsed by MASAF or ISMEA.
 
+Argentina (CropInsurance_AR.xml)
+- Argentine crop insurance figures from the Superintendencia de Seguros
+  de la Nacion (SSN), Encuesta de Seguros en los Sectores Agropecuario y
+  Forestal 2024; provincial schemes from the governments of Mendoza and
+  Cordoba.
+- Rates are estimates, not official figures. Not affiliated with or
+  endorsed by any of them.
+
 Australia (CropInsurance_AU.xml)
 - Insurance duty rates from the Insurance Council of Australia; crop
   insurance exemptions from Revenue NSW and the State Revenue Office

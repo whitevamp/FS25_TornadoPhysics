@@ -168,6 +168,20 @@ duty, which NSW and Victoria waive for crop insurance. The file holds (see the A
   * Region ids match the climate file (AUS, AUS_NSW ...); this insurance file uses no climate data.
 
 ----------------------------------------------------------------------------
+Argentina (DB/CropInsurance_AR.xml)
+----------------------------------------------------------------------------
+Private market without a national subsidy; hail cover dominates (hail 66.6 %, hail + additional perils
+32.3 %, multi-peril 1.1 % of premiums). Two provinces run their own schemes (Mendoza hail / frost fund,
+Cordoba free multi-peril pilot). The file holds (see the ARGENTINA config):
+
+  * Plans: "hail", "hailPlus" (hail + wind, frost, fire ...), rare "multiPeril".
+  * National totals of the SSN survey 2024 (July 2023 - June 2024) and the province rate factors derived from
+    the premium / insured-capital shares (Buenos Aires, Santa Fe; Cordoba derived, see the config).
+  * Rates and sums insured per hectare: OUR ESTIMATES (isEstimate="true"), sums in USD (Argentine crop prices
+    are quoted in dollars; the peso figures only give the average rate), scaled so the capital-weighted average
+    of the sold mix equals the SSN average (premium / insured capital).
+
+----------------------------------------------------------------------------
 Brazil (DB/CropInsurance_BR.xml)
 ----------------------------------------------------------------------------
 Built from MAPA's PSR open data (SISSER, one row per subsidised policy, Creative Commons Attribution):
@@ -854,6 +868,72 @@ AUSTRALIA_GROUPS = {
     "pasture":    (500,     0.0055, None),     # fire only
     "vine":       (8000,    0.035,  None),
     "fruit":      (30000,   0.035,  None),
+}
+
+# ============================================================================
+# ARGENTINA  -  SSN survey 2024 + provincial schemes (edit when newer figures are out)
+# ============================================================================
+
+ARGENTINA_OUTPUT_XML = os.path.join(TOOLS_DIR, "..", "DB", "CropInsurance_AR.xml")
+
+# SSN "Encuesta de Seguros en los Sectores Agropecuario y Forestal 2024" (July 2023 - June 2024), via 100% Seguro
+# and El Seguro en Accion: premiums 357 152 M ARS, insured capital 9.2 billion (10^12) ARS, 24 M ha, 188 000
+# policies, claims paid 328 437 M ARS, loss ratio 88.9 % (2023: ~102.9 %), combined ratio 121.5 %.
+ARGENTINA_TOTALS_2024 = {"premiumArs": 357152e6, "capitalArs": 9.2e12, "hectares": 24e6, "policies": 188000,
+                         "claimsArs": 328437e6, "lossRatio": 0.889, "lossRatio2023": 1.029, "combinedRatio": 1.215,
+                         "soyHectares": 8.1e6, "soyPremiumArs": 204e9}
+# Share of premiums by cover (same survey).
+ARGENTINA_COVER_SHARES = {"hail": 0.666, "hailPlus": 0.323, "multiPeril": 0.011}
+ARGENTINA_HAILPLUS_FACTOR = 1.25        # OUR ESTIMATE: hail + additional perils vs. hail only
+ARGENTINA_MULTIPERIL_RATE = 0.08        # OUR ESTIMATE (multi-peril is rare and expensive)
+
+# Province shares (premium, insured capital). Cordoba's capital share is not published: it is the capital not
+# held by BA / SF minus the other provinces, whose capital share is taken equal to their premium share (OUR
+# ESTIMATE), giving ~22.7 %.
+ARGENTINA_PROVINCES = {
+    "BA": {"name": "Buenos Aires", "premiumShare": 0.367, "capitalShare": 0.433},
+    "SF": {"name": "Santa Fe", "premiumShare": 0.200, "capitalShare": 0.216},
+    "CB": {"name": "Cordoba", "premiumShare": 0.310, "capitalShare": None, "insuredHa": 10.9e6},
+}
+# Provincial schemes.
+ARGENTINA_SCHEMES = {
+    "MZ": {"name": "Mendoza", "scheme": "Fondo Compensador Agricola", "perils": "HAIL FROST",
+           "subsidy": 0.80, "maxFarmHa": 30, "totalLossHailPerHaArs": 2000000,
+           "note": "province pays ~80 % of the premium (2025 press; an older official page says 100 %)"},
+    "CB": {"name": "Cordoba", "scheme": "Seguro Multirriesgo Agricola (pilot)", "perils": "DROUGHT FROST",
+           "subsidy": 1.0, "crops": "SOYBEAN MAIZE", "coveredHa": 550000,
+           "note": "free multi-peril pilot, seven perils incl. drought and frost; 2025/26: 276 M ARS paid to 22 farms"},
+}
+
+ARGENTINA_CROPS = {
+    "SOYBEAN": "soybean", "MAIZE": "maize", "WHEAT": "wheat", "BARLEY": "barley", "OAT": "barley",
+    "SUNFLOWER": "sunflower", "CANOLA": "sunflower", "SORGHUM": "sorghum",
+    "PEA": "pulses", "GREENBEAN": "pulses", "COTTON": "cotton", "SUGARCANE": "sugarcane",
+    "RICE": "rice", "RICELONGGRAIN": "rice", "POTATO": "vegetables", "SUGARBEET": "vegetables",
+    "CARROT": "vegetables", "PARSNIP": "vegetables", "REDBEET": "vegetables", "SPINACH": "vegetables",
+    "GRASS": "pasture", "GRAPE": "vine", "OLIVE": "fruit",
+    "DEFAULT": "soybean",
+}
+ARGENTINA_BORROWED = {"OAT", "CANOLA", "SUGARBEET", "OLIVE"}
+
+# Per crop group, OUR ESTIMATES: sum insured per ha (USD, Argentine yields x prices), hail rate before
+# calibration, share of the insured capital (for the calibration; soybean is ~57 % of premiums).
+ARGENTINA_GROUPS = {
+    #              sumPerHa  hail    capitalShare
+    "soybean":    (870,     0.040,  0.45),
+    "maize":      (1350,    0.030,  0.30),
+    "wheat":      (630,     0.035,  0.15),
+    "sunflower":  (660,     0.040,  0.05),
+    "barley":     (700,     0.035,  0.03),
+    "sorghum":    (720,     0.035,  0.01),
+    "pulses":     (700,     0.040,  0.003),
+    "cotton":     (1100,    0.030,  0.003),
+    "sugarcane":  (2500,    0.015,  0.002),
+    "rice":       (1600,    0.020,  0.002),
+    "vegetables": (8000,    0.060,  0.0),
+    "pasture":    (300,     0.020,  0.0),
+    "vine":       (8000,    0.080,  0.0),       # Mendoza / San Juan: heavy hail
+    "fruit":      (15000,   0.080,  0.0),       # Rio Negro / Neuquen apples and pears
 }
 
 # ============================================================================
@@ -1719,6 +1799,69 @@ def write_australia(out_path):
     print("wrote %s (%.1f KB, Australia + %d states)" % (out_path, os.path.getsize(out_path) / 1024, len(AUSTRALIA_STATES)))
 
 
+def write_argentina(out_path):
+    """Argentina: private hail market, province factors, estimated rates. Needs no raw data."""
+    tot = ARGENTINA_TOTALS_2024
+    target = tot["premiumArs"] / tot["capitalArs"]
+    shares = ARGENTINA_COVER_SHARES
+    mix = (shares["hail"] + shares["hailPlus"] * ARGENTINA_HAILPLUS_FACTOR) / (shares["hail"] + shares["hailPlus"])
+    weighted = sum(g[1] * g[2] for g in ARGENTINA_GROUPS.values()) / sum(g[2] for g in ARGENTINA_GROUPS.values())
+    calibration = target / (weighted * mix)
+    print("  Argentina: SSN average rate %.2f %%, estimated %.2f %% (mix x%.3f) -> calibration x%.3f" % (
+        target * 100, weighted * mix * 100, mix, calibration))
+
+    provinces = dict((k, dict(v)) for k, v in ARGENTINA_PROVINCES.items())
+    known = sum(p["capitalShare"] for p in provinces.values() if p["capitalShare"] is not None)
+    others_premium = 1 - sum(p["premiumShare"] for p in provinces.values())
+    provinces["CB"]["capitalShare"] = 1 - known - others_premium
+    provinces["CB"]["capitalIsEstimate"] = True
+
+    lines = ['<?xml version="1.0" encoding="utf-8" standalone="no" ?>',
+             '<!-- Generated by tools/build_crop_insurance.py - do not edit by hand. -->',
+             '<!-- Sources: Superintendencia de Seguros de la Nacion (SSN), Encuesta de Seguros en los Sectores Agropecuario -->',
+             '<!-- y Forestal 2024; provincial governments of Mendoza and Cordoba. Values marked isEstimate="true" are our -->',
+             '<!-- own estimates, not official figures. -->',
+             '<cropInsurance version="1" source="SSN survey 2024, provinces" years="2023-2026" currency="USD">',
+             '    <program type="namedPeril" subsidy="0" basePeril="HAIL" calibration="%s" averageRate="%s" '
+             'hailPlusFactor="%s" multiPerilRate="%s" isEstimate="true">' % (
+                 fmt(calibration, 3), fmt(target), fmt(ARGENTINA_HAILPLUS_FACTOR, 2), fmt(ARGENTINA_MULTIPERIL_RATE, 3)),
+             '        <coverShares %s/>' % " ".join('%s="%s"' % (k, fmt(v, 3)) for k, v in shares.items()),
+             '        <totals period="2023-07/2024-06" %s/>' % " ".join(
+                 '%s="%s"' % (k, fmt(v, 3)) for k, v in tot.items()),
+             '    </program>',
+             '    <region id="ARG" name="Argentina">']
+    for crop, group in ARGENTINA_CROPS.items():
+        sum_per_ha, hail = ARGENTINA_GROUPS[group][0], ARGENTINA_GROUPS[group][1] * calibration
+        lines.append('        <crop fillType=%s group=%s%s sumPerHa="%d" sumPerHaIsEstimate="true">' % (
+            quoteattr(crop), quoteattr(group), ' borrowed="true"' if crop in ARGENTINA_BORROWED else "", sum_per_ha))
+        lines.append('            <rates hail="%s" hailPlus="%s" isEstimate="true"/>' % (
+            fmt(hail), fmt(hail * ARGENTINA_HAILPLUS_FACTOR)))
+        lines.append('        </crop>')
+    lines.append('    </region>')
+    for code, p in provinces.items():
+        scheme = ARGENTINA_SCHEMES.get(code)
+        lines.append('    <region id="ARG_%s" name=%s parent="ARG" rateFactor="%s" premiumShare="%s" capitalShare="%s"%s>' % (
+            code, quoteattr(p["name"]), fmt(p["premiumShare"] / p["capitalShare"], 3), fmt(p["premiumShare"], 3),
+            fmt(p["capitalShare"], 3), ' rateFactorIsEstimate="true"' if p.get("capitalIsEstimate") else ""))
+        if scheme:
+            lines.append('        <provincialScheme %s/>' % " ".join(
+                '%s=%s' % (k, quoteattr(fmt(v, 2) if isinstance(v, float) else str(v))) for k, v in scheme.items() if k != "name"))
+        lines.append('    </region>')
+    for code, scheme in ARGENTINA_SCHEMES.items():
+        if code not in provinces:
+            lines.append('    <region id="ARG_%s" name=%s parent="ARG">' % (code, quoteattr(scheme["name"])))
+            lines.append('        <provincialScheme %s/>' % " ".join(
+                '%s=%s' % (k, quoteattr(fmt(v, 2) if isinstance(v, float) else str(v))) for k, v in scheme.items() if k != "name"))
+            lines.append('    </region>')
+    lines.append('</cropInsurance>')
+    lines.append('')
+
+    out_path = os.path.abspath(out_path)
+    with open(out_path, "w", encoding="utf-8", newline="\n") as f:
+        f.write("\n".join(lines))
+    print("wrote %s (%.1f KB, Argentina, %d crops)" % (out_path, os.path.getsize(out_path) / 1024, len(ARGENTINA_CROPS)))
+
+
 def brazil_num(text):
     """PSR numbers use a decimal comma; "-" = empty."""
     text = text.strip()
@@ -1914,6 +2057,8 @@ def main():
         write_italy(ITALY_OUTPUT_XML)
     if AUSTRALIA_OUTPUT_XML:
         write_australia(AUSTRALIA_OUTPUT_XML)
+    if ARGENTINA_OUTPUT_XML:
+        write_argentina(ARGENTINA_OUTPUT_XML)
     print("Reading RMA Summary of Business %d-%d from %s" % (min(YEARS), max(YEARS), os.path.abspath(DATA_DIR)))
     us, state, seen = load()
     missing = [n for names in CROPS.values() for n in names if n not in seen]

@@ -400,7 +400,7 @@ sell points, vehicle sell prices), so price-changing mods are covered without de
 - **Crop insurance data** – **done:** `tools/build_crop_insurance.py` (standard library only, same
   pattern as the climate builders) turns the USDA RMA *Summary of Business* files into
   `DB/CropInsurance_US.xml` (~86 KB). Public-domain US government data; credit RMA in modDesc / README.
-  Canada: §13.3. Poland: §13.4. Brazil: §13.5. Germany: §13.6. France: §13.7. Netherlands: §13.8. Spain: §13.9. Italy: §13.10. Australia: §13.11.
+  Canada: §13.3. Poland: §13.4. Brazil: §13.5. Germany: §13.6. France: §13.7. Netherlands: §13.8. Spain: §13.9. Italy: §13.10. Australia: §13.11. Argentina: §13.12.
 
 ### 13.1 RMA source data and processing rules
 
@@ -660,6 +660,24 @@ Region ids match the climate file (`AUS`, `AUS_NSW` …).
 **Credit text:** *"Australian insurance duty rates from the Insurance Council of Australia; crop exemptions
 from Revenue NSW and the State Revenue Office Victoria; premium ranges from Deloitte; market overview from
 ABARES. Rates are estimates, not official figures; not affiliated with or endorsed by any of them."*
+
+### 13.12 Argentina: `DB/CropInsurance_AR.xml`
+
+Private market, **no national subsidy**. Hail cover dominates; two provinces run their own schemes.
+
+| Item | Value | Source |
+|---|---|---|
+| Covers (share of premiums) | hail **66.6 %**, hail + additional perils (wind, frost, fire …) 32.3 %, multi-peril 1.1 % | SSN survey 2024 |
+| Totals (Jul 2023 – Jun 2024) | premiums ARS 357 152 M, insured capital ARS 9.2 trillion → average rate **3.88 %**; 24 M ha, 188 000 policies; loss ratio 88.9 % (2023 ~103 %), combined ratio 121.5 %. Soybean 8.1 M ha, ARS 204 000 M premiums (~57 %) | SSN via 100% Seguro, El Seguro en Acción |
+| Province factors | `rateFactor` = premium share ÷ capital share: Buenos Aires 0.848 (36.7 / 43.3 %), Santa Fe 0.926 (20 / 21.6 %), Córdoba **1.36** (31 % premiums; capital share derived ≈ 22.8 %, estimate) – Córdoba is the hail hot spot | same |
+| Mendoza | *Fondo Compensador Agrícola*: hail + frost, farms ≤ 30 ha, province pays ~80 % of the premium (an older official page says 100 %); total hail loss pays ARS 2 000 000 / ha (2025-26) | Los Andes, Infocampo, contingencias.mendoza.gov.ar |
+| Córdoba | free multi-peril pilot (seven perils incl. drought, frost) on 550 000 ha of soybean / maize; 2025/26 ARS 276 M paid to 22 farms | Cadena 3, Infocampo |
+| Rates | hail per crop group, **estimates** (soybean 4.0 %, maize 3.0 %, wheat 3.5 %, vine / fruit 8 %), hail + extras ×1.25, multi-peril 8 %; calibration ×0.999 to 3.88 % (sold mix). Sums insured in **USD** (Argentine crop prices are quoted in dollars; the peso figures only set the average rate) | builder |
+
+**Credit text:** *"Argentine crop insurance figures from the Superintendencia de Seguros de la Nación (SSN),
+Encuesta de Seguros en los Sectores Agropecuario y Forestal 2024; provincial schemes from the governments of
+Mendoza and Córdoba. Rates are estimates, not official figures; not affiliated with or endorsed by any of
+them."*
 
 ### 13.5 Brazil: `DB/CropInsurance_BR.xml`
 
