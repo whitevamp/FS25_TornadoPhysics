@@ -164,6 +164,19 @@
         <text name="tp_tip_wildlife" text="Uccelli, cervi, cinghiali e altri animali selvatici scappano dal tornado correndo o volando; quelli che cattura scompaiono. Il cane della fattoria torna alla sua cuccia."/>
         <text name="tp_wildlife_distance" text="Distanza di fuga"/>
         <text name="tp_tip_wildlife_distance" text="Quanto fuori dal raggio del tornado gli animali iniziano a fuggire."/>
+        <text name="tp_sec_hazards" text="Rischi naturali"/>
+        <text name="tp_hazards" text="Attiva rischi naturali"/>
+        <text name="tp_tip_hazards" text="Il meteo può danneggiare le colture: i lunghi periodi secchi causano danni da siccità e le piogge forti su terreno zuppo allagano i campi bassi (gli incendi dei campi arriveranno in un aggiornamento). I danni richiedono l'opzione di distruzione da catastrofi del gioco. Disattivato se FS25_RealisticWeather è installato."/>
+        <text name="tp_hazards_drought" text="Siccità"/>
+        <text name="tp_tip_hazards_drought" text="Lunghi periodi caldi e asciutti seccano il terreno; le colture in crescita perdono ogni giorno un po' di più finché non piove. Le risaie sono risparmiate."/>
+        <text name="tp_hazards_flood" text="Alluvione"/>
+        <text name="tp_tip_hazards_flood" text="Diverse ore di pioggia forte su un terreno già zuppo allagano i campi più bassi: l'acqua si raccoglie nel punto più basso di ogni campo e lì annega la coltura. Le risaie sono risparmiate."/>
+        <text name="tp_hazards_owned" text="Solo campi posseduti"/>
+        <text name="tp_tip_hazards_owned" text="SÌ: siccità e alluvioni danneggiano solo i campi posseduti da una fattoria; i campi senza proprietario restano intatti. NO: il meteo colpisce ogni campo coltivato della mappa."/>
+        <text name="tp_hazards_intensity" text="Intensità dei danni"/>
+        <text name="tp_tip_hazards_intensity" text="100 % = lieve: una lunga siccità costa allora a un campo circa il 15 %. Valori più alti fanno più danni."/>
+        <text name="tp_hazards_frequency" text="Frequenza dei periodi secchi"/>
+        <text name="tp_tip_hazards_frequency" text="Quanto velocemente il terreno si secca col caldo. Più alto = siccità più frequenti e più lunghe."/>
         <text name="tp_sec_overlays" text="Overlay"/>
         <text name="tp_hud" text="HUD telemetria"/>
         <text name="tp_tip_hud" text="Etichette di telemetria fisica sopra ogni oggetto tracciato."/>
@@ -188,6 +201,12 @@
         <text name="tp_confirm_kill_test" text="Avviare il test di letalità? Gli animali di ogni pascolo all'aperto entro 60 m VERRANNO uccisi."/>
         <text name="tp_msg_touchdown" text="ALLARME: UN TORNADO HA TOCCATO TERRA! (EF-%d | Raggio: %dm | Potenza: x%.1f)"/>
         <text name="tp_msg_outbreak" text="FOCOLAIO DI TORNADO (%s): oggi sono possibili fino a %d altri tornado!"/>
+        <text name="tp_msg_dry_spell" text="PERIODO SECCO: l'umidità del suolo è scesa al %d %%. Le colture soffriranno se non piove."/>
+        <text name="tp_msg_drought_start" text="SICCITÀ! Il terreno si è seccato: le colture in crescita soffrono."/>
+        <text name="tp_msg_drought_damage" text="DANNI DA SICCITÀ: %d dei tuoi campi hanno perso raccolto oggi."/>
+        <text name="tp_msg_flood" text="ALLUVIONE! La pioggia forte su terreno fradicio ha allagato %d campi bassi."/>
+        <text name="tp_msg_flood_damage" text="DANNI DA ALLUVIONE: %d dei tuoi campi sono sott'acqua."/>
+        <text name="tp_msg_drought_end" text="La siccità è finita: la pioggia ha ricaricato il terreno."/>
         <text name="tp_msg_outbreak_one" text="FOCOLAIO DI TORNADO (%s): oggi è possibile un altro tornado!"/>
         <text name="tp_msg_storm_damage" text="DANNI DA TEMPESTA: %s (%s) ha perso %d animali! Al sicuro per %d secondi."/>
         <text name="tp_pen_pasture" text="Pascolo"/>

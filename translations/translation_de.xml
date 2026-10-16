@@ -164,6 +164,19 @@
         <text name="tp_tip_wildlife" text="Vögel, Rehe, Wildschweine und andere Wildtiere laufen oder fliegen vor dem Tornado davon; erfasste Tiere verschwinden. Der Hofhund läuft nach Hause zu seiner Hundehütte."/>
         <text name="tp_wildlife_distance" text="Fluchtabstand"/>
         <text name="tp_tip_wildlife_distance" text="Wie weit außerhalb des Tornadoradius Tiere zu fliehen beginnen."/>
+        <text name="tp_sec_hazards" text="Naturgefahren"/>
+        <text name="tp_hazards" text="Naturgefahren aktivieren"/>
+        <text name="tp_tip_hazards" text="Das Wetter kann deinen Pflanzen schaden: Lange Trockenphasen verursachen Dürreschäden, und Starkregen auf nassem Boden überflutet tief liegende Felder (Feldbrände folgen in einem späteren Update). Ernteschäden brauchen die Spieleinstellung für Katastrophenzerstörung. Aus, solange FS25_RealisticWeather installiert ist."/>
+        <text name="tp_hazards_drought" text="Dürre"/>
+        <text name="tp_tip_hazards_drought" text="Lange heiße Trockenphasen trocknen den Boden aus; wachsende Pflanzen verlieren dann jeden Tag etwas mehr, bis es regnet. Reisfelder bleiben verschont."/>
+        <text name="tp_hazards_flood" text="Überschwemmung"/>
+        <text name="tp_tip_hazards_flood" text="Mehrere Stunden Starkregen auf bereits nassem Boden überfluten die am tiefsten liegenden Felder: Das Wasser sammelt sich am tiefsten Punkt jedes Feldes und ertränkt dort die Pflanzen. Reisfelder bleiben verschont."/>
+        <text name="tp_hazards_owned" text="Nur eigene Felder beschädigen"/>
+        <text name="tp_tip_hazards_owned" text="AN: Dürre und Überschwemmungen beschädigen nur Felder, die einem Hof gehören; Felder ohne Besitzer bleiben unberührt. AUS: Das Wetter trifft jedes wachsende Feld der Karte."/>
+        <text name="tp_hazards_intensity" text="Stärke der Ernteschäden"/>
+        <text name="tp_tip_hazards_intensity" text="100 % = mild: Eine lange Dürre kostet ein Feld dann etwa 15 %. Höhere Werte richten mehr Schaden an."/>
+        <text name="tp_hazards_frequency" text="Häufigkeit von Trockenphasen"/>
+        <text name="tp_tip_hazards_frequency" text="Wie schnell der Boden bei warmem Wetter austrocknet. Höher = mehr und längere Dürren."/>
         <text name="tp_sec_overlays" text="Einblendungen"/>
         <text name="tp_hud" text="Telemetrie-HUD"/>
         <text name="tp_tip_hud" text="Physik-Telemetrie über jedem erfassten Objekt."/>
@@ -188,6 +201,12 @@
         <text name="tp_confirm_kill_test" text="Tierhaltungs-Tötungstest starten? Tiere auf jeder Außenweide im Umkreis von 60 m WERDEN getötet."/>
         <text name="tp_msg_touchdown" text="ALARM: TORNADO HAT DEN BODEN ERREICHT! (EF-%d | Radius: %dm | Stärke: x%.1f)"/>
         <text name="tp_msg_outbreak" text="TORNADO-AUSBRUCH (%s): heute sind bis zu %d weitere Tornados möglich!"/>
+        <text name="tp_msg_dry_spell" text="TROCKENPHASE: Die Bodenfeuchte ist auf %d %% gesunken. Bleibt es trocken, leiden die Pflanzen."/>
+        <text name="tp_msg_drought_start" text="DÜRRE! Der Boden ist ausgetrocknet - wachsende Pflanzen leiden."/>
+        <text name="tp_msg_drought_damage" text="DÜRRESCHADEN: %d deiner Felder haben heute Ertrag verloren."/>
+        <text name="tp_msg_flood" text="ÜBERSCHWEMMUNG! Starkregen auf durchnässtem Boden hat %d tief liegende Felder überflutet."/>
+        <text name="tp_msg_flood_damage" text="ÜBERSCHWEMMUNGSSCHADEN: %d deiner Felder stehen unter Wasser."/>
+        <text name="tp_msg_drought_end" text="Die Dürre ist vorbei - Regen hat den Boden wieder aufgefüllt."/>
         <text name="tp_msg_outbreak_one" text="TORNADO-AUSBRUCH (%s): heute ist noch ein weiterer Tornado möglich!"/>
         <text name="tp_msg_storm_damage" text="STURMSCHADEN: %s (%s) hat %d Tiere verloren! %d Sekunden lang geschützt."/>
         <text name="tp_pen_pasture" text="Weide"/>

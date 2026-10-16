@@ -164,6 +164,19 @@
         <text name="tp_tip_wildlife" text="Ptaki, sarny, dziki i inne dzikie zwierzęta uciekają przed tornadem; złapane przez nie znikają. Pies z farmy biegnie do swojej budy."/>
         <text name="tp_wildlife_distance" text="Odległość ucieczki"/>
         <text name="tp_tip_wildlife_distance" text="Jak daleko poza promieniem tornada zwierzęta zaczynają uciekać."/>
+        <text name="tp_sec_hazards" text="Zagrożenia naturalne"/>
+        <text name="tp_hazards" text="Włącz zagrożenia naturalne"/>
+        <text name="tp_tip_hazards" text="Pogoda może szkodzić uprawom: długie okresy bez deszczu powodują szkody od suszy, a ulewy na nasiąkniętej glebie zalewają nisko położone pola (pożary pól pojawią się w późniejszej aktualizacji). Szkody w uprawach wymagają włączonej opcji niszczenia przez katastrofy. Wyłączone, gdy zainstalowano FS25_RealisticWeather."/>
+        <text name="tp_hazards_drought" text="Susza"/>
+        <text name="tp_tip_hazards_drought" text="Długie upalne okresy bez deszczu wysuszają glebę; rosnące uprawy tracą wtedy codziennie trochę więcej, aż spadnie deszcz. Pola ryżowe są oszczędzone."/>
+        <text name="tp_hazards_flood" text="Powódź"/>
+        <text name="tp_tip_hazards_flood" text="Kilka godzin ulewy na już nasiąkniętej glebie zalewa najniżej położone pola: woda zbiera się w najniższym punkcie każdego pola i niszczy tam uprawy. Pola ryżowe są oszczędzone."/>
+        <text name="tp_hazards_owned" text="Tylko posiadane pola"/>
+        <text name="tp_tip_hazards_owned" text="WŁ.: susza i powodzie niszczą tylko pola należące do gospodarstwa; pola bez właściciela pozostają nietknięte. WYŁ.: pogoda trafia w każde uprawiane pole na mapie."/>
+        <text name="tp_hazards_intensity" text="Siła szkód w uprawach"/>
+        <text name="tp_tip_hazards_intensity" text="100 % = łagodnie: długa susza kosztuje wtedy pole około 15 %. Wyższe wartości szkodzą bardziej."/>
+        <text name="tp_hazards_frequency" text="Częstotliwość okresów suszy"/>
+        <text name="tp_tip_hazards_frequency" text="Jak szybko gleba wysycha przy ciepłej pogodzie. Wyżej = więcej i dłuższych susz."/>
         <text name="tp_sec_overlays" text="Nakładki"/>
         <text name="tp_hud" text="HUD telemetrii"/>
         <text name="tp_tip_hud" text="Etykiety telemetrii fizyki nad każdym śledzonym obiektem."/>
@@ -188,6 +201,12 @@
         <text name="tp_confirm_kill_test" text="Uruchomić test śmiertelności? Zwierzęta na każdym pastwisku w promieniu 60 m ZGINĄ."/>
         <text name="tp_msg_touchdown" text="ALARM: TORNADO DOTKNĘŁO ZIEMI! (EF-%d | Promień: %dm | Siła: x%.1f)"/>
         <text name="tp_msg_outbreak" text="WYBUCH TORNAD (%s): dziś możliwe jeszcze do %d tornad!"/>
+        <text name="tp_msg_dry_spell" text="OKRES SUCHY: wilgotność gleby spadła do %d %%. Uprawy ucierpią, jeśli nadal nie będzie padać."/>
+        <text name="tp_msg_drought_start" text="SUSZA! Gleba wyschła - rosnące uprawy cierpią."/>
+        <text name="tp_msg_drought_damage" text="SZKODY OD SUSZY: %d twoich pól straciło dziś część plonu."/>
+        <text name="tp_msg_flood" text="POWÓDŹ! Ulewa na podmokłej glebie zalała %d nisko położonych pól."/>
+        <text name="tp_msg_flood_damage" text="SZKODY POWODZIOWE: %d twoich pól jest pod wodą."/>
+        <text name="tp_msg_drought_end" text="Susza się skończyła - deszcz nawodnił glebę."/>
         <text name="tp_msg_outbreak_one" text="WYBUCH TORNAD (%s): dziś możliwe jeszcze jedno tornado!"/>
         <text name="tp_msg_storm_damage" text="SZKODY OD BURZY: %s (%s) straciło %d zwierząt! Bezpieczne przez %d sekund."/>
         <text name="tp_pen_pasture" text="Pastwisko"/>

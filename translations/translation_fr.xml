@@ -164,6 +164,19 @@
         <text name="tp_tip_wildlife" text="Oiseaux, cerfs, sangliers et autres animaux sauvages fuient la tornade en courant ou en volant ; ceux qu'elle attrape disparaissent. Le chien de la ferme rentre à sa niche."/>
         <text name="tp_wildlife_distance" text="Distance de fuite"/>
         <text name="tp_tip_wildlife_distance" text="Distance au-delà du rayon de la tornade à partir de laquelle les animaux fuient."/>
+        <text name="tp_sec_hazards" text="Risques naturels"/>
+        <text name="tp_hazards" text="Activer les risques naturels"/>
+        <text name="tp_tip_hazards" text="La météo peut abîmer vos cultures : les longues périodes sèches causent des dégâts de sécheresse et les fortes pluies sur un sol détrempé inondent les champs bas (les feux de champs arriveront dans une mise à jour). Les dégâts aux cultures nécessitent l'option de destruction par catastrophes du jeu. Désactivé si FS25_RealisticWeather est installé."/>
+        <text name="tp_hazards_drought" text="Sécheresse"/>
+        <text name="tp_tip_hazards_drought" text="Les longues périodes chaudes et sèches assèchent le sol ; les cultures en croissance perdent alors un peu plus chaque jour jusqu'à la pluie. Les rizières sont épargnées."/>
+        <text name="tp_hazards_flood" text="Inondation"/>
+        <text name="tp_tip_hazards_flood" text="Plusieurs heures de fortes pluies sur un sol déjà détrempé inondent les champs les plus bas : l'eau s'accumule au point le plus bas de chaque champ et y noie la culture. Les rizières sont épargnées."/>
+        <text name="tp_hazards_owned" text="Seulement les champs possédés"/>
+        <text name="tp_tip_hazards_owned" text="OUI : la sécheresse et les inondations n'abîment que les champs possédés par une ferme ; les champs sans propriétaire restent intacts. NON : la météo touche tous les champs en culture de la carte."/>
+        <text name="tp_hazards_intensity" text="Force des dégâts aux cultures"/>
+        <text name="tp_tip_hazards_intensity" text="100 % = modéré : une longue sécheresse coûte alors à un champ environ 15 % ; des valeurs plus élevées font plus de dégâts."/>
+        <text name="tp_hazards_frequency" text="Fréquence des périodes sèches"/>
+        <text name="tp_tip_hazards_frequency" text="Vitesse à laquelle le sol s'assèche par temps chaud. Plus élevé = sécheresses plus fréquentes et plus longues."/>
         <text name="tp_sec_overlays" text="Superpositions"/>
         <text name="tp_hud" text="HUD de télémétrie"/>
         <text name="tp_tip_hud" text="Étiquettes de télémétrie physique au-dessus de chaque objet suivi."/>
@@ -188,6 +201,12 @@
         <text name="tp_confirm_kill_test" text="Lancer le test de létalité ? Les animaux de chaque pâturage extérieur à moins de 60 m SERONT tués."/>
         <text name="tp_msg_touchdown" text="ALERTE : UNE TORNADE A TOUCHÉ LE SOL ! (EF-%d | Rayon : %dm | Puissance : x%.1f)"/>
         <text name="tp_msg_outbreak" text="ÉPISODE DE TORNADES (%s) : jusqu'à %d autres tornades possibles aujourd'hui !"/>
+        <text name="tp_msg_dry_spell" text="PÉRIODE SÈCHE : l'humidité du sol est tombée à %d %%. Les cultures souffriront si le temps reste sec."/>
+        <text name="tp_msg_drought_start" text="SÉCHERESSE ! Le sol est desséché - les cultures en croissance souffrent."/>
+        <text name="tp_msg_drought_damage" text="DÉGÂTS DE SÉCHERESSE : %d de vos champs ont perdu une partie de leur culture aujourd'hui."/>
+        <text name="tp_msg_flood" text="INONDATION ! De fortes pluies sur un sol détrempé ont inondé %d champs situés en contrebas."/>
+        <text name="tp_msg_flood_damage" text="DÉGÂTS D'INONDATION : %d de vos champs sont sous l'eau."/>
+        <text name="tp_msg_drought_end" text="La sécheresse est terminée - la pluie a rechargé le sol."/>
         <text name="tp_msg_outbreak_one" text="ÉPISODE DE TORNADES (%s) : encore une tornade possible aujourd'hui !"/>
         <text name="tp_msg_storm_damage" text="DÉGÂTS DE TEMPÊTE : %s (%s) a perdu %d animaux ! En sécurité pendant %d secondes."/>
         <text name="tp_pen_pasture" text="Pâturage"/>

@@ -1,5 +1,6 @@
 ---@class TornadoPageModules
----@description Modules tab: mirrors t_set destruction / recovery / mapui / cargo / husbandry / traffic / wildlife.
+---@description Modules tab: mirrors t_set destruction / recovery / mapui / cargo / husbandry / traffic / wildlife /
+--- hazards.
 
 local Page = TornadoMenuPage
 local console = TornadoMenuPage.console
@@ -27,6 +28,26 @@ end
 
 local function hasWildlife()
     return TornadoWildlife ~= nil
+end
+
+local function hasHazards()
+    return TornadoHazards ~= nil
+end
+
+--- Percent row (25 - 300 %) routed through `t_set hazards <sub> <percent>`.
+local function hazardsPercentRow(id, key)
+    return {
+        id = id,
+        kind = Page.KIND_NUMBER,
+        requires = hasHazards,
+        min = 25, max = 300, step = 25, format = "%d %%",
+        get = function()
+            return (TornadoHazards[key] or 1.0) * 100
+        end,
+        set = function(value)
+            return console("cmdSet", "hazards", key, value)
+        end,
+    }
 end
 
 --- Number row routed through `t_set cargo <sub> <value>`.
@@ -223,4 +244,52 @@ TornadoPageModules = TornadoMenuPage.new("Modules", "Modules", {
             return console("cmdSet", "wildlife", "distance", value)
         end,
     },
+
+    -- Natural hazards
+    {
+        id = "modHazards",
+        kind = Page.KIND_BOOL,
+        requires = hasHazards,
+        get = function()
+            return TornadoHazards.isEnabled
+        end,
+        set = function(value)
+            return console("cmdSet", "hazards", value and "on" or "off")
+        end,
+    },
+    {
+        id = "modHazardsDrought",
+        kind = Page.KIND_BOOL,
+        requires = hasHazards,
+        get = function()
+            return TornadoHazards.droughtEnabled
+        end,
+        set = function(value)
+            return console("cmdSet", "hazards", "drought", value and "on" or "off")
+        end,
+    },
+    {
+        id = "modHazardsFlood",
+        kind = Page.KIND_BOOL,
+        requires = hasHazards,
+        get = function()
+            return TornadoHazards.floodEnabled
+        end,
+        set = function(value)
+            return console("cmdSet", "hazards", "flood", value and "on" or "off")
+        end,
+    },
+    {
+        id = "modHazardsOwned",
+        kind = Page.KIND_BOOL,
+        requires = hasHazards,
+        get = function()
+            return TornadoHazards.ownedOnly
+        end,
+        set = function(value)
+            return console("cmdSet", "hazards", "owned", value and "on" or "off")
+        end,
+    },
+    hazardsPercentRow("modHazardsIntensity", "intensity"),
+    hazardsPercentRow("modHazardsFrequency", "frequency"),
 })

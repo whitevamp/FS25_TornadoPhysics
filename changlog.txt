@@ -66,6 +66,28 @@
   turn single pedestrians round, so they wait instead.
 - Console: t_set traffic [on|off|buffer <m>|status], t_reset traffic.
 
+[GAMEPLAY] Natural Hazards: Drought and Floods (optional, OFF by default)
+- Long hot dry spells now dry out the soil. The mod tracks one soil-water level
+  for the map from the game's own weather (rain fills it, warm dry hours drain
+  it, below 5 C nothing dries out).
+- Dry-spell warning when the soil gets low; a drought starts after two dry days.
+  Every drought day each growing field loses a little more crop in patches (the
+  game's own disaster damage, like hail), up to about 15 % with the default
+  "mild" strength; rain ends the drought. Rice paddies are spared, grass is hit
+  half as hard. Crop damage only with the game's disaster destruction setting.
+- Owners get a daily "N of your fields lost crop" message; every hit is logged
+  and saved for the coming crop insurance.
+- Settings (Modules tab or t_set hazards): on/off, drought on/off, crop damage
+  strength and dry-spell frequency (25 - 300 %). t_dev hazards forces a drought
+  for testing. Switched off while FS25_RealisticWeather is installed.
+- Floods: several hours of heavy rain on already soaked soil flood the lowest-
+  lying growing fields of the map - water pools at each field's lowest point and
+  drowns the crop there in patches. "FLOODING!" alert, damage messages to the
+  owners, logged for the insurance. Rice paddies are spared.
+- "Only damage owned fields" (default OFF): drought and floods leave fields no
+  farm owns untouched.
+- Field fires follow in a later update.
+
 [GAMEPLAY] Real-Life Tornado Climate (optional, OFF by default)
 - When enabled, tornadoes follow real recorded statistics instead of the classic
   random roll. Turning it off keeps the classic behaviour exactly as before.

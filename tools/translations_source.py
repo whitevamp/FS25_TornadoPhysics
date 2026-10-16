@@ -580,6 +580,67 @@ t("tp_tip_wildlife_distance", "How far outside the tornado's outer radius animal
   "Quanto fuori dal raggio del tornado gli animali iniziano a fuggire.",
   "Hoe ver buiten de tornadostraal dieren beginnen te vluchten.")
 
+t("tp_sec_hazards", "Natural hazards", "Naturgefahren", "Risques naturels", "Zagrożenia naturalne", "Riesgos naturales",
+  "Rischi naturali", "Natuurrisico's")
+t("tp_hazards", "Enable natural hazards", "Naturgefahren aktivieren", "Activer les risques naturels",
+  "Włącz zagrożenia naturalne", "Activar riesgos naturales", "Attiva rischi naturali", "Natuurrisico's inschakelen")
+t("tp_tip_hazards",
+  "Weather can hurt your crops: long dry spells cause drought damage and heavy rain on soaked soil floods low-lying fields (field fires come in a later update). Crop damage needs the game's disaster destruction setting. Off while FS25_RealisticWeather is installed.",
+  "Das Wetter kann deinen Pflanzen schaden: Lange Trockenphasen verursachen Dürreschäden, und Starkregen auf nassem Boden überflutet tief liegende Felder (Feldbrände folgen in einem späteren Update). Ernteschäden brauchen die Spieleinstellung für Katastrophenzerstörung. Aus, solange FS25_RealisticWeather installiert ist.",
+  "La météo peut abîmer vos cultures : les longues périodes sèches causent des dégâts de sécheresse et les fortes pluies sur un sol détrempé inondent les champs bas (les feux de champs arriveront dans une mise à jour). Les dégâts aux cultures nécessitent l'option de destruction par catastrophes du jeu. Désactivé si FS25_RealisticWeather est installé.",
+  "Pogoda może szkodzić uprawom: długie okresy bez deszczu powodują szkody od suszy, a ulewy na nasiąkniętej glebie zalewają nisko położone pola (pożary pól pojawią się w późniejszej aktualizacji). Szkody w uprawach wymagają włączonej opcji niszczenia przez katastrofy. Wyłączone, gdy zainstalowano FS25_RealisticWeather.",
+  "El tiempo puede dañar tus cultivos: los periodos secos largos causan daños por sequía y las lluvias fuertes sobre suelo empapado inundan los campos bajos (los incendios de campo llegarán en una actualización). Los daños necesitan la opción de destrucción por catástrofes del juego. Desactivado si FS25_RealisticWeather está instalado.",
+  "Il meteo può danneggiare le colture: i lunghi periodi secchi causano danni da siccità e le piogge forti su terreno zuppo allagano i campi bassi (gli incendi dei campi arriveranno in un aggiornamento). I danni richiedono l'opzione di distruzione da catastrofi del gioco. Disattivato se FS25_RealisticWeather è installato.",
+  "Het weer kan je gewassen schaden: lange droge periodes geven droogteschade en hevige regen op doorweekte grond zet laaggelegen velden onder water (veldbranden volgen in een latere update). Gewasschade vereist de spelinstelling voor rampvernietiging. Uit zolang FS25_RealisticWeather geïnstalleerd is.")
+t("tp_hazards_drought", "Drought", "Dürre", "Sécheresse", "Susza", "Sequía", "Siccità", "Droogte")
+t("tp_tip_hazards_drought",
+  "Long hot dry spells dry out the soil; growing crops then lose a little more every day until it rains. Rice paddies are spared.",
+  "Lange heiße Trockenphasen trocknen den Boden aus; wachsende Pflanzen verlieren dann jeden Tag etwas mehr, bis es regnet. Reisfelder bleiben verschont.",
+  "Les longues périodes chaudes et sèches assèchent le sol ; les cultures en croissance perdent alors un peu plus chaque jour jusqu'à la pluie. Les rizières sont épargnées.",
+  "Długie upalne okresy bez deszczu wysuszają glebę; rosnące uprawy tracą wtedy codziennie trochę więcej, aż spadnie deszcz. Pola ryżowe są oszczędzone.",
+  "Los periodos largos de calor y sequía secan el suelo; los cultivos en crecimiento pierden un poco más cada día hasta que llueve. Los arrozales se salvan.",
+  "Lunghi periodi caldi e asciutti seccano il terreno; le colture in crescita perdono ogni giorno un po' di più finché non piove. Le risaie sono risparmiate.",
+  "Lange hete droge periodes drogen de bodem uit; groeiende gewassen verliezen dan elke dag iets meer tot het regent. Rijstvelden blijven gespaard.")
+t("tp_hazards_flood", "Flood", "Überschwemmung", "Inondation", "Powódź", "Inundación", "Alluvione", "Overstroming")
+t("tp_tip_hazards_flood",
+  "Several hours of heavy rain on already soaked soil flood the lowest-lying growing fields: water pools at each field's lowest point and drowns the crop there. Rice paddies are spared.",
+  "Mehrere Stunden Starkregen auf bereits nassem Boden überfluten die am tiefsten liegenden Felder: Das Wasser sammelt sich am tiefsten Punkt jedes Feldes und ertränkt dort die Pflanzen. Reisfelder bleiben verschont.",
+  "Plusieurs heures de fortes pluies sur un sol déjà détrempé inondent les champs les plus bas : l'eau s'accumule au point le plus bas de chaque champ et y noie la culture. Les rizières sont épargnées.",
+  "Kilka godzin ulewy na już nasiąkniętej glebie zalewa najniżej położone pola: woda zbiera się w najniższym punkcie każdego pola i niszczy tam uprawy. Pola ryżowe są oszczędzone.",
+  "Varias horas de lluvia fuerte sobre un suelo ya empapado inundan los campos más bajos: el agua se acumula en el punto más bajo de cada campo y ahoga allí el cultivo. Los arrozales se salvan.",
+  "Diverse ore di pioggia forte su un terreno già zuppo allagano i campi più bassi: l'acqua si raccoglie nel punto più basso di ogni campo e lì annega la coltura. Le risaie sono risparmiate.",
+  "Een paar uur hevige regen op al doorweekte grond zet de laagst gelegen velden onder water: het water verzamelt zich op het laagste punt van elk veld en verdrinkt daar het gewas. Rijstvelden blijven gespaard.")
+t("tp_hazards_owned", "Only damage owned fields", "Nur eigene Felder beschädigen", "Seulement les champs possédés",
+  "Tylko posiadane pola", "Solo campos con dueño", "Solo campi posseduti", "Alleen velden met eigenaar")
+t("tp_tip_hazards_owned",
+  "ON: drought and floods only damage fields a farm owns; fields nobody owns stay untouched. OFF: the weather hits every growing field on the map.",
+  "AN: Dürre und Überschwemmungen beschädigen nur Felder, die einem Hof gehören; Felder ohne Besitzer bleiben unberührt. AUS: Das Wetter trifft jedes wachsende Feld der Karte.",
+  "OUI : la sécheresse et les inondations n'abîment que les champs possédés par une ferme ; les champs sans propriétaire restent intacts. NON : la météo touche tous les champs en culture de la carte.",
+  "WŁ.: susza i powodzie niszczą tylko pola należące do gospodarstwa; pola bez właściciela pozostają nietknięte. WYŁ.: pogoda trafia w każde uprawiane pole na mapie.",
+  "SÍ: la sequía y las inundaciones solo dañan campos que pertenecen a una granja; los campos sin dueño no se tocan. NO: el tiempo afecta a todos los campos cultivados del mapa.",
+  "SÌ: siccità e alluvioni danneggiano solo i campi posseduti da una fattoria; i campi senza proprietario restano intatti. NO: il meteo colpisce ogni campo coltivato della mappa.",
+  "AAN: droogte en overstromingen beschadigen alleen velden van een boerderij; velden zonder eigenaar blijven ongemoeid. UIT: het weer treft elk groeiend veld op de kaart.")
+t("tp_hazards_intensity", "Crop damage strength", "Stärke der Ernteschäden", "Force des dégâts aux cultures",
+  "Siła szkód w uprawach", "Intensidad de los daños", "Intensità dei danni", "Sterkte van de gewasschade")
+t("tp_tip_hazards_intensity",
+  "100 % = mild: a long drought then costs a field about 15 %. Higher values hurt more.",
+  "100 % = mild: Eine lange Dürre kostet ein Feld dann etwa 15 %. Höhere Werte richten mehr Schaden an.",
+  "100 % = modéré : une longue sécheresse coûte alors à un champ environ 15 % ; des valeurs plus élevées font plus de dégâts.",
+  "100 % = łagodnie: długa susza kosztuje wtedy pole około 15 %. Wyższe wartości szkodzą bardziej.",
+  "100 % = suave: una sequía larga cuesta entonces a un campo un 15 %. Valores más altos dañan más.",
+  "100 % = lieve: una lunga siccità costa allora a un campo circa il 15 %. Valori più alti fanno più danni.",
+  "100 % = mild: een lange droogte kost een veld dan ongeveer 15 %. Hogere waarden doen meer schade.")
+t("tp_hazards_frequency", "Dry-spell frequency", "Häufigkeit von Trockenphasen", "Fréquence des périodes sèches",
+  "Częstotliwość okresów suszy", "Frecuencia de periodos secos", "Frequenza dei periodi secchi", "Frequentie van droge periodes")
+t("tp_tip_hazards_frequency",
+  "How fast the soil dries out in warm weather. Higher = more and longer droughts.",
+  "Wie schnell der Boden bei warmem Wetter austrocknet. Höher = mehr und längere Dürren.",
+  "Vitesse à laquelle le sol s'assèche par temps chaud. Plus élevé = sécheresses plus fréquentes et plus longues.",
+  "Jak szybko gleba wysycha przy ciepłej pogodzie. Wyżej = więcej i dłuższych susz.",
+  "Lo rápido que se seca el suelo con tiempo cálido. Más alto = más sequías y más largas.",
+  "Quanto velocemente il terreno si secca col caldo. Più alto = siccità più frequenti e più lunghe.",
+  "Hoe snel de bodem uitdroogt bij warm weer. Hoger = meer en langere droogtes.")
+
 # =====================================================================================================
 # DEVELOPER TAB
 # =====================================================================================================
@@ -661,6 +722,48 @@ t("tp_msg_outbreak", "TORNADO OUTBREAK (%s): up to %d more tornadoes possible to
   "BROTE DE TORNADOS (%s): ¡hoy son posibles hasta %d tornados más!",
   "FOCOLAIO DI TORNADO (%s): oggi sono possibili fino a %d altri tornado!",
   "TORNADO-UITBRAAK (%s): vandaag nog tot %d tornado's mogelijk!")
+t("tp_msg_dry_spell", "DRY SPELL: soil moisture is down to %d %%. Crops will suffer if it stays dry.",
+  "TROCKENPHASE: Die Bodenfeuchte ist auf %d %% gesunken. Bleibt es trocken, leiden die Pflanzen.",
+  "PÉRIODE SÈCHE : l'humidité du sol est tombée à %d %%. Les cultures souffriront si le temps reste sec.",
+  "OKRES SUCHY: wilgotność gleby spadła do %d %%. Uprawy ucierpią, jeśli nadal nie będzie padać.",
+  "PERIODO SECO: la humedad del suelo ha bajado al %d %%. Los cultivos sufrirán si sigue sin llover.",
+  "PERIODO SECCO: l'umidità del suolo è scesa al %d %%. Le colture soffriranno se non piove.",
+  "DROGE PERIODE: de bodemvochtigheid is gedaald tot %d %%. Gewassen lijden als het droog blijft.")
+t("tp_msg_drought_start", "DROUGHT! The soil has dried out - growing crops are suffering.",
+  "DÜRRE! Der Boden ist ausgetrocknet - wachsende Pflanzen leiden.",
+  "SÉCHERESSE ! Le sol est desséché - les cultures en croissance souffrent.",
+  "SUSZA! Gleba wyschła - rosnące uprawy cierpią.",
+  "¡SEQUÍA! El suelo se ha secado: los cultivos en crecimiento sufren.",
+  "SICCITÀ! Il terreno si è seccato: le colture in crescita soffrono.",
+  "DROOGTE! De bodem is uitgedroogd - groeiende gewassen lijden.")
+t("tp_msg_drought_damage", "DROUGHT DAMAGE: %d of your fields lost crop today.",
+  "DÜRRESCHADEN: %d deiner Felder haben heute Ertrag verloren.",
+  "DÉGÂTS DE SÉCHERESSE : %d de vos champs ont perdu une partie de leur culture aujourd'hui.",
+  "SZKODY OD SUSZY: %d twoich pól straciło dziś część plonu.",
+  "DAÑOS POR SEQUÍA: %d de tus campos han perdido cosecha hoy.",
+  "DANNI DA SICCITÀ: %d dei tuoi campi hanno perso raccolto oggi.",
+  "DROOGTESCHADE: %d van je velden zijn vandaag oogst kwijtgeraakt.")
+t("tp_msg_flood", "FLOODING! Heavy rain on waterlogged ground has flooded %d low-lying fields.",
+  "ÜBERSCHWEMMUNG! Starkregen auf durchnässtem Boden hat %d tief liegende Felder überflutet.",
+  "INONDATION ! De fortes pluies sur un sol détrempé ont inondé %d champs situés en contrebas.",
+  "POWÓDŹ! Ulewa na podmokłej glebie zalała %d nisko położonych pól.",
+  "¡INUNDACIÓN! La lluvia fuerte sobre suelo encharcado ha inundado %d campos bajos.",
+  "ALLUVIONE! La pioggia forte su terreno fradicio ha allagato %d campi bassi.",
+  "OVERSTROMING! Hevige regen op doorweekte grond heeft %d laaggelegen velden onder water gezet.")
+t("tp_msg_flood_damage", "FLOOD DAMAGE: %d of your fields are under water.",
+  "ÜBERSCHWEMMUNGSSCHADEN: %d deiner Felder stehen unter Wasser.",
+  "DÉGÂTS D'INONDATION : %d de vos champs sont sous l'eau.",
+  "SZKODY POWODZIOWE: %d twoich pól jest pod wodą.",
+  "DAÑOS POR INUNDACIÓN: %d de tus campos están bajo el agua.",
+  "DANNI DA ALLUVIONE: %d dei tuoi campi sono sott'acqua.",
+  "OVERSTROMINGSSCHADE: %d van je velden staan onder water.")
+t("tp_msg_drought_end", "The drought is over - rain has refilled the soil.",
+  "Die Dürre ist vorbei - Regen hat den Boden wieder aufgefüllt.",
+  "La sécheresse est terminée - la pluie a rechargé le sol.",
+  "Susza się skończyła - deszcz nawodnił glebę.",
+  "La sequía ha terminado: la lluvia ha recargado el suelo.",
+  "La siccità è finita: la pioggia ha ricaricato il terreno.",
+  "De droogte is voorbij - regen heeft de bodem weer aangevuld.")
 t("tp_msg_outbreak_one", "TORNADO OUTBREAK (%s): one more tornado possible today!",
   "TORNADO-AUSBRUCH (%s): heute ist noch ein weiterer Tornado möglich!",
   "ÉPISODE DE TORNADES (%s) : encore une tornade possible aujourd'hui !",

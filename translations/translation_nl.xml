@@ -164,6 +164,19 @@
         <text name="tp_tip_wildlife" text="Vogels, herten, wilde zwijnen en andere wilde dieren rennen of vliegen weg van de tornado; dieren die hij grijpt verdwijnen. De boerderijhond rent naar zijn hondenhok."/>
         <text name="tp_wildlife_distance" text="Vluchtafstand"/>
         <text name="tp_tip_wildlife_distance" text="Hoe ver buiten de tornadostraal dieren beginnen te vluchten."/>
+        <text name="tp_sec_hazards" text="Natuurrisico's"/>
+        <text name="tp_hazards" text="Natuurrisico's inschakelen"/>
+        <text name="tp_tip_hazards" text="Het weer kan je gewassen schaden: lange droge periodes geven droogteschade en hevige regen op doorweekte grond zet laaggelegen velden onder water (veldbranden volgen in een latere update). Gewasschade vereist de spelinstelling voor rampvernietiging. Uit zolang FS25_RealisticWeather geïnstalleerd is."/>
+        <text name="tp_hazards_drought" text="Droogte"/>
+        <text name="tp_tip_hazards_drought" text="Lange hete droge periodes drogen de bodem uit; groeiende gewassen verliezen dan elke dag iets meer tot het regent. Rijstvelden blijven gespaard."/>
+        <text name="tp_hazards_flood" text="Overstroming"/>
+        <text name="tp_tip_hazards_flood" text="Een paar uur hevige regen op al doorweekte grond zet de laagst gelegen velden onder water: het water verzamelt zich op het laagste punt van elk veld en verdrinkt daar het gewas. Rijstvelden blijven gespaard."/>
+        <text name="tp_hazards_owned" text="Alleen velden met eigenaar"/>
+        <text name="tp_tip_hazards_owned" text="AAN: droogte en overstromingen beschadigen alleen velden van een boerderij; velden zonder eigenaar blijven ongemoeid. UIT: het weer treft elk groeiend veld op de kaart."/>
+        <text name="tp_hazards_intensity" text="Sterkte van de gewasschade"/>
+        <text name="tp_tip_hazards_intensity" text="100 % = mild: een lange droogte kost een veld dan ongeveer 15 %. Hogere waarden doen meer schade."/>
+        <text name="tp_hazards_frequency" text="Frequentie van droge periodes"/>
+        <text name="tp_tip_hazards_frequency" text="Hoe snel de bodem uitdroogt bij warm weer. Hoger = meer en langere droogtes."/>
         <text name="tp_sec_overlays" text="Overlays"/>
         <text name="tp_hud" text="Telemetrie-HUD"/>
         <text name="tp_tip_hud" text="Fysica-telemetrie boven elk gevolgd object."/>
@@ -188,6 +201,12 @@
         <text name="tp_confirm_kill_test" text="De dodingstest starten? Dieren op elke buitenweide binnen 60 m WORDEN gedood."/>
         <text name="tp_msg_touchdown" text="ALARM: TORNADO HEEFT DE GROND GERAAKT! (EF-%d | Straal: %dm | Kracht: x%.1f)"/>
         <text name="tp_msg_outbreak" text="TORNADO-UITBRAAK (%s): vandaag nog tot %d tornado's mogelijk!"/>
+        <text name="tp_msg_dry_spell" text="DROGE PERIODE: de bodemvochtigheid is gedaald tot %d %%. Gewassen lijden als het droog blijft."/>
+        <text name="tp_msg_drought_start" text="DROOGTE! De bodem is uitgedroogd - groeiende gewassen lijden."/>
+        <text name="tp_msg_drought_damage" text="DROOGTESCHADE: %d van je velden zijn vandaag oogst kwijtgeraakt."/>
+        <text name="tp_msg_flood" text="OVERSTROMING! Hevige regen op doorweekte grond heeft %d laaggelegen velden onder water gezet."/>
+        <text name="tp_msg_flood_damage" text="OVERSTROMINGSSCHADE: %d van je velden staan onder water."/>
+        <text name="tp_msg_drought_end" text="De droogte is voorbij - regen heeft de bodem weer aangevuld."/>
         <text name="tp_msg_outbreak_one" text="TORNADO-UITBRAAK (%s): vandaag nog één tornado mogelijk!"/>
         <text name="tp_msg_storm_damage" text="STORMSCHADE: %s (%s) heeft %d dieren verloren! %d seconden veilig."/>
         <text name="tp_pen_pasture" text="Weide"/>

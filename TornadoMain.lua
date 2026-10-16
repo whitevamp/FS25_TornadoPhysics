@@ -59,6 +59,9 @@ function TornadoMain:loadMap(name)
     -- Wildlife flees the tornado, the farm dog runs home.
     source(Utils.getFilename("scripts/TornadoWildlife.lua", modDir))
 
+    -- Optional natural hazards (drought ...) - the perils the crop insurance will pay for.
+    source(Utils.getFilename("scripts/TornadoHazards.lua", modDir))
+
     -- Optional real-life climate mode (EF / size rolled from NOAA statistics).
     source(Utils.getFilename("scripts/TornadoRegion.lua", modDir))
     source(Utils.getFilename("scripts/TornadoClimate.lua", modDir))
@@ -129,6 +132,7 @@ function TornadoMain:loadMap(name)
     if TornadoWeather then TornadoWeather:loadMap(name) end
     if TornadoTraffic then TornadoTraffic:loadMap() end
     if TornadoWildlife then TornadoWildlife:loadMap() end
+    if TornadoHazards then TornadoHazards:loadMap() end
     if TornadoRegion then TornadoRegion:loadMap(modDir) end
     if TornadoClimate then TornadoClimate:loadMap(modDir) end
     if TornadoOutbreak then TornadoOutbreak:loadMap() end
@@ -160,6 +164,7 @@ function TornadoMain:deleteMap()
     if TornadoHusbandry then TornadoHusbandry:deleteMap() end
     if TornadoTraffic then TornadoTraffic:deleteMap() end
     if TornadoWildlife then TornadoWildlife:deleteMap() end
+    if TornadoHazards then TornadoHazards:deleteMap() end
     if TornadoClimate then TornadoClimate:deleteMap() end
     if TornadoRegion then TornadoRegion:deleteMap() end
     if TornadoOutbreak then TornadoOutbreak:deleteMap() end
@@ -215,6 +220,9 @@ if not FSBaseMission.tornadoSaveHooked then
         end
         if TornadoPersistence and TornadoPersistence.save then
             TornadoPersistence:save()
+        end
+        if TornadoHazards and TornadoHazards.save then
+            TornadoHazards:save()
         end
     end)
 end

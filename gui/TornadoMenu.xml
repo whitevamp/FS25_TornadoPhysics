@@ -496,6 +496,44 @@
                     </MultiTextOption>
                     <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_wildlife_distance"/>
                 </Bitmap>
+
+                <Text profile="fs25_settingsSectionHeader" name="sectionHeader" text="$l10n_tp_sec_hazards"/>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <BinaryOption profile="fs25_settingsBinaryOption" id="modHazards" onClick="onClickBinary">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_hazards"/>
+                    </BinaryOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_hazards"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <BinaryOption profile="fs25_settingsBinaryOption" id="modHazardsDrought" onClick="onClickBinary">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_hazards_drought"/>
+                    </BinaryOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_hazards_drought"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <BinaryOption profile="fs25_settingsBinaryOption" id="modHazardsFlood" onClick="onClickBinary">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_hazards_flood"/>
+                    </BinaryOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_hazards_flood"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <BinaryOption profile="fs25_settingsBinaryOption" id="modHazardsOwned" onClick="onClickBinary">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_hazards_owned"/>
+                    </BinaryOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_hazards_owned"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="modHazardsIntensity" onClick="onClickNumber">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_hazards_intensity"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_hazards_intensity"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="modHazardsFrequency" onClick="onClickNumber">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_hazards_frequency"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_hazards_frequency"/>
+                </Bitmap>
             </ScrollingLayout>
             <Bitmap profile="fs25_settingsTooltipSeparator"/>
         </GuiElement>

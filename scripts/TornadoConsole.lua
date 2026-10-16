@@ -53,7 +53,7 @@ function TornadoConsole:cmdHelp(command)
         print("Usage: t_help [command] for more details.")
         print("t_physics: Adjust Physics: radius, power, heavy, fence, randomize...")
         print("t_sfx: Adjust SFX: sound, ring, particles...")
-        print("t_set: Module Settings: cargo, husbandry, destruction, traffic, wildlife, climate, save...")
+        print("t_set: Module Settings: cargo, husbandry, destruction, traffic, wildlife, hazards, climate, save...")
         print("t_dev: Developer Tools: status, verbose, hud, hotspotdump, kill_test...")
         print("t_tune: Fine-tune Physics Constants")
         print("t_reset: Reset Settings: all, physics, tuning, cargo...")
@@ -133,6 +133,16 @@ function TornadoConsole:cmdHelp(command)
         print("    distance <meters>   - How far beyond the tornado radius animals start to flee. Ex: t_set wildlife distance 200")
         print("    status              - Shows the settings and how many animals were caught.")
         print(" ")
+        print("  hazards [sub-command] - Natural hazards: drought and floods damage growing crops (OFF by default).")
+        print("    (no sub-command)    - Toggles hazards ON/OFF.")
+        print("    on|off              - Explicitly turns hazards ON or OFF.")
+        print("    drought [on|off]    - Drought on its own.")
+        print("    flood [on|off]      - Floods on its own (heavy rain on soaked soil floods low-lying fields).")
+        print("    owned [on|off]      - Only damage fields a farm owns (default OFF = every growing field).")
+        print("    intensity <percent> - Crop damage strength, 25 - 300. 100 = mild. Ex: t_set hazards intensity 200")
+        print("    frequency <percent> - How fast the soil dries out, 25 - 300. Ex: t_set hazards frequency 150")
+        print("    status              - Soil water, dry days, drought state and settings.")
+        print(" ")
         print("  climate [sub-command] - Real-life tornado climate (EF rating, size, hail and wind from NOAA data).")
         print("    (no sub-command)    - Toggles real-life mode ON/OFF (OFF = classic random tornadoes).")
         print("    on|off              - Explicitly turns real-life mode ON or OFF.")
@@ -158,6 +168,12 @@ function TornadoConsole:cmdHelp(command)
         print("  wildlife list         - Lists this map's wildlife species and how many are spawned around you.")
         print("  wildlife spawn <species> [distance] [count] [rotation]")
         print("                        - Spawns wildlife in front of you (to test fleeing). Ex: t_dev wildlife spawn crow 60 5")
+        print("  hazards water <0-100> - Sets the soil water (host only). Ex: t_dev hazards water 15")
+        print("  hazards drought       - Forces a drought now (first damage day included).")
+        print("  hazards damage        - Applies the next drought day of crop damage right now.")
+        print("  hazards end           - Ends the drought and refills the soil.")
+        print("  hazards flood         - Forces a flood now on the low-lying growing fields.")
+        print("  hazards log           - Prints the last 20 hazard events (field, farm, share).")
         print("--------------------------------------------------")
     elseif command == "t_tune" then
         print("---------------- t_tune HELP ----------------")
@@ -187,6 +203,7 @@ function TornadoConsole:cmdHelp(command)
         print("  husbandry             - Resets husbandry module settings.")
         print("  traffic               - Resets traffic roadblock settings.")
         print("  wildlife              - Resets wildlife settings (ON, flee distance 150 m).")
+        print("  hazards               - Resets natural hazards (OFF, drought + flood ON, all fields, 100 %).")
         print("  climate               - Resets real-life climate mode (OFF, region Auto).")
         print("--------------------------------------------------")
     else
@@ -461,6 +478,47 @@ end
         return "Wildlife: Flees the tornado = " .. tostring(TornadoWildlife.isEnabled)
     end
 
+    if module == "hazards" then
+        if not TornadoHazards then return "Error: Hazards Module missing." end
+
+        if subCmd == "on" or subCmd == "true" then
+            TornadoHazards.isEnabled = true
+        elseif subCmd == "off" or subCmd == "false" then
+            TornadoHazards.isEnabled = false
+        elseif subCmd == "drought" then
+            if value == "on" or value == "true" then
+                TornadoHazards.droughtEnabled = true
+            elseif value == "off" or value == "false" then
+                TornadoHazards.droughtEnabled = false
+            else
+                TornadoHazards.droughtEnabled = not TornadoHazards.droughtEnabled
+            end
+            return "Hazards: Drought = " .. tostring(TornadoHazards.droughtEnabled)
+        elseif subCmd == "flood" or subCmd == "owned" then
+            local field = subCmd == "flood" and "floodEnabled" or "ownedOnly"
+            if value == "on" or value == "true" then
+                TornadoHazards[field] = true
+            elseif value == "off" or value == "false" then
+                TornadoHazards[field] = false
+            else
+                TornadoHazards[field] = not TornadoHazards[field]
+            end
+            return string.format("Hazards: %s = %s", subCmd == "flood" and "Flood" or "Only owned fields", tostring(TornadoHazards[field]))
+        elseif subCmd == "intensity" or subCmd == "frequency" then
+            local percent = tonumber(value)
+            if percent == nil then return "Usage: t_set hazards " .. subCmd .. " <25-300>" end
+            TornadoHazards[subCmd] = math.max(0.25, math.min(3.0, percent / 100))
+            return string.format("Hazards: %s set to %d %%", subCmd, math.floor(TornadoHazards[subCmd] * 100 + 0.5))
+        elseif subCmd == "status" then
+            return TornadoHazards:getStatusText()
+        elseif subCmd == nil or subCmd == "toggle" then
+            TornadoHazards.isEnabled = not TornadoHazards.isEnabled
+        else
+            return "Unknown Hazards CMD. Try: on, off, drought, flood, owned, intensity, frequency, status"
+        end
+        return "Hazards: Natural hazards = " .. tostring(TornadoHazards.isEnabled)
+    end
+
     if module == "traffic" then
         if not TornadoTraffic then return "Error: Traffic Module missing." end
 
@@ -548,7 +606,7 @@ end
         return "Climate: Real-life tornado climate = " .. tostring(TornadoClimate.isEnabled)
     end
 
-   return "Unknown Set CMD. Try: save, cargo, husbandry, destruction, recovery, traffic, wildlife, climate"
+   return "Unknown Set CMD. Try: save, cargo, husbandry, destruction, recovery, traffic, wildlife, hazards, climate"
 end
 
 -- =========================================================================
@@ -592,6 +650,10 @@ function TornadoConsole:cmdDev(tool, arg1, arg2, arg3, arg4, arg5)
     elseif tool == "wildlife" then
         if not TornadoWildlife then return "Error: Wildlife Module missing." end
         return TornadoWildlife:consoleCommand(arg1, arg2, arg3, arg4, arg5)
+
+    elseif tool == "hazards" then
+        if not TornadoHazards then return "Error: Hazards Module missing." end
+        return TornadoHazards:consoleCommand(arg1, arg2)
 
     elseif tool == "pos" then 
         if TornadoDebug then
@@ -665,11 +727,11 @@ end
 function TornadoConsole:cmdReset(category)
     if not TornadoSettings then return "Error: Settings module missing." end
     
-    if category == "all" or category == "physics" or category == "tuning" or category == "cargo" or category == "husbandry" or category == "traffic" or category == "wildlife" or category == "climate" then
+    if category == "all" or category == "physics" or category == "tuning" or category == "cargo" or category == "husbandry" or category == "traffic" or category == "wildlife" or category == "hazards" or category == "climate" then
         TornadoSettings:resetToDefaults(category)
         return string.format("RESET COMPLETE: '%s' settings restored to factory defaults.", category)
     else
-        return "Usage: t_reset [all | physics | tuning | cargo | husbandry | traffic | wildlife | climate]"
+        return "Usage: t_reset [all | physics | tuning | cargo | husbandry | traffic | wildlife | hazards | climate]"
     end
 end
 

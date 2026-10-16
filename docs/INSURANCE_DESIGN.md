@@ -869,6 +869,33 @@ own. Write a **small own version, designed from the game mechanics – not from 
 When FS25_RealisticWeather is installed, our own drought / fire / flood mechanics **switch off** (both
 change the harvest yield – running both would double the penalty) and §15.1 reads RW's data instead.
 
+**Phase 1 implemented (2026-10-16): drought** – `scripts/TornadoHazards.lua`, OFF by default, mild by default
+(user's choices; phases: 1 drought, 2 flood, 3 field fire with the mod's fire FX).
+- Soil water (map-wide, 0 – 1, start 0.6) per in-game hour: + rain × 0.04 (+ snow × 0.3 × 0.04); − (0.0010 +
+  0.00018 × (T − 5 °C)) × frequency, nothing below 5 °C. Warning < 30 % (again after > 40 %); drought after 2
+  days < 20 %; ends > 35 %.
+- Each drought day: `FSDensityMapUtil.updateDisasterArea(field:getDensityMapPolygon(), perlin)` on every growing
+  field (the hail / twister disaster function: patchy, crop-defined damage, server-side, engine-synced); share
+  0.03 × intensity per day up to 0.15 × intensity (max 0.9), perlin = 10000 − share × 10000 (**to calibrate in
+  game**); rice spared, grass × 0.5; only with `disasterDestructionState == ENABLED`; skipped when the day's max
+  temperature is below 5 °C.
+- Event log `{ kind, day, fieldId, farmId, share }` (last 300) + water / dry days / drought day saved in
+  `TornadoHazards.xml` (savegame folder) – the insurance claims source. Daily "N of your fields" message per farm.
+- Settings `TornadoPhysics.hazards.*` (enabled, drought, intensity, frequency), synced; Modules tab section;
+  `t_set hazards`, `t_dev hazards water|drought|damage|end|log`, `t_reset hazards`. Offline test
+  `tools/test/test_hazards.lua`. Off while FS25_RealisticWeather is installed. Tested in game 2026-10-16 (OK).
+
+**"Only damage owned fields"** (`ownedOnly`, default OFF, user's request): drought and flood skip fields whose
+owner is `FarmlandManager.NO_OWNER_FARM_ID`.
+
+**Phase 2 implemented (2026-10-16): flood** – heavy rain (`getRainFallScale() >= 0.6`) for 3 hours in a row on
+soaked soil (water ≥ 85 %) → flood, then 2 days cooldown. "Low" fields: each field's lowest point (terrain height
+at its outline points and centre, cached), fields at or below the 20 % quantile of all fields' lowest points.
+Damage: `DensityMapCircle` at that point, radius 0.3 × √area (12 – 70 m), perlin for 50 % × intensity inside the
+circle; logged share = inside share × circle / field area. Rice spared. `FLOOD` events, "FLOODING!" alert + per-farm
+message, `t_dev hazards flood`, toggle `floodEnabled`. Offline test now 45 checks. Note: a circle near a field edge
+can reach a neighbouring field (also low ground) even with "owned only".
+
 ## 16. Open questions
 
 1. Rebuilt-title value penalty default: real-life ~20–40 % vs. the author's −50 % to −75 %.

@@ -164,6 +164,19 @@
         <text name="tp_tip_wildlife" text="Aves, ciervos, jabalíes y otros animales salvajes huyen corriendo o volando del tornado; los que atrapa desaparecen. El perro de la granja vuelve a su caseta."/>
         <text name="tp_wildlife_distance" text="Distancia de huida"/>
         <text name="tp_tip_wildlife_distance" text="A qué distancia fuera del radio del tornado empiezan a huir los animales."/>
+        <text name="tp_sec_hazards" text="Riesgos naturales"/>
+        <text name="tp_hazards" text="Activar riesgos naturales"/>
+        <text name="tp_tip_hazards" text="El tiempo puede dañar tus cultivos: los periodos secos largos causan daños por sequía y las lluvias fuertes sobre suelo empapado inundan los campos bajos (los incendios de campo llegarán en una actualización). Los daños necesitan la opción de destrucción por catástrofes del juego. Desactivado si FS25_RealisticWeather está instalado."/>
+        <text name="tp_hazards_drought" text="Sequía"/>
+        <text name="tp_tip_hazards_drought" text="Los periodos largos de calor y sequía secan el suelo; los cultivos en crecimiento pierden un poco más cada día hasta que llueve. Los arrozales se salvan."/>
+        <text name="tp_hazards_flood" text="Inundación"/>
+        <text name="tp_tip_hazards_flood" text="Varias horas de lluvia fuerte sobre un suelo ya empapado inundan los campos más bajos: el agua se acumula en el punto más bajo de cada campo y ahoga allí el cultivo. Los arrozales se salvan."/>
+        <text name="tp_hazards_owned" text="Solo campos con dueño"/>
+        <text name="tp_tip_hazards_owned" text="SÍ: la sequía y las inundaciones solo dañan campos que pertenecen a una granja; los campos sin dueño no se tocan. NO: el tiempo afecta a todos los campos cultivados del mapa."/>
+        <text name="tp_hazards_intensity" text="Intensidad de los daños"/>
+        <text name="tp_tip_hazards_intensity" text="100 % = suave: una sequía larga cuesta entonces a un campo un 15 %. Valores más altos dañan más."/>
+        <text name="tp_hazards_frequency" text="Frecuencia de periodos secos"/>
+        <text name="tp_tip_hazards_frequency" text="Lo rápido que se seca el suelo con tiempo cálido. Más alto = más sequías y más largas."/>
         <text name="tp_sec_overlays" text="Superposiciones"/>
         <text name="tp_hud" text="HUD de telemetría"/>
         <text name="tp_tip_hud" text="Etiquetas de telemetría física sobre cada objeto seguido."/>
@@ -188,6 +201,12 @@
         <text name="tp_confirm_kill_test" text="¿Ejecutar la prueba de letalidad? Los animales de cada pasto exterior a menos de 60 m MORIRÁN."/>
         <text name="tp_msg_touchdown" text="¡ALERTA: UN TORNADO HA TOCADO TIERRA! (EF-%d | Radio: %dm | Fuerza: x%.1f)"/>
         <text name="tp_msg_outbreak" text="BROTE DE TORNADOS (%s): ¡hoy son posibles hasta %d tornados más!"/>
+        <text name="tp_msg_dry_spell" text="PERIODO SECO: la humedad del suelo ha bajado al %d %%. Los cultivos sufrirán si sigue sin llover."/>
+        <text name="tp_msg_drought_start" text="¡SEQUÍA! El suelo se ha secado: los cultivos en crecimiento sufren."/>
+        <text name="tp_msg_drought_damage" text="DAÑOS POR SEQUÍA: %d de tus campos han perdido cosecha hoy."/>
+        <text name="tp_msg_flood" text="¡INUNDACIÓN! La lluvia fuerte sobre suelo encharcado ha inundado %d campos bajos."/>
+        <text name="tp_msg_flood_damage" text="DAÑOS POR INUNDACIÓN: %d de tus campos están bajo el agua."/>
+        <text name="tp_msg_drought_end" text="La sequía ha terminado: la lluvia ha recargado el suelo."/>
         <text name="tp_msg_outbreak_one" text="BROTE DE TORNADOS (%s): ¡hoy es posible un tornado más!"/>
         <text name="tp_msg_storm_damage" text="DAÑOS DE TORMENTA: ¡%s (%s) ha perdido %d animales! A salvo durante %d segundos."/>
         <text name="tp_pen_pasture" text="Pasto"/>

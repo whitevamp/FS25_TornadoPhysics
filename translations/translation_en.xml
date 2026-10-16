@@ -164,6 +164,19 @@
         <text name="tp_tip_wildlife" text="Birds, deer, boar and other wild animals run or fly away from the tornado; animals it catches vanish. The farm dog runs home to its doghouse."/>
         <text name="tp_wildlife_distance" text="Flee distance"/>
         <text name="tp_tip_wildlife_distance" text="How far outside the tornado's outer radius animals start to flee."/>
+        <text name="tp_sec_hazards" text="Natural hazards"/>
+        <text name="tp_hazards" text="Enable natural hazards"/>
+        <text name="tp_tip_hazards" text="Weather can hurt your crops: long dry spells cause drought damage and heavy rain on soaked soil floods low-lying fields (field fires come in a later update). Crop damage needs the game's disaster destruction setting. Off while FS25_RealisticWeather is installed."/>
+        <text name="tp_hazards_drought" text="Drought"/>
+        <text name="tp_tip_hazards_drought" text="Long hot dry spells dry out the soil; growing crops then lose a little more every day until it rains. Rice paddies are spared."/>
+        <text name="tp_hazards_flood" text="Flood"/>
+        <text name="tp_tip_hazards_flood" text="Several hours of heavy rain on already soaked soil flood the lowest-lying growing fields: water pools at each field's lowest point and drowns the crop there. Rice paddies are spared."/>
+        <text name="tp_hazards_owned" text="Only damage owned fields"/>
+        <text name="tp_tip_hazards_owned" text="ON: drought and floods only damage fields a farm owns; fields nobody owns stay untouched. OFF: the weather hits every growing field on the map."/>
+        <text name="tp_hazards_intensity" text="Crop damage strength"/>
+        <text name="tp_tip_hazards_intensity" text="100 % = mild: a long drought then costs a field about 15 %. Higher values hurt more."/>
+        <text name="tp_hazards_frequency" text="Dry-spell frequency"/>
+        <text name="tp_tip_hazards_frequency" text="How fast the soil dries out in warm weather. Higher = more and longer droughts."/>
         <text name="tp_sec_overlays" text="Overlays"/>
         <text name="tp_hud" text="Telemetry HUD"/>
         <text name="tp_tip_hud" text="Physics telemetry labels over every tracked object."/>
@@ -188,6 +201,12 @@
         <text name="tp_confirm_kill_test" text="Run the husbandry kill test? Animals in every outdoor pasture within 60 m of you WILL be killed."/>
         <text name="tp_msg_touchdown" text="ALERT: TORNADO TOUCHDOWN! (EF-%d | Radius: %dm | Power: x%.1f)"/>
         <text name="tp_msg_outbreak" text="TORNADO OUTBREAK (%s): up to %d more tornadoes possible today!"/>
+        <text name="tp_msg_dry_spell" text="DRY SPELL: soil moisture is down to %d %%. Crops will suffer if it stays dry."/>
+        <text name="tp_msg_drought_start" text="DROUGHT! The soil has dried out - growing crops are suffering."/>
+        <text name="tp_msg_drought_damage" text="DROUGHT DAMAGE: %d of your fields lost crop today."/>
+        <text name="tp_msg_flood" text="FLOODING! Heavy rain on waterlogged ground has flooded %d low-lying fields."/>
+        <text name="tp_msg_flood_damage" text="FLOOD DAMAGE: %d of your fields are under water."/>
+        <text name="tp_msg_drought_end" text="The drought is over - rain has refilled the soil."/>
         <text name="tp_msg_outbreak_one" text="TORNADO OUTBREAK (%s): one more tornado possible today!"/>
         <text name="tp_msg_storm_damage" text="STORM DAMAGE: %s (%s) lost %d animals! Safe for %d seconds."/>
         <text name="tp_pen_pasture" text="Pasture"/>

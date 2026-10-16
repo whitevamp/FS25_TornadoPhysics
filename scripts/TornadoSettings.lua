@@ -146,6 +146,19 @@ function TornadoSettings:resetToDefaults(category)
         end
     end
 
+    -- RESET Natural hazards
+    if TornadoHazards then
+        if category == "all" or category == "hazards" then
+            TornadoHazards.isEnabled = false
+            TornadoHazards.droughtEnabled = true
+            TornadoHazards.intensity = 1.0
+            TornadoHazards.frequency = 1.0
+            TornadoHazards.floodEnabled = true
+            TornadoHazards.ownedOnly = false
+            print("TORNADO RESET: Natural hazard defaults restored.")
+        end
+    end
+
     -- RESET Real-life climate mode
     if TornadoClimate then
         if category == "all" or category == "climate" then
@@ -237,6 +250,14 @@ function TornadoSettings:createDefaultXML()
     -- WILDLIFE
     setXMLBool(xmlId, "TornadoPhysics.wildlife.enabled", true)
     setXMLFloat(xmlId, "TornadoPhysics.wildlife.fleeDistance", 150.0)
+
+    -- NATURAL HAZARDS
+    setXMLBool(xmlId, "TornadoPhysics.hazards.enabled", false)
+    setXMLBool(xmlId, "TornadoPhysics.hazards.drought", true)
+    setXMLFloat(xmlId, "TornadoPhysics.hazards.intensity", 1.0)
+    setXMLFloat(xmlId, "TornadoPhysics.hazards.frequency", 1.0)
+    setXMLBool(xmlId, "TornadoPhysics.hazards.flood", true)
+    setXMLBool(xmlId, "TornadoPhysics.hazards.ownedOnly", false)
 
     -- 14. REAL-LIFE CLIMATE MODE
     setXMLBool(xmlId, "TornadoPhysics.climate.enabled", false)
@@ -368,6 +389,19 @@ function TornadoSettings:loadFromXML()
         TornadoWildlife.fleeDistance = getXMLFloat(xmlId, "TornadoPhysics.wildlife.fleeDistance") or TornadoWildlife.fleeDistance
     end
 
+    if TornadoHazards then
+        local hazardsEnabled = getXMLBool(xmlId, "TornadoPhysics.hazards.enabled")
+        if hazardsEnabled ~= nil then TornadoHazards.isEnabled = hazardsEnabled end
+        local droughtEnabled = getXMLBool(xmlId, "TornadoPhysics.hazards.drought")
+        if droughtEnabled ~= nil then TornadoHazards.droughtEnabled = droughtEnabled end
+        TornadoHazards.intensity = getXMLFloat(xmlId, "TornadoPhysics.hazards.intensity") or TornadoHazards.intensity
+        TornadoHazards.frequency = getXMLFloat(xmlId, "TornadoPhysics.hazards.frequency") or TornadoHazards.frequency
+        local floodEnabled = getXMLBool(xmlId, "TornadoPhysics.hazards.flood")
+        if floodEnabled ~= nil then TornadoHazards.floodEnabled = floodEnabled end
+        local ownedOnly = getXMLBool(xmlId, "TornadoPhysics.hazards.ownedOnly")
+        if ownedOnly ~= nil then TornadoHazards.ownedOnly = ownedOnly end
+    end
+
     if TornadoClimate then
         local climateEnabled = getXMLBool(xmlId, "TornadoPhysics.climate.enabled")
         if climateEnabled ~= nil then TornadoClimate.isEnabled = climateEnabled end
@@ -491,6 +525,15 @@ function TornadoSettings:saveToXML()
     if TornadoWildlife then
         setXMLBool(xmlId, "TornadoPhysics.wildlife.enabled", TornadoWildlife.isEnabled)
         setXMLFloat(xmlId, "TornadoPhysics.wildlife.fleeDistance", TornadoWildlife.fleeDistance)
+    end
+
+    if TornadoHazards then
+        setXMLBool(xmlId, "TornadoPhysics.hazards.enabled", TornadoHazards.isEnabled)
+        setXMLBool(xmlId, "TornadoPhysics.hazards.drought", TornadoHazards.droughtEnabled)
+        setXMLFloat(xmlId, "TornadoPhysics.hazards.intensity", TornadoHazards.intensity)
+        setXMLFloat(xmlId, "TornadoPhysics.hazards.frequency", TornadoHazards.frequency)
+        setXMLBool(xmlId, "TornadoPhysics.hazards.flood", TornadoHazards.floodEnabled)
+        setXMLBool(xmlId, "TornadoPhysics.hazards.ownedOnly", TornadoHazards.ownedOnly)
     end
 
     if TornadoClimate then
