@@ -890,7 +890,9 @@ owner is `FarmlandManager.NO_OWNER_FARM_ID`.
 
 **Phase 2 implemented (2026-10-16): flood** – heavy rain (`getRainFallScale() >= 0.6`) for 3 hours in a row on
 soaked soil (water ≥ 85 %) → flood, then 2 days cooldown. "Low" fields: each field's lowest point (terrain height
-at its outline points and centre, cached), fields at or below the 20 % quantile of all fields' lowest points.
+on a 7 × 7 grid inside the field outline + the centre - not the outline itself, whose corners sit on raised edges /
+tracks; cached), fields at or below the 20 % quantile of all fields' lowest points. Tested in game 2026-10-16 (OK;
+first version sampled the outline corners and put the circles mid-field - changed to the grid).
 Damage: `DensityMapCircle` at that point, radius 0.3 × √area (12 – 70 m), perlin for 50 % × intensity inside the
 circle; logged share = inside share × circle / field area. Rice spared. `FLOOD` events, "FLOODING!" alert + per-farm
 message, `t_dev hazards flood`, toggle `floodEnabled`. Offline test now 45 checks. Note: a circle near a field edge

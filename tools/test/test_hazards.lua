@@ -276,6 +276,30 @@ hours(6)
 check("flood toggle OFF: no flood", countMessages("tp_msg_flood"), before)
 TornadoHazards.floodEnabled = true
 
+-- Low point = inside the field (grid), not a raised outline corner.
+-- A 200 x 200 m square field; corners raised to 50 m, a dip at (150, 40) inside the field at 20 m.
+local savedHeight = getTerrainHeightAtWorldPos
+getTerrainHeightAtWorldPos = function(_, x, _, z)
+    local corner = (x <= 1 or x >= 199) and (z <= 1 or z >= 199)
+    if corner then return 10 end                       -- corners LOWER than the inside: must be ignored
+    local dx, dz = x - 150, z - 40
+    return 20 + math.sqrt(dx * dx + dz * dz) * 0.1     -- lowest near (150, 40)
+end
+local square = {
+    getId = function() return 99 end,
+    getCenterOfFieldWorldPosition = function() return 100, 100 end,
+    getPolygonPoints = function() return { { x = 0, z = 0 }, { x = 200, z = 0 }, { x = 200, z = 200 }, { x = 0, z = 200 } } end,
+}
+TornadoHazards.lowPoints = nil
+local low = TornadoHazards:getFieldLowPoint(square)
+check("low point is inside the field, not a corner", low.x > 1 and low.x < 199 and low.z > 1 and low.z < 199, true)
+check("low point near the dip (150, 40)", math.abs(low.x - 150) <= 30 and math.abs(low.z - 40) <= 30, true)
+check("low point lower than the centre", (low.belowCentre or 0) > 0, true)
+check("point-in-polygon: outside point rejected", TornadoHazards:isInsideOutline(
+    { { x = 0, z = 0 }, { x = 10, z = 0 }, { x = 10, z = 10 }, { x = 0, z = 10 } }, 15, 5), false)
+getTerrainHeightAtWorldPos = savedHeight
+TornadoHazards.lowPoints = nil
+
 -- Flood state saved / loaded.
 TornadoHazards.floodCooldownUntil = 77
 TornadoHazards:save()

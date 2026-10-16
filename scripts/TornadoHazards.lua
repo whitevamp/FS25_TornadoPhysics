@@ -66,6 +66,7 @@ TornadoHazards.FLOOD_LOCAL_SHARE = 0.5
 TornadoHazards.FLOOD_RADIUS_FACTOR = 0.3
 TornadoHazards.FLOOD_MIN_RADIUS = 12
 TornadoHazards.FLOOD_MAX_RADIUS = 70
+TornadoHazards.FLOOD_GRID_STEPS = 7       -- 7 x 7 height samples inside each field outline
 TornadoHazards.FLOOD_SPARED_FRUITS = { RICE = true, RICELONGGRAIN = true }
 
 TornadoHazards.MAX_EVENTS = 300
@@ -97,7 +98,7 @@ function TornadoHazards:loadMap()
         end
     end
     if TornadoDebug then
-        TornadoDebug:info("HAZARDS", string.format("V1.0 loaded (enabled %s, soil water %.0f %%%s)", tostring(self.isEnabled),
+        TornadoDebug:info("HAZARDS", string.format("V1.1 loaded (enabled %s, soil water %.0f %%%s)", tostring(self.isEnabled),
             self.water * 100, self:isHandledByRealisticWeather() and ", off: RealisticWeather installed" or ""))
     end
 end
@@ -344,29 +345,68 @@ function TornadoHazards:getFieldLowPoint(field)
         return nil
     end
     local best = nil
+    local centreY = nil
     local function sample(x, z)
         if x == nil or z == nil then return end
         local y = getTerrainHeightAtWorldPos(g_terrainNode, x, 0, z)
         if y ~= nil and (best == nil or y < best.y) then
             best = { x = x, z = z, y = y }
         end
+        return y
     end
     if field.getCenterOfFieldWorldPosition ~= nil then
-        sample(field:getCenterOfFieldWorldPosition())
+        centreY = sample(field:getCenterOfFieldWorldPosition())
     end
+
+    -- A grid inside the field outline (not the outline itself: corners often sit on raised edges / tracks).
+    local outline = {}
     local points = field.getPolygonPoints ~= nil and field:getPolygonPoints() or nil
-    if points ~= nil then
-        for _, node in ipairs(points) do
-            if node ~= nil and node ~= 0 then
-                local x, _, z = getWorldTranslation(node)
-                sample(x, z)
+    for _, node in ipairs(points or {}) do
+        if node ~= nil and node ~= 0 then
+            local x, _, z = getWorldTranslation(node)
+            if x ~= nil then
+                table.insert(outline, { x = x, z = z })
             end
         end
+    end
+    if #outline >= 3 then
+        local minX, maxX, minZ, maxZ = math.huge, -math.huge, math.huge, -math.huge
+        for _, p in ipairs(outline) do
+            minX, maxX = math.min(minX, p.x), math.max(maxX, p.x)
+            minZ, maxZ = math.min(minZ, p.z), math.max(maxZ, p.z)
+        end
+        local steps = self.FLOOD_GRID_STEPS
+        for i = 1, steps do
+            for j = 1, steps do
+                local x = minX + (maxX - minX) * (i - 0.5) / steps
+                local z = minZ + (maxZ - minZ) * (j - 0.5) / steps
+                if self:isInsideOutline(outline, x, z) then
+                    sample(x, z)
+                end
+            end
+        end
+    end
+    if best ~= nil then
+        best.belowCentre = centreY ~= nil and (centreY - best.y) or 0
     end
     if id ~= nil and best ~= nil then
         self.lowPoints[id] = best
     end
     return best
+end
+
+--- Point-in-polygon (even-odd rule) on the x / z plane.
+function TornadoHazards:isInsideOutline(outline, x, z)
+    local inside = false
+    local j = #outline
+    for i = 1, #outline do
+        local a, b = outline[i], outline[j]
+        if ((a.z > z) ~= (b.z > z)) and (x < (b.x - a.x) * (z - a.z) / (b.z - a.z) + a.x) then
+            inside = not inside
+        end
+        j = i
+    end
+    return inside
 end
 
 --- Height below which a field counts as "low" (the FLOOD_LOW_SHARE quantile of all fields' lowest points).
@@ -422,6 +462,10 @@ function TornadoHazards:triggerFlood()
             circle:updateFromWorldPosition(low.x, low.z, radius, 12)
             FSDensityMapUtil.updateDisasterArea(circle, perlin)
             numFields = numFields + 1
+            if TornadoDebug then
+                TornadoDebug:info("HAZARDS", string.format("  Flood field %s: circle at (%.0f, %.0f), radius %.0f m, %.1f m below the field centre.",
+                    tostring(field:getId()), low.x, low.z, radius, low.belowCentre or 0))
+            end
             -- Share of the whole field: the circle (at most the field) times the share inside it.
             local fieldShare = localShare * math.min(1, (math.pi * radius * radius) / (math.max(areaHa, 0.01) * 10000))
             local farmId = getFieldOwner(field)
