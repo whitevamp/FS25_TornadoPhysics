@@ -364,7 +364,7 @@ sell points, vehicle sell prices), so price-changing mods are covered without de
 - **Crop insurance data** – **done:** `tools/build_crop_insurance.py` (standard library only, same
   pattern as the climate builders) turns the USDA RMA *Summary of Business* files into
   `DB/CropInsurance_US.xml` (~86 KB). Public-domain US government data; credit RMA in modDesc / README.
-  Canada: §13.3. Poland: §13.4. Brazil: §13.5.
+  Canada: §13.3. Poland: §13.4. Brazil: §13.5. Germany: §13.6.
 
 ### 13.1 RMA source data and processing rules
 
@@ -489,6 +489,31 @@ not official figures."*
 KNF statistics do not help here: crop insurance is part of non-life group 8 ("damage caused by natural
 forces"), which also holds home and business property (~6.6 bn PLN premium in 2024). A better average needs
 the total premium and sum insured of subsidised crop policies (MRiRW / ARiMR, not found published).
+
+### 13.6 Germany: `DB/CropInsurance_DE.xml`
+
+German crop insurance is private with **no federal subsidy**. Hail cover is bought by most farms (well over
+60 % of the arable area, UBA indicator LW-I-3); drought is almost never insured (~0.02 % of the area). Some
+states pay up to 50 % of multi-peril premiums. No rates are published; the builder's `GERMANY` section:
+
+| Item | Value | Source |
+|---|---|---|
+| Plan | hail cover (`basePeril="HAIL"`) + add-ons windstorm, heavy rain, severe frost (frost + winter kill), drought; multi-peril package = all five | insurers (Vereinigte Hagel product range) |
+| Insurance tax | 0.03 % of the sum insured per year (hail, storm, heavy rain, severe frost) | DLG-Merkblatt 434 |
+| Bavaria (`DEU_BY`, since 2023) | up to 50 %; packages arable (hail, storm, heavy rain, severe frost, drought, bird damage – no choice), grassland (hail, drought, grubs), fruit / wine / hops (≥ 2 of hail, severe frost, storm, heavy rain); deductible ≥ 20 %, payout ≤ 80 %, max sums 5 000 €/ha arable, 15 000 root crops, 3 000 grassland, 30 000 fruit / wine; max 99 999 € per farm | StMELF Merkblatt MGV 2026 |
+| Baden-Württemberg (`DEU_BW`, hail + hops from 2026) | up to 50 %, fruit / wine / hops, ≥ 2 of hail, frost, storm, heavy rain | Vereinigte Hagel |
+| Lower Saxony (`DEU_NI`, since 2025, also HH / HB) | up to 50 %, max 25 000 € per farm, storm, heavy rain, severe frost, drought (**hail not subsidised**) | Vereinigte Hagel |
+| Saxony (`DEU_SN`) | up to 50 %, wine | Vereinigte Hagel |
+| Rates, sums insured | per crop group, **estimates**; hail rates ×0.769 so the area-weighted premium is **31.67 €/ha** = Vereinigte Hagel Germany 2022 (155.49 M € / 4.91 M ha). Drought 5 % (index cover costs 3 – 10 %) | agrarheute, topagrar, builder |
+
+Market check (Vereinigte Hagel SFCR 2024): Germany 151.8 M € premium, 147.7 M € claims (loss ratio 97.3 %,
+frost year), 2023 claims 128.5 M €. No per-state hail risk yet (`rateFactor` 1 everywhere) – the climate
+files have no German regions.
+
+**Credit text:** *"German crop insurance rules from the Bavarian State Ministry (StMELF) and the state
+programmes of Baden-Württemberg, Lower Saxony and Saxony; market figures from published Vereinigte Hagel
+reports; insurance tax from DLG-Merkblatt 434. Rates are estimates, not official figures; not affiliated with
+or endorsed by any of them."*
 
 ### 13.5 Brazil: `DB/CropInsurance_BR.xml`
 

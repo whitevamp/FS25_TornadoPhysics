@@ -77,6 +77,15 @@ Poland (CropInsurance_PL.xml)
   sums insured regulations (Dz.U. 2025 poz. 1628, Dz.U. 2024 poz. 1695).
 - Premium rates are estimates, not official figures.
 
+Germany (CropInsurance_DE.xml)
+- German crop insurance rules from the Bavarian State Ministry for
+  Food, Agriculture, Forestry and Tourism (StMELF) and the state
+  programmes of Baden-Wuerttemberg, Lower Saxony and Saxony.
+- Market figures from published Vereinigte Hagelversicherung VVaG
+  reports; insurance tax from DLG-Merkblatt 434.
+- Rates are estimates, not official figures. Not affiliated with or
+  endorsed by any of them.
+
 Brazil (CropInsurance_BR.xml)
 - Brazilian crop insurance figures from the Ministerio da Agricultura e
   Pecuaria (MAPA), PSR open data (SISSER), crop years 2020-2024,

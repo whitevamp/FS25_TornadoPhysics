@@ -82,6 +82,20 @@ rules but no average rates are published per crop, so the file holds (see the PO
     (subsidy / 65 % / insured area / an estimated sum insured per ha). Needs no RMA data.
 
 ----------------------------------------------------------------------------
+Germany (DB/CropInsurance_DE.xml)
+----------------------------------------------------------------------------
+German crop insurance is private and unsubsidised at federal level: hail cover is bought by most farms
+(well over 60 % of the arable area), the other perils are optional add-ons. Some states (Laender) pay up to
+50 % of multi-peril premiums. No rates per crop are published, so the file holds (see the GERMANY config):
+
+  * Plan: hail cover ("namedPeril", basePeril HAIL) with add-ons windstorm, heavy rain, severe frost
+    (frost + winter kill), drought; and a multi-peril package (all five).
+  * Insurance tax: 0.03 % of the sum insured per year for hail / storm / heavy rain / severe frost.
+  * State subsidy programmes: Bavaria, Baden-Wuerttemberg, Lower Saxony, Saxony (regions DEU_xx).
+  * Rates and sums insured per hectare: OUR ESTIMATES (isEstimate="true"), the hail rates scaled so the
+    area-weighted premium per hectare equals Vereinigte Hagel's 2022 German average (premium / insured area).
+
+----------------------------------------------------------------------------
 Brazil (DB/CropInsurance_BR.xml)
 ----------------------------------------------------------------------------
 Built from MAPA's PSR open data (SISSER, one row per subsidised policy, Creative Commons Attribution):
@@ -332,6 +346,87 @@ POLAND_DEDUCTIBLES_ESTIMATE = [(0.0, 1.0), (0.10, 0.85), (0.20, 0.70)]
 # PLN -> EUR for the sum-insured caps (2025 average, about 4.25 PLN per EUR). The mod then applies its own
 # money scaling (TornadoSettings:getCostScale).
 POLAND_EUR_PER_PLN = 1 / 4.25
+
+# ============================================================================
+# GERMANY  -  published rules + one market figure (edit when newer figures are out)
+# ============================================================================
+
+GERMANY_OUTPUT_XML = os.path.join(TOOLS_DIR, "..", "DB", "CropInsurance_DE.xml")
+
+# Insurance tax (Versicherungsteuer) for hail, storm, heavy rain and severe frost: 0.3 per mille of the sum
+# insured per year instead of a share of the premium (DLG-Merkblatt 434).
+GERMANY_INSURANCE_TAX = 0.0003
+GERMANY_TAXED_PERILS = ["HAIL", "WINDSTORM", "HEAVY_RAIN", "SEVERE_FROST"]
+GERMANY_PERILS = {"base": ["HAIL"], "optional": ["WINDSTORM", "HEAVY_RAIN", "SEVERE_FROST", "DROUGHT"]}
+GERMANY_PACKAGE = ["HAIL", "WINDSTORM", "HEAVY_RAIN", "SEVERE_FROST", "DROUGHT"]
+
+# FS25 fill type -> crop group. OLIVE borrows fruit (borrowed="true"). Cotton, rice and sugarcane are not grown
+# in Germany (the mod falls back to DEFAULT = cereals).
+GERMANY_CROPS = {
+    "WHEAT": "cereals", "BARLEY": "cereals", "OAT": "cereals", "SORGHUM": "cereals",
+    "CANOLA": "rapeseed", "SUNFLOWER": "sunflower", "MAIZE": "maize",
+    "SOYBEAN": "legumes", "PEA": "legumes", "GREENBEAN": "legumes",
+    "POTATO": "potatoes", "SUGARBEET": "sugarbeet",
+    "CARROT": "vegetables", "PARSNIP": "vegetables", "REDBEET": "vegetables", "SPINACH": "vegetables",
+    "GRASS": "grassland", "GRAPE": "vine", "OLIVE": "fruit",
+    "DEFAULT": "cereals",
+}
+GERMANY_BORROWED = {"OLIVE", "SORGHUM"}
+
+# Per crop group, OUR ESTIMATES: typical sum insured per ha (EUR, yield x price; topagrar: cereals / rapeseed
+# usually 1 000 - 1 600 EUR/ha), relative hail rate, add-on rates (extra rate on top of hail).
+# Drought: index cover costs ~3 - 10 % of the sum insured (topagrar) -> 5 %.
+GERMANY_GROUPS = {
+    #              sumPerHa  hail    WINDSTORM HEAVY_RAIN SEVERE_FROST DROUGHT
+    "cereals":    (1500,    0.012,  0.002,    0.002,     0.003,       0.05),
+    "rapeseed":   (1600,    0.025,  0.004,    0.002,     0.006,       0.05),
+    "sunflower":  (1000,    0.015,  0.004,    0.002,     0.002,       0.05),
+    "maize":      (1700,    0.012,  0.004,    0.003,     0.001,       0.06),
+    "legumes":    (1000,    0.015,  0.003,    0.003,     0.002,       0.05),
+    "potatoes":   (5000,    0.012,  0.001,    0.004,     0.001,       0.06),
+    "sugarbeet":  (2800,    0.008,  0.001,    0.003,     0.001,       0.05),
+    "vegetables": (15000,   0.040,  0.005,    0.010,     0.010,       0.06),
+    "grassland":  (1000,    0.005,  0.001,    0.001,     0.001,       0.05),
+    "fruit":      (20000,   0.040,  0.005,    0.005,     0.060,       0.04),
+    "vine":       (15000,   0.035,  0.005,    0.005,     0.040,       0.04),
+}
+GERMANY_DEDUCTIBLES_ESTIMATE = [(0.0, 1.0), (0.10, 0.85), (0.20, 0.70)]
+
+# Calibration: Vereinigte Hagel (market leader) Germany 2022: ~4.91 M ha insured, 155.49 M EUR premium
+# (agrarheute) -> premium per insured ha. The area mix of that insured area is OUR ESTIMATE (German crop areas,
+# hail insurance is bought mostly for arable crops). The premium also holds some multi-peril cover, so the
+# calibrated hail rates are slightly high rather than low. 2024 (SFCR): Germany 151.8 M EUR premium,
+# 147.7 M EUR claims (loss ratio 97.3 %, frost year), 2023 claims 128.5 M EUR.
+GERMANY_CALIBRATION = {"premiumEur": 155.49e6, "areaHa": 4.91e6,
+                       "areaMix": {"cereals": 0.55, "rapeseed": 0.12, "maize": 0.20, "sugarbeet": 0.04,
+                                   "potatoes": 0.03, "legumes": 0.02, "vegetables": 0.01, "fruit": 0.01,
+                                   "vine": 0.01, "sunflower": 0.01}}
+
+# State subsidy programmes (up to 50 % of the eligible premium). groups = crop groups the package covers;
+# minPerils = how many of the perils must be chosen (0 = all, no choice).
+GERMANY_STATES = {
+    "BY": {"name": "Bavaria", "share": 0.50, "minDeductible": 0.20, "maxPayoutShare": 0.80, "maxPerFarm": 99999,
+           "minAreaHa": 0.3, "since": 2023,
+           "source": "StMELF Merkblatt Mehrgefahrenversicherung 2026",
+           "packages": [("arable", "HAIL WINDSTORM HEAVY_RAIN SEVERE_FROST DROUGHT BIRD_DAMAGE", 0,
+                         "cereals rapeseed sunflower maize legumes potatoes sugarbeet"),
+                        ("grassland", "HAIL DROUGHT GRUB_DAMAGE", 0, "grassland"),
+                        ("specialty", "HAIL SEVERE_FROST WINDSTORM HEAVY_RAIN", 2, "fruit vine")],
+           # Hoechsthektarwerte: the subsidy only counts the premium up to these sums insured (EUR/ha).
+           "maxSumPerHa": {"cereals": 5000, "rapeseed": 5000, "sunflower": 5000, "maize": 5000, "legumes": 5000,
+                           "potatoes": 15000, "sugarbeet": 15000, "grassland": 3000, "fruit": 30000,
+                           "vine": 30000}},
+    "BW": {"name": "Baden-Wuerttemberg", "share": 0.50, "minAreaHa": 0.3, "since": 2026,
+           "source": "Vereinigte Hagel, Foerderung Baden-Wuerttemberg",
+           "packages": [("specialty", "HAIL SEVERE_FROST WINDSTORM HEAVY_RAIN", 2, "fruit vine")]},
+    "NI": {"name": "Lower Saxony", "share": 0.50, "maxPerFarm": 25000, "minAreaHa": 1.0, "since": 2025,
+           "source": "Vereinigte Hagel, Foerderung Niedersachsen (also Hamburg and Bremen)",
+           # hail itself is not subsidised here
+           "packages": [("multiPeril", "WINDSTORM HEAVY_RAIN SEVERE_FROST DROUGHT", 1,
+                         "cereals rapeseed sunflower maize legumes potatoes sugarbeet grassland fruit vegetables")]},
+    "SN": {"name": "Saxony", "share": 0.50, "source": "Vereinigte Hagel, Foerderprogramme (wine growing)",
+           "packages": [("vine", "HAIL SEVERE_FROST WINDSTORM HEAVY_RAIN", 2, "vine")]},
+}
 
 # ============================================================================
 # BRAZIL  -  MAPA PSR open data (SISSER)
@@ -860,6 +955,76 @@ def write_poland(out_path):
         out_path, os.path.getsize(out_path) / 1024, len(POLAND_CROPS), len(POLAND_MAX_SUM_ANIMAL)))
 
 
+def write_germany(out_path):
+    """Germany: private hail cover + add-ons, state subsidy programmes, estimated rates. Needs no raw data."""
+    cal = GERMANY_CALIBRATION
+    target = cal["premiumEur"] / cal["areaHa"]
+    weighted = sum(GERMANY_GROUPS[g][0] * GERMANY_GROUPS[g][1] * w for g, w in cal["areaMix"].items()) \
+        / sum(cal["areaMix"].values())
+    calibration = target / weighted
+    print("  Germany: market premium %.2f EUR/ha, estimated hail premium %.2f EUR/ha -> calibration x%.3f" % (
+        target, weighted, calibration))
+
+    lines = ['<?xml version="1.0" encoding="utf-8" standalone="no" ?>',
+             '<!-- Generated by tools/build_crop_insurance.py - do not edit by hand. -->',
+             '<!-- Sources: DLG-Merkblatt 434 (insurance tax), state subsidy rules (StMELF Bayern, Baden-Wuerttemberg, -->',
+             '<!-- Niedersachsen, Sachsen), Vereinigte Hagel published figures. Values marked isEstimate="true" are our -->',
+             '<!-- own estimates, not official figures. -->',
+             '<cropInsurance version="1" source="German state programmes, DLG, Vereinigte Hagel" years="2022-2026" currency="EUR">',
+             '    <program type="namedPeril" basePeril="HAIL" insuranceTax="%s" insuranceTaxBase="sumInsured" '
+             'insuranceTaxPerils="%s" calibration="%s" averagePremiumPerHa="%s" averageIsEstimate="true">' % (
+                 fmt(GERMANY_INSURANCE_TAX), " ".join(GERMANY_TAXED_PERILS), fmt(calibration, 3), fmt(target, 2))]
+    for kind in ("base", "optional"):
+        for peril in GERMANY_PERILS[kind]:
+            lines.append('        <peril id="%s" %s="true"/>' % (peril, kind))
+    lines.append('        <package perils="%s"/>' % " ".join(GERMANY_PACKAGE))
+    for share, factor in GERMANY_DEDUCTIBLES_ESTIMATE:
+        lines.append('        <deductible share="%s" rateFactor="%s" isEstimate="true"/>' % (fmt(share, 2), fmt(factor, 2)))
+    lines.append('    </program>')
+
+    lines.append('    <region id="DEU" name="Germany">')
+    addon_ids = ["WINDSTORM", "HEAVY_RAIN", "SEVERE_FROST", "DROUGHT"]
+    for crop, group in GERMANY_CROPS.items():
+        sum_per_ha, hail = GERMANY_GROUPS[group][0], GERMANY_GROUPS[group][1] * calibration
+        addons = dict(zip(addon_ids, GERMANY_GROUPS[group][2:]))
+        package = hail + sum(addons.values())
+        lines.append('        <crop fillType=%s group=%s%s sumPerHa="%d" sumPerHaIsEstimate="true">' % (
+            quoteattr(crop), quoteattr(group), ' borrowed="true"' if crop in GERMANY_BORROWED else "", sum_per_ha))
+        lines.append('            <rates hail="%s" package="%s" isEstimate="true"/>' % (fmt(hail), fmt(package)))
+        for peril in addon_ids:
+            lines.append('            <addOn peril="%s" rate="%s" isEstimate="true"/>' % (peril, fmt(addons[peril])))
+        lines.append('        </crop>')
+    lines.append('    </region>')
+
+    for code, st in GERMANY_STATES.items():
+        lines.append('    <region id="DEU_%s" name=%s parent="DEU">' % (code, quoteattr(st["name"])))
+        attrs = ['share="%s"' % fmt(st["share"], 2)]
+        for key in ("minDeductible", "maxPayoutShare"):
+            if key in st:
+                attrs.append('%s="%s"' % (key, fmt(st[key], 2)))
+        for key in ("maxPerFarm", "since"):
+            if key in st:
+                attrs.append('%s="%d"' % (key, st[key]))
+        if "minAreaHa" in st:
+            attrs.append('minAreaHa="%s"' % fmt(st["minAreaHa"], 1))
+        attrs.append('source=%s' % quoteattr(st["source"]))
+        lines.append('        <stateSubsidy %s>' % " ".join(attrs))
+        for pid, perils, min_perils, groups in st["packages"]:
+            lines.append('            <package id="%s" perils="%s" minPerils="%d" groups="%s"/>' % (
+                pid, perils, min_perils, groups))
+        for group, value in st.get("maxSumPerHa", {}).items():
+            lines.append('            <maxSum group="%s" perHa="%d"/>' % (group, value))
+        lines.append('        </stateSubsidy>')
+        lines.append('    </region>')
+    lines.append('</cropInsurance>')
+    lines.append('')
+
+    out_path = os.path.abspath(out_path)
+    with open(out_path, "w", encoding="utf-8", newline="\n") as f:
+        f.write("\n".join(lines))
+    print("wrote %s (%.1f KB, Germany + %d states)" % (out_path, os.path.getsize(out_path) / 1024, len(GERMANY_STATES)))
+
+
 def brazil_num(text):
     """PSR numbers use a decimal comma; "-" = empty."""
     text = text.strip()
@@ -1043,6 +1208,8 @@ def write_brazil(path, out_path):
 def main():
     if POLAND_OUTPUT_XML:
         write_poland(POLAND_OUTPUT_XML)
+    if GERMANY_OUTPUT_XML:
+        write_germany(GERMANY_OUTPUT_XML)
     print("Reading RMA Summary of Business %d-%d from %s" % (min(YEARS), max(YEARS), os.path.abspath(DATA_DIR)))
     us, state, seen = load()
     missing = [n for names in CROPS.values() for n in names if n not in seen]
