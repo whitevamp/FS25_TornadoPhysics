@@ -400,7 +400,7 @@ sell points, vehicle sell prices), so price-changing mods are covered without de
 - **Crop insurance data** – **done:** `tools/build_crop_insurance.py` (standard library only, same
   pattern as the climate builders) turns the USDA RMA *Summary of Business* files into
   `DB/CropInsurance_US.xml` (~86 KB). Public-domain US government data; credit RMA in modDesc / README.
-  Canada: §13.3. Poland: §13.4. Brazil: §13.5. Germany: §13.6. France: §13.7. Netherlands: §13.8. Spain: §13.9. Italy: §13.10.
+  Canada: §13.3. Poland: §13.4. Brazil: §13.5. Germany: §13.6. France: §13.7. Netherlands: §13.8. Spain: §13.9. Italy: §13.10. Australia: §13.11.
 
 ### 13.1 RMA source data and processing rules
 
@@ -637,6 +637,29 @@ rain, hail, strong wind), accessory (hot wind / sunburn, temperature swing) – 
 **Credit text:** *"Italian crop insurance rules from the Piano di gestione dei rischi in agricoltura 2026
 (MASAF); figures from ISMEA. Rates are estimates, not official figures; not affiliated with or endorsed by
 MASAF or ISMEA."*
+
+### 13.11 Australia: `DB/CropInsurance_AU.xml`
+
+Australia has **no government crop insurance and no premium subsidy**. Farmers buy private **named-peril**
+cover – mostly hail and fire (sometimes frost); one broker puts 90 % of broadacre claims down to hail.
+Multi-peril cover has been tried several times (e.g. the 1999–2000 CBH / AON scheme in WA, dropped after
+one year for low demand) and remains rare. The builder's `AUSTRALIA` section:
+
+| Item | Value | Source |
+|---|---|---|
+| Plan | `namedPeril` hail + fire (frost optional); `multiPeril` only for some grain crops (`multiPeril="limited"`) | ABARES 2012, brokers |
+| Rate ranges | named peril **0.55 – 3.5 %**, multi-peril **5 – 10 %** of the crop value | Deloitte |
+| Taxes | **GST 10 %** on every premium + state stamp duty: NSW 9 %, VIC 10 %, QLD 9 %, SA 11 %, WA 10 %, TAS 10 %, NT 10 %, ACT 0 % | Insurance Council of Australia (2019) |
+| Crop exemptions | NSW from 1 Jan 2018, VIC from 1 Jul 2017 (Duties Act 2000 s.196) – no stamp duty on crop insurance. VIC: an older report says oilseed / legume hail cover still paid the full rate – unclear, treated as exempt | Revenue NSW / Allianz, SRO Victoria |
+| Rates | per crop group, **estimates** inside the ranges: cereals 1.5 %, canola / pulses 2.5 %, cotton 2 %, sugarcane 0.6 % (fire), vine / fruit 3.5 %; multi-peril 7 – 9 % for grains | builder |
+
+No market totals are published, so there is no calibration. No per-state risk factor yet: the obvious source
+(hail frequency in `DB/TornadoClimate_AU.xml`) is BoM data that is not cleared to ship, so it is **not** used.
+Region ids match the climate file (`AUS`, `AUS_NSW` …).
+
+**Credit text:** *"Australian insurance duty rates from the Insurance Council of Australia; crop exemptions
+from Revenue NSW and the State Revenue Office Victoria; premium ranges from Deloitte; market overview from
+ABARES. Rates are estimates, not official figures; not affiliated with or endorsed by any of them."*
 
 ### 13.5 Brazil: `DB/CropInsurance_BR.xml`
 

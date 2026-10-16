@@ -19,6 +19,13 @@ Compatibility support (built into Tornado Physics):
 Translations (German, French, Polish, Spanish, Italian, Dutch):
 - AI-assisted translations. Corrections from native speakers are welcome.
 
+AI assistance:
+- Claude (an AI assistant by Anthropic) helped with the design, the
+  implementation and the research / data gathering for the crop insurance
+  system, and with the translations.
+- All code and data were reviewed and tested by whitevamp, who is
+  responsible for the mod.
+
 Sound and effects (FX/):
 - Tornado siren (tornado_siren.ogg): royalty-free recording of a real
   Kansas tornado warning siren, edited for this mod.
@@ -106,6 +113,13 @@ Italy (CropInsurance_IT.xml)
   alimentare e delle foreste, MASAF); figures from ISMEA.
 - Rates are estimates, not official figures. Not affiliated with or
   endorsed by MASAF or ISMEA.
+
+Australia (CropInsurance_AU.xml)
+- Insurance duty rates from the Insurance Council of Australia; crop
+  insurance exemptions from Revenue NSW and the State Revenue Office
+  Victoria; premium ranges from Deloitte; market overview from ABARES.
+- Rates are estimates, not official figures. Not affiliated with or
+  endorsed by any of them. No Bureau of Meteorology data is used.
 
 Germany (CropInsurance_DE.xml)
 - German crop insurance rules from the Bavarian State Ministry for

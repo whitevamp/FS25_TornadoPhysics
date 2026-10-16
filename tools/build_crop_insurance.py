@@ -154,6 +154,20 @@ a 20 % damage threshold and up to 70 % public contribution. The AgriCat fund pay
     average equals ISMEA's 2025 average rate.
 
 ----------------------------------------------------------------------------
+Australia (DB/CropInsurance_AU.xml)
+----------------------------------------------------------------------------
+No government scheme and no premium subsidy: farmers buy private named-peril cover (hail and fire, sometimes
+frost); multi-peril cover has been tried several times but is rare. Premiums carry 10 % GST plus state stamp
+duty, which NSW and Victoria waive for crop insurance. The file holds (see the AUSTRALIA config):
+
+  * Plan "namedPeril" (hail + fire) and the rare "multiPeril" cover.
+  * GST and stamp duty per state, with the crop exemptions.
+  * Rates and sums insured per hectare (AUD): OUR ESTIMATES (isEstimate="true") inside the published ranges
+    (named peril 0.55 - 3.5 %, multi-peril 5 - 10 % of the crop value, Deloitte). No market totals are
+    published, so there is no calibration and no per-state risk factor yet.
+  * Region ids match the climate file (AUS, AUS_NSW ...); this insurance file uses no climate data.
+
+----------------------------------------------------------------------------
 Brazil (DB/CropInsurance_BR.xml)
 ----------------------------------------------------------------------------
 Built from MAPA's PSR open data (SISSER, one row per subsidised policy, Creative Commons Attribution):
@@ -785,6 +799,61 @@ ITALY_GROUPS = {
     "sugarbeet":  (3000,    0.050,  0.010),
     "olive":      (4000,    0.060,  0.050),
     "forage":     (1000,    0.040,  0.032),
+}
+
+# ============================================================================
+# AUSTRALIA  -  private market, state taxes (edit when newer figures are out)
+# ============================================================================
+
+AUSTRALIA_OUTPUT_XML = os.path.join(TOOLS_DIR, "..", "DB", "CropInsurance_AU.xml")
+
+AUSTRALIA_GST = 0.10
+# Stamp duty on general insurance (Insurance Council of Australia 2019, from NSW Treasury interstate comparison)
+# and crop exemptions: NSW since 1 Jan 2018 (Revenue NSW / Allianz), VIC since 1 Jul 2017 (SRO Victoria,
+# Duties Act 2000 s.196; an older report says oilseed / legume hail cover still paid the full rate - unclear).
+AUSTRALIA_STATES = {
+    "NSW": {"name": "New South Wales", "stampDuty": 0.09, "cropExempt": True, "since": 2018},
+    "VIC": {"name": "Victoria", "stampDuty": 0.10, "cropExempt": True, "since": 2017},
+    "QLD": {"name": "Queensland", "stampDuty": 0.09, "cropExempt": False},
+    "SA":  {"name": "South Australia", "stampDuty": 0.11, "cropExempt": False},
+    "WA":  {"name": "Western Australia", "stampDuty": 0.10, "cropExempt": False},
+    "TAS": {"name": "Tasmania", "stampDuty": 0.10, "cropExempt": False},
+    "NT":  {"name": "Northern Territory", "stampDuty": 0.10, "cropExempt": False},
+    "ACT": {"name": "Australian Capital Territory", "stampDuty": 0.0, "cropExempt": False},
+}
+AUSTRALIA_NAMED_PERILS = ["HAIL", "FIRE"]
+AUSTRALIA_OPTIONAL_PERILS = ["FROST"]
+# Deloitte "Multi-peril crop insurance in Australia: barriers and opportunities".
+AUSTRALIA_RANGES = {"namedPerilMin": 0.0055, "namedPerilMax": 0.035, "multiPerilMin": 0.05, "multiPerilMax": 0.10}
+
+AUSTRALIA_CROPS = {
+    "WHEAT": "cereals", "BARLEY": "cereals", "OAT": "cereals",
+    "SORGHUM": "sorghum", "MAIZE": "sorghum",
+    "CANOLA": "canola", "SUNFLOWER": "canola",
+    "SOYBEAN": "pulses", "PEA": "pulses", "GREENBEAN": "vegetables",
+    "COTTON": "cotton", "SUGARCANE": "sugarcane", "RICE": "rice", "RICELONGGRAIN": "rice",
+    "POTATO": "vegetables", "SUGARBEET": "vegetables",
+    "CARROT": "vegetables", "PARSNIP": "vegetables", "REDBEET": "vegetables", "SPINACH": "vegetables",
+    "GRASS": "pasture", "GRAPE": "vine", "OLIVE": "fruit", "BANANA": "fruit",
+    "DEFAULT": "cereals",
+}
+AUSTRALIA_BORROWED = {"MAIZE", "SUNFLOWER", "SUGARBEET", "OLIVE"}
+
+# Per crop group, OUR ESTIMATES: sum insured per ha (AUD, Australian yields x prices), named-peril (hail + fire)
+# rate, multi-peril rate where it is offered at all (None = not offered).
+AUSTRALIA_GROUPS = {
+    #              sumPerHa  named   multiPeril
+    "cereals":    (900,     0.015,  0.07),
+    "sorghum":    (1000,    0.020,  0.08),
+    "canola":     (1050,    0.025,  0.08),
+    "pulses":     (900,     0.025,  0.09),
+    "rice":       (4000,    0.010,  None),
+    "cotton":     (6000,    0.020,  None),
+    "sugarcane":  (3800,    0.006,  None),     # mostly fire cover
+    "vegetables": (15000,   0.030,  None),
+    "pasture":    (500,     0.0055, None),     # fire only
+    "vine":       (8000,    0.035,  None),
+    "fruit":      (30000,   0.035,  None),
 }
 
 # ============================================================================
@@ -1614,6 +1683,42 @@ def write_italy(out_path):
     print("wrote %s (%.1f KB, Italy, %d crops)" % (out_path, os.path.getsize(out_path) / 1024, len(ITALY_CROPS)))
 
 
+def write_australia(out_path):
+    """Australia: private named-peril cover, GST + state stamp duty, estimated rates. Needs no raw data."""
+    rng = AUSTRALIA_RANGES
+    lines = ['<?xml version="1.0" encoding="utf-8" standalone="no" ?>',
+             '<!-- Generated by tools/build_crop_insurance.py - do not edit by hand. -->',
+             '<!-- Sources: Insurance Council of Australia (state insurance duties), Revenue NSW / SRO Victoria (crop -->',
+             '<!-- exemptions), Deloitte (premium ranges), ABARES 2012 (market overview). Values marked isEstimate="true" -->',
+             '<!-- are our own estimates, not official figures. No climate data is used in this file. -->',
+             '<cropInsurance version="1" source="ICA, state revenue offices, Deloitte, ABARES" years="2017-2026" currency="AUD">',
+             '    <program type="namedPeril" subsidy="0" perils="%s" optionalPerils="%s" gst="%s" '
+             'multiPeril="limited" %s>' % (" ".join(AUSTRALIA_NAMED_PERILS), " ".join(AUSTRALIA_OPTIONAL_PERILS),
+                                          fmt(AUSTRALIA_GST, 2),
+                                          " ".join('%s="%s"' % (k, fmt(v, 4)) for k, v in rng.items())),
+             '    </program>',
+             '    <region id="AUS" name="Australia">']
+    for crop, group in AUSTRALIA_CROPS.items():
+        sum_per_ha, named, multi = AUSTRALIA_GROUPS[group]
+        lines.append('        <crop fillType=%s group=%s%s sumPerHa="%d" sumPerHaIsEstimate="true">' % (
+            quoteattr(crop), quoteattr(group), ' borrowed="true"' if crop in AUSTRALIA_BORROWED else "", sum_per_ha))
+        lines.append('            <rates namedPeril="%s"%s isEstimate="true"/>' % (
+            fmt(named), (' multiPeril="%s"' % fmt(multi)) if multi is not None else ""))
+        lines.append('        </crop>')
+    lines.append('    </region>')
+    for code, st in AUSTRALIA_STATES.items():
+        lines.append('    <region id="AUS_%s" name=%s parent="AUS" stampDuty="%s" cropStampDutyExempt="%s"%s/>' % (
+            code, quoteattr(st["name"]), fmt(st["stampDuty"], 2), "true" if st["cropExempt"] else "false",
+            (' exemptSince="%d"' % st["since"]) if "since" in st else ""))
+    lines.append('</cropInsurance>')
+    lines.append('')
+
+    out_path = os.path.abspath(out_path)
+    with open(out_path, "w", encoding="utf-8", newline="\n") as f:
+        f.write("\n".join(lines))
+    print("wrote %s (%.1f KB, Australia + %d states)" % (out_path, os.path.getsize(out_path) / 1024, len(AUSTRALIA_STATES)))
+
+
 def brazil_num(text):
     """PSR numbers use a decimal comma; "-" = empty."""
     text = text.strip()
@@ -1807,6 +1912,8 @@ def main():
         write_spain(SPAIN_OUTPUT_XML)
     if ITALY_OUTPUT_XML:
         write_italy(ITALY_OUTPUT_XML)
+    if AUSTRALIA_OUTPUT_XML:
+        write_australia(AUSTRALIA_OUTPUT_XML)
     print("Reading RMA Summary of Business %d-%d from %s" % (min(YEARS), max(YEARS), os.path.abspath(DATA_DIR)))
     us, state, seen = load()
     missing = [n for names in CROPS.values() for n in names if n not in seen]
