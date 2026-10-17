@@ -173,6 +173,23 @@
         <text name="tp_tip_hazards_flood" text="Een paar uur hevige regen op al doorweekte grond zet de laagst gelegen velden onder water: het water verzamelt zich op het laagste punt van elk veld en verdrinkt daar het gewas. Rijstvelden blijven gespaard."/>
         <text name="tp_hazards_fire" text="Veldbrand"/>
         <text name="tp_tip_hazards_fire" text="Tijdens een droogte kan een rijp graanveld op hete droge middagen in brand vliegen. Het vuur verspreidt zich door het veld en verbrandt het gewas tot het uitbrandt of de regen het dooft. Aangegeven op de kaart."/>
+        <text name="tp_sec_insurance" text="Verzekering"/>
+        <text name="tp_insurance" text="Verzekering inschakelen"/>
+        <text name="tp_tip_insurance" text="Verzekering per boerderij tegen tornado- en weerschade: maandelijkse premies, schademeldingen en uitkeringen, met de regels en prijzen van het land van de kaart. De polissen komen in een volgende update; deze schakelaar bereidt het systeem voor."/>
+        <text name="tp_insurance_admin_only" text="Alleen de admin beheert polissen"/>
+        <text name="tp_tip_insurance_admin_only" text="UIT: de beheerders van elke boerderij (en de serverbeheerder) sluiten, wijzigen en beëindigen de polissen van hun boerderij. AAN: alleen de serverbeheerder doet dat - voor servers waar de beheerder de verzekering regelt."/>
+        <text name="tp_insurance_region" text="Verzekeringsregio"/>
+        <text name="tp_tip_insurance_region" text="Welke verzekeringsregels en prijzen gelden. Auto herkent het land (en de staat of provincie) aan de kaart."/>
+        <text name="tp_insurance_region_auto" text="Auto"/>
+        <text name="tp_insurance_region_auto_found" text="Auto (%s)"/>
+        <text name="tp_money_ins_premium" text="Verzekeringspremies"/>
+        <text name="tp_money_ins_payout" text="Verzekeringsuitkeringen"/>
+        <text name="tp_msg_ins_premium_charged" text="Verzekering: maandpremie van %s afgeschreven."/>
+        <text name="tp_msg_ins_payout" text="Verzekering: %s uitgekeerd aan je boerderij."/>
+        <text name="tp_msg_ins_test_timer" text="Verzekering: testaftelling afgelopen."/>
+        <text name="tp_msg_ins_off" text="Verzekering staat uit op deze server."/>
+        <text name="tp_msg_ins_denied" text="Verzekering: alleen een beheerder van de boerderij of de serverbeheerder kan de polissen van deze boerderij wijzigen."/>
+        <text name="tp_msg_ins_denied_admin" text="Verzekering: op deze server beheert alleen de admin de polissen."/>
         <text name="tp_hazards_owned" text="Alleen velden met eigenaar"/>
         <text name="tp_tip_hazards_owned" text="AAN: droogte en overstromingen beschadigen alleen velden van een boerderij; velden zonder eigenaar blijven ongemoeid. UIT: het weer treft elk groeiend veld op de kaart."/>
         <text name="tp_hazards_intensity" text="Sterkte van de gewasschade"/>

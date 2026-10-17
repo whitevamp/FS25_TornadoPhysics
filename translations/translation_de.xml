@@ -173,6 +173,23 @@
         <text name="tp_tip_hazards_flood" text="Mehrere Stunden Starkregen auf bereits nassem Boden überfluten die am tiefsten liegenden Felder: Das Wasser sammelt sich am tiefsten Punkt jedes Feldes und ertränkt dort die Pflanzen. Reisfelder bleiben verschont."/>
         <text name="tp_hazards_fire" text="Feldbrand"/>
         <text name="tp_tip_hazards_fire" text="Während einer Dürre kann an heißen, trockenen Nachmittagen ein reifes Getreidefeld in Brand geraten. Das Feuer breitet sich im Feld aus und verbrennt die Pflanzen, bis es ausbrennt oder Regen es löscht. Auf der Karte markiert."/>
+        <text name="tp_sec_insurance" text="Versicherung"/>
+        <text name="tp_insurance" text="Versicherung aktivieren"/>
+        <text name="tp_tip_insurance" text="Versicherung pro Hof gegen Tornado- und Wetterschäden: monatliche Prämien, Schadensfälle und Auszahlungen nach den Regeln und Preisen des Landes der Karte. Die Policen folgen in einem späteren Update; dieser Schalter bereitet das System vor."/>
+        <text name="tp_insurance_admin_only" text="Nur der Admin verwaltet Policen"/>
+        <text name="tp_tip_insurance_admin_only" text="AUS: Die Verwalter jedes Hofs (und der Server-Admin) schließen die Policen ihres Hofs ab, ändern und kündigen sie. AN: Nur der Server-Admin - für Server, auf denen der Admin die Versicherung führt."/>
+        <text name="tp_insurance_region" text="Versicherungsregion"/>
+        <text name="tp_tip_insurance_region" text="Wessen Versicherungsregeln und Preise gelten. Auto erkennt das Land (und Bundesland oder Provinz) anhand der Karte."/>
+        <text name="tp_insurance_region_auto" text="Auto"/>
+        <text name="tp_insurance_region_auto_found" text="Auto (%s)"/>
+        <text name="tp_money_ins_premium" text="Versicherungsprämien"/>
+        <text name="tp_money_ins_payout" text="Versicherungsleistungen"/>
+        <text name="tp_msg_ins_premium_charged" text="Versicherung: Monatsprämie von %s abgebucht."/>
+        <text name="tp_msg_ins_payout" text="Versicherung: %s an deinen Hof ausgezahlt."/>
+        <text name="tp_msg_ins_test_timer" text="Versicherung: Test-Countdown abgelaufen."/>
+        <text name="tp_msg_ins_off" text="Die Versicherung ist auf diesem Server ausgeschaltet."/>
+        <text name="tp_msg_ins_denied" text="Versicherung: Nur ein Hofverwalter oder der Server-Admin kann die Policen dieses Hofs ändern."/>
+        <text name="tp_msg_ins_denied_admin" text="Versicherung: Auf diesem Server verwaltet nur der Admin die Policen."/>
         <text name="tp_hazards_owned" text="Nur eigene Felder beschädigen"/>
         <text name="tp_tip_hazards_owned" text="AN: Dürre und Überschwemmungen beschädigen nur Felder, die einem Hof gehören; Felder ohne Besitzer bleiben unberührt. AUS: Das Wetter trifft jedes wachsende Feld der Karte."/>
         <text name="tp_hazards_intensity" text="Stärke der Ernteschäden"/>

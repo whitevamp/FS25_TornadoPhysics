@@ -3,6 +3,7 @@
 
 TornadoMain = {}
 local modDir = g_currentModDirectory
+local modName = g_currentModName
 
 -- Player-visible texts in the player's language (used by the events below and every module).
 source(Utils.getFilename("scripts/TornadoText.lua", modDir))
@@ -20,6 +21,8 @@ source(Utils.getFilename("scripts/events/TornadoDestructionEvent.lua", modDir))
 source(Utils.getFilename("scripts/events/TornadoFxEvent.lua", modDir))
 source(Utils.getFilename("scripts/events/TornadoMessageEvent.lua", modDir))
 source(Utils.getFilename("scripts/events/TornadoFieldFireEvent.lua", modDir))
+source(Utils.getFilename("scripts/events/TornadoInsuranceActionEvent.lua", modDir))
+source(Utils.getFilename("scripts/events/TornadoInsuranceStateEvent.lua", modDir))
 
 function TornadoMain:loadMap(name)
     print("--------------------------------------------------")
@@ -68,6 +71,10 @@ function TornadoMain:loadMap(name)
     source(Utils.getFilename("scripts/TornadoRegion.lua", modDir))
     source(Utils.getFilename("scripts/TornadoClimate.lua", modDir))
     source(Utils.getFilename("scripts/TornadoOutbreak.lua", modDir))
+
+    -- Optional per-farm insurance (OFF by default; docs/INSURANCE_DESIGN.md).
+    source(Utils.getFilename("scripts/insurance/TornadoInsuranceData.lua", modDir))
+    source(Utils.getFilename("scripts/insurance/TornadoInsurance.lua", modDir))
 
     -- Saves the active tornado / outbreak with the savegame so a reload carries on.
     source(Utils.getFilename("scripts/TornadoPersistence.lua", modDir))
@@ -139,6 +146,7 @@ function TornadoMain:loadMap(name)
     if TornadoRegion then TornadoRegion:loadMap(modDir) end
     if TornadoClimate then TornadoClimate:loadMap(modDir) end
     if TornadoOutbreak then TornadoOutbreak:loadMap() end
+    if TornadoInsurance then TornadoInsurance:loadMap(modDir, modName) end   -- after Region / Climate (region detection)
     if TornadoPersistence then TornadoPersistence:loadMap() end   -- after Outbreak: restores its state
     -- Multiplayer: wrap the console handlers BEFORE they are registered, and send state to joining players.
     if TornadoSync then
@@ -172,6 +180,7 @@ function TornadoMain:deleteMap()
     if TornadoClimate then TornadoClimate:deleteMap() end
     if TornadoRegion then TornadoRegion:deleteMap() end
     if TornadoOutbreak then TornadoOutbreak:deleteMap() end
+    if TornadoInsurance then TornadoInsurance:deleteMap() end
     if TornadoEffects then TornadoEffects:deleteMap() end
     if TornadoDebug then TornadoDebug:deleteMap() end
     if TornadoCompass then TornadoCompass:deleteMap() end
@@ -229,6 +238,9 @@ if not FSBaseMission.tornadoSaveHooked then
         end
         if TornadoHazards and TornadoHazards.save then
             TornadoHazards:save()
+        end
+        if TornadoInsurance and TornadoInsurance.save then
+            TornadoInsurance:save()
         end
     end)
 end

@@ -173,6 +173,23 @@
         <text name="tp_tip_hazards_flood" text="Several hours of heavy rain on already soaked soil flood the lowest-lying growing fields: water pools at each field's lowest point and drowns the crop there. Rice paddies are spared."/>
         <text name="tp_hazards_fire" text="Field fire"/>
         <text name="tp_tip_hazards_fire" text="During a drought, on hot dry afternoons, a ripe grain-type field can catch fire. The fire spreads inside the field and burns the crop until it burns out or rain puts it out. Marked on the map."/>
+        <text name="tp_sec_insurance" text="Insurance"/>
+        <text name="tp_insurance" text="Enable insurance"/>
+        <text name="tp_tip_insurance" text="Per-farm insurance against tornado and weather damage: monthly premiums, claims and payouts, with the rules and prices of the map's country. Policies come in a later update; this switch prepares the system."/>
+        <text name="tp_insurance_admin_only" text="Only the admin manages policies"/>
+        <text name="tp_tip_insurance_admin_only" text="OFF: each farm's managers (and the server admin) buy, change and cancel their farm's policies. ON: only the server admin does - for servers where the admin runs the insurance."/>
+        <text name="tp_insurance_region" text="Insurance region"/>
+        <text name="tp_tip_insurance_region" text="Whose insurance rules and prices apply. Auto detects the country (and state or province) from the map."/>
+        <text name="tp_insurance_region_auto" text="Auto"/>
+        <text name="tp_insurance_region_auto_found" text="Auto (%s)"/>
+        <text name="tp_money_ins_premium" text="Insurance premiums"/>
+        <text name="tp_money_ins_payout" text="Insurance payouts"/>
+        <text name="tp_msg_ins_premium_charged" text="Insurance: monthly premium of %s charged."/>
+        <text name="tp_msg_ins_payout" text="Insurance: %s paid out to your farm."/>
+        <text name="tp_msg_ins_test_timer" text="Insurance: test countdown finished."/>
+        <text name="tp_msg_ins_off" text="Insurance is turned off on this server."/>
+        <text name="tp_msg_ins_denied" text="Insurance: only a farm manager or the server admin can change this farm's policies."/>
+        <text name="tp_msg_ins_denied_admin" text="Insurance: on this server only the admin manages policies."/>
         <text name="tp_hazards_owned" text="Only damage owned fields"/>
         <text name="tp_tip_hazards_owned" text="ON: drought and floods only damage fields a farm owns; fields nobody owns stay untouched. OFF: the weather hits every growing field on the map."/>
         <text name="tp_hazards_intensity" text="Crop damage strength"/>

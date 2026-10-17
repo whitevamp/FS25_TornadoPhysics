@@ -173,6 +173,23 @@
         <text name="tp_tip_hazards_flood" text="Plusieurs heures de fortes pluies sur un sol déjà détrempé inondent les champs les plus bas : l'eau s'accumule au point le plus bas de chaque champ et y noie la culture. Les rizières sont épargnées."/>
         <text name="tp_hazards_fire" text="Feu de champ"/>
         <text name="tp_tip_hazards_fire" text="Pendant une sécheresse, par des après-midi chauds et secs, un champ mûr de type céréale peut prendre feu. Le feu se propage dans le champ et brûle la culture jusqu'à s'éteindre seul ou sous la pluie. Indiqué sur la carte."/>
+        <text name="tp_sec_insurance" text="Assurance"/>
+        <text name="tp_insurance" text="Activer l'assurance"/>
+        <text name="tp_tip_insurance" text="Assurance par ferme contre les dégâts des tornades et de la météo : primes mensuelles, sinistres et indemnités, avec les règles et les prix du pays de la carte. Les contrats arrivent dans une prochaine mise à jour ; cette option prépare le système."/>
+        <text name="tp_insurance_admin_only" text="Seul l'admin gère les contrats"/>
+        <text name="tp_tip_insurance_admin_only" text="NON : les gérants de chaque ferme (et l'admin du serveur) souscrivent, modifient et résilient les contrats de leur ferme. OUI : seul l'admin du serveur le fait - pour les serveurs où l'admin gère l'assurance."/>
+        <text name="tp_insurance_region" text="Région d'assurance"/>
+        <text name="tp_tip_insurance_region" text="Règles et prix d'assurance appliqués. Auto détecte le pays (et l'État ou la province) d'après la carte."/>
+        <text name="tp_insurance_region_auto" text="Auto"/>
+        <text name="tp_insurance_region_auto_found" text="Auto (%s)"/>
+        <text name="tp_money_ins_premium" text="Primes d'assurance"/>
+        <text name="tp_money_ins_payout" text="Indemnités d'assurance"/>
+        <text name="tp_msg_ins_premium_charged" text="Assurance : prime mensuelle de %s prélevée."/>
+        <text name="tp_msg_ins_payout" text="Assurance : %s versés à votre ferme."/>
+        <text name="tp_msg_ins_test_timer" text="Assurance : compte à rebours de test terminé."/>
+        <text name="tp_msg_ins_off" text="L'assurance est désactivée sur ce serveur."/>
+        <text name="tp_msg_ins_denied" text="Assurance : seul un gérant de la ferme ou l'admin du serveur peut modifier les contrats de cette ferme."/>
+        <text name="tp_msg_ins_denied_admin" text="Assurance : sur ce serveur, seul l'admin gère les contrats."/>
         <text name="tp_hazards_owned" text="Seulement les champs possédés"/>
         <text name="tp_tip_hazards_owned" text="OUI : la sécheresse et les inondations n'abîment que les champs possédés par une ferme ; les champs sans propriétaire restent intacts. NON : la météo touche tous les champs en culture de la carte."/>
         <text name="tp_hazards_intensity" text="Force des dégâts aux cultures"/>

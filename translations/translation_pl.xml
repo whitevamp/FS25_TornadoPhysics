@@ -173,6 +173,23 @@
         <text name="tp_tip_hazards_flood" text="Kilka godzin ulewy na już nasiąkniętej glebie zalewa najniżej położone pola: woda zbiera się w najniższym punkcie każdego pola i niszczy tam uprawy. Pola ryżowe są oszczędzone."/>
         <text name="tp_hazards_fire" text="Pożar pola"/>
         <text name="tp_tip_hazards_fire" text="Podczas suszy, w upalne i suche popołudnia, dojrzałe pole zbożowe może się zapalić. Ogień rozprzestrzenia się po polu i pali uprawę, aż się wypali lub zgasi go deszcz. Zaznaczony na mapie."/>
+        <text name="tp_sec_insurance" text="Ubezpieczenia"/>
+        <text name="tp_insurance" text="Włącz ubezpieczenia"/>
+        <text name="tp_tip_insurance" text="Ubezpieczenie dla każdego gospodarstwa od szkód po tornadach i pogodzie: miesięczne składki, szkody i wypłaty według zasad i cen kraju mapy. Polisy pojawią się w kolejnej aktualizacji; ten przełącznik przygotowuje system."/>
+        <text name="tp_insurance_admin_only" text="Tylko admin zarządza polisami"/>
+        <text name="tp_tip_insurance_admin_only" text="WYŁ.: zarządcy każdego gospodarstwa (i admin serwera) kupują, zmieniają i anulują polisy swojego gospodarstwa. WŁ.: robi to tylko admin serwera - dla serwerów, na których admin prowadzi ubezpieczenia."/>
+        <text name="tp_insurance_region" text="Region ubezpieczenia"/>
+        <text name="tp_tip_insurance_region" text="Czyje zasady i ceny ubezpieczeń obowiązują. Auto rozpoznaje kraj (oraz stan lub prowincję) na podstawie mapy."/>
+        <text name="tp_insurance_region_auto" text="Auto"/>
+        <text name="tp_insurance_region_auto_found" text="Auto (%s)"/>
+        <text name="tp_money_ins_premium" text="Składki ubezpieczeniowe"/>
+        <text name="tp_money_ins_payout" text="Wypłaty z ubezpieczenia"/>
+        <text name="tp_msg_ins_premium_charged" text="Ubezpieczenie: pobrano miesięczną składkę %s."/>
+        <text name="tp_msg_ins_payout" text="Ubezpieczenie: wypłacono %s na konto gospodarstwa."/>
+        <text name="tp_msg_ins_test_timer" text="Ubezpieczenie: testowe odliczanie zakończone."/>
+        <text name="tp_msg_ins_off" text="Ubezpieczenia są wyłączone na tym serwerze."/>
+        <text name="tp_msg_ins_denied" text="Ubezpieczenie: tylko zarządca gospodarstwa lub admin serwera może zmieniać polisy tego gospodarstwa."/>
+        <text name="tp_msg_ins_denied_admin" text="Ubezpieczenie: na tym serwerze polisami zarządza tylko admin."/>
         <text name="tp_hazards_owned" text="Tylko posiadane pola"/>
         <text name="tp_tip_hazards_owned" text="WŁ.: susza i powodzie niszczą tylko pola należące do gospodarstwa; pola bez właściciela pozostają nietknięte. WYŁ.: pogoda trafia w każde uprawiane pole na mapie."/>
         <text name="tp_hazards_intensity" text="Siła szkód w uprawach"/>

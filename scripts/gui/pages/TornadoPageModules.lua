@@ -1,6 +1,6 @@
 ---@class TornadoPageModules
 ---@description Modules tab: mirrors t_set destruction / recovery / mapui / cargo / husbandry / traffic / wildlife /
---- hazards.
+--- hazards / insurance.
 
 local Page = TornadoMenuPage
 local console = TornadoMenuPage.console
@@ -32,6 +32,10 @@ end
 
 local function hasHazards()
     return TornadoHazards ~= nil
+end
+
+local function hasInsurance()
+    return TornadoInsurance ~= nil
 end
 
 --- Percent row (25 - 300 %) routed through `t_set hazards <sub> <percent>`.
@@ -303,4 +307,50 @@ TornadoPageModules = TornadoMenuPage.new("Modules", "Modules", {
     },
     hazardsPercentRow("modHazardsIntensity", "intensity"),
     hazardsPercentRow("modHazardsFrequency", "frequency"),
+
+    -- Insurance
+    {
+        id = "modInsurance",
+        kind = Page.KIND_BOOL,
+        requires = hasInsurance,
+        get = function()
+            return TornadoInsurance.isEnabled
+        end,
+        set = function(value)
+            return console("cmdSet", "insurance", value and "on" or "off")
+        end,
+    },
+    {
+        id = "modInsuranceAdminOnly",
+        kind = Page.KIND_BOOL,
+        requires = hasInsurance,
+        get = function()
+            return TornadoInsurance.adminOnly
+        end,
+        set = function(value)
+            return console("cmdSet", "insurance", "managers", value and "admin" or "farm")
+        end,
+    },
+    {
+        id = "modInsuranceRegion",
+        kind = Page.KIND_CHOICE,
+        requires = hasInsurance,
+        options = function()
+            -- "Auto (United States - Kansas)": shows what the detection found.
+            local autoName = TornadoInsurance.regionSetting == TornadoInsurance.REGION_AUTO and TornadoInsurance:getRegionName()
+                or nil
+            local options = { { value = TornadoInsurance.REGION_AUTO, text = autoName ~= nil
+                and TornadoText.format("tp_insurance_region_auto_found", autoName) or TornadoText.get("tp_insurance_region_auto") } }
+            for _, option in ipairs(TornadoInsurance:getRegionOptions()) do
+                options[#options + 1] = { value = option.value, text = option.name }
+            end
+            return options
+        end,
+        get = function()
+            return TornadoInsurance.regionSetting
+        end,
+        set = function(value)
+            return console("cmdSet", "insurance", "region", value)
+        end,
+    },
 })

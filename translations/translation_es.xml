@@ -173,6 +173,23 @@
         <text name="tp_tip_hazards_flood" text="Varias horas de lluvia fuerte sobre un suelo ya empapado inundan los campos más bajos: el agua se acumula en el punto más bajo de cada campo y ahoga allí el cultivo. Los arrozales se salvan."/>
         <text name="tp_hazards_fire" text="Incendio de campo"/>
         <text name="tp_tip_hazards_fire" text="Durante una sequía, en tardes calurosas y secas, un campo maduro de cereal puede incendiarse. El fuego se extiende por el campo y quema el cultivo hasta apagarse solo o con la lluvia. Marcado en el mapa."/>
+        <text name="tp_sec_insurance" text="Seguros"/>
+        <text name="tp_insurance" text="Activar seguros"/>
+        <text name="tp_tip_insurance" text="Seguro por granja contra daños de tornados y del tiempo: primas mensuales, siniestros e indemnizaciones, con las reglas y precios del país del mapa. Las pólizas llegarán en una próxima actualización; esta opción prepara el sistema."/>
+        <text name="tp_insurance_admin_only" text="Solo el admin gestiona pólizas"/>
+        <text name="tp_tip_insurance_admin_only" text="NO: los gestores de cada granja (y el admin del servidor) contratan, cambian y cancelan las pólizas de su granja. SÍ: solo lo hace el admin del servidor, para servidores donde el admin lleva los seguros."/>
+        <text name="tp_insurance_region" text="Región del seguro"/>
+        <text name="tp_tip_insurance_region" text="Qué reglas y precios de seguro se aplican. Auto detecta el país (y el estado o la provincia) a partir del mapa."/>
+        <text name="tp_insurance_region_auto" text="Auto"/>
+        <text name="tp_insurance_region_auto_found" text="Auto (%s)"/>
+        <text name="tp_money_ins_premium" text="Primas de seguro"/>
+        <text name="tp_money_ins_payout" text="Indemnizaciones del seguro"/>
+        <text name="tp_msg_ins_premium_charged" text="Seguro: cobrada la prima mensual de %s."/>
+        <text name="tp_msg_ins_payout" text="Seguro: %s pagados a tu granja."/>
+        <text name="tp_msg_ins_test_timer" text="Seguro: cuenta atrás de prueba terminada."/>
+        <text name="tp_msg_ins_off" text="Los seguros están desactivados en este servidor."/>
+        <text name="tp_msg_ins_denied" text="Seguro: solo un gestor de la granja o el admin del servidor puede cambiar las pólizas de esta granja."/>
+        <text name="tp_msg_ins_denied_admin" text="Seguro: en este servidor solo el admin gestiona las pólizas."/>
         <text name="tp_hazards_owned" text="Solo campos con dueño"/>
         <text name="tp_tip_hazards_owned" text="SÍ: la sequía y las inundaciones solo dañan campos que pertenecen a una granja; los campos sin dueño no se tocan. NO: el tiempo afecta a todos los campos cultivados del mapa."/>
         <text name="tp_hazards_intensity" text="Intensidad de los daños"/>

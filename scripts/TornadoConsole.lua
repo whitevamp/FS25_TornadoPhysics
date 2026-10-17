@@ -53,7 +53,7 @@ function TornadoConsole:cmdHelp(command)
         print("Usage: t_help [command] for more details.")
         print("t_physics: Adjust Physics: radius, power, heavy, fence, randomize...")
         print("t_sfx: Adjust SFX: sound, ring, particles...")
-        print("t_set: Module Settings: cargo, husbandry, destruction, traffic, wildlife, hazards, climate, save...")
+        print("t_set: Module Settings: cargo, husbandry, destruction, traffic, wildlife, hazards, insurance, climate, save...")
         print("t_dev: Developer Tools: status, verbose, hud, hotspotdump, kill_test...")
         print("t_tune: Fine-tune Physics Constants")
         print("t_reset: Reset Settings: all, physics, tuning, cargo...")
@@ -144,6 +144,14 @@ function TornadoConsole:cmdHelp(command)
         print("    frequency <percent> - How fast the soil dries out, 25 - 300. Ex: t_set hazards frequency 150")
         print("    status              - Soil water, dry days, drought state and settings.")
         print(" ")
+        print("  insurance [sub-command] - Per-farm insurance (OFF by default). Policies come in a later update.")
+        print("    (no sub-command)    - Toggles insurance ON/OFF.")
+        print("    on|off              - Explicitly turns insurance ON or OFF.")
+        print("    managers <farm|admin> - Who may buy / change policies: farm managers + admin, or the admin only.")
+        print("    region <value|auto> - Whose insurance rules apply. Ex: t_set insurance region DE | US_KS | auto")
+        print("    list                - Prints all insurance regions.")
+        print("    status              - Region, data file, settings, records.")
+        print(" ")
         print("  climate [sub-command] - Real-life tornado climate (EF rating, size, hail and wind from NOAA data).")
         print("    (no sub-command)    - Toggles real-life mode ON/OFF (OFF = classic random tornadoes).")
         print("    on|off              - Explicitly turns real-life mode ON or OFF.")
@@ -177,6 +185,15 @@ function TornadoConsole:cmdHelp(command)
         print("  hazards fire [field]  - Starts a field fire now (random grain-type field, or the given field number).")
         print("  hazards fireout       - Puts the burning field fire out.")
         print("  hazards log           - Prints the last 20 hazard events (field, farm, share).")
+        print("  insurance status      - Insurance status (region, data, settings, countdowns).")
+        print("  insurance bill        - Runs the monthly premium billing now.")
+        print("  insurance testpremium <amount> - Test premium per month for every farm (0 = off, not saved).")
+        print("  insurance charge|pay <amount> [farm] - Books a premium / payout (finance + inbox).")
+        print("  insurance timer <days> [farm] - Test countdown of <days> real-life days (inbox letter when done).")
+        print("  insurance timers      - Lists the running countdowns.")
+        print("  insurance inbox [farm] - Prints a farm's insurance letters and totals.")
+        print("  insurance rate <FILLTYPE> <PLAN> <coverage %> - Rate lookup (US / Canada / Brazil data). Ex: t_dev insurance rate MAIZE RP 75")
+        print("  insurance regions     - Prints all insurance regions.")
         print("--------------------------------------------------")
     elseif command == "t_tune" then
         print("---------------- t_tune HELP ----------------")
@@ -207,6 +224,7 @@ function TornadoConsole:cmdHelp(command)
         print("  traffic               - Resets traffic roadblock settings.")
         print("  wildlife              - Resets wildlife settings (ON, flee distance 150 m).")
         print("  hazards               - Resets natural hazards (OFF, drought + flood + fire ON, all fields, 100 %).")
+        print("  insurance             - Resets insurance settings (OFF, farm managers + admin, region Auto).")
         print("  climate               - Resets real-life climate mode (OFF, region Auto).")
         print("--------------------------------------------------")
     else
@@ -610,7 +628,42 @@ end
         return "Climate: Real-life tornado climate = " .. tostring(TornadoClimate.isEnabled)
     end
 
-   return "Unknown Set CMD. Try: save, cargo, husbandry, destruction, recovery, traffic, wildlife, hazards, climate"
+    if module == "insurance" then
+        if not TornadoInsurance then return "Error: Insurance Module missing." end
+
+        if subCmd == "on" or subCmd == "true" then
+            TornadoInsurance.isEnabled = true
+        elseif subCmd == "off" or subCmd == "false" then
+            TornadoInsurance.isEnabled = false
+        elseif subCmd == "managers" then
+            if value == "admin" then
+                TornadoInsurance.adminOnly = true
+            elseif value == "farm" or value == "manager" then
+                TornadoInsurance.adminOnly = false
+            else
+                return "Usage: t_set insurance managers <farm | admin>"
+            end
+            return "Insurance: Policy managers = " .. (TornadoInsurance.adminOnly and "server admin only" or "farm manager + admin")
+        elseif subCmd == "region" then
+            if value == nil then return "Usage: t_set insurance region <country | region | auto>  (list: t_set insurance list)" end
+            if not TornadoInsurance:setRegion(value) then
+                return string.format("Insurance: Unknown region '%s'. Use 't_set insurance list'.", tostring(value))
+            end
+            return "Insurance: Region = " .. (TornadoInsurance.regionSetting == TornadoInsurance.REGION_AUTO and "Auto - " or "") ..
+                TornadoInsurance:getRegionName()
+        elseif subCmd == "list" then
+            return TornadoInsurance:consoleCommand("regions")
+        elseif subCmd == "status" then
+            return TornadoInsurance:getStatusText()
+        elseif subCmd == nil or subCmd == "toggle" then
+            TornadoInsurance.isEnabled = not TornadoInsurance.isEnabled
+        else
+            return "Unknown Insurance CMD. Try: on, off, managers, region, list, status"
+        end
+        return "Insurance: Insurance = " .. tostring(TornadoInsurance.isEnabled)
+    end
+
+   return "Unknown Set CMD. Try: save, cargo, husbandry, destruction, recovery, traffic, wildlife, hazards, insurance, climate"
 end
 
 -- =========================================================================
@@ -658,6 +711,10 @@ function TornadoConsole:cmdDev(tool, arg1, arg2, arg3, arg4, arg5)
     elseif tool == "hazards" then
         if not TornadoHazards then return "Error: Hazards Module missing." end
         return TornadoHazards:consoleCommand(arg1, arg2)
+
+    elseif tool == "insurance" then
+        if not TornadoInsurance then return "Error: Insurance Module missing." end
+        return TornadoInsurance:consoleCommand(arg1, arg2, arg3, arg4)
 
     elseif tool == "pos" then 
         if TornadoDebug then
@@ -731,11 +788,11 @@ end
 function TornadoConsole:cmdReset(category)
     if not TornadoSettings then return "Error: Settings module missing." end
     
-    if category == "all" or category == "physics" or category == "tuning" or category == "cargo" or category == "husbandry" or category == "traffic" or category == "wildlife" or category == "hazards" or category == "climate" then
+    if category == "all" or category == "physics" or category == "tuning" or category == "cargo" or category == "husbandry" or category == "traffic" or category == "wildlife" or category == "hazards" or category == "insurance" or category == "climate" then
         TornadoSettings:resetToDefaults(category)
         return string.format("RESET COMPLETE: '%s' settings restored to factory defaults.", category)
     else
-        return "Usage: t_reset [all | physics | tuning | cargo | husbandry | traffic | wildlife | hazards | climate]"
+        return "Usage: t_reset [all | physics | tuning | cargo | husbandry | traffic | wildlife | hazards | insurance | climate]"
     end
 end
 

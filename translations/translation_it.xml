@@ -173,6 +173,23 @@
         <text name="tp_tip_hazards_flood" text="Diverse ore di pioggia forte su un terreno già zuppo allagano i campi più bassi: l'acqua si raccoglie nel punto più basso di ogni campo e lì annega la coltura. Le risaie sono risparmiate."/>
         <text name="tp_hazards_fire" text="Incendio dei campi"/>
         <text name="tp_tip_hazards_fire" text="Durante una siccità, nei pomeriggi caldi e secchi, un campo maturo di cereali può prendere fuoco. L'incendio si estende nel campo e brucia la coltura finché si spegne da solo o con la pioggia. Segnato sulla mappa."/>
+        <text name="tp_sec_insurance" text="Assicurazione"/>
+        <text name="tp_insurance" text="Attiva assicurazione"/>
+        <text name="tp_tip_insurance" text="Assicurazione per fattoria contro i danni di tornado e meteo: premi mensili, sinistri e risarcimenti, con le regole e i prezzi del paese della mappa. Le polizze arriveranno in un prossimo aggiornamento; questa opzione prepara il sistema."/>
+        <text name="tp_insurance_admin_only" text="Solo l'admin gestisce le polizze"/>
+        <text name="tp_tip_insurance_admin_only" text="NO: i gestori di ogni fattoria (e l'admin del server) stipulano, modificano e annullano le polizze della propria fattoria. SÌ: lo fa solo l'admin del server - per i server in cui l'admin gestisce l'assicurazione."/>
+        <text name="tp_insurance_region" text="Regione assicurativa"/>
+        <text name="tp_tip_insurance_region" text="Quali regole e prezzi assicurativi si applicano. Auto rileva il paese (e lo stato o la provincia) dalla mappa."/>
+        <text name="tp_insurance_region_auto" text="Auto"/>
+        <text name="tp_insurance_region_auto_found" text="Auto (%s)"/>
+        <text name="tp_money_ins_premium" text="Premi assicurativi"/>
+        <text name="tp_money_ins_payout" text="Risarcimenti assicurativi"/>
+        <text name="tp_msg_ins_premium_charged" text="Assicurazione: addebitato il premio mensile di %s."/>
+        <text name="tp_msg_ins_payout" text="Assicurazione: %s versati alla tua fattoria."/>
+        <text name="tp_msg_ins_test_timer" text="Assicurazione: conto alla rovescia di prova terminato."/>
+        <text name="tp_msg_ins_off" text="L'assicurazione è disattivata su questo server."/>
+        <text name="tp_msg_ins_denied" text="Assicurazione: solo un gestore della fattoria o l'admin del server può modificare le polizze di questa fattoria."/>
+        <text name="tp_msg_ins_denied_admin" text="Assicurazione: su questo server solo l'admin gestisce le polizze."/>
         <text name="tp_hazards_owned" text="Solo campi posseduti"/>
         <text name="tp_tip_hazards_owned" text="SÌ: siccità e alluvioni danneggiano solo i campi posseduti da una fattoria; i campi senza proprietario restano intatti. NO: il meteo colpisce ogni campo coltivato della mappa."/>
         <text name="tp_hazards_intensity" text="Intensità dei danni"/>

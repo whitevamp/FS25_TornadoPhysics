@@ -1,8 +1,8 @@
 # Tornado Physics – Insurance Module (Design Document)
 
-**Status:** Draft / planning – crop data builder done (`tools/build_crop_insurance.py` → `DB/CropInsurance_US.xml`), module not implemented yet
+**Status:** Phase 0 (foundation) implemented 2026-10-16 – `scripts/insurance/`; crop data for 14 profiles done; policies not implemented yet
 **Target:** Tornado Physics v5.x or later (module inside the mod, OFF by default)
-**Last updated:** 2026-10-15
+**Last updated:** 2026-10-16
 
 > All game-API names in this document were checked against the decrypted FS25 base-game scripts
 > (`dataS/scripts_decoded`). Real-life numbers marked **(verify)** are from memory and must be checked
@@ -920,10 +920,12 @@ Idea: players with fire trucks put our fire out early (less loss). Never copy DL
 ## 16. Open questions
 
 1. Rebuilt-title value penalty default: real-life ~20–40 % vs. the author's −50 % to −75 %.
-2. Insurance crop price: best sell-point price or average across sell points?
-3. Expected yield: game standard yield (simple) or the farm's own harvest history (realistic, needs
-   history tracking and a default for new fields)?
-4. Damage sampling method for crops (§4.1 option 1 vs. 2) – needs a prototype for accuracy and cost.
+2. ~~Insurance crop price~~ – **decided 2026-10-16: average** across the sell points that accept the crop
+   (closer to a real projected price, not gamed by one great-demand sell point).
+3. ~~Expected yield~~ – **decided 2026-10-16: game standard yield** per hectare in v1; harvest history later.
+4. ~~Damage sampling method~~ – **decided 2026-10-16: geometry estimate** from a hook on
+   `FSDensityMapUtil.updateDisasterArea` (twister, hail and our hazards all call it): which fields each
+   destruction area covers and what share it destroys. Fast and deterministic; no density-map reads.
 5. Does a write-off require the player to clear the field before replanting, or is that left to them?
 6. Equipment policy: all vehicles (simple) or per-vehicle opt-in (more control, more UI)?
 7. What happens to open claims when a farm is deleted or a vehicle is sold before the decision?
@@ -939,13 +941,54 @@ Idea: players with fire trucks put our fire out early (less loss). Never copy DL
 
 ## 18. Implementation phases
 
-1. **Crop damage measurement** (prototype the sampling, §4.1) – useful on its own: a "storm damage
-   report" per field even without insurance.
-2. **Equipment insurance** – snapshot, claims, total loss, buy-back, branded titles, removal toggle.
-   Builds directly on Destruction / Recovery; no external data needed.
-3. **Crop insurance** – ~~RMA data builder~~ (done), YP/RPHPE/RP/APH, price locking, cap, volatility
-   premiums, write-off.
-4. **UI polish** – inbox, charts, premium history, no-claims discount.
+Agreed 2026-10-16 (replaces the first draft: crops before equipment, a foundation phase first, the full UI
+last). Every phase is testable and committable on its own; the module stays OFF by default.
+
+0. **Foundation** – **implemented 2026-10-16** (see 18.1).
+1. **Storm damage report** – hook `FSDensityMapUtil.updateDisasterArea` (server, guard flag) to log which
+   fields twister / hail / hazard destruction covers and the destroyed share (geometry estimate, §16 q4);
+   per-farm "storm report" message after the storm, even with insurance OFF; the event log feeds the claims.
+2. **Crop insurance** – policy per farm (plan, coverage, all owned fields with an insurable crop); policy
+   year with locked prices (average sell-point price, §16 q2), standard yield (§16 q3), planting cut-off,
+   waiting period, refusal during an outbreak / active tornado; monthly premium (farmer rate × state factor
+   × cost scale); claims from the damage log (tornado, hail, drought, flood, fire) → adjuster → decision →
+   payout, RP harvest-price cap. The six data programme types need their own rate rules: `curves` (US, CA,
+   BR) first, then `namedPeril` (DE, PL, GB, AU, AR, CL), `multiRisk` (FR, NL), `modules` (ES),
+   `perilGroups` (IT), `schemes` (SEA) – may be split into 2a / 2b. Simple control-panel page + console.
+3. **Equipment insurance** – value snapshot, repair estimate (`TornadoRecovery:estimateRepairCost`),
+   repair / total loss / buy-back, Salvage / Rebuilt titles, remove-totaled toggle.
+4. **Full UI and extras** – Insurance tabs (overview, crops, equipment, claims, inbox), premiums-vs-payouts
+   chart, no-claims discount, renewal bonus, volatility factor, co-op groups, field write-off.
+
+### 18.1 Phase 0 – what exists (2026-10-16)
+
+- `scripts/insurance/TornadoInsuranceData.lua` – reads any `DB/CropInsurance_<country>.xml`: header,
+  programme type (`<program type>`, else `curves` when plans exist, else `schemes`), region tree (parent,
+  `defaultChild` for container roots like SEA → IDN), crop list per region, coverage curves. Lookups:
+  `getCurve` (§9.3 fallbacks: missing plan → not offered, missing crop → DEFAULT, `borrowedFrom`, curve
+  searched up the region chain), `getLevel`, `getRateFactor`, `getRegionChain`, `findCrop`.
+- `scripts/insurance/TornadoInsurance.lua`:
+  - settings `isEnabled` (OFF), `adminOnly` (policy managers: farm manager + admin / admin only),
+    `regionSetting` (`auto`, a country `DE`, or `country:region` `US:US_KS`); saved in
+    `TornadoPhysics.insurance.*`, synced, Modules tab rows, `t_set insurance on|off|managers|region|list|status`,
+    `t_reset insurance`;
+  - region: setting, else `TornadoRegion:detect()` + the climate detection's state (`detectRegionShared`),
+    kept only when the profile has that region;
+  - time model §5: `addTimer(farmId, kind, realDays, data)` counts down on `MINUTE_CHANGED` by the in-game
+    time actually passed (monotonic day + day time), month length read each tick; paused while OFF;
+    monthly billing on `PERIOD_CHANGED` over all registered premium sources × cost scale;
+  - money types `tp_money_ins_premium` / `tp_money_ins_payout` (statistic `other` – the finance page rows
+    are a fixed list; the HUD popup shows our title), `chargePremium` / `payOut`, totals + 24-month history;
+  - inbox per farm (key + params, max 50) shown as a notification to that farm;
+  - permissions `canManage(connection, farmId)` (admin always; farm manager unless admin only; no
+    connection = host / console); actions `registerAction(name, managerOnly, run)`, built-ins `refresh`,
+    `read`;
+  - extension points for the policy phases: `registerPremiumSource`, `registerTimerHandler`, `registerAction`;
+  - savegame `TornadoInsurance.xml` (farms, history, inbox, timers).
+- Events `TornadoInsuranceActionEvent` (client → server, permission checked) and
+  `TornadoInsuranceStateEvent` (server → the farm / a joining player: totals + inbox).
+- Dev console `t_dev insurance status|bill|testpremium|charge|pay|timer|timers|inbox|rate|regions`.
+- Offline test `tools/test/test_insurance.lua` (114 checks; reads the real DB files).
 
 ## 19. Rules for the implementation
 

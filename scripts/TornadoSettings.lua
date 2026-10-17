@@ -160,6 +160,17 @@ function TornadoSettings:resetToDefaults(category)
         end
     end
 
+    -- RESET Insurance (settings only - policies, claims and the inbox are savegame data)
+    if TornadoInsurance then
+        if category == "all" or category == "insurance" then
+            TornadoInsurance.isEnabled = false
+            TornadoInsurance.adminOnly = false
+            TornadoInsurance.regionSetting = "auto"
+            TornadoInsurance.resolved = nil
+            print("TORNADO RESET: Insurance defaults restored.")
+        end
+    end
+
     -- RESET Real-life climate mode
     if TornadoClimate then
         if category == "all" or category == "climate" then
@@ -260,6 +271,11 @@ function TornadoSettings:createDefaultXML()
     setXMLBool(xmlId, "TornadoPhysics.hazards.flood", true)
     setXMLBool(xmlId, "TornadoPhysics.hazards.fire", true)
     setXMLBool(xmlId, "TornadoPhysics.hazards.ownedOnly", false)
+
+    -- INSURANCE
+    setXMLBool(xmlId, "TornadoPhysics.insurance.enabled", false)
+    setXMLBool(xmlId, "TornadoPhysics.insurance.adminOnly", false)
+    setXMLString(xmlId, "TornadoPhysics.insurance.region", "auto")
 
     -- 14. REAL-LIFE CLIMATE MODE
     setXMLBool(xmlId, "TornadoPhysics.climate.enabled", false)
@@ -406,6 +422,16 @@ function TornadoSettings:loadFromXML()
         if ownedOnly ~= nil then TornadoHazards.ownedOnly = ownedOnly end
     end
 
+    if TornadoInsurance then
+        local insuranceEnabled = getXMLBool(xmlId, "TornadoPhysics.insurance.enabled")
+        if insuranceEnabled ~= nil then TornadoInsurance.isEnabled = insuranceEnabled end
+        local adminOnly = getXMLBool(xmlId, "TornadoPhysics.insurance.adminOnly")
+        if adminOnly ~= nil then TornadoInsurance.adminOnly = adminOnly end
+        -- Stored as given; an unknown country falls back to the default profile when the data loads.
+        TornadoInsurance.regionSetting = getXMLString(xmlId, "TornadoPhysics.insurance.region") or TornadoInsurance.regionSetting
+        TornadoInsurance.resolved = nil
+    end
+
     if TornadoClimate then
         local climateEnabled = getXMLBool(xmlId, "TornadoPhysics.climate.enabled")
         if climateEnabled ~= nil then TornadoClimate.isEnabled = climateEnabled end
@@ -539,6 +565,12 @@ function TornadoSettings:saveToXML()
         setXMLBool(xmlId, "TornadoPhysics.hazards.flood", TornadoHazards.floodEnabled)
         setXMLBool(xmlId, "TornadoPhysics.hazards.fire", TornadoHazards.fireEnabled)
         setXMLBool(xmlId, "TornadoPhysics.hazards.ownedOnly", TornadoHazards.ownedOnly)
+    end
+
+    if TornadoInsurance then
+        setXMLBool(xmlId, "TornadoPhysics.insurance.enabled", TornadoInsurance.isEnabled)
+        setXMLBool(xmlId, "TornadoPhysics.insurance.adminOnly", TornadoInsurance.adminOnly)
+        setXMLString(xmlId, "TornadoPhysics.insurance.region", TornadoInsurance.regionSetting or "auto")
     end
 
     if TornadoClimate then

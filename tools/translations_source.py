@@ -620,6 +620,87 @@ t("tp_tip_hazards_fire",
   "Durante una sequía, en tardes calurosas y secas, un campo maduro de cereal puede incendiarse. El fuego se extiende por el campo y quema el cultivo hasta apagarse solo o con la lluvia. Marcado en el mapa.",
   "Durante una siccità, nei pomeriggi caldi e secchi, un campo maturo di cereali può prendere fuoco. L'incendio si estende nel campo e brucia la coltura finché si spegne da solo o con la pioggia. Segnato sulla mappa.",
   "Tijdens een droogte kan een rijp graanveld op hete droge middagen in brand vliegen. Het vuur verspreidt zich door het veld en verbrandt het gewas tot het uitbrandt of de regen het dooft. Aangegeven op de kaart.")
+# Insurance (phase 0: settings, money types, letters)
+t("tp_sec_insurance", "Insurance", "Versicherung", "Assurance", "Ubezpieczenia", "Seguros", "Assicurazione", "Verzekering")
+t("tp_insurance", "Enable insurance", "Versicherung aktivieren", "Activer l'assurance", "Włącz ubezpieczenia",
+  "Activar seguros", "Attiva assicurazione", "Verzekering inschakelen")
+t("tp_tip_insurance",
+  "Per-farm insurance against tornado and weather damage: monthly premiums, claims and payouts, with the rules and prices of the map's country. Policies come in a later update; this switch prepares the system.",
+  "Versicherung pro Hof gegen Tornado- und Wetterschäden: monatliche Prämien, Schadensfälle und Auszahlungen nach den Regeln und Preisen des Landes der Karte. Die Policen folgen in einem späteren Update; dieser Schalter bereitet das System vor.",
+  "Assurance par ferme contre les dégâts des tornades et de la météo : primes mensuelles, sinistres et indemnités, avec les règles et les prix du pays de la carte. Les contrats arrivent dans une prochaine mise à jour ; cette option prépare le système.",
+  "Ubezpieczenie dla każdego gospodarstwa od szkód po tornadach i pogodzie: miesięczne składki, szkody i wypłaty według zasad i cen kraju mapy. Polisy pojawią się w kolejnej aktualizacji; ten przełącznik przygotowuje system.",
+  "Seguro por granja contra daños de tornados y del tiempo: primas mensuales, siniestros e indemnizaciones, con las reglas y precios del país del mapa. Las pólizas llegarán en una próxima actualización; esta opción prepara el sistema.",
+  "Assicurazione per fattoria contro i danni di tornado e meteo: premi mensili, sinistri e risarcimenti, con le regole e i prezzi del paese della mappa. Le polizze arriveranno in un prossimo aggiornamento; questa opzione prepara il sistema.",
+  "Verzekering per boerderij tegen tornado- en weerschade: maandelijkse premies, schademeldingen en uitkeringen, met de regels en prijzen van het land van de kaart. De polissen komen in een volgende update; deze schakelaar bereidt het systeem voor.")
+t("tp_insurance_admin_only", "Only the admin manages policies", "Nur der Admin verwaltet Policen",
+  "Seul l'admin gère les contrats", "Tylko admin zarządza polisami", "Solo el admin gestiona pólizas",
+  "Solo l'admin gestisce le polizze", "Alleen de admin beheert polissen")
+t("tp_tip_insurance_admin_only",
+  "OFF: each farm's managers (and the server admin) buy, change and cancel their farm's policies. ON: only the server admin does - for servers where the admin runs the insurance.",
+  "AUS: Die Verwalter jedes Hofs (und der Server-Admin) schließen die Policen ihres Hofs ab, ändern und kündigen sie. AN: Nur der Server-Admin - für Server, auf denen der Admin die Versicherung führt.",
+  "NON : les gérants de chaque ferme (et l'admin du serveur) souscrivent, modifient et résilient les contrats de leur ferme. OUI : seul l'admin du serveur le fait - pour les serveurs où l'admin gère l'assurance.",
+  "WYŁ.: zarządcy każdego gospodarstwa (i admin serwera) kupują, zmieniają i anulują polisy swojego gospodarstwa. WŁ.: robi to tylko admin serwera - dla serwerów, na których admin prowadzi ubezpieczenia.",
+  "NO: los gestores de cada granja (y el admin del servidor) contratan, cambian y cancelan las pólizas de su granja. SÍ: solo lo hace el admin del servidor, para servidores donde el admin lleva los seguros.",
+  "NO: i gestori di ogni fattoria (e l'admin del server) stipulano, modificano e annullano le polizze della propria fattoria. SÌ: lo fa solo l'admin del server - per i server in cui l'admin gestisce l'assicurazione.",
+  "UIT: de beheerders van elke boerderij (en de serverbeheerder) sluiten, wijzigen en beëindigen de polissen van hun boerderij. AAN: alleen de serverbeheerder doet dat - voor servers waar de beheerder de verzekering regelt.")
+t("tp_insurance_region", "Insurance region", "Versicherungsregion", "Région d'assurance", "Region ubezpieczenia",
+  "Región del seguro", "Regione assicurativa", "Verzekeringsregio")
+t("tp_tip_insurance_region",
+  "Whose insurance rules and prices apply. Auto detects the country (and state or province) from the map.",
+  "Wessen Versicherungsregeln und Preise gelten. Auto erkennt das Land (und Bundesland oder Provinz) anhand der Karte.",
+  "Règles et prix d'assurance appliqués. Auto détecte le pays (et l'État ou la province) d'après la carte.",
+  "Czyje zasady i ceny ubezpieczeń obowiązują. Auto rozpoznaje kraj (oraz stan lub prowincję) na podstawie mapy.",
+  "Qué reglas y precios de seguro se aplican. Auto detecta el país (y el estado o la provincia) a partir del mapa.",
+  "Quali regole e prezzi assicurativi si applicano. Auto rileva il paese (e lo stato o la provincia) dalla mappa.",
+  "Welke verzekeringsregels en prijzen gelden. Auto herkent het land (en de staat of provincie) aan de kaart.")
+t("tp_insurance_region_auto", "Auto", "Auto", "Auto", "Auto", "Auto", "Auto", "Auto")
+t("tp_insurance_region_auto_found", "Auto (%s)", "Auto (%s)", "Auto (%s)", "Auto (%s)", "Auto (%s)", "Auto (%s)", "Auto (%s)")
+t("tp_money_ins_premium", "Insurance premiums", "Versicherungsprämien", "Primes d'assurance", "Składki ubezpieczeniowe",
+  "Primas de seguro", "Premi assicurativi", "Verzekeringspremies")
+t("tp_money_ins_payout", "Insurance payouts", "Versicherungsleistungen", "Indemnités d'assurance", "Wypłaty z ubezpieczenia",
+  "Indemnizaciones del seguro", "Risarcimenti assicurativi", "Verzekeringsuitkeringen")
+t("tp_msg_ins_premium_charged", "Insurance: monthly premium of %s charged.",
+  "Versicherung: Monatsprämie von %s abgebucht.",
+  "Assurance : prime mensuelle de %s prélevée.",
+  "Ubezpieczenie: pobrano miesięczną składkę %s.",
+  "Seguro: cobrada la prima mensual de %s.",
+  "Assicurazione: addebitato il premio mensile di %s.",
+  "Verzekering: maandpremie van %s afgeschreven.")
+t("tp_msg_ins_payout", "Insurance: %s paid out to your farm.",
+  "Versicherung: %s an deinen Hof ausgezahlt.",
+  "Assurance : %s versés à votre ferme.",
+  "Ubezpieczenie: wypłacono %s na konto gospodarstwa.",
+  "Seguro: %s pagados a tu granja.",
+  "Assicurazione: %s versati alla tua fattoria.",
+  "Verzekering: %s uitgekeerd aan je boerderij.")
+t("tp_msg_ins_test_timer", "Insurance: test countdown finished.",
+  "Versicherung: Test-Countdown abgelaufen.",
+  "Assurance : compte à rebours de test terminé.",
+  "Ubezpieczenie: testowe odliczanie zakończone.",
+  "Seguro: cuenta atrás de prueba terminada.",
+  "Assicurazione: conto alla rovescia di prova terminato.",
+  "Verzekering: testaftelling afgelopen.")
+t("tp_msg_ins_off", "Insurance is turned off on this server.",
+  "Die Versicherung ist auf diesem Server ausgeschaltet.",
+  "L'assurance est désactivée sur ce serveur.",
+  "Ubezpieczenia są wyłączone na tym serwerze.",
+  "Los seguros están desactivados en este servidor.",
+  "L'assicurazione è disattivata su questo server.",
+  "Verzekering staat uit op deze server.")
+t("tp_msg_ins_denied", "Insurance: only a farm manager or the server admin can change this farm's policies.",
+  "Versicherung: Nur ein Hofverwalter oder der Server-Admin kann die Policen dieses Hofs ändern.",
+  "Assurance : seul un gérant de la ferme ou l'admin du serveur peut modifier les contrats de cette ferme.",
+  "Ubezpieczenie: tylko zarządca gospodarstwa lub admin serwera może zmieniać polisy tego gospodarstwa.",
+  "Seguro: solo un gestor de la granja o el admin del servidor puede cambiar las pólizas de esta granja.",
+  "Assicurazione: solo un gestore della fattoria o l'admin del server può modificare le polizze di questa fattoria.",
+  "Verzekering: alleen een beheerder van de boerderij of de serverbeheerder kan de polissen van deze boerderij wijzigen.")
+t("tp_msg_ins_denied_admin", "Insurance: on this server only the admin manages policies.",
+  "Versicherung: Auf diesem Server verwaltet nur der Admin die Policen.",
+  "Assurance : sur ce serveur, seul l'admin gère les contrats.",
+  "Ubezpieczenie: na tym serwerze polisami zarządza tylko admin.",
+  "Seguro: en este servidor solo el admin gestiona las pólizas.",
+  "Assicurazione: su questo server solo l'admin gestisce le polizze.",
+  "Verzekering: op deze server beheert alleen de admin de polissen.")
 t("tp_hazards_owned", "Only damage owned fields", "Nur eigene Felder beschädigen", "Seulement les champs possédés",
   "Tylko posiadane pola", "Solo campos con dueño", "Solo campi posseduti", "Alleen velden met eigenaar")
 t("tp_tip_hazards_owned",

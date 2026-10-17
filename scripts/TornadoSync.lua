@@ -110,6 +110,10 @@ TornadoSync.SETTINGS = {
     fieldSetting(function() return TornadoHazards end, "floodEnabled", "b"),
     fieldSetting(function() return TornadoHazards end, "fireEnabled", "b"),
     fieldSetting(function() return TornadoHazards end, "ownedOnly", "b"),
+    -- t_set insurance
+    fieldSetting(function() return TornadoInsurance end, "isEnabled", "b"),
+    fieldSetting(function() return TornadoInsurance end, "adminOnly", "b"),
+    fieldSetting(function() return TornadoInsurance end, "regionSetting", "s"),
     -- t_set climate
     fieldSetting(function() return TornadoClimate end, "isEnabled", "b"),
     fieldSetting(function() return TornadoClimate end, "regionSetting", "s"),
@@ -241,7 +245,7 @@ function TornadoSync:isGameplayCommand(method, a, b)
     if method == "cmdSet" then
         if a == nil or LOCAL_SET_MODULES[a] then return false end
         if a == "cargo" and b == "verbose" then return false end
-        if (a == "traffic" or a == "climate" or a == "wildlife" or a == "money" or a == "hazards") and (b == "status" or b == "list") then return false end
+        if (a == "traffic" or a == "climate" or a == "wildlife" or a == "money" or a == "hazards" or a == "insurance") and (b == "status" or b == "list") then return false end
         return true
     end
     return false
@@ -350,6 +354,10 @@ function TornadoSync:sendInitialState(connection)
 
     if TornadoHazards ~= nil and TornadoHazards.fire ~= nil and TornadoFieldFireEvent ~= nil then
         connection:sendEvent(TornadoFieldFireEvent.new(TornadoFieldFireEvent.START, TornadoHazards:getFireData(TornadoHazards.fire)))
+    end
+
+    if TornadoInsurance ~= nil and TornadoInsurance.sendInitialState ~= nil then
+        TornadoInsurance:sendInitialState(connection)
     end
 
     if TornadoDestruction ~= nil and TornadoDestruction._destroyedObjects ~= nil then

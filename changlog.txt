@@ -88,12 +88,23 @@
   farm owns untouched.
 - Field fires: during a drought, on hot dry afternoons (10:00 - 19:00, 25 C or
   more, no rain), a ripe grain-type field can catch fire. The fire starts at a
-  spot inside the field and spreads as an uneven line of flickering flames, with a tall
-  smoke plume that leans with the wind and can be seen from far away, burning the
-  crop inside, until it burns out or rain puts it out. Red map marker (click to
+  spot inside the field and spreads as an uneven line of flickering flames,
+  with a tall smoke plume that leans with the wind and can be seen from far
+  away, burning the crop inside, until it burns out or rain puts it out. Red map marker (click to
   go there), alerts for start and end, burnt share logged for the insurance.
   One fire at a time; it stays inside its field. Seen by every player in
   multiplayer.
+
+[ECONOMY] Insurance - groundwork (optional, OFF by default)
+- First part of the coming per-farm insurance: on/off switch, who may manage
+  policies (farm managers + admin, or the server admin only) and the insurance
+  region (Auto detects the map's country and state / province; 14 countries
+  and regions with real insurance data). Modules tab or t_set insurance.
+- Monthly premiums and payouts show up in your finances as "Other" with their
+  own insurance labels, letters from the insurer appear as notifications.
+  Saved with the savegame, synced in multiplayer.
+- No policies to buy yet - crop insurance comes next, equipment insurance
+  after that.
 
 [GAMEPLAY] Real-Life Tornado Climate (optional, OFF by default)
 - When enabled, tornadoes follow real recorded statistics instead of the classic
