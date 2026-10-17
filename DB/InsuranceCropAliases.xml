@@ -3,7 +3,8 @@
 <!-- Map mods add their own crops (rye, spelt, triticale, winter wheat, alfalfa ...); the insurance data only has the -->
 <!-- base-game crops. A map crop is rated like the crop named here, in this order: -->
 <!--   1. the country's own data has the crop (exact fill type name) -->
-<!--   2. <alias>: rated as the named crop (same crop, other name or close relative) -->
+<!--   2. <alias>: rated as the named crop (same crop, other name or close relative); when the country's -->
+<!--      data does not list that crop either, the named crop is looked up instead (RICELONGGRAIN -> RICE) -->
 <!--   3. <prefix>: the name without the prefix exists (WINTERWHEAT -> WHEAT) -->
 <!--   4. <category>: the game's machine group the crop belongs to (first match in this order) -->
 <!--   5. DEFAULT (all field crops) -->
@@ -12,6 +13,7 @@
 <insuranceCropAliases version="1">
     <!-- Naming differences between the game and the insurance data -->
     <alias fillType="BEETROOT" ratedAs="REDBEET" note="base-game name of red beet"/>
+    <alias fillType="RICELONGGRAIN" ratedAs="RICE" note="rice variety"/>
 
     <!-- Cereals -->
     <alias fillType="SPELT" ratedAs="WHEAT" note="wheat species"/>

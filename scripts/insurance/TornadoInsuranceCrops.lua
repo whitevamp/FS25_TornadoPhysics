@@ -93,9 +93,10 @@ local function isListedLocally(chain, name)
     return false
 end
 
---- Pure resolver. name = fill type name of the crop; categories = { [CATEGORY] = true } of the crop (may be nil).
+--- Pure resolver. name = fill type name of the crop; categories = { [CATEGORY] = true } of the crop (may be nil);
+--- depth = internal (alias chains).
 --- Returns { fillType, ratedAs, method, insurable, isLocal, note }.
-function TornadoInsuranceCrops.resolve(aliasData, profile, regionId, name, categories)
+function TornadoInsuranceCrops.resolve(aliasData, profile, regionId, name, categories, depth)
     name = string.upper(name or "")
     local result = { fillType = name, ratedAs = nil, method = nil, insurable = true, isLocal = false, note = nil }
     aliasData = aliasData or { aliases = {}, prefixes = {}, categories = {}, notInsurable = {} }
@@ -113,8 +114,17 @@ function TornadoInsuranceCrops.resolve(aliasData, profile, regionId, name, categ
     end
     if result.method == nil then
         local alias = aliasData.aliases[name]
-        if alias ~= nil and alias.ratedAs ~= "" and isListed(chain, alias.ratedAs) then
-            result.ratedAs, result.method, result.note = alias.ratedAs, TornadoInsuranceCrops.METHOD_ALIAS, alias.note
+        if alias ~= nil and alias.ratedAs ~= "" and alias.ratedAs ~= name then
+            if isListed(chain, alias.ratedAs) then
+                result.ratedAs, result.method, result.note = alias.ratedAs, TornadoInsuranceCrops.METHOD_ALIAS, alias.note
+            elseif (depth or 0) < 3 then
+                -- The country does not list the alias crop either: rate this crop exactly like that one
+                -- (long-grain rice like rice), not by its own machine group.
+                local viaAlias = TornadoInsuranceCrops.resolve(aliasData, profile, regionId, alias.ratedAs, nil, (depth or 0) + 1)
+                viaAlias.fillType = name
+                viaAlias.note = "via " .. alias.ratedAs
+                return viaAlias
+            end
         end
     end
     if result.method == nil then

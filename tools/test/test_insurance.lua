@@ -400,6 +400,10 @@ res = r(de, nil, "COTTON", { PLANTER = true })
 check("cotton in Germany -> by category (SOYBEAN), unusual", res.method == "category" and res.ratedAs == "SOYBEAN" and not res.isLocal, true)
 check("cotton in Germany without category -> DEFAULT", r(de, nil, "COTTON").ratedAs, "DEFAULT")
 check("rye in Germany -> WHEAT", r(de, nil, "RYE").ratedAs, "WHEAT")
+check("Germany: rice -> DEFAULT", r(de, nil, "RICE").ratedAs, "DEFAULT")
+res = r(de, nil, "RICELONGGRAIN", { GRAINHEADER = true })
+check("Germany: long-grain rice follows rice, not its machine group", res.ratedAs == "DEFAULT" and not res.isLocal, true)
+check("US: long-grain rice has its own data", r(us, nil, "RICELONGGRAIN").method, "data")
 -- Every crop of the 49-map survey resolves; only the specialty crops fall back to DEFAULT.
 local survey = { "ALFALFA", "BEANS", "BLACKBEAN", "BUCKWHEAT", "CHICKPEAS", "CLOVER", "DECOFOLIAGEMIX", "FABABEAN",
     "FIELDGRASS", "FLAX", "FLAXSEED", "FLOWERINGCATCHCROP", "GREENRYE", "HEMP", "HOPS", "HUMUSACTIVE", "LAVENDER",
@@ -415,7 +419,8 @@ end
 -- Alias targets are real crop names (all exist in the US data, which lists every base crop).
 check("every alias target is a known crop", (function()
     for name, alias in pairs(aliases.aliases) do
-        if r(us, nil, name).method ~= "alias" then
+        local method = r(us, nil, name).method
+        if method ~= "alias" and method ~= "data" then
             print("    " .. name .. " -> " .. tostring(alias.ratedAs) .. " is not a crop of the data")
             return false
         end
