@@ -194,6 +194,7 @@ function TornadoConsole:cmdHelp(command)
         print("  insurance inbox [farm] - Prints a farm's insurance letters and totals.")
         print("  insurance rate <FILLTYPE> <PLAN> <coverage %> - Rate lookup (US / Canada / Brazil data). Ex: t_dev insurance rate MAIZE RP 75")
         print("  insurance regions     - Prints all insurance regions.")
+        print("  insurance crops       - Every crop of this map and how the insurance rates it (map crops -> base crops).")
         print("--------------------------------------------------")
     elseif command == "t_tune" then
         print("---------------- t_tune HELP ----------------")

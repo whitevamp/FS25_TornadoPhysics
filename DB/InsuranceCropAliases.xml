@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<!-- Crop cross-reference for the insurance (scripts/insurance/TornadoInsuranceCrops.lua). Hand-written - edit freely. -->
+<!-- Map mods add their own crops (rye, spelt, triticale, winter wheat, alfalfa ...); the insurance data only has the -->
+<!-- base-game crops. A map crop is rated like the crop named here, in this order: -->
+<!--   1. the country's own data has the crop (exact fill type name) -->
+<!--   2. <alias>: rated as the named crop (same crop, other name or close relative) -->
+<!--   3. <prefix>: the name without the prefix exists (WINTERWHEAT -> WHEAT) -->
+<!--   4. <category>: the game's machine group the crop belongs to (first match in this order) -->
+<!--   5. DEFAULT (all field crops) -->
+<!-- <notInsurable>: cover crops / green manure / decoration - nobody insures what is never sold. -->
+<!-- Crop list from a survey of 49 map / pack mods (2026-10-16): 35 crops that are not in the base game. -->
+<insuranceCropAliases version="1">
+    <!-- Naming differences between the game and the insurance data -->
+    <alias fillType="BEETROOT" ratedAs="REDBEET" note="base-game name of red beet"/>
+
+    <!-- Cereals -->
+    <alias fillType="SPELT" ratedAs="WHEAT" note="wheat species"/>
+    <alias fillType="TRITICALE" ratedAs="WHEAT" note="wheat x rye cross"/>
+    <alias fillType="RYE" ratedAs="WHEAT" note="winter cereal, insured like wheat where no own programme"/>
+    <alias fillType="DURUM" ratedAs="WHEAT"/>
+    <alias fillType="BUCKWHEAT" ratedAs="OAT" note="small-area spring crop"/>
+    <alias fillType="MILLET" ratedAs="SORGHUM" note="warm-season small grain"/>
+    <alias fillType="SILAGEMAIZE" ratedAs="MAIZE"/>
+
+    <!-- Forage -->
+    <alias fillType="ALFALFA" ratedAs="GRASS" note="forage"/>
+    <alias fillType="CLOVER" ratedAs="GRASS" note="forage"/>
+    <alias fillType="FIELDGRASS" ratedAs="GRASS"/>
+
+    <!-- Pulses -->
+    <alias fillType="BEANS" ratedAs="PEA" note="dry pulses"/>
+    <alias fillType="BLACKBEAN" ratedAs="PEA"/>
+    <alias fillType="PINTOBEAN" ratedAs="PEA"/>
+    <alias fillType="FABABEAN" ratedAs="PEA"/>
+    <alias fillType="CHICKPEAS" ratedAs="PEA"/>
+    <alias fillType="LENTILS" ratedAs="PEA"/>
+    <alias fillType="PEANUT" ratedAs="SOYBEAN" note="legume row crop"/>
+
+    <!-- Oilseeds and fibre -->
+    <alias fillType="FLAX" ratedAs="CANOLA" note="oilseed"/>
+    <alias fillType="FLAXSEED" ratedAs="CANOLA"/>
+    <alias fillType="LINSEED" ratedAs="CANOLA"/>
+    <alias fillType="MUSTARD" ratedAs="CANOLA" note="mustard seed (sold as seed; as a cover crop it has no sell point)"/>
+    <alias fillType="POPPY" ratedAs="CANOLA" note="oilseed"/>
+    <alias fillType="HEMP" ratedAs="CANOLA" note="seed / fibre crop"/>
+
+    <!-- Vegetables -->
+    <alias fillType="ONION" ratedAs="POTATO" note="field vegetable, yield cover"/>
+    <alias fillType="REDONION" ratedAs="POTATO"/>
+
+    <!-- No alias on purpose: HOPS, LAVENDER, TOBACCO (specialty crops) -> DEFAULT, "unusual crop" -->
+
+    <!-- WINTERWHEAT -> WHEAT, SUMMERBARLEY -> BARLEY, SPRINGOAT -> OAT ... -->
+    <prefix value="WINTER"/>
+    <prefix value="SUMMER"/>
+    <prefix value="SPRING"/>
+
+    <!-- Machine groups (fruitTypeCategories of the map) for crops nobody listed above; first match wins -->
+    <category name="GRAINHEADER" ratedAs="WHEAT"/>
+    <category name="MAIZEHEADER" ratedAs="MAIZE"/>
+    <category name="TOPLIFTINGHARVESTER" ratedAs="CARROT"/>
+    <category name="PLANTER_SMALL" ratedAs="CARROT"/>
+    <category name="PLANTER" ratedAs="SOYBEAN"/>
+    <category name="DIRECTCUTTER" ratedAs="WHEAT"/>
+
+    <!-- Never insured -->
+    <notInsurable fillType="OILSEEDRADISH" note="cover crop"/>
+    <notInsurable fillType="GREENRYE" note="green manure"/>
+    <notInsurable fillType="VETCHRYE" note="cover crop"/>
+    <notInsurable fillType="HUMUSACTIVE" note="cover crop mix"/>
+    <notInsurable fillType="FLOWERINGCATCHCROP" note="catch crop"/>
+    <notInsurable fillType="MUSTARDCOVER" note="cover crop"/>
+    <notInsurable fillType="DECOFOLIAGEMIX" note="decoration"/>
+    <notInsurable fillType="POPLAR" note="short-rotation wood"/>
+    <notInsurable fillType="MEADOW" note="decoration / unmanaged grass"/>
+</insuranceCropAliases>

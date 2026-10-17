@@ -74,6 +74,7 @@ function TornadoMain:loadMap(name)
 
     -- Optional per-farm insurance (OFF by default; docs/INSURANCE_DESIGN.md).
     source(Utils.getFilename("scripts/insurance/TornadoInsuranceData.lua", modDir))
+    source(Utils.getFilename("scripts/insurance/TornadoInsuranceCrops.lua", modDir))
     source(Utils.getFilename("scripts/insurance/TornadoInsurance.lua", modDir))
 
     -- Saves the active tornado / outbreak with the savegame so a reload carries on.
@@ -146,6 +147,7 @@ function TornadoMain:loadMap(name)
     if TornadoRegion then TornadoRegion:loadMap(modDir) end
     if TornadoClimate then TornadoClimate:loadMap(modDir) end
     if TornadoOutbreak then TornadoOutbreak:loadMap() end
+    if TornadoInsuranceCrops then TornadoInsuranceCrops:loadMap(modDir) end
     if TornadoInsurance then TornadoInsurance:loadMap(modDir, modName) end   -- after Region / Climate (region detection)
     if TornadoPersistence then TornadoPersistence:loadMap() end   -- after Outbreak: restores its state
     -- Multiplayer: wrap the console handlers BEFORE they are registered, and send state to joining players.
@@ -181,6 +183,7 @@ function TornadoMain:deleteMap()
     if TornadoRegion then TornadoRegion:deleteMap() end
     if TornadoOutbreak then TornadoOutbreak:deleteMap() end
     if TornadoInsurance then TornadoInsurance:deleteMap() end
+    if TornadoInsuranceCrops then TornadoInsuranceCrops:deleteMap() end
     if TornadoEffects then TornadoEffects:deleteMap() end
     if TornadoDebug then TornadoDebug:deleteMap() end
     if TornadoCompass then TornadoCompass:deleteMap() end

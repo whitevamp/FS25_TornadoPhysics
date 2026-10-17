@@ -159,6 +159,7 @@ TornadoClimate = { regions = {}, detectRegionShared = function() return "US_KS" 
 
 dofile("scripts/insurance/TornadoInsuranceData.lua")
 dofile("scripts/insurance/TornadoInsurance.lua")
+dofile("scripts/insurance/TornadoInsuranceCrops.lua")
 
 -- ---------------------------------------------------------------- helpers
 local failures, total = 0, 0
@@ -366,6 +367,63 @@ check("history restored", #I:getFarm(1).history, 2)
 check("timer restored", #I.timers == 1 and I.timers[1].data == "data" and I.timers[1].remaining == 0.5, true)
 check("next timer id restored", I.nextTimerId, 4)
 check("status text", I:getStatusText():find("Kansas", 1, true) ~= nil, true)
+
+-- ---------------------------------------------------------------- crop cross-reference (map / mod crops)
+local C = TornadoInsuranceCrops
+local aliases = C.loadAliases("DB/InsuranceCropAliases.xml")
+check("aliases loaded", aliases.aliases.SPELT ~= nil and aliases.aliases.SPELT.ratedAs, "WHEAT")
+check("prefixes loaded", #aliases.prefixes, 3)
+check("categories loaded in order", aliases.categories[1].name, "GRAINHEADER")
+local function r(profile, region, name, cats) return C.resolve(aliases, profile, region, name, cats) end
+local res = r(us, "US", "WHEAT")
+check("WHEAT: own data, local", res.method == "data" and res.ratedAs == "WHEAT" and res.isLocal, true)
+res = r(us, "US", "SPELT")
+check("SPELT -> WHEAT by alias, local", res.method == "alias" and res.ratedAs == "WHEAT" and res.isLocal, true)
+res = r(us, "US", "WINTERWHEAT")
+check("WINTERWHEAT -> WHEAT by prefix", res.method == "prefix" and res.ratedAs == "WHEAT", true)
+check("WINTERBARLEY -> BARLEY", r(us, "US", "WINTERBARLEY").ratedAs, "BARLEY")
+check("WINTEROAT -> OAT", r(us, "US", "WINTEROAT").ratedAs, "OAT")
+check("WINTERSPELT -> SPELT -> WHEAT", r(us, "US", "WINTERSPELT").ratedAs, "WHEAT")
+check("BEETROOT (game name) -> REDBEET (data name)", r(us, "US", "BEETROOT").ratedAs, "REDBEET")
+res = r(us, "US", "GREENRYE")
+check("GREENRYE not insurable", res.insurable == false and res.method == "notInsurable", true)
+check("OILSEEDRADISH not insurable", r(us, "US", "OILSEEDRADISH").insurable, false)
+res = r(us, "US", "HOPS")
+check("HOPS -> DEFAULT, unusual", res.method == "default" and res.ratedAs == "DEFAULT" and not res.isLocal, true)
+res = r(us, "US", "MODGRAIN", { GRAINHEADER = true })
+check("unknown grain-header crop -> WHEAT by category, unusual", res.method == "category" and res.ratedAs == "WHEAT" and not res.isLocal, true)
+res = r(us, "US_KS", "RICE")
+check("rice in Kansas: in the US data, but unusual for the state", res.method == "data" and not res.isLocal, true)
+check("wheat in Kansas: local", r(us, "US_KS", "WHEAT").isLocal, true)
+local de = D.load("DB/CropInsurance_DE.xml", "x")
+res = r(de, nil, "COTTON", { PLANTER = true })
+check("cotton in Germany -> by category (SOYBEAN), unusual", res.method == "category" and res.ratedAs == "SOYBEAN" and not res.isLocal, true)
+check("cotton in Germany without category -> DEFAULT", r(de, nil, "COTTON").ratedAs, "DEFAULT")
+check("rye in Germany -> WHEAT", r(de, nil, "RYE").ratedAs, "WHEAT")
+-- Every crop of the 49-map survey resolves; only the specialty crops fall back to DEFAULT.
+local survey = { "ALFALFA", "BEANS", "BLACKBEAN", "BUCKWHEAT", "CHICKPEAS", "CLOVER", "DECOFOLIAGEMIX", "FABABEAN",
+    "FIELDGRASS", "FLAX", "FLAXSEED", "FLOWERINGCATCHCROP", "GREENRYE", "HEMP", "HOPS", "HUMUSACTIVE", "LAVENDER",
+    "LENTILS", "LINSEED", "MILLET", "MUSTARD", "MUSTARDCOVER", "PEANUT", "PINTOBEAN", "POPPY", "REDONION", "RYE",
+    "SILAGEMAIZE", "SPELT", "TOBACCO", "TRITICALE", "VETCHRYE", "WINTERBARLEY", "WINTEROAT", "WINTERWHEAT" }
+for _, profile in ipairs({ us, de }) do
+    local defaults = {}
+    for _, name in ipairs(survey) do
+        if r(profile, nil, name).method == "default" then table.insert(defaults, name) end
+    end
+    check("survey crops on DEFAULT (" .. profile.rootId .. ")", table.concat(defaults, ","), "HOPS,LAVENDER,TOBACCO")
+end
+-- Alias targets are real crop names (all exist in the US data, which lists every base crop).
+check("every alias target is a known crop", (function()
+    for name, alias in pairs(aliases.aliases) do
+        if r(us, nil, name).method ~= "alias" then
+            print("    " .. name .. " -> " .. tostring(alias.ratedAs) .. " is not a crop of the data")
+            return false
+        end
+    end
+    return true
+end)(), true)
+local pl = D.load("DB/CropInsurance_PL.xml", "x")
+check("Poland has no grass programme: alfalfa -> DEFAULT, unusual", r(pl, nil, "ALFALFA").method, "default")
 
 print(string.format("\n%d / %d checks passed", total - failures, total))
 os.exit(failures == 0 and 0 or 1)

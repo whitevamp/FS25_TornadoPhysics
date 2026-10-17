@@ -160,7 +160,7 @@ Based on US federal crop insurance (USDA Risk Management Agency).
 | Oats | RP, YP, APH |
 | Potatoes, sugar beets, sugarcane, grapes, olives, green beans, grass | APH only (yield cover) |
 | Spinach, carrots, parsnips, red beets | APH, numbers borrowed from potatoes / sugar beets (no RMA programme of their own) |
-| Crops from other mods (with a sell point) | The **DEFAULT** curves (all field crops together) |
+| Map / mod crops (rye, spelt, winter wheat ...) | Rated like a base crop through the crop cross-reference (§6.4); **DEFAULT** only when nothing fits |
 | Poplar, oilseed radish, meadow | Not insurable |
 
 **Not insurable:** crops with no sell point on the current map (the UI explains why); fields the farm
@@ -193,6 +193,47 @@ yearly membership fee, so single-player farms get the "group" price without othe
 **Per country:** Spain uses its real values (group +6, continuity +5 / +7). The other countries have no
 real equivalent, so they use the setting defaults; the data files can carry their own `groupDiscount` /
 `continuityDiscount` later if a real one is found.
+
+### 6.4 Map crops and crops outside the region
+
+Decided 2026-10-16 (user: "yes lets do that"; map mods - not crop mods - bring the extra crops).
+
+**Map crops.** A survey of the 49 map / pack mods in the author's mods folder found 35 crops that are not
+in the base game (most common: rye 20 maps, alfalfa 18, spelt 16, triticale 15, mustard 14, green rye 12,
+silage maize 11, field grass 11, vetch-rye 10). The data files only know the base-game crops, so every crop
+of the loaded map (`g_fruitTypeManager:getFruitTypes()`) is cross-referenced with the editable
+`DB/InsuranceCropAliases.xml` (`scripts/insurance/TornadoInsuranceCrops.lua`), first match wins:
+
+1. **data** – the country's data lists the crop (fill type name).
+2. **alias** – same crop under another name or a close relative: spelt / triticale / rye → wheat,
+   silage maize → maize, alfalfa / clover / field grass → grass, beans / lentils / chickpeas → pea,
+   peanut → soybean, flax / linseed / mustard / poppy / hemp → canola, onion → potato, millet → sorghum,
+   buckwheat → oat. Also fixes a naming gap: the game's `BEETROOT` is the data's `REDBEET`.
+3. **prefix** – the name without WINTER / SUMMER / SPRING exists (WINTERWHEAT → WHEAT, WINTERSPELT →
+   SPELT → WHEAT).
+4. **category** – the map's machine group of the crop (`fruitTypeCategories`, first match in file order):
+   GRAINHEADER → wheat, MAIZEHEADER → maize, root / small planter crops → carrot, PLANTER → soybean.
+5. **default** – the DEFAULT curve (all field crops).
+
+**Not insurable:** cover crops / green manure / decoration (oilseed radish, green rye, vetch-rye,
+humus-active mix, flowering catch crop, mustard cover, deco foliage, poplar, meadow) – plus, as before,
+any crop without a sell point on the map. Only the *rate* is borrowed: the insured price is always the
+crop's own sell-point price. The UI names the substitute ("Spelt – rated as wheat").
+Specialty crops without an alias on purpose: hops, lavender, tobacco (→ DEFAULT).
+`t_dev insurance crops` prints the table for the loaded map.
+
+**Crops outside the region.** Players can plant any crop on any map. Real life: no standard policy for a
+crop that is not insured in the area (rice in North Dakota) – only a special agreement at a higher price.
+In the mod:
+- **Local crop** – the crop (or its data / alias / prefix match) is listed in the nearest region of the
+  chain that lists crops at all: a US state lists only the crops with real insured acres there (rice is
+  not listed for Kansas), a country lists its programme. Normal cover.
+- **Unusual crop for this region** – not local, or rated by category / DEFAULT (a guess). Still
+  insurable, with a **premium surcharge (default +25 %)** and a **coverage cap (default 70 %)**, and a
+  note on the policy page.
+- **Setting** (phase 2, server): *Crops outside the region's data* = **surcharge** (default) /
+  **not insurable** (strict) / **normal price** (lenient). Surcharge and cap are settings too.
+- Example: Poland's data has no grass programme, so alfalfa / clover there are unusual crops.
 
 ## 7. Equipment claims
 
@@ -988,7 +1029,9 @@ last). Every phase is testable and committable on its own; the module stays OFF 
 - Events `TornadoInsuranceActionEvent` (client → server, permission checked) and
   `TornadoInsuranceStateEvent` (server → the farm / a joining player: totals + inbox).
 - Dev console `t_dev insurance status|bill|testpremium|charge|pay|timer|timers|inbox|rate|regions`.
-- Offline test `tools/test/test_insurance.lua` (114 checks; reads the real DB files).
+- Crop cross-reference (§6.4): `DB/InsuranceCropAliases.xml` + `scripts/insurance/TornadoInsuranceCrops.lua`
+  (`resolve` pure, `scanMap` / `getCropInfo` in game), `t_dev insurance crops`; `rate` uses it.
+- Offline test `tools/test/test_insurance.lua` (141 checks; reads the real DB files).
 
 ## 19. Rules for the implementation
 

@@ -103,6 +103,10 @@
 - Monthly premiums and payouts show up in your finances as "Other" with their
   own insurance labels, letters from the insurer appear as notifications.
   Saved with the savegame, synced in multiplayer.
+- Map crops: crops that maps add (rye, spelt, triticale, winter wheat,
+  alfalfa, beans ...) are insured like their closest base-game crop; cover
+  crops and green manure are not insurable. Crops that are unusual for the
+  region (rice in Kansas, cotton in Germany) will cost extra.
 - No policies to buy yet - crop insurance comes next, equipment insurance
   after that.
 

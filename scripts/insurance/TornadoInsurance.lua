@@ -818,9 +818,12 @@ function TornadoInsurance:getConsoleFarmId(value)
 end
 
 --- t_dev insurance <status | bill | testpremium <amount> | charge <amount> [farm] | pay <amount> [farm] |
----                  timer <real days> [farm] | timers | inbox [farm] | rate <FILLTYPE> <PLAN> <coverage %> | regions>
+---                  timer <real days> [farm] | timers | inbox [farm] | rate <FILLTYPE> <PLAN> <coverage %> | regions | crops>
 function TornadoInsurance:consoleCommand(sub, value, extra, more)
-    if sub == "regions" then
+    if sub == "crops" then
+        if TornadoInsuranceCrops == nil then return "Insurance: crop cross-reference missing." end
+        return TornadoInsuranceCrops:printMapCrops()
+    elseif sub == "regions" then
         print("---------------- INSURANCE REGIONS ----------------")
         print("  auto")
         for _, option in ipairs(self:getRegionOptions()) do
@@ -835,9 +838,22 @@ function TornadoInsurance:consoleCommand(sub, value, extra, more)
             return "Insurance: " .. profile.file .. " uses the '" .. profile.programType ..
                 "' programme - its rates come with the crop policy (phase 2)."
         end
-        local fillType = string.upper(value or "WHEAT")
+        local cropName = string.upper(value or "WHEAT")
         local planId = string.upper(extra or "RP")
         local coverage = (tonumber(more) or 75) / 100
+        -- Map / mod crops are rated like their cross-referenced crop (SPELT -> WHEAT).
+        local fillType = cropName
+        local info = TornadoInsuranceCrops ~= nil and TornadoInsuranceCrops:getCropInfo(cropName) or nil
+        if info ~= nil then
+            if not info.insurable then
+                return string.format("Insurance: %s is not insurable (%s).", cropName, tostring(info.note))
+            end
+            fillType = info.ratedAs
+            if fillType ~= cropName or not info.isLocal then
+                print(string.format("Insurance: %s rated as %s (%s)%s.", cropName, fillType, info.method,
+                    info.isLocal and "" or " - unusual crop for this region"))
+            end
+        end
         local plan = TornadoInsuranceData.getCurve(profile, regionId, fillType, planId)
         if plan == nil then
             local offered = TornadoInsuranceData.getPlanIds(profile, regionId, fillType)
