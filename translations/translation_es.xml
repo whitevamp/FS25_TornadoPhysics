@@ -189,12 +189,52 @@
         <text name="tp_msg_ins_premium_charged" text="Seguro: cobrada la prima mensual de %s."/>
         <text name="tp_msg_ins_payout" text="Seguro: %s pagados a tu granja."/>
         <text name="tp_msg_ins_test_timer" text="Seguro: cuenta atrás de prueba terminada."/>
-        <text name="tp_msg_damage_report" text="%s: %d de tus campos afectados, unas %.1f ha de cosecha perdidas (el peor: campo %d, %d %%)."/>
+        <text name="tp_msg_damage_report" text="%s: %d de tus campos afectados, unas %.2f ha de cosecha perdidas (el peor: campo %d, %d %%)."/>
         <text name="tp_cause_tornado" text="Tornado"/>
         <text name="tp_cause_hail" text="Granizo"/>
         <text name="tp_cause_drought" text="Sequía"/>
         <text name="tp_cause_flood" text="Inundación"/>
         <text name="tp_cause_fire" text="Incendio de campo"/>
+        <text name="tp_plan_none" text="Sin seguro de cosecha"/>
+        <text name="tp_plan_RP" text="Protección de ingresos (RP)"/>
+        <text name="tp_plan_RPHPE" text="Protección de ingresos sin precio de cosecha (RPHPE)"/>
+        <text name="tp_plan_YP" text="Protección del rendimiento (YP)"/>
+        <text name="tp_plan_APH" text="Rendimiento, cultivos especiales (APH)"/>
+        <text name="tp_plan_COST" text="Costes de producción (COST)"/>
+        <text name="tp_plan_FULL" text="Rendimiento completo (FULL)"/>
+        <text name="tp_insurance_crop_plan" text="Seguro de cosecha (tu granja)"/>
+        <text name="tp_tip_insurance_crop_plan" text="Asegura cada campo de tu granja con un cultivo asegurable contra pérdidas por tornado, granizo, sequía, inundación e incendio. Los planes de rendimiento pagan al precio fijado para el año de la póliza; la protección de ingresos paga al mayor entre el precio fijado y el actual. La cobertura empieza una semana (tiempo real) después de la compra."/>
+        <text name="tp_insurance_crop_coverage" text="Nivel de cobertura"/>
+        <text name="tp_tip_insurance_crop_coverage" text="Parte del valor esperado de la cosecha que está asegurada. Las pérdidas hasta el resto (p. ej., 25 % con una cobertura del 75 %) corren de tu cuenta; más cobertura cuesta más. Los cultivos poco habituales en la región tienen un máximo del 70 % y cuestan un 25 % más."/>
+        <text name="tp_insurance_coverage_option" text="%d %% (unos %s / mes)"/>
+        <text name="tp_insurance_sales" text="Fecha límite de contratación"/>
+        <text name="tp_tip_insurance_sales" text="Las pólizas de cosecha solo se pueden contratar o cambiar a finales de invierno y principios de primavera, como un seguro real antes de la siembra. Auto: solo con crecimiento estacional (desactivado si los cultivos crecen todo el año)."/>
+        <text name="tp_insurance_sales_auto" text="Auto"/>
+        <text name="tp_insurance_sales_on" text="Siempre"/>
+        <text name="tp_insurance_sales_off" text="Nunca (comprar en cualquier momento)"/>
+        <text name="tp_insurance_crop_status" text="Estado de la póliza de cosecha"/>
+        <text name="tp_btn_show" text="Mostrar"/>
+        <text name="tp_msg_ins_crop_status" text="Seguro de cosecha: %s, %d %% (%s) - %d campos, valor asegurado %s, unos %s al mes, %d siniestros abiertos."/>
+        <text name="tp_ins_status_pending" text="empieza pronto"/>
+        <text name="tp_ins_status_active" text="activa"/>
+        <text name="tp_msg_ins_crop_none_status" text="Seguro de cosecha: tu granja no tiene póliza."/>
+        <text name="tp_msg_ins_crop_bought" text="Seguro de cosecha %s al %d %% confirmado (unos %s al mes). La cobertura empieza en %d d %d h."/>
+        <text name="tp_msg_ins_crop_changed" text="Seguro de cosecha cambiado a %s al %d %% (unos %s al mes)."/>
+        <text name="tp_msg_ins_crop_active" text="Tu seguro de cosecha (%s, %d %%) ya está activo."/>
+        <text name="tp_msg_ins_crop_cancelled" text="Seguro de cosecha cancelado. Los siniestros abiertos se siguen liquidando."/>
+        <text name="tp_msg_ins_crop_renewed" text="Nuevo año de póliza: los precios de tu seguro de cosecha se fijan de nuevo."/>
+        <text name="tp_msg_ins_crop_none" text="Tu granja no tiene seguro de cosecha que cancelar."/>
+        <text name="tp_msg_ins_crop_unavailable" text="El seguro de cosecha para esta región llegará en una próxima actualización."/>
+        <text name="tp_msg_ins_crop_unknown_plan" text="Este plan de seguro de cosecha no se ofrece en esta región."/>
+        <text name="tp_msg_ins_crop_sales_closed" text="El seguro de cosecha solo se puede contratar o cambiar a finales de invierno y principios de primavera."/>
+        <text name="tp_msg_ins_crop_storm" text="No se contrata cobertura nueva durante un tornado o una serie de tormentas."/>
+        <text name="tp_msg_ins_claim_received" text="Siniestro del campo %d (%s, alrededor del %d %% perdido) recibido - vendrá un perito."/>
+        <text name="tp_msg_ins_claim_inspected" text="El perito ha inspeccionado el campo %d. La decisión llegará pronto."/>
+        <text name="tp_msg_ins_claim_approved" text="Siniestro del campo %d aprobado: se pagarán %s."/>
+        <text name="tp_msg_ins_claim_paid" text="Indemnización pagada por el campo %d: %s."/>
+        <text name="tp_msg_ins_claim_deductible" text="Siniestro del campo %d: el %d %% perdido este año está dentro de tu parte no asegurada (cobertura %d %%) - aún sin pago."/>
+        <text name="tp_msg_ins_claim_no_policy" text="Siniestro del campo %d cerrado: ya no hay póliza de cosecha."/>
+        <text name="tp_msg_ins_claim_no_crop" text="Siniestro del campo %d cerrado: el cultivo no es asegurable."/>
         <text name="tp_msg_ins_off" text="Los seguros están desactivados en este servidor."/>
         <text name="tp_msg_ins_denied" text="Seguro: solo un gestor de la granja o el admin del servidor puede cambiar las pólizas de esta granja."/>
         <text name="tp_msg_ins_denied_admin" text="Seguro: en este servidor solo el admin gestiona las pólizas."/>

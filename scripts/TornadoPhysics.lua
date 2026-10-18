@@ -318,6 +318,9 @@ function TornadoPhysics:update(dt)
                 twister.isTornadoModScaled = true
 
                 print(string.format("Tornado Visuals Synced: Scale %.2f (EF-%d)", scale, efScale))
+
+                -- Crop damage path = the physics radius, strength by EF (server: the areas only exist there).
+                self:applyCropDamageScale(twister, currentOuterRadius, efScale)
             end
         end
     end
@@ -1397,6 +1400,70 @@ function TornadoPhysics:applyClientState(state)
 end
 
 --- Client: funnel size and extra debris the way the server set them in randomizeTornado / visual sync.
+-- Crop damage strength by EF rating: multiplies the destroyed share of every twister destruction area
+-- (game default: inner 85 %, middle ring 70 %, outer ring 40 % = EF-2 here). Capped at 5 - 98 %.
+TornadoPhysics.CROP_STRENGTH_BY_EF = { [0] = 0.6, [1] = 0.8, [2] = 1.0, [3] = 1.15, [4] = 1.3, [5] = 1.45 }
+
+--- The game's twister destroys crops along its destruction areas (polygons of child nodes of the twister i3d,
+--- $data/sky/twister.xml: outer ring 35 m; maps can bring their own twister, e.g. 70 m). Scaling the twister root by
+--- EF (visual sync) scales them too, but not to our physics radius. This sizes the areas' common parent node so
+--- the outermost ring sits on targetRadius (measured in world space, so any twister i3d and any parent scale
+--- work), and sets each area's perlin value from its original one by CROP_STRENGTH_BY_EF.
+--- Nothing is copied from the twister files; the storm damage report measures the scaled areas as they are.
+function TornadoPhysics:applyCropDamageScale(twister, targetRadius, efNum)
+    local areas = twister ~= nil and twister.destructionAreas or nil
+    if areas == nil or #areas == 0 or twister.rootNode == nil or targetRadius == nil or targetRadius <= 0 then
+        return
+    end
+
+    -- The areas' common parent: walk up from a polygon node to the node directly under the i3d component
+    -- (the component itself is linked to twister.rootNode).
+    local areasNode = twister.tornadoAreasNode
+    if areasNode == nil then
+        local first = areas[1].polygon ~= nil and areas[1].polygon.nodes ~= nil and areas[1].polygon.nodes[1] or nil
+        local node = first
+        while node ~= nil and node ~= 0 and getParent(node) ~= 0 and getParent(getParent(node)) ~= twister.rootNode do
+            node = getParent(node)
+        end
+        if node == nil or node == 0 or getParent(node) == 0 then
+            return
+        end
+        areasNode = node
+        twister.tornadoAreasNode = areasNode
+    end
+
+    -- Size: outermost polygon point from the twister centre, in world space.
+    local cx, _, cz = getWorldTranslation(twister.rootNode)
+    local current = 0
+    for _, area in ipairs(areas) do
+        for _, node in ipairs(area.polygon ~= nil and area.polygon.nodes or {}) do
+            local x, _, z = getWorldTranslation(node)
+            current = math.max(current, math.sqrt((x - cx) * (x - cx) + (z - cz) * (z - cz)))
+        end
+    end
+    if current > 0.5 then
+        local sx, sy, sz = getScale(areasNode)
+        local factor = targetRadius / current
+        setScale(areasNode, sx * factor, sy, sz * factor)
+    end
+
+    -- Strength: destroyed share = 1 - perlin / 10000, scaled from the twister file's own value.
+    local strength = self.CROP_STRENGTH_BY_EF[efNum or 2] or 1.0
+    for _, area in ipairs(areas) do
+        if area.tornadoBasePerlin == nil then
+            area.tornadoBasePerlin = area.perlinPercentage or 2500
+        end
+        local destroyed = 1 - area.tornadoBasePerlin / 10000
+        destroyed = math.max(0.05, math.min(0.98, destroyed * strength))
+        area.perlinPercentage = math.floor((1 - destroyed) * 10000 + 0.5)
+    end
+
+    if TornadoDebug then
+        TornadoDebug:info("EVENT", string.format("Crop damage path: outer ring %.0f m -> %.0f m, strength x%.2f (EF-%s)",
+            current, targetRadius, strength, tostring(efNum)))
+    end
+end
+
 function TornadoPhysics:applyClientVisuals()
     self.clientVisualsPending = false
     local scale = self.currentScale or 1

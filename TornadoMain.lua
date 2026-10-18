@@ -82,6 +82,7 @@ function TornadoMain:loadMap(name)
     source(Utils.getFilename("scripts/insurance/TornadoInsuranceData.lua", modDir))
     source(Utils.getFilename("scripts/insurance/TornadoInsuranceCrops.lua", modDir))
     source(Utils.getFilename("scripts/insurance/TornadoInsuranceDamage.lua", modDir))
+    source(Utils.getFilename("scripts/insurance/TornadoInsuranceCrop.lua", modDir))
     source(Utils.getFilename("scripts/insurance/TornadoInsurance.lua", modDir))
 
     -- Saves the active tornado / outbreak with the savegame so a reload carries on.

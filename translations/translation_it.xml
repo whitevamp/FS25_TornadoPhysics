@@ -189,12 +189,52 @@
         <text name="tp_msg_ins_premium_charged" text="Assicurazione: addebitato il premio mensile di %s."/>
         <text name="tp_msg_ins_payout" text="Assicurazione: %s versati alla tua fattoria."/>
         <text name="tp_msg_ins_test_timer" text="Assicurazione: conto alla rovescia di prova terminato."/>
-        <text name="tp_msg_damage_report" text="%s: %d dei tuoi campi colpiti, circa %.1f ha di raccolto perso (il peggiore: campo %d, %d %%)."/>
+        <text name="tp_msg_damage_report" text="%s: %d dei tuoi campi colpiti, circa %.2f ha di raccolto perso (il peggiore: campo %d, %d %%)."/>
         <text name="tp_cause_tornado" text="Tornado"/>
         <text name="tp_cause_hail" text="Grandine"/>
         <text name="tp_cause_drought" text="Siccità"/>
         <text name="tp_cause_flood" text="Alluvione"/>
         <text name="tp_cause_fire" text="Incendio"/>
+        <text name="tp_plan_none" text="Nessuna assicurazione raccolto"/>
+        <text name="tp_plan_RP" text="Protezione del reddito (RP)"/>
+        <text name="tp_plan_RPHPE" text="Protezione del reddito senza prezzo di raccolta (RPHPE)"/>
+        <text name="tp_plan_YP" text="Protezione della resa (YP)"/>
+        <text name="tp_plan_APH" text="Resa, colture speciali (APH)"/>
+        <text name="tp_plan_COST" text="Costi di produzione (COST)"/>
+        <text name="tp_plan_FULL" text="Resa completa (FULL)"/>
+        <text name="tp_insurance_crop_plan" text="Assicurazione raccolto (la tua fattoria)"/>
+        <text name="tp_tip_insurance_crop_plan" text="Assicura ogni campo della tua fattoria con una coltura assicurabile contro le perdite da tornado, grandine, siccità, alluvione e incendio. I piani di resa pagano al prezzo fissato per l'anno di polizza; la protezione del reddito paga al maggiore tra il prezzo fissato e quello attuale. La copertura inizia circa una settimana (tempo reale) dopo l'acquisto."/>
+        <text name="tp_insurance_crop_coverage" text="Livello di copertura"/>
+        <text name="tp_tip_insurance_crop_coverage" text="Quota del valore atteso del raccolto che è assicurata. Le perdite fino al resto (ad es. 25 % con copertura al 75 %) sono a tuo carico; una copertura maggiore costa di più. Le colture insolite per la regione sono limitate al 70 %, con un sovrapprezzo del 25 %."/>
+        <text name="tp_insurance_coverage_option" text="%d %% (circa %s / mese)"/>
+        <text name="tp_insurance_sales" text="Termine di sottoscrizione"/>
+        <text name="tp_tip_insurance_sales" text="Le polizze raccolto si possono stipulare o modificare solo a fine inverno e inizio primavera, come una vera assicurazione prima della semina. Auto: solo con crescita stagionale (disattivato se le colture crescono tutto l'anno)."/>
+        <text name="tp_insurance_sales_auto" text="Auto"/>
+        <text name="tp_insurance_sales_on" text="Sempre"/>
+        <text name="tp_insurance_sales_off" text="Mai (acquisto in qualsiasi momento)"/>
+        <text name="tp_insurance_crop_status" text="Stato della polizza raccolto"/>
+        <text name="tp_btn_show" text="Mostra"/>
+        <text name="tp_msg_ins_crop_status" text="Assicurazione raccolto: %s, %d %% (%s) - %d campi, valore assicurato %s, circa %s al mese, %d sinistri aperti."/>
+        <text name="tp_ins_status_pending" text="inizia a breve"/>
+        <text name="tp_ins_status_active" text="attiva"/>
+        <text name="tp_msg_ins_crop_none_status" text="Assicurazione raccolto: la tua fattoria non ha una polizza."/>
+        <text name="tp_msg_ins_crop_bought" text="Assicurazione raccolto %s al %d %% confermata (circa %s al mese). La copertura inizia tra %d g %d h."/>
+        <text name="tp_msg_ins_crop_changed" text="Assicurazione raccolto modificata in %s al %d %% (circa %s al mese)."/>
+        <text name="tp_msg_ins_crop_active" text="La tua assicurazione raccolto (%s, %d %%) è ora attiva."/>
+        <text name="tp_msg_ins_crop_cancelled" text="Assicurazione raccolto annullata. I sinistri aperti vengono comunque liquidati."/>
+        <text name="tp_msg_ins_crop_renewed" text="Nuovo anno di polizza: i prezzi della tua assicurazione raccolto vengono fissati di nuovo."/>
+        <text name="tp_msg_ins_crop_none" text="La tua fattoria non ha un'assicurazione raccolto da annullare."/>
+        <text name="tp_msg_ins_crop_unavailable" text="L'assicurazione raccolto per questa regione arriverà in un prossimo aggiornamento."/>
+        <text name="tp_msg_ins_crop_unknown_plan" text="Questo piano assicurativo non è offerto in questa regione."/>
+        <text name="tp_msg_ins_crop_sales_closed" text="L'assicurazione raccolto si può stipulare o modificare solo a fine inverno e inizio primavera."/>
+        <text name="tp_msg_ins_crop_storm" text="Nessuna nuova copertura durante un tornado o una serie di temporali."/>
+        <text name="tp_msg_ins_claim_received" text="Denuncia di sinistro per il campo %d (%s, circa %d %% perso) ricevuta - passerà un perito."/>
+        <text name="tp_msg_ins_claim_inspected" text="Il perito ha ispezionato il campo %d. La decisione arriverà a breve."/>
+        <text name="tp_msg_ins_claim_approved" text="Sinistro del campo %d approvato: verranno pagati %s."/>
+        <text name="tp_msg_ins_claim_paid" text="Risarcimento pagato per il campo %d: %s."/>
+        <text name="tp_msg_ins_claim_deductible" text="Sinistro del campo %d: il %d %% perso quest'anno rientra nella tua parte non assicurata (copertura %d %%) - ancora nessun pagamento."/>
+        <text name="tp_msg_ins_claim_no_policy" text="Sinistro del campo %d chiuso: non esiste più una polizza raccolto."/>
+        <text name="tp_msg_ins_claim_no_crop" text="Sinistro del campo %d chiuso: la coltura non è assicurabile."/>
         <text name="tp_msg_ins_off" text="L'assicurazione è disattivata su questo server."/>
         <text name="tp_msg_ins_denied" text="Assicurazione: solo un gestore della fattoria o l'admin del server può modificare le polizze di questa fattoria."/>
         <text name="tp_msg_ins_denied_admin" text="Assicurazione: su questo server solo l'admin gestisce le polizze."/>

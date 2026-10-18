@@ -38,6 +38,42 @@ local function hasInsurance()
     return TornadoInsurance ~= nil
 end
 
+-- Crop policy rows act for the player's own farm (the server checks the permission: farm manager / admin).
+local function cropPolicyAvailable()
+    return TornadoInsurance ~= nil and TornadoInsuranceCrop ~= nil and TornadoInsurance.isEnabled
+        and TornadoInsuranceCrop:isAvailable()
+end
+
+local function getPlayerFarmId()
+    local farmId = g_currentMission ~= nil and g_currentMission.getFarmId ~= nil and g_currentMission:getFarmId() or 0
+    return farmId or 0
+end
+
+local function getPlayerPolicy()
+    local farm = TornadoInsurance.farms ~= nil and TornadoInsurance.farms[getPlayerFarmId()] or nil
+    return farm ~= nil and farm.crop or nil, farm
+end
+
+-- Choice kept on this machine until the player buys (plan / coverage of a policy not bought yet).
+local cropChoice = { plan = nil, coverage = 0.75 }
+
+local function getChosenPlan()
+    local policy = getPlayerPolicy()
+    if policy ~= nil then
+        return policy.plan
+    end
+    if cropChoice.plan == nil then
+        local plans = TornadoInsuranceCrop:getOfferedPlans()
+        cropChoice.plan = plans[1]
+    end
+    return cropChoice.plan
+end
+
+local function getChosenCoverage()
+    local policy = getPlayerPolicy()
+    return policy ~= nil and policy.coverage or cropChoice.coverage
+end
+
 --- Percent row (25 - 300 %) routed through `t_set hazards <sub> <percent>`.
 local function hazardsPercentRow(id, key)
     return {
@@ -329,6 +365,111 @@ TornadoPageModules = TornadoMenuPage.new("Modules", "Modules", {
         end,
         set = function(value)
             return console("cmdSet", "insurance", "managers", value and "admin" or "farm")
+        end,
+    },
+    {
+        id = "modInsuranceSales",
+        kind = Page.KIND_CHOICE,
+        requires = hasInsurance,
+        options = function()
+            return {
+                { value = "auto", text = TornadoText.get("tp_insurance_sales_auto") },
+                { value = "on", text = TornadoText.get("tp_insurance_sales_on") },
+                { value = "off", text = TornadoText.get("tp_insurance_sales_off") },
+            }
+        end,
+        get = function()
+            return TornadoInsurance.salesClosing or "auto"
+        end,
+        set = function(value)
+            return console("cmdSet", "insurance", "sales", value)
+        end,
+    },
+    {
+        id = "modInsuranceCropPlan",
+        kind = Page.KIND_CHOICE,
+        requires = cropPolicyAvailable,
+        localOnly = true,
+        keepClean = true,
+        options = function()
+            local options = { { value = "none", text = TornadoText.get("tp_plan_none") } }
+            for _, planId in ipairs(TornadoInsuranceCrop:getOfferedPlans()) do
+                options[#options + 1] = { value = planId, text = TornadoText.get(TornadoInsuranceCrop.PLAN_KEYS[planId] or planId) }
+            end
+            return options
+        end,
+        get = function()
+            local policy = getPlayerPolicy()
+            return policy ~= nil and policy.plan or "none"
+        end,
+        set = function(value)
+            local farmId = getPlayerFarmId()
+            if value == "none" then
+                if getPlayerPolicy() ~= nil then
+                    TornadoInsurance:requestAction(farmId, "cropCancel", "")
+                end
+                return nil
+            end
+            cropChoice.plan = value
+            TornadoInsurance:requestAction(farmId, "cropBuy", string.format("%s %.2f", value, getChosenCoverage()))
+            return nil
+        end,
+    },
+    {
+        id = "modInsuranceCropCoverage",
+        kind = Page.KIND_CHOICE,
+        requires = cropPolicyAvailable,
+        localOnly = true,
+        keepClean = true,
+        options = function()
+            local planId = getChosenPlan()
+            local policy = getPlayerPolicy()
+            local options = {}
+            for _, coverage in ipairs(planId ~= nil and TornadoInsuranceCrop:getCoverageLevels(planId) or {}) do
+                local quote = TornadoInsuranceCrop:getFarmQuote(getPlayerFarmId(), planId, coverage, policy)
+                options[#options + 1] = { value = coverage, text = TornadoText.format("tp_insurance_coverage_option",
+                    math.floor(coverage * 100 + 0.5), TornadoText.money(quote.monthlyPremium)) }
+            end
+            return options
+        end,
+        get = function()
+            return getChosenCoverage()
+        end,
+        set = function(value)
+            cropChoice.coverage = value
+            local policy = getPlayerPolicy()
+            if policy ~= nil then
+                TornadoInsurance:requestAction(getPlayerFarmId(), "cropBuy", string.format("%s %.2f", policy.plan, value))
+            end
+            return nil
+        end,
+    },
+    {
+        id = "modInsuranceCropStatus",
+        kind = Page.KIND_ACTION,
+        requires = cropPolicyAvailable,
+        localOnly = true,
+        keepClean = true,
+        run = function()
+            local policy, farm = getPlayerPolicy()
+            local text
+            if policy == nil then
+                text = TornadoText.get("tp_msg_ins_crop_none_status")
+            else
+                local quote = TornadoInsuranceCrop:getFarmQuote(getPlayerFarmId(), policy.plan, policy.coverage, policy)
+                text = TornadoText.format("tp_msg_ins_crop_status",
+                TornadoText.get(TornadoInsuranceCrop.PLAN_KEYS[policy.plan] or policy.plan),
+                math.floor((policy.coverage or 0) * 100 + 0.5),
+                TornadoText.get(policy.status == TornadoInsuranceCrop.STATUS_ACTIVE and "tp_ins_status_active" or "tp_ins_status_pending"),
+                    quote.fields, TornadoText.money(quote.liability), TornadoText.money(quote.monthlyPremium),
+                    farm ~= nil and (farm.openClaims or TornadoInsuranceCrop:getOpenClaimCount(farm)) or 0)
+            end
+            -- The panel's status line only fits a short sentence: show the summary in the game's info dialog.
+            if InfoDialog ~= nil and InfoDialog.show ~= nil then
+                InfoDialog.show(text)
+                return nil
+            end
+            return text
         end,
     },
     {

@@ -23,7 +23,8 @@ TornadoInsuranceDamage = {}
 TornadoInsuranceDamage.FILE = "TornadoDamage.xml"
 TornadoInsuranceDamage.CELL_SIZE = 2                -- metres (4 m measured a 20 m hail spot ~11 % low)
 TornadoInsuranceDamage.MAX_LOG = 500
-TornadoInsuranceDamage.MIN_REPORT_SHARE = 0.005     -- events below 0.5 % of a field are logged quietly, not reported
+TornadoInsuranceDamage.MIN_REPORT_SHARE = 0.01      -- events below 1 % of a field are logged quietly, not reported
+                                                    -- (game hail leaves 0.1 - 0.6 % specks everywhere)
 TornadoInsuranceDamage.MAX_SAMPLES = 40000          -- per call (200 x 200 m at 2 m) - safety cap
 TornadoInsuranceDamage.PERLIN_FULL = 10000
 
@@ -270,7 +271,16 @@ function TornadoInsuranceDamage:onDisasterArea(area, perlinPercentage)
 end
 
 --- Cells of the field inside the area (cell centres on the field's own 2 m grid).
+--- Fields nobody owns are not measured: nobody insures them, and the game's hail touches dozens of them per tick.
+local function isOwned(field)
+    local farmId = field.getOwner ~= nil and field:getOwner() or 0
+    return farmId ~= nil and farmId ~= 0 and (FarmlandManager == nil or farmId ~= FarmlandManager.NO_OWNER_FARM_ID)
+end
+
 function TornadoInsuranceDamage:addArea(field, geometry, polygon, x0, z0, x1, z1, p, cause)
+    if not isOwned(field) then
+        return
+    end
     local crop, fruit, growth = self:getDestroyableCrop(field)
     if crop == nil then
         return
@@ -308,6 +318,9 @@ end
 
 --- Field-wide share (drought): only the rise over what the field already lost counts.
 function TornadoInsuranceDamage:addUniform(field, p, cause)
+    if not isOwned(field) then
+        return
+    end
     local crop, fruit, growth = self:getDestroyableCrop(field)
     if crop == nil then
         return
@@ -419,6 +432,9 @@ function TornadoInsuranceDamage:closeEvents(all, onlyCause)
             farmId = event.farmId, crop = event.crop, share = event.share }
         self.nextId = self.nextId + 1
         table.insert(self.log, entry)
+        if TornadoInsurance ~= nil and TornadoInsurance.onDamageLogged ~= nil then
+            TornadoInsurance:onDamageLogged(entry)   -- crop insurance claims
+        end
         if TornadoDebug then
             TornadoDebug:info("DAMAGE", string.format("%s: field %d (farm %d, %s) lost %.1f %% of its crop.", event.cause,
                 event.fieldId, event.farmId, tostring(event.crop), event.share * 100))

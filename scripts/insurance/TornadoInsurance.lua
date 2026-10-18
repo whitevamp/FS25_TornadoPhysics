@@ -20,6 +20,7 @@ TornadoInsurance = {}
 TornadoInsurance.isEnabled = false
 TornadoInsurance.adminOnly = false            -- true: only the server admin may buy / change / cancel policies
 TornadoInsurance.regionSetting = "auto"       -- "auto", a profile country ("DE") or "country:region" ("US:US_KS")
+TornadoInsurance.salesClosing = "auto"        -- crop policies only in late winter / early spring: "auto" (with seasonal growth), "on", "off"
 
 TornadoInsurance.REGION_AUTO = "auto"
 TornadoInsurance.FILE = "TornadoInsurance.xml"
@@ -60,9 +61,14 @@ function TornadoInsurance:loadMap(modDir, modName)
     self.premiumSources = {}      -- { name, fn(self, farmId) -> amount before cost scale }
     self.timerHandlers = {}       -- kind -> fn(self, timer)
     self.actions = {}             -- name -> { managerOnly, run = fn(self, farmId, args, connection) -> resultKey }
+    self.farmData = {}            -- { save = fn(xmlId, farmKey, farm), load = fn(xmlId, farmKey, farm) } per policy type
+    self.damageListeners = {}     -- fn(self, entry) for every closed storm damage event
 
     self:registerMoneyTypes()
     self:registerBuiltIns()
+    if TornadoInsuranceCrop ~= nil then
+        TornadoInsuranceCrop:install(self)
+    end
 
     if isServer() then
         self:loadState()
@@ -80,6 +86,9 @@ end
 function TornadoInsurance:deleteMap()
     if g_messageCenter ~= nil then
         g_messageCenter:unsubscribeAll(self)
+    end
+    if TornadoInsuranceCrop ~= nil then
+        TornadoInsuranceCrop:uninstall()
     end
     self.farms = {}
     self.timers = {}
@@ -116,6 +125,26 @@ end
 --- managerOnly: needs the policy-manager permission (canManage); false for read-only actions.
 function TornadoInsurance:registerAction(name, managerOnly, run)
     self.actions[name] = { managerOnly = managerOnly == true, run = run }
+end
+
+--- Per-farm data of a policy type, saved inside the farm's element of TornadoInsurance.xml.
+function TornadoInsurance:registerFarmData(saveFn, loadFn)
+    table.insert(self.farmData, { save = saveFn, load = loadFn })
+end
+
+--- fn(self, entry) for every closed storm damage event (TornadoInsuranceDamage log entry) - claims.
+function TornadoInsurance:registerDamageListener(fn)
+    table.insert(self.damageListeners, fn)
+end
+
+--- Server: called by TornadoInsuranceDamage when an event is closed and logged.
+function TornadoInsurance:onDamageLogged(entry)
+    if not isServer() then
+        return
+    end
+    for _, fn in ipairs(self.damageListeners or {}) do
+        fn(self, entry)
+    end
 end
 
 function TornadoInsurance:registerBuiltIns()
@@ -495,6 +524,16 @@ function TornadoInsurance:applyFarmState(farmId, state)
     farm.premiumsTotal = state.premiumsTotal or 0
     farm.payoutsTotal = state.payoutsTotal or 0
     farm.inbox = state.inbox or {}
+    -- Crop policy summary (clients show it; the server keeps the full policy).
+    if state.cropPlan ~= nil and state.cropPlan ~= "" then
+        farm.crop = { plan = state.cropPlan, coverage = state.cropCoverage, status = state.cropStatus, prices = {}, fields = {} }
+    else
+        farm.crop = nil
+    end
+    farm.openClaims = state.openClaims or 0
+    if TornadoMenu ~= nil and TornadoMenu.INSTANCE ~= nil and TornadoMenu.INSTANCE.isOpen then
+        TornadoMenu.INSTANCE:refreshAllPages()
+    end
 end
 
 -- =========================================================================
@@ -716,6 +755,9 @@ function TornadoInsurance:loadState()
                 payouts = getXMLFloat(xmlId, monthKey .. "#payouts") or 0 })
             h = h + 1
         end
+        for _, data in ipairs(self.farmData) do
+            data.load(xmlId, farmKey, farm)
+        end
         local m = 0
         while true do
             local messageKey = string.format("%s.inbox.message(%d)", farmKey, m)
@@ -776,6 +818,9 @@ function TornadoInsurance:save()
             setXMLFloat(xmlId, monthKey .. "#premiums", month.premiums)
             setXMLFloat(xmlId, monthKey .. "#payouts", month.payouts)
         end
+        for _, data in ipairs(self.farmData) do
+            data.save(xmlId, farmKey, farm)
+        end
         for m, message in ipairs(farm.inbox) do
             local messageKey = string.format("%s.inbox.message(%d)", farmKey, m - 1)
             setXMLString(xmlId, messageKey .. "#key", message.key)
@@ -810,9 +855,14 @@ function TornadoInsurance:getStatusText()
     if self.redTapeLinked then
         finance = finance .. " + Red Tape tax"
     end
-    return string.format("Insurance: Enabled = %s | Policy managers = %s | %s | Days per month = %d | Cost scale = %.0f %% | Farms with records = %d | Countdowns = %d | Damage events logged = %d | Finances = %s",
+    local crop = "n/a"
+    if TornadoInsuranceCrop ~= nil then
+        crop = string.format("%s, sales %s (%s)", TornadoInsuranceCrop:isAvailable() and "available" or "not available yet (phase 2b)",
+            TornadoInsuranceCrop:isSalesOpen() and "open" or "closed", self.salesClosing or "auto")
+    end
+    return string.format("Insurance: Enabled = %s | Policy managers = %s | %s | Days per month = %d | Cost scale = %.0f %% | Farms with records = %d | Countdowns = %d | Damage events logged = %d | Finances = %s | Crop insurance = %s",
         tostring(self.isEnabled), self.adminOnly and "server admin only" or "farm manager + admin",
-        self:getRegionStatusText(), self:getDaysPerMonth(), self:getCostScale() * 100, farms, #(self.timers or {}), damage, finance)
+        self:getRegionStatusText(), self:getDaysPerMonth(), self:getCostScale() * 100, farms, #(self.timers or {}), damage, finance, crop)
 end
 
 --- Farm the console works on: the player's own farm, else farm 1.
@@ -831,7 +881,10 @@ end
 --- t_dev insurance <status | bill | testpremium <amount> | charge <amount> [farm] | pay <amount> [farm] |
 ---                  timer <real days> [farm] | timers | inbox [farm] | rate <FILLTYPE> <PLAN> <coverage %> | regions | crops>
 function TornadoInsurance:consoleCommand(sub, value, extra, more)
-    if sub == "damage" then
+    if sub == "crop" then
+        if TornadoInsuranceCrop == nil then return "Insurance: crop policies missing." end
+        return TornadoInsuranceCrop:consoleCommand(self:getConsoleFarmId(nil), value, extra, more)
+    elseif sub == "damage" then
         if TornadoInsuranceDamage == nil then return "Insurance: damage report missing." end
         return TornadoInsuranceDamage:printLog(tonumber(value))
     elseif sub == "hit" then

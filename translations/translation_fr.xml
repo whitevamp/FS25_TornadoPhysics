@@ -189,12 +189,52 @@
         <text name="tp_msg_ins_premium_charged" text="Assurance : prime mensuelle de %s prélevée."/>
         <text name="tp_msg_ins_payout" text="Assurance : %s versés à votre ferme."/>
         <text name="tp_msg_ins_test_timer" text="Assurance : compte à rebours de test terminé."/>
-        <text name="tp_msg_damage_report" text="%s : %d de vos champs touchés, environ %.1f ha de récolte perdus (le plus touché : champ %d, %d %%)."/>
+        <text name="tp_msg_damage_report" text="%s : %d de vos champs touchés, environ %.2f ha de récolte perdus (le plus touché : champ %d, %d %%)."/>
         <text name="tp_cause_tornado" text="Tornade"/>
         <text name="tp_cause_hail" text="Grêle"/>
         <text name="tp_cause_drought" text="Sécheresse"/>
         <text name="tp_cause_flood" text="Inondation"/>
         <text name="tp_cause_fire" text="Feu de champ"/>
+        <text name="tp_plan_none" text="Pas d'assurance récolte"/>
+        <text name="tp_plan_RP" text="Protection du revenu (RP)"/>
+        <text name="tp_plan_RPHPE" text="Protection du revenu sans prix de récolte (RPHPE)"/>
+        <text name="tp_plan_YP" text="Protection du rendement (YP)"/>
+        <text name="tp_plan_APH" text="Rendement, cultures spéciales (APH)"/>
+        <text name="tp_plan_COST" text="Coûts de production (COST)"/>
+        <text name="tp_plan_FULL" text="Rendement complet (FULL)"/>
+        <text name="tp_insurance_crop_plan" text="Assurance récolte (votre ferme)"/>
+        <text name="tp_tip_insurance_crop_plan" text="Assure chaque champ de votre ferme portant une culture assurable contre les pertes dues aux tornades, à la grêle, à la sécheresse, aux inondations et au feu. Les plans de rendement paient au prix fixé pour l'année du contrat ; la protection du revenu paie au plus élevé du prix fixé et du prix actuel. La couverture commence environ une semaine (temps réel) après l'achat."/>
+        <text name="tp_insurance_crop_coverage" text="Niveau de couverture"/>
+        <text name="tp_tip_insurance_crop_coverage" text="Part de la valeur de récolte attendue qui est assurée. Les pertes jusqu'au reste (p. ex. 25 % avec une couverture à 75 %) sont à votre charge ; une couverture plus élevée coûte plus. Les cultures inhabituelles pour la région sont limitées à 70 %, avec un surcoût de 25 %."/>
+        <text name="tp_insurance_coverage_option" text="%d %% (environ %s / mois)"/>
+        <text name="tp_insurance_sales" text="Date limite de souscription"/>
+        <text name="tp_tip_insurance_sales" text="Les contrats récolte ne peuvent être souscrits ou modifiés qu'en fin d'hiver et début de printemps, comme une vraie assurance avant les semis. Auto : seulement avec la croissance saisonnière (désactivé si les cultures poussent toute l'année)."/>
+        <text name="tp_insurance_sales_auto" text="Auto"/>
+        <text name="tp_insurance_sales_on" text="Toujours"/>
+        <text name="tp_insurance_sales_off" text="Jamais (achat à tout moment)"/>
+        <text name="tp_insurance_crop_status" text="État du contrat récolte"/>
+        <text name="tp_btn_show" text="Afficher"/>
+        <text name="tp_msg_ins_crop_status" text="Assurance récolte : %s, %d %% (%s) - %d champs, valeur assurée %s, environ %s par mois, %d sinistres en cours."/>
+        <text name="tp_ins_status_pending" text="commence bientôt"/>
+        <text name="tp_ins_status_active" text="active"/>
+        <text name="tp_msg_ins_crop_none_status" text="Assurance récolte : votre ferme n'a pas de contrat."/>
+        <text name="tp_msg_ins_crop_bought" text="Assurance récolte %s à %d %% confirmée (environ %s par mois). La couverture commence dans %d j %d h."/>
+        <text name="tp_msg_ins_crop_changed" text="Assurance récolte modifiée : %s à %d %% (environ %s par mois)."/>
+        <text name="tp_msg_ins_crop_active" text="Votre assurance récolte (%s, %d %%) est maintenant active."/>
+        <text name="tp_msg_ins_crop_cancelled" text="Assurance récolte résiliée. Les sinistres en cours sont encore réglés."/>
+        <text name="tp_msg_ins_crop_renewed" text="Nouvelle année de contrat : les prix de votre assurance récolte sont fixés à nouveau."/>
+        <text name="tp_msg_ins_crop_none" text="Votre ferme n'a pas d'assurance récolte à résilier."/>
+        <text name="tp_msg_ins_crop_unavailable" text="L'assurance récolte pour cette région arrive dans une prochaine mise à jour."/>
+        <text name="tp_msg_ins_crop_unknown_plan" text="Ce plan d'assurance récolte n'est pas proposé dans cette région."/>
+        <text name="tp_msg_ins_crop_sales_closed" text="L'assurance récolte ne peut être souscrite ou modifiée qu'en fin d'hiver et début de printemps."/>
+        <text name="tp_msg_ins_crop_storm" text="Pas de nouvelle couverture pendant une tornade ou une série d'orages."/>
+        <text name="tp_msg_ins_claim_received" text="Déclaration de sinistre pour le champ %d (%s, environ %d %% perdus) reçue - un expert va passer."/>
+        <text name="tp_msg_ins_claim_inspected" text="L'expert a inspecté le champ %d. La décision suit bientôt."/>
+        <text name="tp_msg_ins_claim_approved" text="Sinistre du champ %d accepté : %s seront versés."/>
+        <text name="tp_msg_ins_claim_paid" text="Indemnité versée pour le champ %d : %s."/>
+        <text name="tp_msg_ins_claim_deductible" text="Sinistre du champ %d : %d %% perdus cette année restent dans votre part non assurée (couverture %d %%) - pas encore d'indemnité."/>
+        <text name="tp_msg_ins_claim_no_policy" text="Sinistre du champ %d clos : il n'y a plus de contrat récolte."/>
+        <text name="tp_msg_ins_claim_no_crop" text="Sinistre du champ %d clos : la culture n'est pas assurable."/>
         <text name="tp_msg_ins_off" text="L'assurance est désactivée sur ce serveur."/>
         <text name="tp_msg_ins_denied" text="Assurance : seul un gérant de la ferme ou l'admin du serveur peut modifier les contrats de cette ferme."/>
         <text name="tp_msg_ins_denied_admin" text="Assurance : sur ce serveur, seul l'admin gère les contrats."/>

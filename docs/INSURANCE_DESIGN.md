@@ -1028,7 +1028,7 @@ last). Every phase is testable and committable on its own; the module stays OFF 
 
 0. **Foundation** – **implemented 2026-10-16** (see 18.1).
 1. **Storm damage report** – **implemented 2026-10-16** (see 18.2).
-2. **Crop insurance** – policy per farm (plan, coverage, all owned fields with an insurable crop); policy
+2. **Crop insurance** – 2a (curve countries) **implemented 2026-10-17** (see 18.3); 2b open. Policy per farm (plan, coverage, all owned fields with an insurable crop); policy
    year with locked prices (average sell-point price, §16 q2), standard yield (§16 q3), planting cut-off,
    waiting period, refusal during an outbreak / active tornado; monthly premium (farmer rate × state factor
    × cost scale); claims from the damage log (tornado, hail, drought, flood, fire) → adjuster → decision →
@@ -1097,10 +1097,48 @@ last). Every phase is testable and committable on its own; the module stays OFF 
   despawn came over an hour of real time later.) written to the damage log `{ id, cause, day, fieldId, farmId, crop, share }`
   (last 500, `TornadoDamage.xml`). Tornado / hail: one report per farm and cause – "Tornado: 3 of your fields
   hit, about 2.4 ha of crop lost (worst: field 7, 18 %)" (`tp_msg_damage_report`); drought, flood and fire
-  keep their own messages. Events below 0.5 % of a field are logged without a report.
+  keep their own messages. Events below 1 % of a field are logged without a report, and fields nobody owns are not measured at all (in-game test 2026-10-17: the game's hail leaves 0.1 – 0.6 % specks on dozens of fields per tick).
 - Console: `t_dev insurance damage [farm]` (log + open events), `t_dev insurance hit <field> [radius]
   [perlin]` (real disaster call at the field centre, counted as tornado). Offline test
   `tools/test/test_damage.lua` (31 checks).
+
+### 18.3 Phase 2a – crop policies for the coverage-curve countries (2026-10-17)
+
+Decisions 2026-10-17: no extra deductible (the uninsured part 1 − coverage is the deductible, as in the US
+yield guarantee); sales closing date with a setting **auto** (only with seasonal growth – `GrowthMode.SEASONAL`)
+/ **on** / **off**, sales window late winter + early spring (periods 12 and 1).
+
+`scripts/insurance/TornadoInsuranceCrop.lua` (installed by `TornadoInsurance:loadMap`):
+- one policy per farm: plan + coverage, all owned fields with an insurable crop (crop cross-reference §6.4);
+  offered plans / levels from the region's curves (US RP / RPHPE / YP / APH, Canada YP, Brazil YP / COST / FULL);
+  a crop without the chosen plan uses the first one its curve has (YP, APH, FULL, COST, RPHPE, RP); a missing
+  level the next lower one; unusual crops max 70 %, +25 % rate;
+- buy / change only while sales are open and no tornado / outbreak is active; new cover active after 7 real
+  days; cancel any time (open claims are still settled);
+- prices locked per crop when the policy year first needs them (average over the map's own - preplaced - selling
+  stations that buy the crop, `getEffectiveFillTypePrice`; player-bought stations, often mods paying 10 %+ more,
+  are left out unless only they buy the crop; fallback `EconomyManager:getPricePerLiter`; Precision Farming's
+  environmental-score bonus is paid on top at sale and is not part of the listed price - ignored), reset on `YEAR_CHANGED`
+  together with the per-field loss totals;
+- monthly premium = Σ fields: area × standard yield (`literPerSqm` × 10 000) × locked price × coverage × farmer
+  rate × state factor (× 1.25 unusual) / 12, × cost scale;
+- claims from every closed damage-log event (`TornadoInsurance:onDamageLogged` → listeners) on a field the farm
+  still owns, after the policy became active: received → adjuster (3 days) → decision (2) → payout (1).
+  Indemnity per field and crop over the policy year: max(0, lost − (1 − coverage)) − paid before, × area ×
+  yield × price; RP at max(locked, current) capped at 200 % of locked, other plans at the locked price;
+- saved per farm in `TornadoInsurance.xml` (policy, locked prices, field totals, claims) via
+  `registerFarmData`; the farm state event carries plan / coverage / status / open claims;
+- UI (Modules tab): sales closing date (server setting), crop insurance plan + coverage for the player's farm
+  (coverage options show the monthly price), status button; console `t_dev insurance crop plans | quote | buy |
+  cancel | claims`, `t_set insurance sales auto|on|off`;
+- not yet: named-peril / multi-risk / modules / peril-group / scheme programmes (phase 2b – buying is refused
+  with a "later update" message), write-off, no-claims discount, harvest-history yields.
+- Offline test `tools/test/test_crop.lua` (56 checks, real US data).
+
+Related (2026-10-17): the twister's crop destruction areas are now sized to the tornado's physics radius and
+their strength scaled by EF (`TornadoPhysics:applyCropDamageScale`, ×0.6 EF-0 … ×1.45 EF-5, capped 5 – 98 %);
+the map-twister files in `FX/twister/` (a GIANTS mapAS copy) are not needed and should not ship.
+Offline test `tools/test/test_cropscale.lua` (10 checks).
 
 ## 19. Rules for the implementation
 

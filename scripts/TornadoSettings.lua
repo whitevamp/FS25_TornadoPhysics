@@ -166,6 +166,7 @@ function TornadoSettings:resetToDefaults(category)
             TornadoInsurance.isEnabled = false
             TornadoInsurance.adminOnly = false
             TornadoInsurance.regionSetting = "auto"
+            TornadoInsurance.salesClosing = "auto"
             TornadoInsurance.resolved = nil
             print("TORNADO RESET: Insurance defaults restored.")
         end
@@ -276,6 +277,7 @@ function TornadoSettings:createDefaultXML()
     setXMLBool(xmlId, "TornadoPhysics.insurance.enabled", false)
     setXMLBool(xmlId, "TornadoPhysics.insurance.adminOnly", false)
     setXMLString(xmlId, "TornadoPhysics.insurance.region", "auto")
+    setXMLString(xmlId, "TornadoPhysics.insurance.salesClosing", "auto")
 
     -- 14. REAL-LIFE CLIMATE MODE
     setXMLBool(xmlId, "TornadoPhysics.climate.enabled", false)
@@ -429,6 +431,7 @@ function TornadoSettings:loadFromXML()
         if adminOnly ~= nil then TornadoInsurance.adminOnly = adminOnly end
         -- Stored as given; an unknown country falls back to the default profile when the data loads.
         TornadoInsurance.regionSetting = getXMLString(xmlId, "TornadoPhysics.insurance.region") or TornadoInsurance.regionSetting
+        TornadoInsurance.salesClosing = getXMLString(xmlId, "TornadoPhysics.insurance.salesClosing") or TornadoInsurance.salesClosing
         TornadoInsurance.resolved = nil
     end
 
@@ -571,6 +574,7 @@ function TornadoSettings:saveToXML()
         setXMLBool(xmlId, "TornadoPhysics.insurance.enabled", TornadoInsurance.isEnabled)
         setXMLBool(xmlId, "TornadoPhysics.insurance.adminOnly", TornadoInsurance.adminOnly)
         setXMLString(xmlId, "TornadoPhysics.insurance.region", TornadoInsurance.regionSetting or "auto")
+        setXMLString(xmlId, "TornadoPhysics.insurance.salesClosing", TornadoInsurance.salesClosing or "auto")
     end
 
     if TornadoClimate then

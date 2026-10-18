@@ -149,6 +149,7 @@ function TornadoConsole:cmdHelp(command)
         print("    on|off              - Explicitly turns insurance ON or OFF.")
         print("    managers <farm|admin> - Who may buy / change policies: farm managers + admin, or the admin only.")
         print("    region <value|auto> - Whose insurance rules apply. Ex: t_set insurance region DE | US_KS | auto")
+        print("    sales <auto|on|off> - Crop policies only in late winter / early spring (auto: only with seasonal growth).")
         print("    list                - Prints all insurance regions.")
         print("    status              - Region, data file, settings, records.")
         print(" ")
@@ -199,6 +200,10 @@ function TornadoConsole:cmdHelp(command)
         print("  insurance regions     - Prints all insurance regions.")
         print("  insurance crops       - Every crop of this map and how the insurance rates it (map crops -> base crops).")
         print("  insurance damage [farm] - Storm damage log: field, cause, crop, share lost (also open events).")
+        print("  insurance crop plans  - Crop insurance plans and coverage levels of this region, sales open or not.")
+        print("  insurance crop quote <PLAN> <coverage %> - Price of a crop policy for your farm, field by field.")
+        print("  insurance crop buy <PLAN> <coverage %> | cancel - Buys / changes / cancels your farm's crop policy.")
+        print("  insurance crop claims - Your farm's crop policy and claims.")
         print("  insurance hit <field> [radius] [perlin] - DESTROYS crop in a circle at the field centre (tests the report).")
         print("--------------------------------------------------")
     elseif command == "t_tune" then
@@ -657,6 +662,12 @@ end
             end
             return "Insurance: Region = " .. (TornadoInsurance.regionSetting == TornadoInsurance.REGION_AUTO and "Auto - " or "") ..
                 TornadoInsurance:getRegionName()
+        elseif subCmd == "sales" then
+            if value ~= "auto" and value ~= "on" and value ~= "off" then
+                return "Usage: t_set insurance sales <auto | on | off>  (auto = closing date only with seasonal growth)"
+            end
+            TornadoInsurance.salesClosing = value
+            return "Insurance: Sales closing date = " .. value
         elseif subCmd == "list" then
             return TornadoInsurance:consoleCommand("regions")
         elseif subCmd == "status" then
@@ -664,7 +675,7 @@ end
         elseif subCmd == nil or subCmd == "toggle" then
             TornadoInsurance.isEnabled = not TornadoInsurance.isEnabled
         else
-            return "Unknown Insurance CMD. Try: on, off, managers, region, list, status"
+            return "Unknown Insurance CMD. Try: on, off, managers, region, sales, list, status"
         end
         return "Insurance: Insurance = " .. tostring(TornadoInsurance.isEnabled)
     end

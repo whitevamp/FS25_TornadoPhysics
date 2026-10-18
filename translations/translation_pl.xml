@@ -189,12 +189,52 @@
         <text name="tp_msg_ins_premium_charged" text="Ubezpieczenie: pobrano miesięczną składkę %s."/>
         <text name="tp_msg_ins_payout" text="Ubezpieczenie: wypłacono %s na konto gospodarstwa."/>
         <text name="tp_msg_ins_test_timer" text="Ubezpieczenie: testowe odliczanie zakończone."/>
-        <text name="tp_msg_damage_report" text="%s: trafione pola: %d, utracono ok. %.1f ha upraw (najgorzej: pole %d, %d %%)."/>
+        <text name="tp_msg_damage_report" text="%s: trafione pola: %d, utracono ok. %.2f ha upraw (najgorzej: pole %d, %d %%)."/>
         <text name="tp_cause_tornado" text="Tornado"/>
         <text name="tp_cause_hail" text="Grad"/>
         <text name="tp_cause_drought" text="Susza"/>
         <text name="tp_cause_flood" text="Powódź"/>
         <text name="tp_cause_fire" text="Pożar pola"/>
+        <text name="tp_plan_none" text="Brak ubezpieczenia upraw"/>
+        <text name="tp_plan_RP" text="Ochrona przychodu (RP)"/>
+        <text name="tp_plan_RPHPE" text="Ochrona przychodu bez ceny zbiorów (RPHPE)"/>
+        <text name="tp_plan_YP" text="Ochrona plonu (YP)"/>
+        <text name="tp_plan_APH" text="Plon, uprawy specjalne (APH)"/>
+        <text name="tp_plan_COST" text="Koszty produkcji (COST)"/>
+        <text name="tp_plan_FULL" text="Pełny plon (FULL)"/>
+        <text name="tp_insurance_crop_plan" text="Ubezpieczenie upraw (twoje gospodarstwo)"/>
+        <text name="tp_tip_insurance_crop_plan" text="Ubezpiecza każde pole twojego gospodarstwa z uprawą podlegającą ubezpieczeniu od strat po tornadzie, gradzie, suszy, powodzi i pożarze. Plany plonu wypłacają według ceny ustalonej na rok polisy; ochrona przychodu według wyższej z cen ustalonej i bieżącej. Ochrona zaczyna się ok. tydzień (czasu rzeczywistego) po zakupie."/>
+        <text name="tp_insurance_crop_coverage" text="Poziom ochrony"/>
+        <text name="tp_tip_insurance_crop_coverage" text="Część oczekiwanej wartości zbiorów, która jest ubezpieczona. Straty do pozostałej części (np. 25 % przy 75 % ochrony) ponosisz sam; wyższa ochrona kosztuje więcej. Uprawy nietypowe dla regionu: maksymalnie 70 %, a cena wyższa o 25 %."/>
+        <text name="tp_insurance_coverage_option" text="%d %% (ok. %s / mies.)"/>
+        <text name="tp_insurance_sales" text="Termin zawarcia umów"/>
+        <text name="tp_tip_insurance_sales" text="Polisy upraw można kupić lub zmienić tylko późną zimą i wczesną wiosną, jak prawdziwe ubezpieczenie przed siewem. Auto: tylko przy sezonowym wzroście (wyłączone, gdy uprawy rosną cały rok)."/>
+        <text name="tp_insurance_sales_auto" text="Auto"/>
+        <text name="tp_insurance_sales_on" text="Zawsze"/>
+        <text name="tp_insurance_sales_off" text="Nigdy (kupno w każdej chwili)"/>
+        <text name="tp_insurance_crop_status" text="Stan polisy upraw"/>
+        <text name="tp_btn_show" text="Pokaż"/>
+        <text name="tp_msg_ins_crop_status" text="Ubezpieczenie upraw: %s, %d %% (%s) - pola: %d, suma ubezpieczenia %s, ok. %s miesięcznie, otwarte szkody: %d."/>
+        <text name="tp_ins_status_pending" text="wkrótce aktywna"/>
+        <text name="tp_ins_status_active" text="aktywna"/>
+        <text name="tp_msg_ins_crop_none_status" text="Ubezpieczenie upraw: twoje gospodarstwo nie ma polisy."/>
+        <text name="tp_msg_ins_crop_bought" text="Ubezpieczenie upraw %s na %d %% potwierdzone (ok. %s miesięcznie). Ochrona zaczyna się za %d d %d godz."/>
+        <text name="tp_msg_ins_crop_changed" text="Ubezpieczenie upraw zmienione na %s, %d %% (ok. %s miesięcznie)."/>
+        <text name="tp_msg_ins_crop_active" text="Twoje ubezpieczenie upraw (%s, %d %%) jest teraz aktywne."/>
+        <text name="tp_msg_ins_crop_cancelled" text="Ubezpieczenie upraw anulowane. Otwarte szkody zostaną jeszcze rozliczone."/>
+        <text name="tp_msg_ins_crop_renewed" text="Nowy rok polisy: ceny w twoim ubezpieczeniu upraw zostaną ustalone na nowo."/>
+        <text name="tp_msg_ins_crop_none" text="Twoje gospodarstwo nie ma ubezpieczenia upraw do anulowania."/>
+        <text name="tp_msg_ins_crop_unavailable" text="Ubezpieczenie upraw dla tego regionu pojawi się w kolejnej aktualizacji."/>
+        <text name="tp_msg_ins_crop_unknown_plan" text="Ten plan ubezpieczenia upraw nie jest dostępny w tym regionie."/>
+        <text name="tp_msg_ins_crop_sales_closed" text="Ubezpieczenie upraw można kupić lub zmienić tylko późną zimą i wczesną wiosną."/>
+        <text name="tp_msg_ins_crop_storm" text="Brak nowej ochrony w trakcie tornada lub serii burz."/>
+        <text name="tp_msg_ins_claim_received" text="Zgłoszenie szkody dla pola %d (%s, ok. %d %% strat) przyjęte - przyjedzie rzeczoznawca."/>
+        <text name="tp_msg_ins_claim_inspected" text="Rzeczoznawca obejrzał pole %d. Decyzja wkrótce."/>
+        <text name="tp_msg_ins_claim_approved" text="Szkoda na polu %d uznana: zostanie wypłacone %s."/>
+        <text name="tp_msg_ins_claim_paid" text="Wypłata ubezpieczenia za pole %d: %s."/>
+        <text name="tp_msg_ins_claim_deductible" text="Szkoda na polu %d: %d %% strat w tym roku mieści się w nieubezpieczonej części (ochrona %d %%) - na razie brak wypłaty."/>
+        <text name="tp_msg_ins_claim_no_policy" text="Szkoda na polu %d zamknięta: nie ma już polisy upraw."/>
+        <text name="tp_msg_ins_claim_no_crop" text="Szkoda na polu %d zamknięta: uprawa nie podlega ubezpieczeniu."/>
         <text name="tp_msg_ins_off" text="Ubezpieczenia są wyłączone na tym serwerze."/>
         <text name="tp_msg_ins_denied" text="Ubezpieczenie: tylko zarządca gospodarstwa lub admin serwera może zmieniać polisy tego gospodarstwa."/>
         <text name="tp_msg_ins_denied_admin" text="Ubezpieczenie: na tym serwerze polisami zarządza tylko admin."/>

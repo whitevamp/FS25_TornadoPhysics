@@ -114,8 +114,20 @@
   of crop were lost and the worst field. Every crop loss (tornado, hail,
   drought, flood, field fire) is recorded per field for the coming crop
   insurance claims. Works with the insurance switched off too.
-- No policies to buy yet - crop insurance comes next, equipment insurance
-  after that.
+- Crop insurance (US, Canada, Brazil maps first): insure all your farm's fields
+  with one plan (Revenue / Yield Protection and the country's own plans) and a
+  coverage level, Modules tab or console. Real premium rates and subsidies,
+  prices locked for the policy year, monthly premiums. Every recorded loss
+  (tornado, hail, drought, flood, fire) opens a claim: an adjuster visits, a
+  decision letter follows, then the payout. Losses within your uninsured part
+  (e.g. 25 % at 75 % coverage) are not paid. Policies can only be bought in
+  late winter / early spring (setting: auto / always / never).
+- Equipment insurance comes in a later update.
+
+[GAMEPLAY] Tornado Crop Damage Follows Its Size
+- The strip of crop a tornado destroys now matches the tornado's real radius,
+  and stronger tornadoes destroy more of the crop inside it (EF-0 about 60 %
+  of the base-game damage, EF-5 about 145 %).
 
 [COMPATIBILITY] Moisture System (FS25_MoistureSystem by Ozz)
 - With Moisture System installed, our own drought switches off (Moisture System

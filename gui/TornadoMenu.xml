@@ -560,6 +560,30 @@
                     </MultiTextOption>
                     <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_insurance_region"/>
                 </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="modInsuranceSales" onClick="onClickChoice">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_insurance_sales"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_insurance_sales"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="modInsuranceCropPlan" onClick="onClickChoice">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_insurance_crop_plan"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_insurance_crop_plan"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="modInsuranceCropCoverage" onClick="onClickChoice">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_insurance_crop_coverage"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_insurance_crop_coverage"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <Button profile="tornado_actionButton" id="modInsuranceCropStatus" text="$l10n_tp_btn_show" onClick="onClickAction">
+                        <ThreePartBitmap profile="tornado_actionButtonBg"/>
+                    </Button>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_insurance_crop_status"/>
+                </Bitmap>
             </ScrollingLayout>
             <Bitmap profile="fs25_settingsTooltipSeparator"/>
         </GuiElement>

@@ -62,8 +62,9 @@ local function makeField(id, x0, z0, side, owner, fruit, growth)
 end
 local fields = {
     makeField(1, 0, 0, 100, 1, 1, 4),       -- 1 ha wheat, farm 1
-    makeField(2, 100, 0, 100, 0, 2, 4),     -- 1 ha barley next to it, nobody owns it
+    makeField(2, 100, 0, 100, 2, 2, 4),     -- 1 ha barley next to it, farm 2
     makeField(3, 0, 200, 100, 1, 1, 1),     -- wheat just sown (growth 1) - nothing to destroy
+    makeField(4, 300, 0, 100, 0, 1, 4),     -- wheat nobody owns - not measured
 }
 g_fieldManager = { getFields = function() return fields end,
     getFieldById = function(_, id) for _, f in ipairs(fields) do if f.getId() == id then return f end end return nil end }
@@ -156,12 +157,14 @@ check("weaker hit on the same spot: nothing new", openShare("HAIL", 1), first)
 
 -- perlin 5000 = half of the cells' crop
 FSDensityMapUtil.updateDisasterArea(circle(150, 50, 20), 5000)
-check("unowned barley field: half destroyed inside the circle", openShare("HAIL", 2), near(expected / 2, 0.01))
+check("farm 2 barley field: half destroyed inside the circle", openShare("HAIL", 2), near(expected / 2, 0.01))
 FSDensityMapUtil.updateDisasterArea(circle(150, 50, 20), 0)
 check("stronger hit later: only the rest counts (total = full circle)", openShare("HAIL", 2), near(expected, expected * 0.06))
 
 FSDensityMapUtil.updateDisasterArea(circle(50, 250, 20), 0)
 check("just sown (growth 1): nothing destroyable", openShare("HAIL", 3), 0)
+FSDensityMapUtil.updateDisasterArea(circle(350, 50, 20), 0)
+check("field nobody owns: not measured", openShare("HAIL", 4), 0)
 
 -- ---------------------------------------------------------------- twister (node polygon) across two fields
 FSDensityMapUtil.updateDisasterArea(nodePolygon({ { 80, 0 }, { 120, 0 }, { 120, 100 }, { 80, 100 } }), 0)
@@ -184,10 +187,12 @@ tornadoNode.x = 50
 check("4 events logged (hail 1, hail 2, tornado 1, tornado 2)", #M.log, 4)
 local reports = {}
 for _, m in ipairs(messages) do if m.key == "tp_msg_damage_report" then table.insert(reports, m) end end
-check("reports only to the owning farm (farm 1: hail + tornado)", #reports, 2)
-check("report goes to farm 1", reports[1].farmId, 1)
+local farm1 = 0
+for _, m in ipairs(reports) do if m.farmId == 1 then farm1 = farm1 + 1 end end
+check("farm 1 gets one hail + one tornado report", farm1, 2)
+check("farm 2 gets its own reports", #reports - farm1, 2)
 local hailReport
-for _, m in ipairs(reports) do if m.params[1].value == "tp_cause_hail" then hailReport = m end end
+for _, m in ipairs(reports) do if m.params[1].value == "tp_cause_hail" and m.farmId == 1 then hailReport = m end end
 check("hail report: 1 field, worst field 1", hailReport ~= nil and hailReport.params[2].value == 1 and hailReport.params[4].value == 1, true)
 check("hail report: ha lost ~ 0.126", hailReport ~= nil and hailReport.params[3].value, near(expected, expected * 0.06))
 check("log entry has crop + farm", M.log[1].crop == "WHEAT" and M.log[1].farmId == 1, true)

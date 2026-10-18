@@ -189,12 +189,52 @@
         <text name="tp_msg_ins_premium_charged" text="Verzekering: maandpremie van %s afgeschreven."/>
         <text name="tp_msg_ins_payout" text="Verzekering: %s uitgekeerd aan je boerderij."/>
         <text name="tp_msg_ins_test_timer" text="Verzekering: testaftelling afgelopen."/>
-        <text name="tp_msg_damage_report" text="%s: %d van je velden geraakt, ongeveer %.1f ha oogst verloren (het ergst: veld %d, %d %%)."/>
+        <text name="tp_msg_damage_report" text="%s: %d van je velden geraakt, ongeveer %.2f ha oogst verloren (het ergst: veld %d, %d %%)."/>
         <text name="tp_cause_tornado" text="Tornado"/>
         <text name="tp_cause_hail" text="Hagel"/>
         <text name="tp_cause_drought" text="Droogte"/>
         <text name="tp_cause_flood" text="Overstroming"/>
         <text name="tp_cause_fire" text="Veldbrand"/>
+        <text name="tp_plan_none" text="Geen oogstverzekering"/>
+        <text name="tp_plan_RP" text="Inkomensbescherming (RP)"/>
+        <text name="tp_plan_RPHPE" text="Inkomensbescherming zonder oogstprijs (RPHPE)"/>
+        <text name="tp_plan_YP" text="Opbrengstbescherming (YP)"/>
+        <text name="tp_plan_APH" text="Opbrengst, bijzondere gewassen (APH)"/>
+        <text name="tp_plan_COST" text="Productiekosten (COST)"/>
+        <text name="tp_plan_FULL" text="Volledige opbrengst (FULL)"/>
+        <text name="tp_insurance_crop_plan" text="Oogstverzekering (je boerderij)"/>
+        <text name="tp_tip_insurance_crop_plan" text="Verzekert elk veld van je boerderij met een verzekerbaar gewas tegen verliezen door tornado, hagel, droogte, overstroming en brand. Opbrengstplannen betalen tegen de prijs die voor het polisjaar is vastgelegd; inkomensbescherming betaalt tegen de hoogste van de vastgelegde en de huidige prijs. De dekking begint ongeveer een week (echte tijd) na aankoop."/>
+        <text name="tp_insurance_crop_coverage" text="Dekkingsniveau"/>
+        <text name="tp_tip_insurance_crop_coverage" text="Deel van de verwachte oogstwaarde dat verzekerd is. Verliezen tot het restant (bijv. 25 % bij een dekking van 75 %) zijn voor jou; meer dekking kost meer. Voor de regio ongebruikelijke gewassen: maximaal 70 %, en 25 % meer premie."/>
+        <text name="tp_insurance_coverage_option" text="%d %% (ongeveer %s / maand)"/>
+        <text name="tp_insurance_sales" text="Sluitingsdatum"/>
+        <text name="tp_tip_insurance_sales" text="Oogstpolissen kunnen alleen eind winter en begin lente worden afgesloten of gewijzigd, zoals een echte verzekering vóór het zaaien. Auto: alleen bij seizoensgroei (uit als gewassen het hele jaar groeien)."/>
+        <text name="tp_insurance_sales_auto" text="Auto"/>
+        <text name="tp_insurance_sales_on" text="Altijd"/>
+        <text name="tp_insurance_sales_off" text="Nooit (altijd kopen)"/>
+        <text name="tp_insurance_crop_status" text="Status van de oogstpolis"/>
+        <text name="tp_btn_show" text="Tonen"/>
+        <text name="tp_msg_ins_crop_status" text="Oogstverzekering: %s, %d %% (%s) - %d velden, verzekerde waarde %s, ongeveer %s per maand, %d open schadegevallen."/>
+        <text name="tp_ins_status_pending" text="begint binnenkort"/>
+        <text name="tp_ins_status_active" text="actief"/>
+        <text name="tp_msg_ins_crop_none_status" text="Oogstverzekering: je boerderij heeft geen polis."/>
+        <text name="tp_msg_ins_crop_bought" text="Oogstverzekering %s met %d %% bevestigd (ongeveer %s per maand). De dekking begint over %d d %d u."/>
+        <text name="tp_msg_ins_crop_changed" text="Oogstverzekering gewijzigd naar %s met %d %% (ongeveer %s per maand)."/>
+        <text name="tp_msg_ins_crop_active" text="Je oogstverzekering (%s, %d %%) is nu actief."/>
+        <text name="tp_msg_ins_crop_cancelled" text="Oogstverzekering opgezegd. Open schadegevallen worden nog afgehandeld."/>
+        <text name="tp_msg_ins_crop_renewed" text="Nieuw polisjaar: de prijzen van je oogstverzekering worden opnieuw vastgelegd."/>
+        <text name="tp_msg_ins_crop_none" text="Je boerderij heeft geen oogstverzekering om op te zeggen."/>
+        <text name="tp_msg_ins_crop_unavailable" text="Oogstverzekering voor deze regio komt in een volgende update."/>
+        <text name="tp_msg_ins_crop_unknown_plan" text="Dit verzekeringsplan wordt in deze regio niet aangeboden."/>
+        <text name="tp_msg_ins_crop_sales_closed" text="Oogstverzekering kan alleen eind winter en begin lente worden afgesloten of gewijzigd."/>
+        <text name="tp_msg_ins_crop_storm" text="Geen nieuwe dekking zolang er een tornado of een reeks stormen bezig is."/>
+        <text name="tp_msg_ins_claim_received" text="Schademelding voor veld %d (%s, ongeveer %d %% verloren) ontvangen - er komt een expert langs."/>
+        <text name="tp_msg_ins_claim_inspected" text="De expert heeft veld %d bekeken. De beslissing volgt binnenkort."/>
+        <text name="tp_msg_ins_claim_approved" text="Schade voor veld %d goedgekeurd: %s wordt uitbetaald."/>
+        <text name="tp_msg_ins_claim_paid" text="Uitkering voor veld %d: %s."/>
+        <text name="tp_msg_ins_claim_deductible" text="Schade veld %d: %d %% verlies dit jaar valt binnen je onverzekerde deel (%d %% dekking) - nog geen uitkering."/>
+        <text name="tp_msg_ins_claim_no_policy" text="Schade veld %d gesloten: er is geen oogstpolis meer."/>
+        <text name="tp_msg_ins_claim_no_crop" text="Schade veld %d gesloten: het gewas is niet verzekerbaar."/>
         <text name="tp_msg_ins_off" text="Verzekering staat uit op deze server."/>
         <text name="tp_msg_ins_denied" text="Verzekering: alleen een beheerder van de boerderij of de serverbeheerder kan de polissen van deze boerderij wijzigen."/>
         <text name="tp_msg_ins_denied_admin" text="Verzekering: op deze server beheert alleen de admin de polissen."/>

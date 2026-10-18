@@ -114,6 +114,7 @@ TornadoSync.SETTINGS = {
     fieldSetting(function() return TornadoInsurance end, "isEnabled", "b"),
     fieldSetting(function() return TornadoInsurance end, "adminOnly", "b"),
     fieldSetting(function() return TornadoInsurance end, "regionSetting", "s"),
+    fieldSetting(function() return TornadoInsurance end, "salesClosing", "s"),
     -- t_set climate
     fieldSetting(function() return TornadoClimate end, "isEnabled", "b"),
     fieldSetting(function() return TornadoClimate end, "regionSetting", "s"),

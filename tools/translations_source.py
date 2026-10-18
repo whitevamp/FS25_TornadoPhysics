@@ -684,18 +684,201 @@ t("tp_msg_ins_test_timer", "Insurance: test countdown finished.",
   "Seguro: cuenta atrás de prueba terminada.",
   "Assicurazione: conto alla rovescia di prova terminato.",
   "Verzekering: testaftelling afgelopen.")
-t("tp_msg_damage_report", "%s: %d of your fields hit, about %.1f ha of crop lost (worst: field %d, %d %%).",
-  "%s: %d deiner Felder getroffen, etwa %.1f ha Ernte verloren (am schlimmsten: Feld %d, %d %%).",
-  "%s : %d de vos champs touchés, environ %.1f ha de récolte perdus (le plus touché : champ %d, %d %%).",
-  "%s: trafione pola: %d, utracono ok. %.1f ha upraw (najgorzej: pole %d, %d %%).",
-  "%s: %d de tus campos afectados, unas %.1f ha de cosecha perdidas (el peor: campo %d, %d %%).",
-  "%s: %d dei tuoi campi colpiti, circa %.1f ha di raccolto perso (il peggiore: campo %d, %d %%).",
-  "%s: %d van je velden geraakt, ongeveer %.1f ha oogst verloren (het ergst: veld %d, %d %%).")
+t("tp_msg_damage_report", "%s: %d of your fields hit, about %.2f ha of crop lost (worst: field %d, %d %%).",
+  "%s: %d deiner Felder getroffen, etwa %.2f ha Ernte verloren (am schlimmsten: Feld %d, %d %%).",
+  "%s : %d de vos champs touchés, environ %.2f ha de récolte perdus (le plus touché : champ %d, %d %%).",
+  "%s: trafione pola: %d, utracono ok. %.2f ha upraw (najgorzej: pole %d, %d %%).",
+  "%s: %d de tus campos afectados, unas %.2f ha de cosecha perdidas (el peor: campo %d, %d %%).",
+  "%s: %d dei tuoi campi colpiti, circa %.2f ha di raccolto perso (il peggiore: campo %d, %d %%).",
+  "%s: %d van je velden geraakt, ongeveer %.2f ha oogst verloren (het ergst: veld %d, %d %%).")
 t("tp_cause_tornado", "Tornado", "Tornado", "Tornade", "Tornado", "Tornado", "Tornado", "Tornado")
 t("tp_cause_hail", "Hail", "Hagel", "Grêle", "Grad", "Granizo", "Grandine", "Hagel")
 t("tp_cause_drought", "Drought", "Dürre", "Sécheresse", "Susza", "Sequía", "Siccità", "Droogte")
 t("tp_cause_flood", "Flood", "Überschwemmung", "Inondation", "Powódź", "Inundación", "Alluvione", "Overstroming")
 t("tp_cause_fire", "Field fire", "Feldbrand", "Feu de champ", "Pożar pola", "Incendio de campo", "Incendio", "Veldbrand")
+# Crop insurance (phase 2a) - plans, interface, letters
+t("tp_plan_none", "No crop insurance", "Keine Ernteversicherung", "Pas d'assurance récolte", "Brak ubezpieczenia upraw",
+  "Sin seguro de cosecha", "Nessuna assicurazione raccolto", "Geen oogstverzekering")
+t("tp_plan_RP", "Revenue Protection (RP)", "Ertragswertschutz (RP)", "Protection du revenu (RP)", "Ochrona przychodu (RP)",
+  "Protección de ingresos (RP)", "Protezione del reddito (RP)", "Inkomensbescherming (RP)")
+t("tp_plan_RPHPE", "Revenue Protection, no harvest price (RPHPE)", "Ertragswertschutz ohne Erntepreis (RPHPE)",
+  "Protection du revenu sans prix de récolte (RPHPE)", "Ochrona przychodu bez ceny zbiorów (RPHPE)",
+  "Protección de ingresos sin precio de cosecha (RPHPE)", "Protezione del reddito senza prezzo di raccolta (RPHPE)",
+  "Inkomensbescherming zonder oogstprijs (RPHPE)")
+t("tp_plan_YP", "Yield Protection (YP)", "Ertragsschutz (YP)", "Protection du rendement (YP)", "Ochrona plonu (YP)",
+  "Protección del rendimiento (YP)", "Protezione della resa (YP)", "Opbrengstbescherming (YP)")
+t("tp_plan_APH", "Yield cover, specialty crops (APH)", "Ertragsschutz Sonderkulturen (APH)", "Rendement, cultures spéciales (APH)",
+  "Plon, uprawy specjalne (APH)", "Rendimiento, cultivos especiales (APH)", "Resa, colture speciali (APH)",
+  "Opbrengst, bijzondere gewassen (APH)")
+t("tp_plan_COST", "Production cost cover (COST)", "Produktionskostenschutz (COST)", "Coûts de production (COST)",
+  "Koszty produkcji (COST)", "Costes de producción (COST)", "Costi di produzione (COST)", "Productiekosten (COST)")
+t("tp_plan_FULL", "Full yield cover (FULL)", "Voller Ertragsschutz (FULL)", "Rendement complet (FULL)", "Pełny plon (FULL)",
+  "Rendimiento completo (FULL)", "Resa completa (FULL)", "Volledige opbrengst (FULL)")
+t("tp_insurance_crop_plan", "Crop insurance (your farm)", "Ernteversicherung (dein Hof)", "Assurance récolte (votre ferme)",
+  "Ubezpieczenie upraw (twoje gospodarstwo)", "Seguro de cosecha (tu granja)", "Assicurazione raccolto (la tua fattoria)",
+  "Oogstverzekering (je boerderij)")
+t("tp_tip_insurance_crop_plan",
+  "Insures every field your farm owns with an insurable crop against tornado, hail, drought, flood and fire losses. Yield plans pay at the price locked for the policy year; Revenue Protection pays at the higher of the locked and the current price. Cover starts about a week (real-life time) after buying.",
+  "Versichert jedes Feld deines Hofs mit einer versicherbaren Kultur gegen Schäden durch Tornado, Hagel, Dürre, Überschwemmung und Feuer. Ertragspläne zahlen zum für das Versicherungsjahr festgelegten Preis; der Ertragswertschutz zahlt zum höheren aus festgelegtem und aktuellem Preis. Der Schutz beginnt etwa eine Woche (reale Zeit) nach dem Kauf.",
+  "Assure chaque champ de votre ferme portant une culture assurable contre les pertes dues aux tornades, à la grêle, à la sécheresse, aux inondations et au feu. Les plans de rendement paient au prix fixé pour l'année du contrat ; la protection du revenu paie au plus élevé du prix fixé et du prix actuel. La couverture commence environ une semaine (temps réel) après l'achat.",
+  "Ubezpiecza każde pole twojego gospodarstwa z uprawą podlegającą ubezpieczeniu od strat po tornadzie, gradzie, suszy, powodzi i pożarze. Plany plonu wypłacają według ceny ustalonej na rok polisy; ochrona przychodu według wyższej z cen ustalonej i bieżącej. Ochrona zaczyna się ok. tydzień (czasu rzeczywistego) po zakupie.",
+  "Asegura cada campo de tu granja con un cultivo asegurable contra pérdidas por tornado, granizo, sequía, inundación e incendio. Los planes de rendimiento pagan al precio fijado para el año de la póliza; la protección de ingresos paga al mayor entre el precio fijado y el actual. La cobertura empieza una semana (tiempo real) después de la compra.",
+  "Assicura ogni campo della tua fattoria con una coltura assicurabile contro le perdite da tornado, grandine, siccità, alluvione e incendio. I piani di resa pagano al prezzo fissato per l'anno di polizza; la protezione del reddito paga al maggiore tra il prezzo fissato e quello attuale. La copertura inizia circa una settimana (tempo reale) dopo l'acquisto.",
+  "Verzekert elk veld van je boerderij met een verzekerbaar gewas tegen verliezen door tornado, hagel, droogte, overstroming en brand. Opbrengstplannen betalen tegen de prijs die voor het polisjaar is vastgelegd; inkomensbescherming betaalt tegen de hoogste van de vastgelegde en de huidige prijs. De dekking begint ongeveer een week (echte tijd) na aankoop.")
+t("tp_insurance_crop_coverage", "Coverage level", "Deckungsgrad", "Niveau de couverture", "Poziom ochrony", "Nivel de cobertura",
+  "Livello di copertura", "Dekkingsniveau")
+t("tp_tip_insurance_crop_coverage",
+  "Share of the expected harvest value that is insured. Losses up to the rest (e.g. 25 % at 75 % coverage) are yours; higher coverage costs more. Crops that are unusual for the region are capped at 70 % and cost 25 % more.",
+  "Anteil des erwarteten Erntewerts, der versichert ist. Verluste bis zum Rest (z. B. 25 % bei 75 % Deckung) trägst du selbst; höhere Deckung kostet mehr. Für die Region ungewöhnliche Kulturen sind auf 70 % begrenzt und kosten 25 % mehr.",
+  "Part de la valeur de récolte attendue qui est assurée. Les pertes jusqu'au reste (p. ex. 25 % avec une couverture à 75 %) sont à votre charge ; une couverture plus élevée coûte plus. Les cultures inhabituelles pour la région sont limitées à 70 %, avec un surcoût de 25 %.",
+  "Część oczekiwanej wartości zbiorów, która jest ubezpieczona. Straty do pozostałej części (np. 25 % przy 75 % ochrony) ponosisz sam; wyższa ochrona kosztuje więcej. Uprawy nietypowe dla regionu: maksymalnie 70 %, a cena wyższa o 25 %.",
+  "Parte del valor esperado de la cosecha que está asegurada. Las pérdidas hasta el resto (p. ej., 25 % con una cobertura del 75 %) corren de tu cuenta; más cobertura cuesta más. Los cultivos poco habituales en la región tienen un máximo del 70 % y cuestan un 25 % más.",
+  "Quota del valore atteso del raccolto che è assicurata. Le perdite fino al resto (ad es. 25 % con copertura al 75 %) sono a tuo carico; una copertura maggiore costa di più. Le colture insolite per la regione sono limitate al 70 %, con un sovrapprezzo del 25 %.",
+  "Deel van de verwachte oogstwaarde dat verzekerd is. Verliezen tot het restant (bijv. 25 % bij een dekking van 75 %) zijn voor jou; meer dekking kost meer. Voor de regio ongebruikelijke gewassen: maximaal 70 %, en 25 % meer premie.")
+t("tp_insurance_coverage_option", "%d %% (about %s / month)", "%d %% (etwa %s / Monat)", "%d %% (environ %s / mois)",
+  "%d %% (ok. %s / mies.)", "%d %% (unos %s / mes)", "%d %% (circa %s / mese)", "%d %% (ongeveer %s / maand)")
+t("tp_insurance_sales", "Sales closing date", "Antragsschluss", "Date limite de souscription", "Termin zawarcia umów",
+  "Fecha límite de contratación", "Termine di sottoscrizione", "Sluitingsdatum")
+t("tp_tip_insurance_sales",
+  "Crop policies can only be bought or changed in late winter and early spring, like real insurance before planting. Auto: only with seasonal growth (off when crops grow all year).",
+  "Ernteversicherungen können nur im Spätwinter und Frühlingsanfang abgeschlossen oder geändert werden, wie echte Versicherungen vor der Aussaat. Auto: nur mit saisonalem Wachstum (aus, wenn Pflanzen ganzjährig wachsen).",
+  "Les contrats récolte ne peuvent être souscrits ou modifiés qu'en fin d'hiver et début de printemps, comme une vraie assurance avant les semis. Auto : seulement avec la croissance saisonnière (désactivé si les cultures poussent toute l'année).",
+  "Polisy upraw można kupić lub zmienić tylko późną zimą i wczesną wiosną, jak prawdziwe ubezpieczenie przed siewem. Auto: tylko przy sezonowym wzroście (wyłączone, gdy uprawy rosną cały rok).",
+  "Las pólizas de cosecha solo se pueden contratar o cambiar a finales de invierno y principios de primavera, como un seguro real antes de la siembra. Auto: solo con crecimiento estacional (desactivado si los cultivos crecen todo el año).",
+  "Le polizze raccolto si possono stipulare o modificare solo a fine inverno e inizio primavera, come una vera assicurazione prima della semina. Auto: solo con crescita stagionale (disattivato se le colture crescono tutto l'anno).",
+  "Oogstpolissen kunnen alleen eind winter en begin lente worden afgesloten of gewijzigd, zoals een echte verzekering vóór het zaaien. Auto: alleen bij seizoensgroei (uit als gewassen het hele jaar groeien).")
+t("tp_insurance_sales_auto", "Auto", "Auto", "Auto", "Auto", "Auto", "Auto", "Auto")
+t("tp_insurance_sales_on", "Always", "Immer", "Toujours", "Zawsze", "Siempre", "Sempre", "Altijd")
+t("tp_insurance_sales_off", "Never (buy any time)", "Nie (jederzeit kaufen)", "Jamais (achat à tout moment)",
+  "Nigdy (kupno w każdej chwili)", "Nunca (comprar en cualquier momento)", "Mai (acquisto in qualsiasi momento)",
+  "Nooit (altijd kopen)")
+t("tp_insurance_crop_status", "Crop policy status", "Status der Ernteversicherung", "État du contrat récolte",
+  "Stan polisy upraw", "Estado de la póliza de cosecha", "Stato della polizza raccolto", "Status van de oogstpolis")
+t("tp_btn_show", "Show", "Anzeigen", "Afficher", "Pokaż", "Mostrar", "Mostra", "Tonen")
+t("tp_msg_ins_crop_status", "Crop insurance: %s, %d %% (%s) - %d fields, insured value %s, about %s per month, %d open claims.",
+  "Ernteversicherung: %s, %d %% (%s) - %d Felder, Versicherungswert %s, etwa %s pro Monat, %d offene Schadensfälle.",
+  "Assurance récolte : %s, %d %% (%s) - %d champs, valeur assurée %s, environ %s par mois, %d sinistres en cours.",
+  "Ubezpieczenie upraw: %s, %d %% (%s) - pola: %d, suma ubezpieczenia %s, ok. %s miesięcznie, otwarte szkody: %d.",
+  "Seguro de cosecha: %s, %d %% (%s) - %d campos, valor asegurado %s, unos %s al mes, %d siniestros abiertos.",
+  "Assicurazione raccolto: %s, %d %% (%s) - %d campi, valore assicurato %s, circa %s al mese, %d sinistri aperti.",
+  "Oogstverzekering: %s, %d %% (%s) - %d velden, verzekerde waarde %s, ongeveer %s per maand, %d open schadegevallen.")
+t("tp_ins_status_pending", "starting soon", "beginnt bald", "commence bientôt", "wkrótce aktywna", "empieza pronto",
+  "inizia a breve", "begint binnenkort")
+t("tp_ins_status_active", "active", "aktiv", "active", "aktywna", "activa", "attiva", "actief")
+t("tp_msg_ins_crop_none_status", "Crop insurance: your farm has no crop policy.", "Ernteversicherung: Dein Hof hat keine Police.",
+  "Assurance récolte : votre ferme n'a pas de contrat.", "Ubezpieczenie upraw: twoje gospodarstwo nie ma polisy.",
+  "Seguro de cosecha: tu granja no tiene póliza.", "Assicurazione raccolto: la tua fattoria non ha una polizza.",
+  "Oogstverzekering: je boerderij heeft geen polis.")
+t("tp_msg_ins_crop_bought", "Crop insurance %s at %d %% confirmed (about %s per month). Cover starts in %d d %d h.",
+  "Ernteversicherung %s mit %d %% bestätigt (etwa %s pro Monat). Der Schutz beginnt in %d T %d Std.",
+  "Assurance récolte %s à %d %% confirmée (environ %s par mois). La couverture commence dans %d j %d h.",
+  "Ubezpieczenie upraw %s na %d %% potwierdzone (ok. %s miesięcznie). Ochrona zaczyna się za %d d %d godz.",
+  "Seguro de cosecha %s al %d %% confirmado (unos %s al mes). La cobertura empieza en %d d %d h.",
+  "Assicurazione raccolto %s al %d %% confermata (circa %s al mese). La copertura inizia tra %d g %d h.",
+  "Oogstverzekering %s met %d %% bevestigd (ongeveer %s per maand). De dekking begint over %d d %d u.")
+t("tp_msg_ins_crop_changed", "Crop insurance changed to %s at %d %% (about %s per month).",
+  "Ernteversicherung geändert auf %s mit %d %% (etwa %s pro Monat).",
+  "Assurance récolte modifiée : %s à %d %% (environ %s par mois).",
+  "Ubezpieczenie upraw zmienione na %s, %d %% (ok. %s miesięcznie).",
+  "Seguro de cosecha cambiado a %s al %d %% (unos %s al mes).",
+  "Assicurazione raccolto modificata in %s al %d %% (circa %s al mese).",
+  "Oogstverzekering gewijzigd naar %s met %d %% (ongeveer %s per maand).")
+t("tp_msg_ins_crop_active", "Your crop insurance (%s, %d %%) is now active.", "Deine Ernteversicherung (%s, %d %%) ist jetzt aktiv.",
+  "Votre assurance récolte (%s, %d %%) est maintenant active.", "Twoje ubezpieczenie upraw (%s, %d %%) jest teraz aktywne.",
+  "Tu seguro de cosecha (%s, %d %%) ya está activo.", "La tua assicurazione raccolto (%s, %d %%) è ora attiva.",
+  "Je oogstverzekering (%s, %d %%) is nu actief.")
+t("tp_msg_ins_crop_cancelled", "Crop insurance cancelled. Open claims are still settled.",
+  "Ernteversicherung gekündigt. Offene Schadensfälle werden noch abgewickelt.",
+  "Assurance récolte résiliée. Les sinistres en cours sont encore réglés.",
+  "Ubezpieczenie upraw anulowane. Otwarte szkody zostaną jeszcze rozliczone.",
+  "Seguro de cosecha cancelado. Los siniestros abiertos se siguen liquidando.",
+  "Assicurazione raccolto annullata. I sinistri aperti vengono comunque liquidati.",
+  "Oogstverzekering opgezegd. Open schadegevallen worden nog afgehandeld.")
+t("tp_msg_ins_crop_renewed", "New policy year: your crop insurance prices are locked again.",
+  "Neues Versicherungsjahr: Die Preise deiner Ernteversicherung werden neu festgelegt.",
+  "Nouvelle année de contrat : les prix de votre assurance récolte sont fixés à nouveau.",
+  "Nowy rok polisy: ceny w twoim ubezpieczeniu upraw zostaną ustalone na nowo.",
+  "Nuevo año de póliza: los precios de tu seguro de cosecha se fijan de nuevo.",
+  "Nuovo anno di polizza: i prezzi della tua assicurazione raccolto vengono fissati di nuovo.",
+  "Nieuw polisjaar: de prijzen van je oogstverzekering worden opnieuw vastgelegd.")
+t("tp_msg_ins_crop_none", "Your farm has no crop insurance to cancel.", "Dein Hof hat keine Ernteversicherung zum Kündigen.",
+  "Votre ferme n'a pas d'assurance récolte à résilier.", "Twoje gospodarstwo nie ma ubezpieczenia upraw do anulowania.",
+  "Tu granja no tiene seguro de cosecha que cancelar.", "La tua fattoria non ha un'assicurazione raccolto da annullare.",
+  "Je boerderij heeft geen oogstverzekering om op te zeggen.")
+t("tp_msg_ins_crop_unavailable", "Crop insurance for this region comes in a later update.",
+  "Die Ernteversicherung für diese Region kommt in einem späteren Update.",
+  "L'assurance récolte pour cette région arrive dans une prochaine mise à jour.",
+  "Ubezpieczenie upraw dla tego regionu pojawi się w kolejnej aktualizacji.",
+  "El seguro de cosecha para esta región llegará en una próxima actualización.",
+  "L'assicurazione raccolto per questa regione arriverà in un prossimo aggiornamento.",
+  "Oogstverzekering voor deze regio komt in een volgende update.")
+t("tp_msg_ins_crop_unknown_plan", "This crop insurance plan is not offered in this region.",
+  "Dieser Versicherungsplan wird in dieser Region nicht angeboten.",
+  "Ce plan d'assurance récolte n'est pas proposé dans cette région.",
+  "Ten plan ubezpieczenia upraw nie jest dostępny w tym regionie.",
+  "Este plan de seguro de cosecha no se ofrece en esta región.",
+  "Questo piano assicurativo non è offerto in questa regione.",
+  "Dit verzekeringsplan wordt in deze regio niet aangeboden.")
+t("tp_msg_ins_crop_sales_closed", "Crop insurance can only be bought or changed in late winter and early spring.",
+  "Ernteversicherungen können nur im Spätwinter und Frühlingsanfang abgeschlossen oder geändert werden.",
+  "L'assurance récolte ne peut être souscrite ou modifiée qu'en fin d'hiver et début de printemps.",
+  "Ubezpieczenie upraw można kupić lub zmienić tylko późną zimą i wczesną wiosną.",
+  "El seguro de cosecha solo se puede contratar o cambiar a finales de invierno y principios de primavera.",
+  "L'assicurazione raccolto si può stipulare o modificare solo a fine inverno e inizio primavera.",
+  "Oogstverzekering kan alleen eind winter en begin lente worden afgesloten of gewijzigd.")
+t("tp_msg_ins_crop_storm", "No new cover while a tornado or a storm outbreak is under way.",
+  "Kein neuer Versicherungsschutz, solange ein Tornado oder eine Unwetterserie im Gang ist.",
+  "Pas de nouvelle couverture pendant une tornade ou une série d'orages.",
+  "Brak nowej ochrony w trakcie tornada lub serii burz.",
+  "No se contrata cobertura nueva durante un tornado o una serie de tormentas.",
+  "Nessuna nuova copertura durante un tornado o una serie di temporali.",
+  "Geen nieuwe dekking zolang er een tornado of een reeks stormen bezig is.")
+t("tp_msg_ins_claim_received", "Insurance claim for field %d (%s, about %d %% lost) received - an adjuster will visit.",
+  "Schadensmeldung für Feld %d (%s, etwa %d %% verloren) erhalten - ein Gutachter kommt vorbei.",
+  "Déclaration de sinistre pour le champ %d (%s, environ %d %% perdus) reçue - un expert va passer.",
+  "Zgłoszenie szkody dla pola %d (%s, ok. %d %% strat) przyjęte - przyjedzie rzeczoznawca.",
+  "Siniestro del campo %d (%s, alrededor del %d %% perdido) recibido - vendrá un perito.",
+  "Denuncia di sinistro per il campo %d (%s, circa %d %% perso) ricevuta - passerà un perito.",
+  "Schademelding voor veld %d (%s, ongeveer %d %% verloren) ontvangen - er komt een expert langs.")
+t("tp_msg_ins_claim_inspected", "The adjuster has inspected field %d. A decision follows soon.",
+  "Der Gutachter hat Feld %d besichtigt. Die Entscheidung folgt bald.",
+  "L'expert a inspecté le champ %d. La décision suit bientôt.",
+  "Rzeczoznawca obejrzał pole %d. Decyzja wkrótce.",
+  "El perito ha inspeccionado el campo %d. La decisión llegará pronto.",
+  "Il perito ha ispezionato il campo %d. La decisione arriverà a breve.",
+  "De expert heeft veld %d bekeken. De beslissing volgt binnenkort.")
+t("tp_msg_ins_claim_approved", "Claim for field %d approved: %s will be paid.",
+  "Schadensfall für Feld %d anerkannt: %s werden ausgezahlt.",
+  "Sinistre du champ %d accepté : %s seront versés.",
+  "Szkoda na polu %d uznana: zostanie wypłacone %s.",
+  "Siniestro del campo %d aprobado: se pagarán %s.",
+  "Sinistro del campo %d approvato: verranno pagati %s.",
+  "Schade voor veld %d goedgekeurd: %s wordt uitbetaald.")
+t("tp_msg_ins_claim_paid", "Insurance paid for field %d: %s.", "Versicherungsleistung für Feld %d: %s.",
+  "Indemnité versée pour le champ %d : %s.", "Wypłata ubezpieczenia za pole %d: %s.",
+  "Indemnización pagada por el campo %d: %s.", "Risarcimento pagato per il campo %d: %s.",
+  "Uitkering voor veld %d: %s.")
+t("tp_msg_ins_claim_deductible", "Claim for field %d: %d %% lost this year is within your uninsured part (%d %% coverage) - no payout yet.",
+  "Schadensfall Feld %d: %d %% Verlust in diesem Jahr liegen in deinem unversicherten Teil (%d %% Deckung) - noch keine Auszahlung.",
+  "Sinistre du champ %d : %d %% perdus cette année restent dans votre part non assurée (couverture %d %%) - pas encore d'indemnité.",
+  "Szkoda na polu %d: %d %% strat w tym roku mieści się w nieubezpieczonej części (ochrona %d %%) - na razie brak wypłaty.",
+  "Siniestro del campo %d: el %d %% perdido este año está dentro de tu parte no asegurada (cobertura %d %%) - aún sin pago.",
+  "Sinistro del campo %d: il %d %% perso quest'anno rientra nella tua parte non assicurata (copertura %d %%) - ancora nessun pagamento.",
+  "Schade veld %d: %d %% verlies dit jaar valt binnen je onverzekerde deel (%d %% dekking) - nog geen uitkering.")
+t("tp_msg_ins_claim_no_policy", "Claim for field %d closed: there is no crop policy any more.",
+  "Schadensfall Feld %d geschlossen: Es gibt keine Ernteversicherung mehr.",
+  "Sinistre du champ %d clos : il n'y a plus de contrat récolte.",
+  "Szkoda na polu %d zamknięta: nie ma już polisy upraw.",
+  "Siniestro del campo %d cerrado: ya no hay póliza de cosecha.",
+  "Sinistro del campo %d chiuso: non esiste più una polizza raccolto.",
+  "Schade veld %d gesloten: er is geen oogstpolis meer.")
+t("tp_msg_ins_claim_no_crop", "Claim for field %d closed: the crop is not insurable.",
+  "Schadensfall Feld %d geschlossen: Die Kultur ist nicht versicherbar.",
+  "Sinistre du champ %d clos : la culture n'est pas assurable.",
+  "Szkoda na polu %d zamknięta: uprawa nie podlega ubezpieczeniu.",
+  "Siniestro del campo %d cerrado: el cultivo no es asegurable.",
+  "Sinistro del campo %d chiuso: la coltura non è assicurabile.",
+  "Schade veld %d gesloten: het gewas is niet verzekerbaar.")
 t("tp_msg_ins_off", "Insurance is turned off on this server.",
   "Die Versicherung ist auf diesem Server ausgeschaltet.",
   "L'assurance est désactivée sur ce serveur.",

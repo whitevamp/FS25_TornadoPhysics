@@ -1,8 +1,8 @@
 ---@class TornadoInsuranceStateEvent
 ---@description server -> the players of one farm (or one joining player): that farm's insurance state, so the
 --- control panel can show it. The server owns the state; clients only display it.
----   farm id, premiums paid, payouts received, inbox (key + parameters, day, read) - the newest MAX_INBOX
---- Later phases add their policy / claim data here.
+---   farm id, premiums paid, payouts received, crop policy (plan, coverage, status, open claims),
+---   inbox (key + parameters, day, read) - the newest MAX_INBOX
 
 -- Events may only be registered while no mission exists (when the mod's scripts load). If this file is
 -- loaded again for another savegame in the same game session, keep using the class registered the first time.
@@ -37,6 +37,13 @@ function TornadoInsuranceStateEvent:writeStream(streamId, connection)
     streamWriteFloat32(streamId, state.premiumsTotal or 0)
     streamWriteFloat32(streamId, state.payoutsTotal or 0)
 
+    local crop = state.crop
+    streamWriteString(streamId, crop ~= nil and crop.plan or "")
+    streamWriteFloat32(streamId, crop ~= nil and crop.coverage or 0)
+    streamWriteString(streamId, crop ~= nil and crop.status or "")
+    local openClaims = TornadoInsuranceCrop ~= nil and TornadoInsuranceCrop:getOpenClaimCount(state) or 0
+    streamWriteUIntN(streamId, math.min(openClaims, 255), 8)
+
     local inbox = state.inbox or {}
     local first = math.max(1, #inbox - TornadoInsuranceStateEvent.MAX_INBOX + 1)
     streamWriteUIntN(streamId, #inbox - first + 1, 6)
@@ -65,6 +72,10 @@ function TornadoInsuranceStateEvent:readStream(streamId, connection)
     local state = { inbox = {} }
     state.premiumsTotal = streamReadFloat32(streamId)
     state.payoutsTotal = streamReadFloat32(streamId)
+    state.cropPlan = streamReadString(streamId)
+    state.cropCoverage = streamReadFloat32(streamId)
+    state.cropStatus = streamReadString(streamId)
+    state.openClaims = streamReadUIntN(streamId, 8)
     local count = streamReadUIntN(streamId, 6)
     for _ = 1, count do
         local message = { params = {} }

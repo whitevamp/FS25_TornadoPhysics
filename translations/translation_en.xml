@@ -189,12 +189,52 @@
         <text name="tp_msg_ins_premium_charged" text="Insurance: monthly premium of %s charged."/>
         <text name="tp_msg_ins_payout" text="Insurance: %s paid out to your farm."/>
         <text name="tp_msg_ins_test_timer" text="Insurance: test countdown finished."/>
-        <text name="tp_msg_damage_report" text="%s: %d of your fields hit, about %.1f ha of crop lost (worst: field %d, %d %%)."/>
+        <text name="tp_msg_damage_report" text="%s: %d of your fields hit, about %.2f ha of crop lost (worst: field %d, %d %%)."/>
         <text name="tp_cause_tornado" text="Tornado"/>
         <text name="tp_cause_hail" text="Hail"/>
         <text name="tp_cause_drought" text="Drought"/>
         <text name="tp_cause_flood" text="Flood"/>
         <text name="tp_cause_fire" text="Field fire"/>
+        <text name="tp_plan_none" text="No crop insurance"/>
+        <text name="tp_plan_RP" text="Revenue Protection (RP)"/>
+        <text name="tp_plan_RPHPE" text="Revenue Protection, no harvest price (RPHPE)"/>
+        <text name="tp_plan_YP" text="Yield Protection (YP)"/>
+        <text name="tp_plan_APH" text="Yield cover, specialty crops (APH)"/>
+        <text name="tp_plan_COST" text="Production cost cover (COST)"/>
+        <text name="tp_plan_FULL" text="Full yield cover (FULL)"/>
+        <text name="tp_insurance_crop_plan" text="Crop insurance (your farm)"/>
+        <text name="tp_tip_insurance_crop_plan" text="Insures every field your farm owns with an insurable crop against tornado, hail, drought, flood and fire losses. Yield plans pay at the price locked for the policy year; Revenue Protection pays at the higher of the locked and the current price. Cover starts about a week (real-life time) after buying."/>
+        <text name="tp_insurance_crop_coverage" text="Coverage level"/>
+        <text name="tp_tip_insurance_crop_coverage" text="Share of the expected harvest value that is insured. Losses up to the rest (e.g. 25 % at 75 % coverage) are yours; higher coverage costs more. Crops that are unusual for the region are capped at 70 % and cost 25 % more."/>
+        <text name="tp_insurance_coverage_option" text="%d %% (about %s / month)"/>
+        <text name="tp_insurance_sales" text="Sales closing date"/>
+        <text name="tp_tip_insurance_sales" text="Crop policies can only be bought or changed in late winter and early spring, like real insurance before planting. Auto: only with seasonal growth (off when crops grow all year)."/>
+        <text name="tp_insurance_sales_auto" text="Auto"/>
+        <text name="tp_insurance_sales_on" text="Always"/>
+        <text name="tp_insurance_sales_off" text="Never (buy any time)"/>
+        <text name="tp_insurance_crop_status" text="Crop policy status"/>
+        <text name="tp_btn_show" text="Show"/>
+        <text name="tp_msg_ins_crop_status" text="Crop insurance: %s, %d %% (%s) - %d fields, insured value %s, about %s per month, %d open claims."/>
+        <text name="tp_ins_status_pending" text="starting soon"/>
+        <text name="tp_ins_status_active" text="active"/>
+        <text name="tp_msg_ins_crop_none_status" text="Crop insurance: your farm has no crop policy."/>
+        <text name="tp_msg_ins_crop_bought" text="Crop insurance %s at %d %% confirmed (about %s per month). Cover starts in %d d %d h."/>
+        <text name="tp_msg_ins_crop_changed" text="Crop insurance changed to %s at %d %% (about %s per month)."/>
+        <text name="tp_msg_ins_crop_active" text="Your crop insurance (%s, %d %%) is now active."/>
+        <text name="tp_msg_ins_crop_cancelled" text="Crop insurance cancelled. Open claims are still settled."/>
+        <text name="tp_msg_ins_crop_renewed" text="New policy year: your crop insurance prices are locked again."/>
+        <text name="tp_msg_ins_crop_none" text="Your farm has no crop insurance to cancel."/>
+        <text name="tp_msg_ins_crop_unavailable" text="Crop insurance for this region comes in a later update."/>
+        <text name="tp_msg_ins_crop_unknown_plan" text="This crop insurance plan is not offered in this region."/>
+        <text name="tp_msg_ins_crop_sales_closed" text="Crop insurance can only be bought or changed in late winter and early spring."/>
+        <text name="tp_msg_ins_crop_storm" text="No new cover while a tornado or a storm outbreak is under way."/>
+        <text name="tp_msg_ins_claim_received" text="Insurance claim for field %d (%s, about %d %% lost) received - an adjuster will visit."/>
+        <text name="tp_msg_ins_claim_inspected" text="The adjuster has inspected field %d. A decision follows soon."/>
+        <text name="tp_msg_ins_claim_approved" text="Claim for field %d approved: %s will be paid."/>
+        <text name="tp_msg_ins_claim_paid" text="Insurance paid for field %d: %s."/>
+        <text name="tp_msg_ins_claim_deductible" text="Claim for field %d: %d %% lost this year is within your uninsured part (%d %% coverage) - no payout yet."/>
+        <text name="tp_msg_ins_claim_no_policy" text="Claim for field %d closed: there is no crop policy any more."/>
+        <text name="tp_msg_ins_claim_no_crop" text="Claim for field %d closed: the crop is not insurable."/>
         <text name="tp_msg_ins_off" text="Insurance is turned off on this server."/>
         <text name="tp_msg_ins_denied" text="Insurance: only a farm manager or the server admin can change this farm's policies."/>
         <text name="tp_msg_ins_denied_admin" text="Insurance: on this server only the admin manages policies."/>

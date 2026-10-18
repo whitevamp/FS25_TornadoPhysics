@@ -189,12 +189,52 @@
         <text name="tp_msg_ins_premium_charged" text="Versicherung: Monatsprämie von %s abgebucht."/>
         <text name="tp_msg_ins_payout" text="Versicherung: %s an deinen Hof ausgezahlt."/>
         <text name="tp_msg_ins_test_timer" text="Versicherung: Test-Countdown abgelaufen."/>
-        <text name="tp_msg_damage_report" text="%s: %d deiner Felder getroffen, etwa %.1f ha Ernte verloren (am schlimmsten: Feld %d, %d %%)."/>
+        <text name="tp_msg_damage_report" text="%s: %d deiner Felder getroffen, etwa %.2f ha Ernte verloren (am schlimmsten: Feld %d, %d %%)."/>
         <text name="tp_cause_tornado" text="Tornado"/>
         <text name="tp_cause_hail" text="Hagel"/>
         <text name="tp_cause_drought" text="Dürre"/>
         <text name="tp_cause_flood" text="Überschwemmung"/>
         <text name="tp_cause_fire" text="Feldbrand"/>
+        <text name="tp_plan_none" text="Keine Ernteversicherung"/>
+        <text name="tp_plan_RP" text="Ertragswertschutz (RP)"/>
+        <text name="tp_plan_RPHPE" text="Ertragswertschutz ohne Erntepreis (RPHPE)"/>
+        <text name="tp_plan_YP" text="Ertragsschutz (YP)"/>
+        <text name="tp_plan_APH" text="Ertragsschutz Sonderkulturen (APH)"/>
+        <text name="tp_plan_COST" text="Produktionskostenschutz (COST)"/>
+        <text name="tp_plan_FULL" text="Voller Ertragsschutz (FULL)"/>
+        <text name="tp_insurance_crop_plan" text="Ernteversicherung (dein Hof)"/>
+        <text name="tp_tip_insurance_crop_plan" text="Versichert jedes Feld deines Hofs mit einer versicherbaren Kultur gegen Schäden durch Tornado, Hagel, Dürre, Überschwemmung und Feuer. Ertragspläne zahlen zum für das Versicherungsjahr festgelegten Preis; der Ertragswertschutz zahlt zum höheren aus festgelegtem und aktuellem Preis. Der Schutz beginnt etwa eine Woche (reale Zeit) nach dem Kauf."/>
+        <text name="tp_insurance_crop_coverage" text="Deckungsgrad"/>
+        <text name="tp_tip_insurance_crop_coverage" text="Anteil des erwarteten Erntewerts, der versichert ist. Verluste bis zum Rest (z. B. 25 % bei 75 % Deckung) trägst du selbst; höhere Deckung kostet mehr. Für die Region ungewöhnliche Kulturen sind auf 70 % begrenzt und kosten 25 % mehr."/>
+        <text name="tp_insurance_coverage_option" text="%d %% (etwa %s / Monat)"/>
+        <text name="tp_insurance_sales" text="Antragsschluss"/>
+        <text name="tp_tip_insurance_sales" text="Ernteversicherungen können nur im Spätwinter und Frühlingsanfang abgeschlossen oder geändert werden, wie echte Versicherungen vor der Aussaat. Auto: nur mit saisonalem Wachstum (aus, wenn Pflanzen ganzjährig wachsen)."/>
+        <text name="tp_insurance_sales_auto" text="Auto"/>
+        <text name="tp_insurance_sales_on" text="Immer"/>
+        <text name="tp_insurance_sales_off" text="Nie (jederzeit kaufen)"/>
+        <text name="tp_insurance_crop_status" text="Status der Ernteversicherung"/>
+        <text name="tp_btn_show" text="Anzeigen"/>
+        <text name="tp_msg_ins_crop_status" text="Ernteversicherung: %s, %d %% (%s) - %d Felder, Versicherungswert %s, etwa %s pro Monat, %d offene Schadensfälle."/>
+        <text name="tp_ins_status_pending" text="beginnt bald"/>
+        <text name="tp_ins_status_active" text="aktiv"/>
+        <text name="tp_msg_ins_crop_none_status" text="Ernteversicherung: Dein Hof hat keine Police."/>
+        <text name="tp_msg_ins_crop_bought" text="Ernteversicherung %s mit %d %% bestätigt (etwa %s pro Monat). Der Schutz beginnt in %d T %d Std."/>
+        <text name="tp_msg_ins_crop_changed" text="Ernteversicherung geändert auf %s mit %d %% (etwa %s pro Monat)."/>
+        <text name="tp_msg_ins_crop_active" text="Deine Ernteversicherung (%s, %d %%) ist jetzt aktiv."/>
+        <text name="tp_msg_ins_crop_cancelled" text="Ernteversicherung gekündigt. Offene Schadensfälle werden noch abgewickelt."/>
+        <text name="tp_msg_ins_crop_renewed" text="Neues Versicherungsjahr: Die Preise deiner Ernteversicherung werden neu festgelegt."/>
+        <text name="tp_msg_ins_crop_none" text="Dein Hof hat keine Ernteversicherung zum Kündigen."/>
+        <text name="tp_msg_ins_crop_unavailable" text="Die Ernteversicherung für diese Region kommt in einem späteren Update."/>
+        <text name="tp_msg_ins_crop_unknown_plan" text="Dieser Versicherungsplan wird in dieser Region nicht angeboten."/>
+        <text name="tp_msg_ins_crop_sales_closed" text="Ernteversicherungen können nur im Spätwinter und Frühlingsanfang abgeschlossen oder geändert werden."/>
+        <text name="tp_msg_ins_crop_storm" text="Kein neuer Versicherungsschutz, solange ein Tornado oder eine Unwetterserie im Gang ist."/>
+        <text name="tp_msg_ins_claim_received" text="Schadensmeldung für Feld %d (%s, etwa %d %% verloren) erhalten - ein Gutachter kommt vorbei."/>
+        <text name="tp_msg_ins_claim_inspected" text="Der Gutachter hat Feld %d besichtigt. Die Entscheidung folgt bald."/>
+        <text name="tp_msg_ins_claim_approved" text="Schadensfall für Feld %d anerkannt: %s werden ausgezahlt."/>
+        <text name="tp_msg_ins_claim_paid" text="Versicherungsleistung für Feld %d: %s."/>
+        <text name="tp_msg_ins_claim_deductible" text="Schadensfall Feld %d: %d %% Verlust in diesem Jahr liegen in deinem unversicherten Teil (%d %% Deckung) - noch keine Auszahlung."/>
+        <text name="tp_msg_ins_claim_no_policy" text="Schadensfall Feld %d geschlossen: Es gibt keine Ernteversicherung mehr."/>
+        <text name="tp_msg_ins_claim_no_crop" text="Schadensfall Feld %d geschlossen: Die Kultur ist nicht versicherbar."/>
         <text name="tp_msg_ins_off" text="Die Versicherung ist auf diesem Server ausgeschaltet."/>
         <text name="tp_msg_ins_denied" text="Versicherung: Nur ein Hofverwalter oder der Server-Admin kann die Policen dieses Hofs ändern."/>
         <text name="tp_msg_ins_denied_admin" text="Versicherung: Auf diesem Server verwaltet nur der Admin die Policen."/>
