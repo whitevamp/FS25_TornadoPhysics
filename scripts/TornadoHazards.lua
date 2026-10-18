@@ -152,8 +152,23 @@ function TornadoHazards:isFireActive()
     return self:isActive() and self.fireEnabled
 end
 
+--- FS25_MoistureSystem withers crops in drought itself (TornadoMoisture): our drought is off then, field fires
+--- follow its field moisture, floods stay ours.
+function TornadoHazards:isHandledByMoistureSystem()
+    return TornadoMoisture ~= nil and TornadoMoisture:isActive()
+end
+
 function TornadoHazards:isDroughtActive()
-    return self:isActive() and self.droughtEnabled
+    return self:isActive() and self.droughtEnabled and not self:isHandledByMoistureSystem()
+end
+
+--- Is it drought now, for field fires? Ours: a running drought. With Moisture System: checked per field
+--- (canFieldBurn - the field must be drier than its crop's fire threshold, TornadoMoisture:getFireThreshold).
+function TornadoHazards:isFireDrought()
+    if self:isHandledByMoistureSystem() then
+        return true
+    end
+    return self.droughtDay > 0
 end
 
 function TornadoHazards:isFloodActive()
@@ -229,7 +244,7 @@ function TornadoHazards:onHourChanged()
     end
 
     -- Field fire: hot dry afternoons during a drought.
-    if self.fireEnabled and self.fire == nil and self.droughtDay > 0 and (rain or 0) <= 0
+    if self.fireEnabled and self.fire == nil and self:isFireDrought() and (rain or 0) <= 0
         and temperature >= self.FIRE_MIN_TEMP then
         local hour = g_currentMission.environment.currentHour or 12
         if hour >= self.FIRE_FIRST_HOUR and hour <= self.FIRE_LAST_HOUR
@@ -239,7 +254,7 @@ function TornadoHazards:onHourChanged()
     end
 
     -- Dry-spell warning once per dry period (drought only).
-    if not self.droughtEnabled then
+    if not self:isDroughtActive() then
         return
     end
     if not self.dryWarned and self.droughtDay == 0 and self.water < self.DRY_SPELL_LEVEL then
@@ -300,6 +315,13 @@ function TornadoHazards:getDroughtShare()
     return math.min(maxShare, self.DAILY_STEP * self.intensity * math.max(1, self.droughtDay))
 end
 
+--- Names the cause of our disaster calls for the storm damage report (TornadoInsuranceDamage).
+local function setDamageCause(cause, wholeField)
+    if TornadoInsuranceDamage ~= nil and TornadoInsuranceDamage.setCause ~= nil then
+        TornadoInsuranceDamage:setCause(cause, wholeField)
+    end
+end
+
 local function shareToPerlin(share)
     return math.floor(math.max(0, 10000 - share * TornadoHazards.PERLIN_PER_SHARE) + 0.5)
 end
@@ -334,7 +356,9 @@ function TornadoHazards:applyDroughtDamage()
             local fieldShare = self.HALF_FRUITS[fruitName] and share * self.GRASS_FACTOR or share
             local polygon = field.getDensityMapPolygon ~= nil and field:getDensityMapPolygon() or nil
             if polygon ~= nil then
+                setDamageCause("DROUGHT", field)
                 FSDensityMapUtil.updateDisasterArea(polygon, shareToPerlin(fieldShare))
+                setDamageCause(nil)
                 numFields = numFields + 1
                 local farmId = getFieldOwner(field)
                 self:logEvent(self.EVENT_DROUGHT, day, field:getId(), farmId, fieldShare)
@@ -499,7 +523,9 @@ function TornadoHazards:triggerFlood()
             local sideM = math.sqrt(math.max(areaHa, 0.01) * 10000)
             local radius = math.max(self.FLOOD_MIN_RADIUS, math.min(self.FLOOD_MAX_RADIUS, sideM * self.FLOOD_RADIUS_FACTOR))
             circle:updateFromWorldPosition(low.x, low.z, radius, 12)
+            setDamageCause("FLOOD")
             FSDensityMapUtil.updateDisasterArea(circle, perlin)
+            setDamageCause(nil)
             numFields = numFields + 1
             if TornadoDebug then
                 TornadoDebug:info("HAZARDS", string.format("  Flood field %s: circle at (%.0f, %.0f), radius %.0f m, %.1f m below the field centre.",
@@ -557,7 +583,14 @@ function TornadoHazards:canFieldBurn(field, anyGrowingCrop)
     end
     local minState = fruitType.minHarvestingGrowthState or 0
     local maxState = fruitType.maxHarvestingGrowthState or 0
-    return minState > 0 and state.growthState >= minState and state.growthState <= maxState
+    if not (minState > 0 and state.growthState >= minState and state.growthState <= maxState) then
+        return false
+    end
+    -- With Moisture System: only fields it has dried below the crop's fire threshold.
+    if self:isHandledByMoistureSystem() and not TornadoMoisture:isFieldFireDry(field) then
+        return false
+    end
+    return true
 end
 
 --- Field outline as { {x, z} ... } (world positions of its polygon points).
@@ -737,7 +770,9 @@ function TornadoHazards:update(dt)
         if fire.circle ~= nil and self:canDestroyCrops() and FSDensityMapUtil ~= nil
             and FSDensityMapUtil.updateDisasterArea ~= nil then
             fire.circle:updateFromWorldPosition(fire.x, fire.z, fire.radius, 16)
+            setDamageCause("FIRE")
             FSDensityMapUtil.updateDisasterArea(fire.circle, 0)
+            setDamageCause(nil)
         end
     end
     if burntOut then
@@ -840,11 +875,16 @@ function TornadoHazards:getStatusText()
     if self:isHandledByRealisticWeather() then
         return "Hazards: OFF - FS25_RealisticWeather is installed and handles drought and floods."
     end
+    local moistureNote = ""
+    if self:isHandledByMoistureSystem() then
+        moistureNote = "[FS25_MoistureSystem installed: own drought OFF, field fires follow its field moisture, floods on. "
+            .. TornadoMoisture:getStatusText() .. "] "
+    end
     local drought = self.droughtDay > 0 and string.format("day %d (share %.0f %%)", self.droughtDay, self:getDroughtShare() * 100) or "none"
     local flood = self.lastFlood ~= nil and string.format("day %d, %d fields", self.lastFlood.day, self.lastFlood.fields) or "none"
     local fire = self.fire ~= nil and string.format("field %s, radius %.0f / %.0f m", tostring(self.fire.fieldId), self.fire.radius,
         self.fire.maxRadius) or "none"
-    return string.format("Hazards: Enabled = %s | Drought = %s | Flood = %s | Fire = %s | Owned fields only = %s | Soil water = %.0f %% | Dry days = %d | Drought now = %s | Heavy-rain hours = %d | Last flood = %s | Burning = %s | Intensity = x%.2f | Frequency = x%.2f | Crop damage = %s | Events logged = %d",
+    return moistureNote .. string.format("Hazards: Enabled = %s | Drought = %s | Flood = %s | Fire = %s | Owned fields only = %s | Soil water = %.0f %% | Dry days = %d | Drought now = %s | Heavy-rain hours = %d | Last flood = %s | Burning = %s | Intensity = x%.2f | Frequency = x%.2f | Crop damage = %s | Events logged = %d",
         tostring(self.isEnabled), tostring(self.droughtEnabled), tostring(self.floodEnabled), tostring(self.fireEnabled),
         tostring(self.ownedOnly), (self.water or 0) * 100, self.dryDays or 0, drought, self.floodHours or 0, flood, fire,
         self.intensity, self.frequency,

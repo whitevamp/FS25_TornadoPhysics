@@ -7,7 +7,7 @@
 -- ==============================================================================
 
 ---@class TornadoADS
----@version 2.1 (INDOOR SAFEGUARD)
+---@version 2.2 (INDOOR SAFEGUARD, ADS 0.9.2 registry)
 ---@description Now respects the 'indoor_damage' setting from TornadoPhysics.
 
 TornadoADS              = {}
@@ -110,8 +110,11 @@ function TornadoADS:applyTotalDestruction(vehicle)
 
     if ADS_Breakdowns and ADS_Breakdowns.BreakdownRegistry then
         for breakdownId, data in pairs(ADS_Breakdowns.BreakdownRegistry) do
-            -- 1. Is this breakdown possible for this vehicle? (e.g. Don't break Turbo on non-turbo car)
-            if data.isApplicable and data.isApplicable(vehicle) then
+            -- 1. Only real breakdowns (ADS 0.9.2+: the registry also holds condition states that are not
+            --    selectable - GENERAL_WEAR, COLD_ENGINE, DEAD_BATTERY, ENGINE_JAM, OVERHEAT_PROTECTION ... -
+            --    which ADS sets itself and which skip its breakdown limit), and only those possible for this
+            --    vehicle (e.g. don't break a turbo on a non-turbo engine).
+            if data.isSelectable ~= false and data.isApplicable and data.isApplicable(vehicle) then
                 -- 2. Find the Max Stage (Usually 4, sometimes 1)
                 local maxStage = 1
                 if data.stages then maxStage = #data.stages end

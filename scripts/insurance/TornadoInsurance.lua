@@ -147,14 +147,20 @@ end
 -- =========================================================================
 
 --- Own money types, registered on every machine in the same order (the ids travel over the network).
---- Statistic "other": the finance page has a fixed list of rows, so the amounts are booked as "Other";
---- the HUD money popup shows our own title.
+--- Statistics = our own Finances-page rows (TornadoInsuranceFinance); "other" when those could not be added.
+--- The HUD money popup shows our own title.
 function TornadoInsurance:registerMoneyTypes()
     if MoneyType == nil or MoneyType.register == nil then
         return
     end
-    self.moneyTypePremium = MoneyType.register("other", "tp_money_ins_premium", self.modName)
-    self.moneyTypePayout = MoneyType.register("other", "tp_money_ins_payout", self.modName)
+    local premiumStat, payoutStat = "other", "other"
+    if TornadoInsuranceFinance ~= nil and FinanceStats ~= nil and FinanceStats.statNameToIndex ~= nil
+        and FinanceStats.statNameToIndex[TornadoInsuranceFinance.STAT_PREMIUM] ~= nil then
+        premiumStat, payoutStat = TornadoInsuranceFinance.STAT_PREMIUM, TornadoInsuranceFinance.STAT_PAYOUT
+    end
+    self.moneyTypePremium = MoneyType.register(premiumStat, "tp_money_ins_premium", self.modName)
+    self.moneyTypePayout = MoneyType.register(payoutStat, "tp_money_ins_payout", self.modName)
+    self.redTapeLinked = TornadoInsuranceFinance ~= nil and TornadoInsuranceFinance.installRedTape() or false
 end
 
 function TornadoInsurance:getCostScale()
@@ -799,9 +805,14 @@ function TornadoInsurance:getStatusText()
     for _ in pairs(self.farms or {}) do
         farms = farms + 1
     end
-    return string.format("Insurance: Enabled = %s | Policy managers = %s | %s | Days per month = %d | Cost scale = %.0f %% | Farms with records = %d | Countdowns = %d",
+    local damage = TornadoInsuranceDamage ~= nil and TornadoInsuranceDamage.log ~= nil and #TornadoInsuranceDamage.log or 0
+    local finance = self.moneyTypePremium ~= nil and self.moneyTypePremium.statistic ~= "other" and "own rows" or "Other"
+    if self.redTapeLinked then
+        finance = finance .. " + Red Tape tax"
+    end
+    return string.format("Insurance: Enabled = %s | Policy managers = %s | %s | Days per month = %d | Cost scale = %.0f %% | Farms with records = %d | Countdowns = %d | Damage events logged = %d | Finances = %s",
         tostring(self.isEnabled), self.adminOnly and "server admin only" or "farm manager + admin",
-        self:getRegionStatusText(), self:getDaysPerMonth(), self:getCostScale() * 100, farms, #(self.timers or {}))
+        self:getRegionStatusText(), self:getDaysPerMonth(), self:getCostScale() * 100, farms, #(self.timers or {}), damage, finance)
 end
 
 --- Farm the console works on: the player's own farm, else farm 1.
@@ -820,7 +831,13 @@ end
 --- t_dev insurance <status | bill | testpremium <amount> | charge <amount> [farm] | pay <amount> [farm] |
 ---                  timer <real days> [farm] | timers | inbox [farm] | rate <FILLTYPE> <PLAN> <coverage %> | regions | crops>
 function TornadoInsurance:consoleCommand(sub, value, extra, more)
-    if sub == "crops" then
+    if sub == "damage" then
+        if TornadoInsuranceDamage == nil then return "Insurance: damage report missing." end
+        return TornadoInsuranceDamage:printLog(tonumber(value))
+    elseif sub == "hit" then
+        if TornadoInsuranceDamage == nil then return "Insurance: damage report missing." end
+        return TornadoInsuranceDamage:testHit(value, extra, more)
+    elseif sub == "crops" then
         if TornadoInsuranceCrops == nil then return "Insurance: crop cross-reference missing." end
         return TornadoInsuranceCrops:printMapCrops()
     elseif sub == "regions" then

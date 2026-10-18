@@ -76,6 +76,9 @@ measure it. Options (to be prototyped):
 
 Hail damage: the same sampling, triggered when a hail weather object ends over owned fields.
 
+**Decided and built (2026-10-16):** a hook on `FSDensityMapUtil.updateDisasterArea` measures every call
+(twister, hail, our hazards) geometrically – see §18.2.
+
 If **Disaster destruction** is not `ENABLED`, crop claims never happen and the Crop policy page says so.
 
 ### 4.2 Pre-storm vehicle value snapshot (required for equipment insurance)
@@ -896,6 +899,44 @@ upload) can add a small public API where hooking is not enough. Checked against 
 **Rules:** server-side only; every call guarded by nil checks (no `pcall` – ModHub rule); all of it optional
 (setting "Use RealisticWeather data", default ON when the mod is present).
 
+### 15.1b FS25_MoistureSystem (Ozz) – implemented 2026-10-17
+
+`scripts/TornadoMoisture.lua` (checked against Moisture System 2.0.0.8; the mod says it is incompatible with
+RealisticWeather). Moisture System simulates field moisture, withers crops in drought by painting withered
+patches straight into the crop density map (its own `DensityMapModifier`, **not** `updateDisasterArea` – the
+storm damage report would miss them) and changes yield / quality by moisture. When it is installed:
+- our drought is off (`TornadoHazards:isHandledByMoistureSystem`); floods stay on (it has none);
+- field fires only on ripe fields it has dried below the crop's `yieldCurveFloor` (where its dry-side yield loss
+  is at its maximum, 3 – 5 %; never below `witherThreshold`), from `CropValueMap.getCropDef` reached through its mod
+  environment `FS25_MoistureSystem.CropValueMap`; default 5 %. (First version used `witherThreshold` 2 – 3 %: in-game
+  test 2026-10-17 showed field moisture is clamped to each month's minimum, e.g. 9 %, so fires would almost never
+  start - `msSetMoisture 1` is clamped back at once.)
+- `t_dev moisture status | field <n> | wither <n> [count]` (the last makes Moisture System's own withering paint
+  patches now - real crop loss - to test the damage report);
+- withering → damage report: `WitheringSystem:witherPatchAtField` is wrapped on the instance (re-created every
+  mission, retried from update until it exists). Its three `math.random()` draws (x, z in the field bounds,
+  radius 4 + r × 6) are recorded during the call and the patch is rebuilt (centre square + 4 corner squares,
+  ≈ 1.75 r²) and passed to `TornadoInsuranceDamage:recordArea(..., DROUGHT)`. 2 draws = skipped (wetter spot),
+  any other count = Moisture System changed → nothing recorded, one warning in the log.
+- Open: its weather profiles change the weather weights (also the twister weight) - test together with our
+  climate mode / storm weather. Yield / quality losses from moisture at harvest are not insurance events yet.
+- Offline test `tools/test/test_moisture.lua` (26 checks) + Moisture System checks in `test_hazards.lua`.
+
+### 15.1c Finances page rows + FS25_RedTape (Ozz) – implemented 2026-10-17
+
+`scripts/insurance/TornadoInsuranceFinance.lua`, sourced at the top of `TornadoMain.lua` (the farms' finance
+tables are built from `FinanceStats.statNames` while the savegame loads, before any loadMap):
+- statistics `tornadoInsurancePremium` / `tornadoInsurancePayout` appended to `FinanceStats.statNames` /
+  `statNameToIndex` once (the tables survive savegame reloads); the money types use them (fallback "other");
+- `I18N.getText` wrapped once (guard flag) so `finance_tornadoInsurance…` without a mod environment come from this
+  mod's texts – same approach as Red Tape for its own rows;
+- Red Tape 1.0.3.0: its farm-balance hook drops statistic "other" (except an allow-list) and its
+  `RTTaxSystem:categoriseLineItem` only knows the statistics in local lists ("Uncategorised" warning for others).
+  Wrapped once via its mod environment (`FS25_RedTape.RTTaxSystem`): premiums → `totalExpenses`, payouts →
+  `totalTaxableIncome` / `totalTaxedIncome` (its `getTaxedAmount`, so custom rates apply). Unofficial – a small
+  "register a tax category" API in Red Tape would replace it (proposal for the author on GitHub).
+- Offline test `tools/test/test_finance.lua` (17 checks).
+
 ### 15.2 Own lightweight perils (no extra mod required)
 
 Decision (2026-10-15): the insurance system must work **without** any other mod. Base game + Tornado
@@ -986,9 +1027,7 @@ Agreed 2026-10-16 (replaces the first draft: crops before equipment, a foundatio
 last). Every phase is testable and committable on its own; the module stays OFF by default.
 
 0. **Foundation** – **implemented 2026-10-16** (see 18.1).
-1. **Storm damage report** – hook `FSDensityMapUtil.updateDisasterArea` (server, guard flag) to log which
-   fields twister / hail / hazard destruction covers and the destroyed share (geometry estimate, §16 q4);
-   per-farm "storm report" message after the storm, even with insurance OFF; the event log feeds the claims.
+1. **Storm damage report** – **implemented 2026-10-16** (see 18.2).
 2. **Crop insurance** – policy per farm (plan, coverage, all owned fields with an insurable crop); policy
    year with locked prices (average sell-point price, §16 q2), standard yield (§16 q3), planting cut-off,
    waiting period, refusal during an outbreak / active tornado; monthly premium (farmer rate × state factor
@@ -1032,6 +1071,36 @@ last). Every phase is testable and committable on its own; the module stays OFF 
 - Crop cross-reference (§6.4): `DB/InsuranceCropAliases.xml` + `scripts/insurance/TornadoInsuranceCrops.lua`
   (`resolve` pure, `scanMap` / `getCropInfo` in game), `t_dev insurance crops`; `rate` uses it.
 - Offline test `tools/test/test_insurance.lua` (141 checks; reads the real DB files).
+
+### 18.2 Phase 1 – storm damage report (2026-10-16)
+
+`scripts/insurance/TornadoInsuranceDamage.lua` (server; runs with the insurance OFF too):
+- Wraps `FSDensityMapUtil.updateDisasterArea` once (guard flag `FSDensityMapUtil.tornadoDamageHooked`, the
+  table survives savegame reloads); the original always runs first.
+- Cause: our hazards name it (`setCause("DROUGHT" | "FLOOD" | "FIRE", wholeField)` around their calls);
+  otherwise a `DensityMapNodePolygon` (has `nodes`) is the twister, anything else hail.
+- Geometry estimate: the area's vertices (`getVerticesAs3DCoordinates`) are laid over a **2 m** grid of each
+  field whose bounding box it touches (cell centre inside the area and the field outline); destroyed share
+  of a cell = 1 − perlin / 10000. 4 m was tried first and measured a 20 m hail spot ~11 % low; 2 m is within
+  ~1 %. Whole-field calls (drought) use a field-wide share without sampling.
+- Memory per field for the current crop (cells → share, field-wide share): repeated hits only count what is
+  new (the twister re-applies its areas every frame; drought raises its share daily). Reset when the fruit
+  changes or the growth state goes down (resown / regrowth). Not saved – after a reload a second storm over
+  the same crop counts its cells again (small, accepted).
+- Only crops in their destroyable growth states (`minDisasterDestructionState` … `max…`) count.
+- Events per cause and field, closed after a quiet time (hail 30, fire 10, drought / flood 5 game minutes)
+  or on save. Tornado: **one report per storm** - its events stay open while the tornado's centre is on the
+  map and close when it reaches the mod's boundary line (`TornadoPhysics.mapBoundary` − geo-fence, the line
+  border safety uses), despawns (`TornadoPhysics:clearTornadoState`) or respawns
+  (`onTornadoRespawn`); 60 quiet minutes as a fallback. (In-game test 2026-10-16 with a 20-minute quiet
+  time: one tornado over fields 5, 3, 2 gave three reports; the game moves a tornado far past the edge, the
+  despawn came over an hour of real time later.) written to the damage log `{ id, cause, day, fieldId, farmId, crop, share }`
+  (last 500, `TornadoDamage.xml`). Tornado / hail: one report per farm and cause – "Tornado: 3 of your fields
+  hit, about 2.4 ha of crop lost (worst: field 7, 18 %)" (`tp_msg_damage_report`); drought, flood and fire
+  keep their own messages. Events below 0.5 % of a field are logged without a report.
+- Console: `t_dev insurance damage [farm]` (log + open events), `t_dev insurance hit <field> [radius]
+  [perlin]` (real disaster call at the field centre, counted as tornado). Offline test
+  `tools/test/test_damage.lua` (31 checks).
 
 ## 19. Rules for the implementation
 

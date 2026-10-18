@@ -182,11 +182,19 @@
         <text name="tp_tip_insurance_region" text="Whose insurance rules and prices apply. Auto detects the country (and state or province) from the map."/>
         <text name="tp_insurance_region_auto" text="Auto"/>
         <text name="tp_insurance_region_auto_found" text="Auto (%s)"/>
+        <text name="finance_tornadoInsurancePremium" text="Insurance premiums"/>
+        <text name="finance_tornadoInsurancePayout" text="Insurance payouts"/>
         <text name="tp_money_ins_premium" text="Insurance premiums"/>
         <text name="tp_money_ins_payout" text="Insurance payouts"/>
         <text name="tp_msg_ins_premium_charged" text="Insurance: monthly premium of %s charged."/>
         <text name="tp_msg_ins_payout" text="Insurance: %s paid out to your farm."/>
         <text name="tp_msg_ins_test_timer" text="Insurance: test countdown finished."/>
+        <text name="tp_msg_damage_report" text="%s: %d of your fields hit, about %.1f ha of crop lost (worst: field %d, %d %%)."/>
+        <text name="tp_cause_tornado" text="Tornado"/>
+        <text name="tp_cause_hail" text="Hail"/>
+        <text name="tp_cause_drought" text="Drought"/>
+        <text name="tp_cause_flood" text="Flood"/>
+        <text name="tp_cause_fire" text="Field fire"/>
         <text name="tp_msg_ins_off" text="Insurance is turned off on this server."/>
         <text name="tp_msg_ins_denied" text="Insurance: only a farm manager or the server admin can change this farm's policies."/>
         <text name="tp_msg_ins_denied_admin" text="Insurance: on this server only the admin manages policies."/>

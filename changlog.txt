@@ -100,15 +100,33 @@
   policies (farm managers + admin, or the server admin only) and the insurance
   region (Auto detects the map's country and state / province; 14 countries
   and regions with real insurance data). Modules tab or t_set insurance.
-- Monthly premiums and payouts show up in your finances as "Other" with their
-  own insurance labels, letters from the insurer appear as notifications.
+- Monthly premiums and payouts get their own rows on the Finances page
+  ("Insurance premiums", "Insurance payouts"); letters from the insurer appear
+  as notifications. With Red Tape (by Ozz) installed, premiums count as a
+  deductible expense and payouts as taxable income on its tax statement.
   Saved with the savegame, synced in multiplayer.
 - Map crops: crops that maps add (rye, spelt, triticale, winter wheat,
   alfalfa, beans ...) are insured like their closest base-game crop; cover
   crops and green manure are not insurable. Crops that are unusual for the
   region (rice in Kansas, cotton in Germany) will cost extra.
+- Storm damage report: after a tornado or hail storm, each farm gets one
+  message per storm - how many of its fields were hit, about how many hectares
+  of crop were lost and the worst field. Every crop loss (tornado, hail,
+  drought, flood, field fire) is recorded per field for the coming crop
+  insurance claims. Works with the insurance switched off too.
 - No policies to buy yet - crop insurance comes next, equipment insurance
   after that.
+
+[COMPATIBILITY] Moisture System (FS25_MoistureSystem by Ozz)
+- With Moisture System installed, our own drought switches off (Moisture System
+  already withers crops in dry weather); field fires only start on fields it has
+  dried out; floods keep working.
+- Crops withered by Moisture System are recorded as drought damage for the crop
+  insurance.
+
+[COMPATIBILITY] Advanced Damage System 0.9.2
+- A vehicle wrecked by the tornado now only gets real ADS breakdowns, not the
+  condition states ADS manages itself (cold engine, general wear, engine jam ...).
 
 [GAMEPLAY] Real-Life Tornado Climate (optional, OFF by default)
 - When enabled, tornadoes follow real recorded statistics instead of the classic

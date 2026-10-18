@@ -414,5 +414,21 @@ check("fire toggle OFF: no fire", TornadoHazards.fire, nil)
 TornadoHazards.fireEnabled = true
 
 print(TornadoHazards:getStatusText())
+-- ---------------------------------------------------------------- FS25_MoistureSystem installed
+local tooDry = false
+TornadoMoisture = { isActive = function() return true end, isFieldFireDry = function() return tooDry end,
+    getStatusText = function() return "Moisture System: stub" end }
+check("Moisture System: own drought off", TornadoHazards:isDroughtActive(), false)
+check("Moisture System: floods still on", TornadoHazards:isFloodActive(), true)
+check("Moisture System: fire drought decided per field", TornadoHazards:isFireDrought(), true)
+local ripeField = makeField(9, 1, 5, 1)
+check("(setup) ripe wheat can burn without Moisture System", (function() local m = TornadoMoisture TornadoMoisture = nil local r = TornadoHazards:canFieldBurn(ripeField, false) TornadoMoisture = m return r end)(), true)
+check("ripe wheat, field not too dry: cannot burn", TornadoHazards:canFieldBurn(ripeField, false), false)
+tooDry = true
+check("ripe wheat, Moisture System says too dry: can burn", TornadoHazards:canFieldBurn(ripeField, false), true)
+check("status names Moisture System", TornadoHazards:getStatusText():find("MoistureSystem", 1, true) ~= nil, true)
+TornadoMoisture = nil
+check("without Moisture System: drought back on", TornadoHazards:isDroughtActive(), true)
+
 print(string.format("\n%d / %d checks passed", total - failures, total))
 os.exit(failures == 0 and 0 or 1)

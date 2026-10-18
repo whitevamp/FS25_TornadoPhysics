@@ -182,11 +182,19 @@
         <text name="tp_tip_insurance_region" text="Wessen Versicherungsregeln und Preise gelten. Auto erkennt das Land (und Bundesland oder Provinz) anhand der Karte."/>
         <text name="tp_insurance_region_auto" text="Auto"/>
         <text name="tp_insurance_region_auto_found" text="Auto (%s)"/>
+        <text name="finance_tornadoInsurancePremium" text="Versicherungsprämien"/>
+        <text name="finance_tornadoInsurancePayout" text="Versicherungsleistungen"/>
         <text name="tp_money_ins_premium" text="Versicherungsprämien"/>
         <text name="tp_money_ins_payout" text="Versicherungsleistungen"/>
         <text name="tp_msg_ins_premium_charged" text="Versicherung: Monatsprämie von %s abgebucht."/>
         <text name="tp_msg_ins_payout" text="Versicherung: %s an deinen Hof ausgezahlt."/>
         <text name="tp_msg_ins_test_timer" text="Versicherung: Test-Countdown abgelaufen."/>
+        <text name="tp_msg_damage_report" text="%s: %d deiner Felder getroffen, etwa %.1f ha Ernte verloren (am schlimmsten: Feld %d, %d %%)."/>
+        <text name="tp_cause_tornado" text="Tornado"/>
+        <text name="tp_cause_hail" text="Hagel"/>
+        <text name="tp_cause_drought" text="Dürre"/>
+        <text name="tp_cause_flood" text="Überschwemmung"/>
+        <text name="tp_cause_fire" text="Feldbrand"/>
         <text name="tp_msg_ins_off" text="Die Versicherung ist auf diesem Server ausgeschaltet."/>
         <text name="tp_msg_ins_denied" text="Versicherung: Nur ein Hofverwalter oder der Server-Admin kann die Policen dieses Hofs ändern."/>
         <text name="tp_msg_ins_denied_admin" text="Versicherung: Auf diesem Server verwaltet nur der Admin die Policen."/>

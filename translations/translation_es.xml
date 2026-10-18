@@ -182,11 +182,19 @@
         <text name="tp_tip_insurance_region" text="Qué reglas y precios de seguro se aplican. Auto detecta el país (y el estado o la provincia) a partir del mapa."/>
         <text name="tp_insurance_region_auto" text="Auto"/>
         <text name="tp_insurance_region_auto_found" text="Auto (%s)"/>
+        <text name="finance_tornadoInsurancePremium" text="Primas de seguro"/>
+        <text name="finance_tornadoInsurancePayout" text="Indemnizaciones del seguro"/>
         <text name="tp_money_ins_premium" text="Primas de seguro"/>
         <text name="tp_money_ins_payout" text="Indemnizaciones del seguro"/>
         <text name="tp_msg_ins_premium_charged" text="Seguro: cobrada la prima mensual de %s."/>
         <text name="tp_msg_ins_payout" text="Seguro: %s pagados a tu granja."/>
         <text name="tp_msg_ins_test_timer" text="Seguro: cuenta atrás de prueba terminada."/>
+        <text name="tp_msg_damage_report" text="%s: %d de tus campos afectados, unas %.1f ha de cosecha perdidas (el peor: campo %d, %d %%)."/>
+        <text name="tp_cause_tornado" text="Tornado"/>
+        <text name="tp_cause_hail" text="Granizo"/>
+        <text name="tp_cause_drought" text="Sequía"/>
+        <text name="tp_cause_flood" text="Inundación"/>
+        <text name="tp_cause_fire" text="Incendio de campo"/>
         <text name="tp_msg_ins_off" text="Los seguros están desactivados en este servidor."/>
         <text name="tp_msg_ins_denied" text="Seguro: solo un gestor de la granja o el admin del servidor puede cambiar las pólizas de esta granja."/>
         <text name="tp_msg_ins_denied_admin" text="Seguro: en este servidor solo el admin gestiona las pólizas."/>

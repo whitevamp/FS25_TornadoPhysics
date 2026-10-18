@@ -185,6 +185,9 @@ function TornadoConsole:cmdHelp(command)
         print("  hazards fire [field]  - Starts a field fire now (random grain-type field, or the given field number).")
         print("  hazards fireout       - Puts the burning field fire out.")
         print("  hazards log           - Prints the last 20 hazard events (field, farm, share).")
+        print("  moisture status       - FS25_MoistureSystem integration status (hook, patches recorded).")
+        print("  moisture field <n>    - Field moisture, wither / fire thresholds of its crop.")
+        print("  moisture wither <n> [count] - DESTROYS crop: Moisture System withers patches on field n now (tests the report).")
         print("  insurance status      - Insurance status (region, data, settings, countdowns).")
         print("  insurance bill        - Runs the monthly premium billing now.")
         print("  insurance testpremium <amount> - Test premium per month for every farm (0 = off, not saved).")
@@ -195,6 +198,8 @@ function TornadoConsole:cmdHelp(command)
         print("  insurance rate <FILLTYPE> <PLAN> <coverage %> - Rate lookup (US / Canada / Brazil data). Ex: t_dev insurance rate MAIZE RP 75")
         print("  insurance regions     - Prints all insurance regions.")
         print("  insurance crops       - Every crop of this map and how the insurance rates it (map crops -> base crops).")
+        print("  insurance damage [farm] - Storm damage log: field, cause, crop, share lost (also open events).")
+        print("  insurance hit <field> [radius] [perlin] - DESTROYS crop in a circle at the field centre (tests the report).")
         print("--------------------------------------------------")
     elseif command == "t_tune" then
         print("---------------- t_tune HELP ----------------")
@@ -712,6 +717,10 @@ function TornadoConsole:cmdDev(tool, arg1, arg2, arg3, arg4, arg5)
     elseif tool == "hazards" then
         if not TornadoHazards then return "Error: Hazards Module missing." end
         return TornadoHazards:consoleCommand(arg1, arg2)
+
+    elseif tool == "moisture" then
+        if not TornadoMoisture then return "Error: Moisture integration missing." end
+        return TornadoMoisture:consoleCommand(arg1, arg2, arg3)
 
     elseif tool == "insurance" then
         if not TornadoInsurance then return "Error: Insurance Module missing." end

@@ -24,6 +24,9 @@ source(Utils.getFilename("scripts/events/TornadoFieldFireEvent.lua", modDir))
 source(Utils.getFilename("scripts/events/TornadoInsuranceActionEvent.lua", modDir))
 source(Utils.getFilename("scripts/events/TornadoInsuranceStateEvent.lua", modDir))
 
+-- Insurance rows on the Finances page: must exist before the savegame builds the farms' finance tables.
+source(Utils.getFilename("scripts/insurance/TornadoInsuranceFinance.lua", modDir))
+
 function TornadoMain:loadMap(name)
     print("--------------------------------------------------")
     print("TORNADO MOD SYSTEM: INITIALIZING MAIN CONTROLLER")
@@ -51,6 +54,9 @@ function TornadoMain:loadMap(name)
     -- Load Advanced Damage System, mod intergration script.
     source(Utils.getFilename("scripts/TornadoADS.lua", modDir))
 
+    -- Moisture System (Ozz) integration: its drought / withering instead of ours, withering -> damage report.
+    source(Utils.getFilename("scripts/TornadoMoisture.lua", modDir))
+
     -- Load the physics system.
     source(Utils.getFilename("scripts/TornadoPhysics.lua", modDir))
 
@@ -75,6 +81,7 @@ function TornadoMain:loadMap(name)
     -- Optional per-farm insurance (OFF by default; docs/INSURANCE_DESIGN.md).
     source(Utils.getFilename("scripts/insurance/TornadoInsuranceData.lua", modDir))
     source(Utils.getFilename("scripts/insurance/TornadoInsuranceCrops.lua", modDir))
+    source(Utils.getFilename("scripts/insurance/TornadoInsuranceDamage.lua", modDir))
     source(Utils.getFilename("scripts/insurance/TornadoInsurance.lua", modDir))
 
     -- Saves the active tornado / outbreak with the savegame so a reload carries on.
@@ -124,6 +131,7 @@ function TornadoMain:loadMap(name)
 
     if TornadoCargo then TornadoCargo:loadMap() end
     if TornadoADS then TornadoADS:loadMap() end
+    if TornadoMoisture then TornadoMoisture:loadMap() end
     if TornadoCompass then TornadoCompass:loadMap(name) end
     --if TornadoNFW then TornadoNFW:loadMap() end
 
@@ -148,6 +156,7 @@ function TornadoMain:loadMap(name)
     if TornadoClimate then TornadoClimate:loadMap(modDir) end
     if TornadoOutbreak then TornadoOutbreak:loadMap() end
     if TornadoInsuranceCrops then TornadoInsuranceCrops:loadMap(modDir) end
+    if TornadoInsuranceDamage then TornadoInsuranceDamage:loadMap() end   -- storm damage report (also with insurance OFF)
     if TornadoInsurance then TornadoInsurance:loadMap(modDir, modName) end   -- after Region / Climate (region detection)
     if TornadoPersistence then TornadoPersistence:loadMap() end   -- after Outbreak: restores its state
     -- Multiplayer: wrap the console handlers BEFORE they are registered, and send state to joining players.
@@ -178,12 +187,14 @@ function TornadoMain:deleteMap()
     if TornadoTraffic then TornadoTraffic:deleteMap() end
     if TornadoWildlife then TornadoWildlife:deleteMap() end
     if TornadoHazards then TornadoHazards:deleteMap() end
+    if TornadoMoisture then TornadoMoisture:deleteMap() end
     if TornadoFieldFireFX then TornadoFieldFireFX:deleteMap() end
     if TornadoClimate then TornadoClimate:deleteMap() end
     if TornadoRegion then TornadoRegion:deleteMap() end
     if TornadoOutbreak then TornadoOutbreak:deleteMap() end
     if TornadoInsurance then TornadoInsurance:deleteMap() end
     if TornadoInsuranceCrops then TornadoInsuranceCrops:deleteMap() end
+    if TornadoInsuranceDamage then TornadoInsuranceDamage:deleteMap() end
     if TornadoEffects then TornadoEffects:deleteMap() end
     if TornadoDebug then TornadoDebug:deleteMap() end
     if TornadoCompass then TornadoCompass:deleteMap() end
@@ -199,6 +210,7 @@ function TornadoMain:update(dt)
     if TornadoTraffic then TornadoTraffic:update(dt) end
     if TornadoWildlife then TornadoWildlife:update(dt) end
     if TornadoHazards then TornadoHazards:update(dt) end
+    if TornadoMoisture then TornadoMoisture:update(dt) end
     if TornadoFieldFireFX then TornadoFieldFireFX:update(dt) end
     if TornadoOutbreak then TornadoOutbreak:update(dt) end
     if TornadoCompass then TornadoCompass:update(dt) end
@@ -241,6 +253,9 @@ if not FSBaseMission.tornadoSaveHooked then
         end
         if TornadoHazards and TornadoHazards.save then
             TornadoHazards:save()
+        end
+        if TornadoInsuranceDamage and TornadoInsuranceDamage.save then
+            TornadoInsuranceDamage:save()
         end
         if TornadoInsurance and TornadoInsurance.save then
             TornadoInsurance:save()

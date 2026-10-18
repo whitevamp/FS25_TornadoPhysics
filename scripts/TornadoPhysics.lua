@@ -1624,6 +1624,11 @@ end
 function TornadoPhysics:onTornadoRespawn()
     print("TornadoPhysics: New tornado spawned on the active twister - rolling a new touchdown.")
 
+    -- The previous tornado is over: report its crop damage before the new one starts.
+    if TornadoInsuranceDamage ~= nil and TornadoInsuranceDamage.onTornadoEnded ~= nil then
+        TornadoInsuranceDamage:onTornadoEnded()
+    end
+
     self.activeNodes = {}
     self.safetyCache = {}
     self.isPurging = false
@@ -1760,6 +1765,9 @@ function TornadoPhysics:clearTornadoState()
     if TornadoAPI then TornadoAPI:fireDespawnEvent() end
     if TornadoSync ~= nil then TornadoSync:sendTornadoState(false, false) end
     if TornadoOutbreak ~= nil then TornadoOutbreak:onTornadoEnded() end
+    if TornadoInsuranceDamage ~= nil and TornadoInsuranceDamage.onTornadoEnded ~= nil then
+        TornadoInsuranceDamage:onTornadoEnded()   -- storm damage report now, not after the quiet time
+    end
 
     print("TornadoPhysics: Cleanup complete. Ready for new spawn.")
 end

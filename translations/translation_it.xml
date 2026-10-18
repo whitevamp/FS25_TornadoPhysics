@@ -182,11 +182,19 @@
         <text name="tp_tip_insurance_region" text="Quali regole e prezzi assicurativi si applicano. Auto rileva il paese (e lo stato o la provincia) dalla mappa."/>
         <text name="tp_insurance_region_auto" text="Auto"/>
         <text name="tp_insurance_region_auto_found" text="Auto (%s)"/>
+        <text name="finance_tornadoInsurancePremium" text="Premi assicurativi"/>
+        <text name="finance_tornadoInsurancePayout" text="Risarcimenti assicurativi"/>
         <text name="tp_money_ins_premium" text="Premi assicurativi"/>
         <text name="tp_money_ins_payout" text="Risarcimenti assicurativi"/>
         <text name="tp_msg_ins_premium_charged" text="Assicurazione: addebitato il premio mensile di %s."/>
         <text name="tp_msg_ins_payout" text="Assicurazione: %s versati alla tua fattoria."/>
         <text name="tp_msg_ins_test_timer" text="Assicurazione: conto alla rovescia di prova terminato."/>
+        <text name="tp_msg_damage_report" text="%s: %d dei tuoi campi colpiti, circa %.1f ha di raccolto perso (il peggiore: campo %d, %d %%)."/>
+        <text name="tp_cause_tornado" text="Tornado"/>
+        <text name="tp_cause_hail" text="Grandine"/>
+        <text name="tp_cause_drought" text="Siccità"/>
+        <text name="tp_cause_flood" text="Alluvione"/>
+        <text name="tp_cause_fire" text="Incendio"/>
         <text name="tp_msg_ins_off" text="L'assicurazione è disattivata su questo server."/>
         <text name="tp_msg_ins_denied" text="Assicurazione: solo un gestore della fattoria o l'admin del server può modificare le polizze di questa fattoria."/>
         <text name="tp_msg_ins_denied_admin" text="Assicurazione: su questo server solo l'admin gestisce le polizze."/>

@@ -182,11 +182,19 @@
         <text name="tp_tip_insurance_region" text="Règles et prix d'assurance appliqués. Auto détecte le pays (et l'État ou la province) d'après la carte."/>
         <text name="tp_insurance_region_auto" text="Auto"/>
         <text name="tp_insurance_region_auto_found" text="Auto (%s)"/>
+        <text name="finance_tornadoInsurancePremium" text="Primes d'assurance"/>
+        <text name="finance_tornadoInsurancePayout" text="Indemnités d'assurance"/>
         <text name="tp_money_ins_premium" text="Primes d'assurance"/>
         <text name="tp_money_ins_payout" text="Indemnités d'assurance"/>
         <text name="tp_msg_ins_premium_charged" text="Assurance : prime mensuelle de %s prélevée."/>
         <text name="tp_msg_ins_payout" text="Assurance : %s versés à votre ferme."/>
         <text name="tp_msg_ins_test_timer" text="Assurance : compte à rebours de test terminé."/>
+        <text name="tp_msg_damage_report" text="%s : %d de vos champs touchés, environ %.1f ha de récolte perdus (le plus touché : champ %d, %d %%)."/>
+        <text name="tp_cause_tornado" text="Tornade"/>
+        <text name="tp_cause_hail" text="Grêle"/>
+        <text name="tp_cause_drought" text="Sécheresse"/>
+        <text name="tp_cause_flood" text="Inondation"/>
+        <text name="tp_cause_fire" text="Feu de champ"/>
         <text name="tp_msg_ins_off" text="L'assurance est désactivée sur ce serveur."/>
         <text name="tp_msg_ins_denied" text="Assurance : seul un gérant de la ferme ou l'admin du serveur peut modifier les contrats de cette ferme."/>
         <text name="tp_msg_ins_denied_admin" text="Assurance : sur ce serveur, seul l'admin gère les contrats."/>

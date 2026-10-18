@@ -655,6 +655,10 @@ t("tp_tip_insurance_region",
   "Welke verzekeringsregels en prijzen gelden. Auto herkent het land (en de staat of provincie) aan de kaart.")
 t("tp_insurance_region_auto", "Auto", "Auto", "Auto", "Auto", "Auto", "Auto", "Auto")
 t("tp_insurance_region_auto_found", "Auto (%s)", "Auto (%s)", "Auto (%s)", "Auto (%s)", "Auto (%s)", "Auto (%s)", "Auto (%s)")
+t("finance_tornadoInsurancePremium", "Insurance premiums", "Versicherungsprämien", "Primes d'assurance",
+  "Składki ubezpieczeniowe", "Primas de seguro", "Premi assicurativi", "Verzekeringspremies")
+t("finance_tornadoInsurancePayout", "Insurance payouts", "Versicherungsleistungen", "Indemnités d'assurance",
+  "Wypłaty z ubezpieczenia", "Indemnizaciones del seguro", "Risarcimenti assicurativi", "Verzekeringsuitkeringen")
 t("tp_money_ins_premium", "Insurance premiums", "Versicherungsprämien", "Primes d'assurance", "Składki ubezpieczeniowe",
   "Primas de seguro", "Premi assicurativi", "Verzekeringspremies")
 t("tp_money_ins_payout", "Insurance payouts", "Versicherungsleistungen", "Indemnités d'assurance", "Wypłaty z ubezpieczenia",
@@ -680,6 +684,18 @@ t("tp_msg_ins_test_timer", "Insurance: test countdown finished.",
   "Seguro: cuenta atrás de prueba terminada.",
   "Assicurazione: conto alla rovescia di prova terminato.",
   "Verzekering: testaftelling afgelopen.")
+t("tp_msg_damage_report", "%s: %d of your fields hit, about %.1f ha of crop lost (worst: field %d, %d %%).",
+  "%s: %d deiner Felder getroffen, etwa %.1f ha Ernte verloren (am schlimmsten: Feld %d, %d %%).",
+  "%s : %d de vos champs touchés, environ %.1f ha de récolte perdus (le plus touché : champ %d, %d %%).",
+  "%s: trafione pola: %d, utracono ok. %.1f ha upraw (najgorzej: pole %d, %d %%).",
+  "%s: %d de tus campos afectados, unas %.1f ha de cosecha perdidas (el peor: campo %d, %d %%).",
+  "%s: %d dei tuoi campi colpiti, circa %.1f ha di raccolto perso (il peggiore: campo %d, %d %%).",
+  "%s: %d van je velden geraakt, ongeveer %.1f ha oogst verloren (het ergst: veld %d, %d %%).")
+t("tp_cause_tornado", "Tornado", "Tornado", "Tornade", "Tornado", "Tornado", "Tornado", "Tornado")
+t("tp_cause_hail", "Hail", "Hagel", "Grêle", "Grad", "Granizo", "Grandine", "Hagel")
+t("tp_cause_drought", "Drought", "Dürre", "Sécheresse", "Susza", "Sequía", "Siccità", "Droogte")
+t("tp_cause_flood", "Flood", "Überschwemmung", "Inondation", "Powódź", "Inundación", "Alluvione", "Overstroming")
+t("tp_cause_fire", "Field fire", "Feldbrand", "Feu de champ", "Pożar pola", "Incendio de campo", "Incendio", "Veldbrand")
 t("tp_msg_ins_off", "Insurance is turned off on this server.",
   "Die Versicherung ist auf diesem Server ausgeschaltet.",
   "L'assurance est désactivée sur ce serveur.",

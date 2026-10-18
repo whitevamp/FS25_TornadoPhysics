@@ -243,6 +243,9 @@ function TornadoInsuranceCrops:printMapCrops()
     local counts = {}
     for _, crop in ipairs(crops) do
         local info = self:getCropInfo(crop.fillType)
+        if info == nil then
+            return "Insurance: module not loaded."
+        end
         counts[info.method] = (counts[info.method] or 0) + 1
         local rated = info.insurable and (info.ratedAs == crop.fillType and "own data" or ("rated as " .. info.ratedAs)) or "not insurable"
         print(string.format("  %-20s %-22s %-12s %s%s", crop.fillType, rated, info.method,
