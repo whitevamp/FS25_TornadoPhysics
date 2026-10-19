@@ -48,6 +48,9 @@ function TornadoInsuranceStateEvent:writeStream(streamId, connection)
     if TornadoInsuranceEquipment ~= nil then
         openClaims = openClaims + TornadoInsuranceEquipment:getOpenClaimCount(state)
     end
+    if TornadoInsuranceLivestock ~= nil then
+        openClaims = openClaims + TornadoInsuranceLivestock:getOpenClaimCount(state)
+    end
     streamWriteUIntN(streamId, math.min(openClaims, 255), 8)
 
     local equipment = state.equipment
@@ -74,6 +77,8 @@ function TornadoInsuranceStateEvent:writeStream(streamId, connection)
         streamWriteFloat32(streamId, claim.lossPayout or 0)
         streamWriteFloat32(streamId, claim.buyBackPayout or 0)
     end
+
+    streamWriteString(streamId, state.livestock ~= nil and state.livestock.status or "")
 
     local inbox = state.inbox or {}
     local first = math.max(1, #inbox - TornadoInsuranceStateEvent.MAX_INBOX + 1)
@@ -121,6 +126,7 @@ function TornadoInsuranceStateEvent:readStream(streamId, connection)
         table.insert(state.equipTotals, { id = streamReadInt32(streamId), name = streamReadString(streamId),
             lossPayout = streamReadFloat32(streamId), buyBackPayout = streamReadFloat32(streamId), status = "TOTAL" })
     end
+    state.livestockStatus = streamReadString(streamId)
     local count = streamReadUIntN(streamId, 6)
     for _ = 1, count do
         local message = { params = {} }

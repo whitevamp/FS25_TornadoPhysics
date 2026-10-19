@@ -403,6 +403,28 @@
         <text name="tp_msgtype_tornado" text="Tornado"/>
         <text name="tp_msgtype_recovery" text="Recovery"/>
         <text name="tp_msgtype_other" text="Other"/>
+        <text name="tp_insurance_livestock" text="Livestock insurance (your farm)"/>
+        <text name="tp_tip_insurance_livestock" text="Insures every animal of your farm against tornado losses at its value when it dies (age and health count). 5 percent of each claim is your excess. In the United States the USDA Livestock Indemnity Program also pays 75 percent of the market value for free; the policy pays the rest. Animals only die in a tornado when the Livestock module is on."/>
+        <text name="tp_insurance_livestock_none" text="No livestock policy"/>
+        <text name="tp_insurance_livestock_option" text="Insure %d animals (%s) - about %s per month"/>
+        <text name="tp_insurance_livestock_empty" text="Insure all animals (no animals yet)"/>
+        <text name="tp_insurance_livestock_status" text="Livestock policy status"/>
+        <text name="tp_ins_status_none" text="no policy"/>
+        <text name="tp_msg_ins_lv_status" text="Livestock insurance: %s - %d animals worth %s, about %s per month. %s"/>
+        <text name="tp_ins_lv_gov_us" text="State programme: the USDA Livestock Indemnity Program pays 75 percent of the market value for animals a tornado kills."/>
+        <text name="tp_ins_lv_gov_none" text="State programme: none in this country."/>
+        <text name="tp_ins_lv_husbandry_off" text="Note: animals only die in a tornado when the Livestock module is on (Modules tab)."/>
+        <text name="tp_msg_ins_lv_already" text="Your farm already has a livestock policy."/>
+        <text name="tp_msg_ins_lv_bought" text="Livestock insurance confirmed: %d animals, about %s per month. Cover starts in %d d %d h."/>
+        <text name="tp_msg_ins_lv_none" text="Your farm has no livestock policy."/>
+        <text name="tp_msg_ins_lv_cancelled" text="Livestock insurance cancelled. Open claims are still handled."/>
+        <text name="tp_msg_ins_lv_active" text="Livestock insurance is now active."/>
+        <text name="tp_msg_ins_lv_claim_received" text="Livestock claim received: %d animals lost at %s (value %s) - an adjuster will visit."/>
+        <text name="tp_msg_ins_lv_claim_inspected" text="The adjuster has visited %s. A decision follows soon."/>
+        <text name="tp_msg_ins_lv_gov_approved" text="USDA Livestock Indemnity Program: %d animals lost at %s - %s approved (75 percent of the market value)."/>
+        <text name="tp_msg_ins_lv_claim_approved" text="Livestock claim for %s approved: insured value %s - %s will be paid (5 percent excess and the state payment deducted)."/>
+        <text name="tp_msg_ins_lv_gov_paid" text="USDA Livestock Indemnity Program paid %s."/>
+        <text name="tp_msg_ins_lv_claim_paid" text="Livestock insurance paid for %s: %s."/>
         <text name="tp_dir_N" text="N"/>
         <text name="tp_dir_NE" text="NE"/>
         <text name="tp_dir_E" text="E"/>

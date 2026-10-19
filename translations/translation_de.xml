@@ -403,6 +403,28 @@
         <text name="tp_msgtype_tornado" text="Tornado"/>
         <text name="tp_msgtype_recovery" text="Bergung"/>
         <text name="tp_msgtype_other" text="Sonstiges"/>
+        <text name="tp_insurance_livestock" text="Tierversicherung (dein Hof)"/>
+        <text name="tp_tip_insurance_livestock" text="Versichert jedes Tier deines Hofs gegen Tornadoverluste zu seinem Wert beim Tod (Alter und Gesundheit zählen). 5 Prozent jedes Schadens trägst du selbst. In den USA zahlt das USDA Livestock Indemnity Program zusätzlich kostenlos 75 Prozent des Marktwerts; die Police zahlt den Rest. Tiere sterben nur bei eingeschaltetem Tiermodul."/>
+        <text name="tp_insurance_livestock_none" text="Keine Tierversicherung"/>
+        <text name="tp_insurance_livestock_option" text="%d Tiere versichern (%s) - etwa %s pro Monat"/>
+        <text name="tp_insurance_livestock_empty" text="Alle Tiere versichern (noch keine Tiere)"/>
+        <text name="tp_insurance_livestock_status" text="Status der Tierversicherung"/>
+        <text name="tp_ins_status_none" text="keine Police"/>
+        <text name="tp_msg_ins_lv_status" text="Tierversicherung: %s - %d Tiere im Wert von %s, etwa %s pro Monat. %s"/>
+        <text name="tp_ins_lv_gov_us" text="Staatliches Programm: Das USDA Livestock Indemnity Program zahlt 75 Prozent des Marktwerts für Tiere, die ein Tornado tötet."/>
+        <text name="tp_ins_lv_gov_none" text="Staatliches Programm: keines in diesem Land."/>
+        <text name="tp_ins_lv_husbandry_off" text="Hinweis: Tiere sterben nur bei eingeschaltetem Tiermodul (Reiter Module)."/>
+        <text name="tp_msg_ins_lv_already" text="Dein Hof hat bereits eine Tierversicherung."/>
+        <text name="tp_msg_ins_lv_bought" text="Tierversicherung bestätigt: %d Tiere, etwa %s pro Monat. Der Schutz beginnt in %d T %d h."/>
+        <text name="tp_msg_ins_lv_none" text="Dein Hof hat keine Tierversicherung."/>
+        <text name="tp_msg_ins_lv_cancelled" text="Tierversicherung gekündigt. Offene Schadensfälle werden noch bearbeitet."/>
+        <text name="tp_msg_ins_lv_active" text="Die Tierversicherung ist jetzt aktiv."/>
+        <text name="tp_msg_ins_lv_claim_received" text="Tierschaden gemeldet: %d Tiere verloren bei %s (Wert %s) - ein Gutachter kommt."/>
+        <text name="tp_msg_ins_lv_claim_inspected" text="Der Gutachter war bei %s. Die Entscheidung folgt bald."/>
+        <text name="tp_msg_ins_lv_gov_approved" text="USDA Livestock Indemnity Program: %d Tiere verloren bei %s - %s bewilligt (75 Prozent des Marktwerts)."/>
+        <text name="tp_msg_ins_lv_claim_approved" text="Tierschaden %s anerkannt: versicherter Wert %s - %s werden ausgezahlt (abzüglich 5 Prozent Selbstbeteiligung und der staatlichen Zahlung)."/>
+        <text name="tp_msg_ins_lv_gov_paid" text="Das USDA Livestock Indemnity Program hat %s gezahlt."/>
+        <text name="tp_msg_ins_lv_claim_paid" text="Tierversicherung zahlte für %s: %s."/>
         <text name="tp_dir_N" text="N"/>
         <text name="tp_dir_NE" text="NO"/>
         <text name="tp_dir_E" text="O"/>

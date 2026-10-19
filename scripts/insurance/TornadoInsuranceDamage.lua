@@ -404,6 +404,10 @@ function TornadoInsuranceDamage:onTornadoEnded()
     if isServer() and TornadoInsuranceEquipment ~= nil and TornadoInsuranceEquipment.onStormEnded ~= nil then
         TornadoInsuranceEquipment:onStormEnded()
     end
+    -- Livestock claims for the animals it killed.
+    if isServer() and TornadoInsuranceLivestock ~= nil and TornadoInsuranceLivestock.onStormEnded ~= nil then
+        TornadoInsuranceLivestock:onStormEnded()
+    end
     if isServer() and self.events ~= nil and next(self.events) ~= nil then
         self:closeEvents(true, self.CAUSE_TORNADO)
     end

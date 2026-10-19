@@ -16,11 +16,12 @@ Compatibility support (built into Tornado Physics):
 - "Advanced Damage System" (ADS) by id577 and Squallqt
 - "CompassHeading" by RocklandUSA Gaming
 - "Moisture System" (FS25_MoistureSystem) by Ozz
-  (https://github.com/sprkem/FS25_MoistureSystem): its drought and
+  (https://github.com/Ozz-Modding/FS25_MoistureSystem): its drought and
   withering are used instead of ours, withered crops count for the
   insurance.
 - "Red Tape" (FS25_RedTape) by Ozz: insurance premiums and payouts appear
   on its tax statement.
+  https://github.com/Ozz-Modding/FS25_RedTape
 - "Realistic Weather" (FS25_RealisticWeather) by Arrow-kb: our natural
   hazards switch off when it is installed.
 These mods are not included in Tornado Physics and are not required; the

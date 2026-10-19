@@ -403,6 +403,28 @@
         <text name="tp_msgtype_tornado" text="Tornado"/>
         <text name="tp_msgtype_recovery" text="Rescate"/>
         <text name="tp_msgtype_other" text="Otros"/>
+        <text name="tp_insurance_livestock" text="Seguro de ganado (tu granja)"/>
+        <text name="tp_tip_insurance_livestock" text="Asegura cada animal de tu granja contra pérdidas por tornado según su valor al morir (cuentan la edad y la salud). El 5 por ciento de cada siniestro es tu franquicia. En EE. UU. el Livestock Indemnity Program del USDA paga además gratis el 75 por ciento del valor de mercado; la póliza paga el resto. Los animales solo mueren con el módulo de ganado activado."/>
+        <text name="tp_insurance_livestock_none" text="Sin seguro de ganado"/>
+        <text name="tp_insurance_livestock_option" text="Asegurar %d animales (%s) - unos %s al mes"/>
+        <text name="tp_insurance_livestock_empty" text="Asegurar todos los animales (aún sin animales)"/>
+        <text name="tp_insurance_livestock_status" text="Estado del seguro de ganado"/>
+        <text name="tp_ins_status_none" text="sin póliza"/>
+        <text name="tp_msg_ins_lv_status" text="Seguro de ganado: %s - %d animales por valor de %s, unos %s al mes. %s"/>
+        <text name="tp_ins_lv_gov_us" text="Programa estatal: el Livestock Indemnity Program del USDA paga el 75 por ciento del valor de mercado de los animales muertos por un tornado."/>
+        <text name="tp_ins_lv_gov_none" text="Programa estatal: ninguno en este país."/>
+        <text name="tp_ins_lv_husbandry_off" text="Nota: los animales solo mueren en un tornado con el módulo de ganado activado (pestaña Módulos)."/>
+        <text name="tp_msg_ins_lv_already" text="Tu granja ya tiene un seguro de ganado."/>
+        <text name="tp_msg_ins_lv_bought" text="Seguro de ganado confirmado: %d animales, unos %s al mes. La cobertura empieza en %d d %d h."/>
+        <text name="tp_msg_ins_lv_none" text="Tu granja no tiene seguro de ganado."/>
+        <text name="tp_msg_ins_lv_cancelled" text="Seguro de ganado cancelado. Los siniestros abiertos se siguen tramitando."/>
+        <text name="tp_msg_ins_lv_active" text="El seguro de ganado ya está activo."/>
+        <text name="tp_msg_ins_lv_claim_received" text="Siniestro de ganado recibido: %d animales perdidos en %s (valor %s) - un perito lo visitará."/>
+        <text name="tp_msg_ins_lv_claim_inspected" text="El perito ha visitado %s. La decisión llegará pronto."/>
+        <text name="tp_msg_ins_lv_gov_approved" text="Livestock Indemnity Program del USDA: %d animales perdidos en %s - %s aprobados (75 por ciento del valor de mercado)."/>
+        <text name="tp_msg_ins_lv_claim_approved" text="Siniestro de ganado de %s aprobado: valor asegurado %s - se pagarán %s (descontados el 5 por ciento de franquicia y el pago estatal)."/>
+        <text name="tp_msg_ins_lv_gov_paid" text="El Livestock Indemnity Program del USDA ha pagado %s."/>
+        <text name="tp_msg_ins_lv_claim_paid" text="El seguro de ganado pagó por %s: %s."/>
         <text name="tp_dir_N" text="N"/>
         <text name="tp_dir_NE" text="NE"/>
         <text name="tp_dir_E" text="E"/>

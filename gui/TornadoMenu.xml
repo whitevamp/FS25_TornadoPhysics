@@ -653,6 +653,18 @@
                     </Button>
                     <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_insurance_equip_buyback"/>
                 </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="modInsuranceLivestock" onClick="onClickChoice">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_insurance_livestock"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_insurance_livestock"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <Button profile="tornado_actionButton" id="modInsuranceLivestockStatus" text="$l10n_tp_btn_show" onClick="onClickAction">
+                        <ThreePartBitmap profile="tornado_actionButtonBg"/>
+                    </Button>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_insurance_livestock_status"/>
+                </Bitmap>
             </ScrollingLayout>
             <Bitmap profile="fs25_settingsTooltipSeparator"/>
         </GuiElement>

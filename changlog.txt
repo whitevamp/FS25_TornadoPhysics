@@ -143,6 +143,13 @@
   becomes Rebuilt, -30 % for good (both adjustable). Settings: replacement value
   (+15 %), remove or keep accepted total losses. Modules tab or
   t_dev insurance equip.
+- Livestock insurance: one policy covers every animal of your farm against
+  tornado losses at the animal's value when it dies (age and health count;
+  replacement value setting +15 %). 0.8 % of the herd value a year, 5 % excess
+  per claim. Poland uses its own data (subsidised rate, sum capped per head).
+  On US maps the USDA Livestock Indemnity Program pays 75 % of the market
+  value for free (no policy needed); a policy pays the rest. Animals only die
+  with the Livestock module on. Modules tab or t_dev insurance livestock.
 
 [UI] Messages Tab
 - New control panel tab with the mod's messages to your farm (insurance

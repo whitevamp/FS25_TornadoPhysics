@@ -403,6 +403,28 @@
         <text name="tp_msgtype_tornado" text="Tornade"/>
         <text name="tp_msgtype_recovery" text="Dépannage"/>
         <text name="tp_msgtype_other" text="Autre"/>
+        <text name="tp_insurance_livestock" text="Assurance bétail (votre ferme)"/>
+        <text name="tp_tip_insurance_livestock" text="Assure chaque animal de votre ferme contre les pertes dues aux tornades à sa valeur au moment de sa mort (âge et santé comptent). 5 pour cent de chaque sinistre restent à votre charge. Aux États-Unis, le Livestock Indemnity Program de l'USDA paie aussi gratuitement 75 pour cent de la valeur marchande ; le contrat paie le reste. Les animaux ne meurent que si le module bétail est activé."/>
+        <text name="tp_insurance_livestock_none" text="Pas d'assurance bétail"/>
+        <text name="tp_insurance_livestock_option" text="Assurer %d animaux (%s) - environ %s par mois"/>
+        <text name="tp_insurance_livestock_empty" text="Assurer tous les animaux (pas encore d'animaux)"/>
+        <text name="tp_insurance_livestock_status" text="État de l'assurance bétail"/>
+        <text name="tp_ins_status_none" text="pas de contrat"/>
+        <text name="tp_msg_ins_lv_status" text="Assurance bétail : %s - %d animaux d'une valeur de %s, environ %s par mois. %s"/>
+        <text name="tp_ins_lv_gov_us" text="Programme public : le Livestock Indemnity Program de l'USDA paie 75 pour cent de la valeur marchande des animaux tués par une tornade."/>
+        <text name="tp_ins_lv_gov_none" text="Programme public : aucun dans ce pays."/>
+        <text name="tp_ins_lv_husbandry_off" text="Remarque : les animaux ne meurent dans une tornade que si le module bétail est activé (onglet Modules)."/>
+        <text name="tp_msg_ins_lv_already" text="Votre ferme a déjà une assurance bétail."/>
+        <text name="tp_msg_ins_lv_bought" text="Assurance bétail confirmée : %d animaux, environ %s par mois. La couverture commence dans %d j %d h."/>
+        <text name="tp_msg_ins_lv_none" text="Votre ferme n'a pas d'assurance bétail."/>
+        <text name="tp_msg_ins_lv_cancelled" text="Assurance bétail résiliée. Les sinistres en cours sont encore traités."/>
+        <text name="tp_msg_ins_lv_active" text="L'assurance bétail est maintenant active."/>
+        <text name="tp_msg_ins_lv_claim_received" text="Sinistre bétail reçu : %d animaux perdus à %s (valeur %s) - un expert va passer."/>
+        <text name="tp_msg_ins_lv_claim_inspected" text="L'expert est passé à %s. Une décision suit bientôt."/>
+        <text name="tp_msg_ins_lv_gov_approved" text="Livestock Indemnity Program de l'USDA : %d animaux perdus à %s - %s accordés (75 pour cent de la valeur marchande)."/>
+        <text name="tp_msg_ins_lv_claim_approved" text="Sinistre bétail de %s accepté : valeur assurée %s - %s seront versés (franchise de 5 pour cent et paiement public déduits)."/>
+        <text name="tp_msg_ins_lv_gov_paid" text="Le Livestock Indemnity Program de l'USDA a versé %s."/>
+        <text name="tp_msg_ins_lv_claim_paid" text="Assurance bétail versée pour %s : %s."/>
         <text name="tp_dir_N" text="N"/>
         <text name="tp_dir_NE" text="NE"/>
         <text name="tp_dir_E" text="E"/>

@@ -1527,6 +1527,113 @@ t("tp_msgtype_tornado", "Tornado", "Tornado", "Tornade", "Tornado", "Tornado", "
 t("tp_msgtype_recovery", "Recovery", "Bergung", "Dépannage", "Holowanie", "Rescate", "Soccorso", "Berging")
 t("tp_msgtype_other", "Other", "Sonstiges", "Autre", "Inne", "Otros", "Altro", "Overig")
 
+# =====================================================================================================
+# INSURANCE - LIVESTOCK
+# =====================================================================================================
+t("tp_insurance_livestock", "Livestock insurance (your farm)", "Tierversicherung (dein Hof)", "Assurance bétail (votre ferme)",
+  "Ubezpieczenie zwierząt (twoje gospodarstwo)", "Seguro de ganado (tu granja)", "Assicurazione bestiame (la tua fattoria)",
+  "Veeverzekering (je boerderij)")
+t("tp_tip_insurance_livestock",
+  "Insures every animal of your farm against tornado losses at its value when it dies (age and health count). 5 percent of each claim is your excess. In the United States the USDA Livestock Indemnity Program also pays 75 percent of the market value for free; the policy pays the rest. Animals only die in a tornado when the Livestock module is on.",
+  "Versichert jedes Tier deines Hofs gegen Tornadoverluste zu seinem Wert beim Tod (Alter und Gesundheit zählen). 5 Prozent jedes Schadens trägst du selbst. In den USA zahlt das USDA Livestock Indemnity Program zusätzlich kostenlos 75 Prozent des Marktwerts; die Police zahlt den Rest. Tiere sterben nur bei eingeschaltetem Tiermodul.",
+  "Assure chaque animal de votre ferme contre les pertes dues aux tornades à sa valeur au moment de sa mort (âge et santé comptent). 5 pour cent de chaque sinistre restent à votre charge. Aux États-Unis, le Livestock Indemnity Program de l'USDA paie aussi gratuitement 75 pour cent de la valeur marchande ; le contrat paie le reste. Les animaux ne meurent que si le module bétail est activé.",
+  "Ubezpiecza każde zwierzę gospodarstwa od strat po tornadzie według jego wartości w chwili śmierci (liczy się wiek i zdrowie). 5 procent każdej szkody to twój udział własny. W USA program USDA Livestock Indemnity Program dodatkowo bezpłatnie wypłaca 75 procent wartości rynkowej; polisa pokrywa resztę. Zwierzęta giną tylko przy włączonym module zwierząt.",
+  "Asegura cada animal de tu granja contra pérdidas por tornado según su valor al morir (cuentan la edad y la salud). El 5 por ciento de cada siniestro es tu franquicia. En EE. UU. el Livestock Indemnity Program del USDA paga además gratis el 75 por ciento del valor de mercado; la póliza paga el resto. Los animales solo mueren con el módulo de ganado activado.",
+  "Assicura ogni animale della fattoria contro le perdite da tornado al suo valore al momento della morte (contano età e salute). Il 5 per cento di ogni sinistro è la tua franchigia. Negli Stati Uniti il Livestock Indemnity Program dell'USDA paga inoltre gratis il 75 per cento del valore di mercato; la polizza paga il resto. Gli animali muoiono solo con il modulo bestiame attivo.",
+  "Verzekert elk dier van je boerderij tegen tornadoverlies tegen zijn waarde bij overlijden (leeftijd en gezondheid tellen). 5 procent van elke schade is je eigen risico. In de VS betaalt het USDA Livestock Indemnity Program daarnaast gratis 75 procent van de marktwaarde; de polis betaalt de rest. Dieren sterven alleen als de veemodule aan staat.")
+t("tp_insurance_livestock_none", "No livestock policy", "Keine Tierversicherung", "Pas d'assurance bétail", "Brak ubezpieczenia zwierząt",
+  "Sin seguro de ganado", "Nessuna assicurazione bestiame", "Geen veeverzekering")
+t("tp_insurance_livestock_option", "Insure %d animals (%s) - about %s per month", "%d Tiere versichern (%s) - etwa %s pro Monat",
+  "Assurer %d animaux (%s) - environ %s par mois", "Ubezpiecz %d zwierząt (%s) - ok. %s miesięcznie",
+  "Asegurar %d animales (%s) - unos %s al mes", "Assicura %d animali (%s) - circa %s al mese",
+  "%d dieren verzekeren (%s) - ongeveer %s per maand")
+t("tp_insurance_livestock_empty", "Insure all animals (no animals yet)", "Alle Tiere versichern (noch keine Tiere)",
+  "Assurer tous les animaux (pas encore d'animaux)", "Ubezpiecz wszystkie zwierzęta (brak zwierząt)",
+  "Asegurar todos los animales (aún sin animales)", "Assicura tutti gli animali (ancora nessun animale)",
+  "Alle dieren verzekeren (nog geen dieren)")
+t("tp_insurance_livestock_status", "Livestock policy status", "Status der Tierversicherung", "État de l'assurance bétail",
+  "Status ubezpieczenia zwierząt", "Estado del seguro de ganado", "Stato dell'assicurazione bestiame", "Status veeverzekering")
+t("tp_ins_status_none", "no policy", "keine Police", "pas de contrat", "brak polisy", "sin póliza", "nessuna polizza", "geen polis")
+t("tp_msg_ins_lv_status", "Livestock insurance: %s - %d animals worth %s, about %s per month. %s",
+  "Tierversicherung: %s - %d Tiere im Wert von %s, etwa %s pro Monat. %s",
+  "Assurance bétail : %s - %d animaux d'une valeur de %s, environ %s par mois. %s",
+  "Ubezpieczenie zwierząt: %s - %d zwierząt o wartości %s, ok. %s miesięcznie. %s",
+  "Seguro de ganado: %s - %d animales por valor de %s, unos %s al mes. %s",
+  "Assicurazione bestiame: %s - %d animali del valore di %s, circa %s al mese. %s",
+  "Veeverzekering: %s - %d dieren ter waarde van %s, ongeveer %s per maand. %s")
+t("tp_ins_lv_gov_us", "State programme: the USDA Livestock Indemnity Program pays 75 percent of the market value for animals a tornado kills.",
+  "Staatliches Programm: Das USDA Livestock Indemnity Program zahlt 75 Prozent des Marktwerts für Tiere, die ein Tornado tötet.",
+  "Programme public : le Livestock Indemnity Program de l'USDA paie 75 pour cent de la valeur marchande des animaux tués par une tornade.",
+  "Program państwowy: USDA Livestock Indemnity Program wypłaca 75 procent wartości rynkowej zwierząt zabitych przez tornado.",
+  "Programa estatal: el Livestock Indemnity Program del USDA paga el 75 por ciento del valor de mercado de los animales muertos por un tornado.",
+  "Programma statale: il Livestock Indemnity Program dell'USDA paga il 75 per cento del valore di mercato degli animali uccisi da un tornado.",
+  "Overheidsregeling: het USDA Livestock Indemnity Program betaalt 75 procent van de marktwaarde voor dieren die een tornado doodt.")
+t("tp_ins_lv_gov_none", "State programme: none in this country.", "Staatliches Programm: keines in diesem Land.",
+  "Programme public : aucun dans ce pays.", "Program państwowy: brak w tym kraju.", "Programa estatal: ninguno en este país.",
+  "Programma statale: nessuno in questo paese.", "Overheidsregeling: geen in dit land.")
+t("tp_ins_lv_husbandry_off", "Note: animals only die in a tornado when the Livestock module is on (Modules tab).",
+  "Hinweis: Tiere sterben nur bei eingeschaltetem Tiermodul (Reiter Module).",
+  "Remarque : les animaux ne meurent dans une tornade que si le module bétail est activé (onglet Modules).",
+  "Uwaga: zwierzęta giną w tornadzie tylko przy włączonym module zwierząt (karta Moduły).",
+  "Nota: los animales solo mueren en un tornado con el módulo de ganado activado (pestaña Módulos).",
+  "Nota: gli animali muoiono in un tornado solo con il modulo bestiame attivo (scheda Moduli).",
+  "Let op: dieren sterven alleen in een tornado als de veemodule aan staat (tabblad Modules).")
+t("tp_msg_ins_lv_already", "Your farm already has a livestock policy.", "Dein Hof hat bereits eine Tierversicherung.",
+  "Votre ferme a déjà une assurance bétail.", "Twoje gospodarstwo ma już ubezpieczenie zwierząt.",
+  "Tu granja ya tiene un seguro de ganado.", "La tua fattoria ha già un'assicurazione bestiame.", "Je boerderij heeft al een veeverzekering.")
+t("tp_msg_ins_lv_bought", "Livestock insurance confirmed: %d animals, about %s per month. Cover starts in %d d %d h.",
+  "Tierversicherung bestätigt: %d Tiere, etwa %s pro Monat. Der Schutz beginnt in %d T %d h.",
+  "Assurance bétail confirmée : %d animaux, environ %s par mois. La couverture commence dans %d j %d h.",
+  "Ubezpieczenie zwierząt potwierdzone: %d zwierząt, ok. %s miesięcznie. Ochrona zaczyna się za %d d %d h.",
+  "Seguro de ganado confirmado: %d animales, unos %s al mes. La cobertura empieza en %d d %d h.",
+  "Assicurazione bestiame confermata: %d animali, circa %s al mese. La copertura inizia tra %d g %d h.",
+  "Veeverzekering bevestigd: %d dieren, ongeveer %s per maand. De dekking begint over %d d %d u.")
+t("tp_msg_ins_lv_none", "Your farm has no livestock policy.", "Dein Hof hat keine Tierversicherung.",
+  "Votre ferme n'a pas d'assurance bétail.", "Twoje gospodarstwo nie ma ubezpieczenia zwierząt.",
+  "Tu granja no tiene seguro de ganado.", "La tua fattoria non ha un'assicurazione bestiame.", "Je boerderij heeft geen veeverzekering.")
+t("tp_msg_ins_lv_cancelled", "Livestock insurance cancelled. Open claims are still handled.",
+  "Tierversicherung gekündigt. Offene Schadensfälle werden noch bearbeitet.",
+  "Assurance bétail résiliée. Les sinistres en cours sont encore traités.",
+  "Ubezpieczenie zwierząt wypowiedziane. Otwarte szkody są nadal rozpatrywane.",
+  "Seguro de ganado cancelado. Los siniestros abiertos se siguen tramitando.",
+  "Assicurazione bestiame disdetta. I sinistri aperti vengono ancora gestiti.",
+  "Veeverzekering opgezegd. Openstaande schades worden nog afgehandeld.")
+t("tp_msg_ins_lv_active", "Livestock insurance is now active.", "Die Tierversicherung ist jetzt aktiv.",
+  "L'assurance bétail est maintenant active.", "Ubezpieczenie zwierząt jest teraz aktywne.", "El seguro de ganado ya está activo.",
+  "L'assicurazione bestiame è ora attiva.", "De veeverzekering is nu actief.")
+t("tp_msg_ins_lv_claim_received", "Livestock claim received: %d animals lost at %s (value %s) - an adjuster will visit.",
+  "Tierschaden gemeldet: %d Tiere verloren bei %s (Wert %s) - ein Gutachter kommt.",
+  "Sinistre bétail reçu : %d animaux perdus à %s (valeur %s) - un expert va passer.",
+  "Zgłoszenie szkody zwierząt: %d zwierząt utraconych w %s (wartość %s) - przyjedzie rzeczoznawca.",
+  "Siniestro de ganado recibido: %d animales perdidos en %s (valor %s) - un perito lo visitará.",
+  "Sinistro bestiame ricevuto: %d animali persi a %s (valore %s) - passerà un perito.",
+  "Veeschade ontvangen: %d dieren verloren bij %s (waarde %s) - een expert komt langs.")
+t("tp_msg_ins_lv_claim_inspected", "The adjuster has visited %s. A decision follows soon.",
+  "Der Gutachter war bei %s. Die Entscheidung folgt bald.", "L'expert est passé à %s. Une décision suit bientôt.",
+  "Rzeczoznawca odwiedził %s. Decyzja wkrótce.", "El perito ha visitado %s. La decisión llegará pronto.",
+  "Il perito ha visitato %s. Una decisione arriverà presto.", "De expert is bij %s geweest. Een beslissing volgt binnenkort.")
+t("tp_msg_ins_lv_gov_approved", "USDA Livestock Indemnity Program: %d animals lost at %s - %s approved (75 percent of the market value).",
+  "USDA Livestock Indemnity Program: %d Tiere verloren bei %s - %s bewilligt (75 Prozent des Marktwerts).",
+  "Livestock Indemnity Program de l'USDA : %d animaux perdus à %s - %s accordés (75 pour cent de la valeur marchande).",
+  "USDA Livestock Indemnity Program: %d zwierząt utraconych w %s - przyznano %s (75 procent wartości rynkowej).",
+  "Livestock Indemnity Program del USDA: %d animales perdidos en %s - %s aprobados (75 por ciento del valor de mercado).",
+  "Livestock Indemnity Program dell'USDA: %d animali persi a %s - %s approvati (75 per cento del valore di mercato).",
+  "USDA Livestock Indemnity Program: %d dieren verloren bij %s - %s toegekend (75 procent van de marktwaarde).")
+t("tp_msg_ins_lv_claim_approved", "Livestock claim for %s approved: insured value %s - %s will be paid (5 percent excess and the state payment deducted).",
+  "Tierschaden %s anerkannt: versicherter Wert %s - %s werden ausgezahlt (abzüglich 5 Prozent Selbstbeteiligung und der staatlichen Zahlung).",
+  "Sinistre bétail de %s accepté : valeur assurée %s - %s seront versés (franchise de 5 pour cent et paiement public déduits).",
+  "Szkoda zwierząt w %s uznana: wartość ubezpieczenia %s - zostanie wypłacone %s (po odjęciu 5 procent udziału własnego i wypłaty państwowej).",
+  "Siniestro de ganado de %s aprobado: valor asegurado %s - se pagarán %s (descontados el 5 por ciento de franquicia y el pago estatal).",
+  "Sinistro bestiame di %s approvato: valore assicurato %s - saranno pagati %s (dedotti il 5 per cento di franchigia e il pagamento statale).",
+  "Veeschade %s goedgekeurd: verzekerde waarde %s - %s wordt uitbetaald (min 5 procent eigen risico en de overheidsuitkering).")
+t("tp_msg_ins_lv_gov_paid", "USDA Livestock Indemnity Program paid %s.", "Das USDA Livestock Indemnity Program hat %s gezahlt.",
+  "Le Livestock Indemnity Program de l'USDA a versé %s.", "USDA Livestock Indemnity Program wypłacił %s.",
+  "El Livestock Indemnity Program del USDA ha pagado %s.", "Il Livestock Indemnity Program dell'USDA ha pagato %s.",
+  "Het USDA Livestock Indemnity Program heeft %s betaald.")
+t("tp_msg_ins_lv_claim_paid", "Livestock insurance paid for %s: %s.", "Tierversicherung zahlte für %s: %s.",
+  "Assurance bétail versée pour %s : %s.", "Wypłata ubezpieczenia zwierząt za %s: %s.", "El seguro de ganado pagó por %s: %s.",
+  "L'assicurazione bestiame ha pagato per %s: %s.", "Veeverzekering betaald voor %s: %s.")
+
 # Compass directions (where the tornado is moving)
 for code, en, de, fr, pl, es, it, nl in [
     ("N", "N", "N", "N", "Pn", "N", "N", "N"),

@@ -403,6 +403,28 @@
         <text name="tp_msgtype_tornado" text="Tornado"/>
         <text name="tp_msgtype_recovery" text="Holowanie"/>
         <text name="tp_msgtype_other" text="Inne"/>
+        <text name="tp_insurance_livestock" text="Ubezpieczenie zwierząt (twoje gospodarstwo)"/>
+        <text name="tp_tip_insurance_livestock" text="Ubezpiecza każde zwierzę gospodarstwa od strat po tornadzie według jego wartości w chwili śmierci (liczy się wiek i zdrowie). 5 procent każdej szkody to twój udział własny. W USA program USDA Livestock Indemnity Program dodatkowo bezpłatnie wypłaca 75 procent wartości rynkowej; polisa pokrywa resztę. Zwierzęta giną tylko przy włączonym module zwierząt."/>
+        <text name="tp_insurance_livestock_none" text="Brak ubezpieczenia zwierząt"/>
+        <text name="tp_insurance_livestock_option" text="Ubezpiecz %d zwierząt (%s) - ok. %s miesięcznie"/>
+        <text name="tp_insurance_livestock_empty" text="Ubezpiecz wszystkie zwierzęta (brak zwierząt)"/>
+        <text name="tp_insurance_livestock_status" text="Status ubezpieczenia zwierząt"/>
+        <text name="tp_ins_status_none" text="brak polisy"/>
+        <text name="tp_msg_ins_lv_status" text="Ubezpieczenie zwierząt: %s - %d zwierząt o wartości %s, ok. %s miesięcznie. %s"/>
+        <text name="tp_ins_lv_gov_us" text="Program państwowy: USDA Livestock Indemnity Program wypłaca 75 procent wartości rynkowej zwierząt zabitych przez tornado."/>
+        <text name="tp_ins_lv_gov_none" text="Program państwowy: brak w tym kraju."/>
+        <text name="tp_ins_lv_husbandry_off" text="Uwaga: zwierzęta giną w tornadzie tylko przy włączonym module zwierząt (karta Moduły)."/>
+        <text name="tp_msg_ins_lv_already" text="Twoje gospodarstwo ma już ubezpieczenie zwierząt."/>
+        <text name="tp_msg_ins_lv_bought" text="Ubezpieczenie zwierząt potwierdzone: %d zwierząt, ok. %s miesięcznie. Ochrona zaczyna się za %d d %d h."/>
+        <text name="tp_msg_ins_lv_none" text="Twoje gospodarstwo nie ma ubezpieczenia zwierząt."/>
+        <text name="tp_msg_ins_lv_cancelled" text="Ubezpieczenie zwierząt wypowiedziane. Otwarte szkody są nadal rozpatrywane."/>
+        <text name="tp_msg_ins_lv_active" text="Ubezpieczenie zwierząt jest teraz aktywne."/>
+        <text name="tp_msg_ins_lv_claim_received" text="Zgłoszenie szkody zwierząt: %d zwierząt utraconych w %s (wartość %s) - przyjedzie rzeczoznawca."/>
+        <text name="tp_msg_ins_lv_claim_inspected" text="Rzeczoznawca odwiedził %s. Decyzja wkrótce."/>
+        <text name="tp_msg_ins_lv_gov_approved" text="USDA Livestock Indemnity Program: %d zwierząt utraconych w %s - przyznano %s (75 procent wartości rynkowej)."/>
+        <text name="tp_msg_ins_lv_claim_approved" text="Szkoda zwierząt w %s uznana: wartość ubezpieczenia %s - zostanie wypłacone %s (po odjęciu 5 procent udziału własnego i wypłaty państwowej)."/>
+        <text name="tp_msg_ins_lv_gov_paid" text="USDA Livestock Indemnity Program wypłacił %s."/>
+        <text name="tp_msg_ins_lv_claim_paid" text="Wypłata ubezpieczenia zwierząt za %s: %s."/>
         <text name="tp_dir_N" text="Pn"/>
         <text name="tp_dir_NE" text="Pn-Wsch"/>
         <text name="tp_dir_E" text="Wsch"/>

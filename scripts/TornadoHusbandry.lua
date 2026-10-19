@@ -259,6 +259,10 @@ function TornadoHusbandry:executeKill(placeable)
 
         if count > 0 then
             local take = math.min(count, targetKill)
+            -- Livestock insurance: value of the animals (age + health) before they are removed.
+            if cluster.changeNumAnimals and TornadoInsuranceLivestock ~= nil and TornadoInsuranceLivestock.onAnimalsKilled ~= nil then
+                TornadoInsuranceLivestock:onAnimalsKilled(placeable, cluster, take)
+            end
             if cluster.changeNumAnimals then
                 cluster:changeNumAnimals(-take)
                 totalKilled = totalKilled + take

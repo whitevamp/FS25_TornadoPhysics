@@ -38,6 +38,13 @@ local function getFiltered()
             table.insert(entries, entry)
         end
     end
+    -- Newest first by message time (the Saved list is otherwise in the order things were saved).
+    table.sort(entries, function(a, b)
+        if (a.time or 0) ~= (b.time or 0) then
+            return (a.time or 0) > (b.time or 0)
+        end
+        return (a.id or 0) > (b.id or 0)
+    end)
     return entries
 end
 

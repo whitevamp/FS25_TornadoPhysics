@@ -198,6 +198,13 @@ t_dev insurance crop cancel     - Cancels it (open claims carry on).
 t_dev insurance crop claims     - Your crop policy and claims.
 t_dev insurance crop unlock     - Opens switched-off countries for testing (this session only).
 
+-- INSURANCE: LIVESTOCK --
+t_dev insurance livestock quote - Your animals by type, their value, the insured value and the premium.
+t_dev insurance livestock buy   - Buys the livestock policy (cancel: t_dev insurance livestock cancel).
+t_dev insurance livestock claims - Livestock claims and the kills waiting for the storm to end.
+t_dev insurance livestock end   - Test: closes the kills now (claims open). Animals only die with
+                                  t_set husbandry on; t_dev kill_test kills a few (!).
+
 -- INSURANCE: EQUIPMENT --
 t_dev insurance equip quote     - Your vehicles, their values and the price of each deductible.
 t_dev insurance equip buy <1000|2500|5000|10000> - Buys / changes the policy (deductible

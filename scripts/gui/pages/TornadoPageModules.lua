@@ -683,6 +683,65 @@ TornadoPageModules = TornadoMenuPage.new("Modules", "Modules", {
             return nil
         end,
     },
+    -- Livestock policy (player's farm)
+    {
+        id = "modInsuranceLivestock",
+        kind = Page.KIND_CHOICE,
+        requires = function()
+            return TornadoInsurance ~= nil and TornadoInsuranceLivestock ~= nil and TornadoInsurance.isEnabled
+        end,
+        localOnly = true,
+        keepClean = true,
+        options = function()
+            -- What is priced: animals, their value, the monthly premium (no animals: say so instead of "$0").
+            local quote = TornadoInsuranceLivestock:getFarmQuote(getPlayerFarmId())
+            local insuredText = quote.animals > 0 and TornadoText.format("tp_insurance_livestock_option", quote.animals,
+                TornadoText.money(quote.value), TornadoText.money(quote.monthlyPremium)) or TornadoText.get("tp_insurance_livestock_empty")
+            return {
+                { value = "none", text = TornadoText.get("tp_insurance_livestock_none") },
+                { value = "insured", text = insuredText },
+            }
+        end,
+        get = function()
+            local farm = TornadoInsurance.farms ~= nil and TornadoInsurance.farms[getPlayerFarmId()] or nil
+            return farm ~= nil and farm.livestock ~= nil and "insured" or "none"
+        end,
+        set = function(value)
+            local farm = TornadoInsurance.farms ~= nil and TornadoInsurance.farms[getPlayerFarmId()] or nil
+            local has = farm ~= nil and farm.livestock ~= nil
+            if value == "insured" and not has then
+                TornadoInsurance:requestAction(getPlayerFarmId(), "livestockBuy", "")
+            elseif value == "none" and has then
+                TornadoInsurance:requestAction(getPlayerFarmId(), "livestockCancel", "")
+            end
+            return nil
+        end,
+    },
+    {
+        id = "modInsuranceLivestockStatus",
+        kind = Page.KIND_ACTION,
+        requires = function()
+            return TornadoInsurance ~= nil and TornadoInsuranceLivestock ~= nil and TornadoInsurance.isEnabled
+        end,
+        localOnly = true,
+        keepClean = true,
+        run = function()
+            local farm = TornadoInsurance.farms ~= nil and TornadoInsurance.farms[getPlayerFarmId()] or nil
+            local policy = farm ~= nil and farm.livestock or nil
+            local quote = TornadoInsuranceLivestock:getFarmQuote(getPlayerFarmId())
+            local statusKey = "tp_ins_status_none"
+            if policy ~= nil then
+                statusKey = policy.status == TornadoInsuranceLivestock.STATUS_ACTIVE and "tp_ins_status_active" or "tp_ins_status_pending"
+            end
+            local text = TornadoText.format("tp_msg_ins_lv_status", TornadoText.get(statusKey), quote.animals,
+                TornadoText.money(quote.value), TornadoText.money(quote.monthlyPremium),
+                TornadoText.get(TornadoInsuranceLivestock:hasGovProgram() and "tp_ins_lv_gov_us" or "tp_ins_lv_gov_none"))
+            if not TornadoInsuranceLivestock.isHusbandryOn() then
+                text = text .. "\n\n" .. TornadoText.get("tp_ins_lv_husbandry_off")
+            end
+            return showInfo(text)
+        end,
+    },
     {
         id = "modInsuranceRegion",
         kind = Page.KIND_CHOICE,

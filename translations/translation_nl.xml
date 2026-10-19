@@ -403,6 +403,28 @@
         <text name="tp_msgtype_tornado" text="Tornado"/>
         <text name="tp_msgtype_recovery" text="Berging"/>
         <text name="tp_msgtype_other" text="Overig"/>
+        <text name="tp_insurance_livestock" text="Veeverzekering (je boerderij)"/>
+        <text name="tp_tip_insurance_livestock" text="Verzekert elk dier van je boerderij tegen tornadoverlies tegen zijn waarde bij overlijden (leeftijd en gezondheid tellen). 5 procent van elke schade is je eigen risico. In de VS betaalt het USDA Livestock Indemnity Program daarnaast gratis 75 procent van de marktwaarde; de polis betaalt de rest. Dieren sterven alleen als de veemodule aan staat."/>
+        <text name="tp_insurance_livestock_none" text="Geen veeverzekering"/>
+        <text name="tp_insurance_livestock_option" text="%d dieren verzekeren (%s) - ongeveer %s per maand"/>
+        <text name="tp_insurance_livestock_empty" text="Alle dieren verzekeren (nog geen dieren)"/>
+        <text name="tp_insurance_livestock_status" text="Status veeverzekering"/>
+        <text name="tp_ins_status_none" text="geen polis"/>
+        <text name="tp_msg_ins_lv_status" text="Veeverzekering: %s - %d dieren ter waarde van %s, ongeveer %s per maand. %s"/>
+        <text name="tp_ins_lv_gov_us" text="Overheidsregeling: het USDA Livestock Indemnity Program betaalt 75 procent van de marktwaarde voor dieren die een tornado doodt."/>
+        <text name="tp_ins_lv_gov_none" text="Overheidsregeling: geen in dit land."/>
+        <text name="tp_ins_lv_husbandry_off" text="Let op: dieren sterven alleen in een tornado als de veemodule aan staat (tabblad Modules)."/>
+        <text name="tp_msg_ins_lv_already" text="Je boerderij heeft al een veeverzekering."/>
+        <text name="tp_msg_ins_lv_bought" text="Veeverzekering bevestigd: %d dieren, ongeveer %s per maand. De dekking begint over %d d %d u."/>
+        <text name="tp_msg_ins_lv_none" text="Je boerderij heeft geen veeverzekering."/>
+        <text name="tp_msg_ins_lv_cancelled" text="Veeverzekering opgezegd. Openstaande schades worden nog afgehandeld."/>
+        <text name="tp_msg_ins_lv_active" text="De veeverzekering is nu actief."/>
+        <text name="tp_msg_ins_lv_claim_received" text="Veeschade ontvangen: %d dieren verloren bij %s (waarde %s) - een expert komt langs."/>
+        <text name="tp_msg_ins_lv_claim_inspected" text="De expert is bij %s geweest. Een beslissing volgt binnenkort."/>
+        <text name="tp_msg_ins_lv_gov_approved" text="USDA Livestock Indemnity Program: %d dieren verloren bij %s - %s toegekend (75 procent van de marktwaarde)."/>
+        <text name="tp_msg_ins_lv_claim_approved" text="Veeschade %s goedgekeurd: verzekerde waarde %s - %s wordt uitbetaald (min 5 procent eigen risico en de overheidsuitkering)."/>
+        <text name="tp_msg_ins_lv_gov_paid" text="Het USDA Livestock Indemnity Program heeft %s betaald."/>
+        <text name="tp_msg_ins_lv_claim_paid" text="Veeverzekering betaald voor %s: %s."/>
         <text name="tp_dir_N" text="N"/>
         <text name="tp_dir_NE" text="NO"/>
         <text name="tp_dir_E" text="O"/>

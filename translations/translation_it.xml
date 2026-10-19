@@ -403,6 +403,28 @@
         <text name="tp_msgtype_tornado" text="Tornado"/>
         <text name="tp_msgtype_recovery" text="Soccorso"/>
         <text name="tp_msgtype_other" text="Altro"/>
+        <text name="tp_insurance_livestock" text="Assicurazione bestiame (la tua fattoria)"/>
+        <text name="tp_tip_insurance_livestock" text="Assicura ogni animale della fattoria contro le perdite da tornado al suo valore al momento della morte (contano età e salute). Il 5 per cento di ogni sinistro è la tua franchigia. Negli Stati Uniti il Livestock Indemnity Program dell'USDA paga inoltre gratis il 75 per cento del valore di mercato; la polizza paga il resto. Gli animali muoiono solo con il modulo bestiame attivo."/>
+        <text name="tp_insurance_livestock_none" text="Nessuna assicurazione bestiame"/>
+        <text name="tp_insurance_livestock_option" text="Assicura %d animali (%s) - circa %s al mese"/>
+        <text name="tp_insurance_livestock_empty" text="Assicura tutti gli animali (ancora nessun animale)"/>
+        <text name="tp_insurance_livestock_status" text="Stato dell'assicurazione bestiame"/>
+        <text name="tp_ins_status_none" text="nessuna polizza"/>
+        <text name="tp_msg_ins_lv_status" text="Assicurazione bestiame: %s - %d animali del valore di %s, circa %s al mese. %s"/>
+        <text name="tp_ins_lv_gov_us" text="Programma statale: il Livestock Indemnity Program dell'USDA paga il 75 per cento del valore di mercato degli animali uccisi da un tornado."/>
+        <text name="tp_ins_lv_gov_none" text="Programma statale: nessuno in questo paese."/>
+        <text name="tp_ins_lv_husbandry_off" text="Nota: gli animali muoiono in un tornado solo con il modulo bestiame attivo (scheda Moduli)."/>
+        <text name="tp_msg_ins_lv_already" text="La tua fattoria ha già un'assicurazione bestiame."/>
+        <text name="tp_msg_ins_lv_bought" text="Assicurazione bestiame confermata: %d animali, circa %s al mese. La copertura inizia tra %d g %d h."/>
+        <text name="tp_msg_ins_lv_none" text="La tua fattoria non ha un'assicurazione bestiame."/>
+        <text name="tp_msg_ins_lv_cancelled" text="Assicurazione bestiame disdetta. I sinistri aperti vengono ancora gestiti."/>
+        <text name="tp_msg_ins_lv_active" text="L'assicurazione bestiame è ora attiva."/>
+        <text name="tp_msg_ins_lv_claim_received" text="Sinistro bestiame ricevuto: %d animali persi a %s (valore %s) - passerà un perito."/>
+        <text name="tp_msg_ins_lv_claim_inspected" text="Il perito ha visitato %s. Una decisione arriverà presto."/>
+        <text name="tp_msg_ins_lv_gov_approved" text="Livestock Indemnity Program dell'USDA: %d animali persi a %s - %s approvati (75 per cento del valore di mercato)."/>
+        <text name="tp_msg_ins_lv_claim_approved" text="Sinistro bestiame di %s approvato: valore assicurato %s - saranno pagati %s (dedotti il 5 per cento di franchigia e il pagamento statale)."/>
+        <text name="tp_msg_ins_lv_gov_paid" text="Il Livestock Indemnity Program dell'USDA ha pagato %s."/>
+        <text name="tp_msg_ins_lv_claim_paid" text="L'assicurazione bestiame ha pagato per %s: %s."/>
         <text name="tp_dir_N" text="N"/>
         <text name="tp_dir_NE" text="NE"/>
         <text name="tp_dir_E" text="E"/>

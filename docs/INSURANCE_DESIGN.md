@@ -1260,6 +1260,22 @@ Accept, Buy back. Console `t_set insurance replacement|totaled|salvage|rebuilt`,
 `t_dev insurance equip quote|buy|cancel|claims|accept|buyback|hit|end|title`.
 Offline test `tools/test/test_equipment.lua` (90 checks).
 
+### 18.7 Livestock insurance (2026-10-19)
+
+`scripts/insurance/TornadoInsuranceLivestock.lua`, installed like the other policy types. Decisions (user,
+all five recommendations): 0.8 %/yr of the herd value (estimate for storm-only cover) with a 5 % excess per
+claim and no deductible choice; the USDA Livestock Indemnity Program on US maps (75 % of the market value, free,
+without a policy too – only while the insurance is on); value = the group's sell price at death (age + health),
+the shared "replacement value" setting adds 15 %; tornado is the only peril (the only thing that kills animals);
+Poland uses its data (`<animal>` rows, now read by `TornadoInsuranceData.getAnimal`: rate minus the 65 % subsidy
+up to the 0.5 % animal cap, sum capped per head). Flow: `TornadoHusbandry:executeKill` calls `onAnimalsKilled`
+before `changeNumAnimals` (value read first); kills are kept per storm (saved with the farm) and become one claim
+per farm and pasture at `TornadoInsuranceDamage:onTornadoEnded`, or at the next game minute when no tornado is
+on the map (kill test). Adjuster 3 → decision 2 → payout 1 real-life days; state + private never exceed the
+insured value. Modules tab: policy choice (shows the monthly price) + status (notes when the Livestock module
+is off). Console `t_dev insurance livestock quote|buy|cancel|claims|end`. Offline test
+`tools/test/test_livestock.lua` (40 checks, real husbandry kill code).
+
 ## 19. Rules for the implementation
 
 - No `pcall` / `xpcall` (GIANTS ModHub rule) – explicit nil checks only.

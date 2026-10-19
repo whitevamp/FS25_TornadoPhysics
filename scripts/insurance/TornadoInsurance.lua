@@ -77,6 +77,9 @@ function TornadoInsurance:loadMap(modDir, modName)
     if TornadoInsuranceEquipment ~= nil then
         TornadoInsuranceEquipment:install(self)
     end
+    if TornadoInsuranceLivestock ~= nil then
+        TornadoInsuranceLivestock:install(self)
+    end
 
     if isServer() then
         self:loadState()
@@ -100,6 +103,9 @@ function TornadoInsurance:deleteMap()
     end
     if TornadoInsuranceEquipment ~= nil then
         TornadoInsuranceEquipment:uninstall()
+    end
+    if TornadoInsuranceLivestock ~= nil then
+        TornadoInsuranceLivestock:uninstall()
     end
     self.farms = {}
     self.timers = {}
@@ -550,6 +556,7 @@ function TornadoInsurance:applyFarmState(farmId, state)
     end
     farm.titles = state.titles or {}
     farm.equipClaims = state.equipTotals or {}
+    farm.livestock = (state.livestockStatus ~= nil and state.livestockStatus ~= "") and { status = state.livestockStatus } or nil
     if TornadoMenu ~= nil and TornadoMenu.INSTANCE ~= nil and TornadoMenu.INSTANCE.isOpen then
         TornadoMenu.INSTANCE:refreshAllPages()
     end
@@ -911,6 +918,9 @@ function TornadoInsurance:consoleCommand(sub, value, extra, more)
     if sub == "crop" then
         if TornadoInsuranceCrop == nil then return "Insurance: crop policies missing." end
         return TornadoInsuranceCrop:consoleCommand(self:getConsoleFarmId(nil), value, extra, more)
+    elseif sub == "livestock" then
+        if TornadoInsuranceLivestock == nil then return "Insurance: livestock policies missing." end
+        return TornadoInsuranceLivestock:consoleCommand(self:getConsoleFarmId(nil), value)
     elseif sub == "equip" or sub == "equipment" then
         if TornadoInsuranceEquipment == nil then return "Insurance: equipment policies missing." end
         return TornadoInsuranceEquipment:consoleCommand(self:getConsoleFarmId(nil), value, extra, more)

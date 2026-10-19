@@ -119,11 +119,9 @@ v4.0.0.0 (The Destruction Update)
 - [UI/UX] Added Map Hotspot & UI: You can now teleport to or visit the tornado from the ESC map. A new UI widget in the upper right corner of the map menu displays real-time tornado stats (EF Rating, Wind Speed, Radius).
 
 ------------------------------------------------------------------------
-DATA SOURCES (Real-Life Tornado Climate mode)
+DATA SOURCES 
 ------------------------------------------------------------------------
-- United States: tornado, hail and wind statistics derived from the NOAA / National Weather Service Storm Prediction Center Severe Weather Database (public domain).
-- Canada: tornado statistics derived from Northern Tornadoes Project event data, Western University, licensed under CC BY-NC 4.0 (https://creativecommons.org/licenses/by-nc/4.0/). The data was aggregated and modified for this mod. Canadian hail values are borrowed from neighbouring US states (NOAA SPC).
-- This mod is free and non-commercial. The included climate data may not be used commercially.
+Full data sources, licenses, and detailed credits are included in the README_credits.txt file inside the mod archive.
 ]]>
         </en>
         <de>

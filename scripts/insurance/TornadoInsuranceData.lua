@@ -208,6 +208,13 @@ function TornadoInsuranceData.load(path, fileName)
             region.numCrops = region.numCrops + 1
             c = c + 1
         end
+        -- Livestock cover per animal type (so far only the Polish data has it): rate per year, sum cap per head.
+        region.animals = {}
+        for _, animal in ipairs(readList(xmlId, regionKey, "animal", { "rate", "maxSumPerHead" }, { "type" })) do
+            if animal.type ~= nil then
+                region.animals[string.upper(animal.type)] = animal
+            end
+        end
         profile.regions[id] = region
         table.insert(profile.regionOrder, id)
         if profile.rootId == nil and region.parent == nil then
@@ -228,6 +235,20 @@ end
 
 --- The region and its parents, nearest first ("US_KS" -> { US_KS, US }). Unknown / no region: the root, or
 --- the root's defaultChild when the root is only a container (South-East Asia -> Indonesia).
+--- Livestock cover of an animal type ({ type, rate, maxSumPerHead }) from the region chain, or nil.
+function TornadoInsuranceData.getAnimal(profile, regionId, animalType)
+    if profile == nil or animalType == nil then
+        return nil
+    end
+    for _, region in ipairs(TornadoInsuranceData.getRegionChain(profile, regionId)) do
+        local animal = region.animals ~= nil and region.animals[string.upper(animalType)] or nil
+        if animal ~= nil then
+            return animal
+        end
+    end
+    return nil
+end
+
 function TornadoInsuranceData.getRegionChain(profile, regionId)
     local chain = {}
     local seen = {}
