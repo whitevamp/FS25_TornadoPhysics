@@ -425,6 +425,55 @@
         <text name="tp_msg_ins_lv_claim_approved" text="Tierschaden %s anerkannt: versicherter Wert %s - %s werden ausgezahlt (abzüglich 5 Prozent Selbstbeteiligung und der staatlichen Zahlung)."/>
         <text name="tp_msg_ins_lv_gov_paid" text="Das USDA Livestock Indemnity Program hat %s gezahlt."/>
         <text name="tp_msg_ins_lv_claim_paid" text="Tierversicherung zahlte für %s: %s."/>
+        <text name="tp_tab_insurance" text="Versicherung"/>
+        <text name="tp_ins_nav_start" text="Hier starten"/>
+        <text name="tp_ins_nav_policies" text="Meine Policen"/>
+        <text name="tp_ins_start_title" text="Wähle deinen Versicherungsschutz"/>
+        <text name="tp_ins_crop" text="Ernteversicherung"/>
+        <text name="tp_ins_equip" text="Geräteversicherung"/>
+        <text name="tp_ins_livestock" text="Tierversicherung"/>
+        <text name="tp_ins_not_included" text="Nicht enthalten"/>
+        <text name="tp_ins_deductible_option" text="%s Selbstbeteiligung"/>
+        <text name="tp_ins_livestock_all" text="Alle Tiere"/>
+        <text name="tp_btn_get_quote" text="Angebot"/>
+        <text name="tp_btn_confirm_start" text="Bestätigen &amp; starten"/>
+        <text name="tp_btn_cancel_policy" text="Police kündigen"/>
+        <text name="tp_ins_q_crop" text="Ernte - %s mit %d %%: %d Felder, Versicherungssumme %s, etwa %s pro Monat."/>
+        <text name="tp_ins_q_unchanged" text="(deine aktuelle Police - keine Änderung)"/>
+        <text name="tp_ins_q_change" text="(Änderung: etwa %s -&gt; %s pro Monat)"/>
+        <text name="tp_ins_q_sales_closed" text="(Ernteversicherungen nur im Spätwinter / Frühlingsanfang - nicht gesendet)"/>
+        <text name="tp_ins_q_uninsurable" text="(%d Felder mit nicht versicherbaren Kulturen)"/>
+        <text name="tp_ins_q_crop_kept" text="Ernte - deine aktuelle Police bleibt (kündigen unter Meine Policen)."/>
+        <text name="tp_ins_q_equip" text="Geräte - %s Selbstbeteiligung: %d Fahrzeuge im Wert von %s, etwa %s pro Monat."/>
+        <text name="tp_ins_q_equip_kept" text="Geräte - deine aktuelle Police bleibt (kündigen unter Meine Policen)."/>
+        <text name="tp_ins_q_livestock" text="Tiere - %d Tiere im Wert von %s, etwa %s pro Monat."/>
+        <text name="tp_ins_q_livestock_gov" text="(das USDA-Programm zahlt zusätzlich 75 Prozent des Marktwerts)"/>
+        <text name="tp_ins_q_livestock_kept" text="Tiere - deine aktuelle Police bleibt (kündigen unter Meine Policen)."/>
+        <text name="tp_ins_q_nothing" text="Noch nichts gewählt - wähle oben den Schutz und drücke Angebot."/>
+        <text name="tp_ins_q_total" text="Gesamt: etwa %s pro Monat (Geldskala berücksichtigt)."/>
+        <text name="tp_ins_q_wait" text="Neuer Schutz beginnt etwa eine Woche (reale Zeit) nach der Bestätigung; Änderungen gelten sofort."/>
+        <text name="tp_ins_q_hint" text="Wähle oben den Schutz und drücke Angebot, um den Preis vor der Bestätigung zu sehen."/>
+        <text name="tp_ins_q_nothing_new" text="Nichts Neues zu starten oder zu ändern."/>
+        <text name="tp_ins_confirm_sent" text="%d Anfragen gesendet - die Briefe der Versicherung bestätigen jede Police."/>
+        <text name="tp_confirm_ins_start" text="Die angebotenen Policen starten oder ändern? Die Prämien werden monatlich abgebucht."/>
+        <text name="tp_ins_cancel_sent" text="Kündigung gesendet."/>
+        <text name="tp_confirm_ins_cancel_crop" text="Ernteversicherung kündigen? Offene Schadensfälle werden noch bearbeitet."/>
+        <text name="tp_confirm_ins_cancel_equip" text="Geräteversicherung kündigen? Offene Schadensfälle werden noch bearbeitet."/>
+        <text name="tp_confirm_ins_cancel_livestock" text="Tierversicherung kündigen? Offene Schadensfälle werden noch bearbeitet."/>
+        <text name="tp_ins_note_off" text="Die Versicherung ist ausgeschaltet - der Server-Admin kann sie im Reiter Module einschalten."/>
+        <text name="tp_ins_note_admin" text="Nur der Server-Admin darf Policen kaufen oder kündigen - Angebote kannst du trotzdem ansehen."/>
+        <text name="tp_ins_note_manager" text="Nur Hofmanager und der Admin dürfen Policen kaufen oder kündigen - Angebote kannst du trotzdem ansehen."/>
+        <text name="tp_ins_note_crop_off" text="Ernteversicherung wird in dieser Region noch nicht angeboten (Datenfreigabe ausstehend)."/>
+        <text name="tp_ins_note_crop_none" text="Ernteversicherung: die Daten dieser Region haben keine Pläne."/>
+        <text name="tp_ins_pol_crop" text="%s mit %d %% - %s. %d Felder, Versicherungssumme %s, etwa %s pro Monat."/>
+        <text name="tp_ins_pol_crop_none" text="Keine Ernteversicherung."/>
+        <text name="tp_ins_pol_equip" text="%s Selbstbeteiligung - %s. %d Fahrzeuge im Wert von %s, etwa %s pro Monat."/>
+        <text name="tp_ins_pol_equip_none" text="Keine Geräteversicherung."/>
+        <text name="tp_ins_pol_livestock" text="Alle Tiere - %s. %d Tiere im Wert von %s, etwa %s pro Monat."/>
+        <text name="tp_ins_pol_livestock_none" text="Keine Tierversicherung."/>
+        <text name="tp_ins_pol_claims" text="Offene Schadensfälle: %d (die Briefe stehen im Reiter Nachrichten)."/>
+        <text name="tp_ins_grows" text="Deine Policen wachsen mit deinem Hof: später gekaufte Felder, Fahrzeuge und Tiere sind automatisch versichert, und der Monatspreis richtet sich nach deinem Besitz - kein erneuter Kauf nötig."/>
+        <text name="tp_ins_pol_change_hint" text="Um eine Police zu ändern, wähle unter Hier starten den neuen Schutz und hole ein Angebot."/>
         <text name="tp_dir_N" text="N"/>
         <text name="tp_dir_NE" text="NO"/>
         <text name="tp_dir_E" text="O"/>

@@ -47,6 +47,9 @@
             <Button profile="fs25_subCategorySelectorTabbedTab" id="tabModules" text="$l10n_tp_tab_modules" onClick="onClickTab">
                 <ThreePartBitmap profile="fs25_subCategorySelectorTabbedTabBg" name="background"/>
             </Button>
+            <Button profile="fs25_subCategorySelectorTabbedTab" id="tabInsurance" text="$l10n_tp_tab_insurance" onClick="onClickTab">
+                <ThreePartBitmap profile="fs25_subCategorySelectorTabbedTabBg" name="background"/>
+            </Button>
             <Button profile="fs25_subCategorySelectorTabbedTab" id="tabMessages" text="$l10n_tp_tab_messages" onClick="onClickTab">
                 <ThreePartBitmap profile="fs25_subCategorySelectorTabbedTabBg" name="background"/>
             </Button>
@@ -606,36 +609,6 @@
                     <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_insurance_rebuilt"/>
                 </Bitmap>
                 <Bitmap profile="fs25_multiTextOptionContainer">
-                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="modInsuranceCropPlan" onClick="onClickChoice">
-                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_insurance_crop_plan"/>
-                    </MultiTextOption>
-                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_insurance_crop_plan"/>
-                </Bitmap>
-                <Bitmap profile="fs25_multiTextOptionContainer">
-                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="modInsuranceCropCoverage" onClick="onClickChoice">
-                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_insurance_crop_coverage"/>
-                    </MultiTextOption>
-                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_insurance_crop_coverage"/>
-                </Bitmap>
-                <Bitmap profile="fs25_multiTextOptionContainer">
-                    <Button profile="tornado_actionButton" id="modInsuranceCropStatus" text="$l10n_tp_btn_show" onClick="onClickAction">
-                        <ThreePartBitmap profile="tornado_actionButtonBg"/>
-                    </Button>
-                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_insurance_crop_status"/>
-                </Bitmap>
-                <Bitmap profile="fs25_multiTextOptionContainer">
-                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="modInsuranceEquipDeductible" onClick="onClickChoice">
-                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_insurance_equip"/>
-                    </MultiTextOption>
-                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_insurance_equip"/>
-                </Bitmap>
-                <Bitmap profile="fs25_multiTextOptionContainer">
-                    <Button profile="tornado_actionButton" id="modInsuranceEquipStatus" text="$l10n_tp_btn_show" onClick="onClickAction">
-                        <ThreePartBitmap profile="tornado_actionButtonBg"/>
-                    </Button>
-                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_insurance_equip_status"/>
-                </Bitmap>
-                <Bitmap profile="fs25_multiTextOptionContainer">
                     <MultiTextOption profile="fs25_settingsMultiTextOption" id="modInsuranceEquipTotal" onClick="onClickChoice">
                         <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_insurance_equip_total"/>
                     </MultiTextOption>
@@ -653,20 +626,71 @@
                     </Button>
                     <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_insurance_equip_buyback"/>
                 </Bitmap>
-                <Bitmap profile="fs25_multiTextOptionContainer">
-                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="modInsuranceLivestock" onClick="onClickChoice">
-                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_insurance_livestock"/>
-                    </MultiTextOption>
-                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_insurance_livestock"/>
-                </Bitmap>
-                <Bitmap profile="fs25_multiTextOptionContainer">
-                    <Button profile="tornado_actionButton" id="modInsuranceLivestockStatus" text="$l10n_tp_btn_show" onClick="onClickAction">
-                        <ThreePartBitmap profile="tornado_actionButtonBg"/>
-                    </Button>
-                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_insurance_livestock_status"/>
-                </Bitmap>
             </ScrollingLayout>
             <Bitmap profile="fs25_settingsTooltipSeparator"/>
+        </GuiElement>
+
+        <!-- =====================================================================
+             INSURANCE TAB  (quote -> confirm, my policies)   -> scripts/gui/pages/TornadoPageInsurance.lua
+             Side buttons on the left choose a section (insStart / insPolicies); full width, no tooltip
+             column, no shared scrollbar (no layoutInsurance element).
+             ===================================================================== -->
+        <GuiElement profile="fs25_subCategorySelectorTabbedContainer" id="pageInsurance">
+            <Button profile="tornado_navButton" id="insNavStart" position="0px -10px" text="$l10n_tp_ins_nav_start" onClick="onClickAction">
+                <ThreePartBitmap profile="tornado_actionButtonBg"/>
+            </Button>
+            <Button profile="tornado_navButton" id="insNavPolicies" position="0px -62px" text="$l10n_tp_ins_nav_policies" onClick="onClickAction">
+                <ThreePartBitmap profile="tornado_actionButtonBg"/>
+            </Button>
+
+            <GuiElement profile="tornado_section" id="insStart">
+                <Text profile="tornado_detailTitle" position="260px -14px" text="$l10n_tp_ins_start_title"/>
+                <Bitmap profile="tornado_formRow" position="260px -60px">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="insCrop" onClick="onClickChoice"/>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_ins_crop"/>
+                </Bitmap>
+                <Bitmap profile="tornado_formRowAlt" position="260px -112px">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="insCropCoverage" onClick="onClickChoice"/>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_insurance_crop_coverage"/>
+                </Bitmap>
+                <Bitmap profile="tornado_formRow" position="260px -164px">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="insEquip" onClick="onClickChoice"/>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_ins_equip"/>
+                </Bitmap>
+                <Bitmap profile="tornado_formRowAlt" position="260px -216px">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="insLivestock" onClick="onClickChoice"/>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_ins_livestock"/>
+                </Bitmap>
+                <Button profile="tornado_tableButton" id="insQuote" position="260px -284px" text="$l10n_tp_btn_get_quote" onClick="onClickAction">
+                    <ThreePartBitmap profile="tornado_actionButtonBg"/>
+                </Button>
+                <Button profile="tornado_tableButton" id="insConfirm" position="540px -284px" width="300px" text="$l10n_tp_btn_confirm_start" onClick="onClickAction">
+                    <ThreePartBitmap profile="tornado_actionButtonBg"/>
+                </Button>
+                <Text profile="tornado_noteLine" id="insStartNote" position="260px -334px" text=""/>
+                <Text profile="tornado_detailBody" id="insQuoteText" position="260px -370px" width="1220px" height="360px" text=""/>
+            </GuiElement>
+
+            <GuiElement profile="tornado_section" id="insPolicies">
+                <Text profile="tornado_detailTitle" position="260px -14px" text="$l10n_tp_ins_crop"/>
+                <Text profile="tornado_policyText" id="insPolCropText" position="260px -50px" text=""/>
+                <Button profile="tornado_tableButtonDanger" id="insPolCropCancel" position="1180px -50px" text="$l10n_tp_btn_cancel_policy" onClick="onClickAction">
+                    <ThreePartBitmap profile="tornado_actionButtonDangerBg"/>
+                </Button>
+                <Text profile="tornado_detailTitle" position="260px -194px" text="$l10n_tp_ins_equip"/>
+                <Text profile="tornado_policyText" id="insPolEquipText" position="260px -230px" text=""/>
+                <Button profile="tornado_tableButtonDanger" id="insPolEquipCancel" position="1180px -230px" text="$l10n_tp_btn_cancel_policy" onClick="onClickAction">
+                    <ThreePartBitmap profile="tornado_actionButtonDangerBg"/>
+                </Button>
+                <Text profile="tornado_detailTitle" position="260px -374px" text="$l10n_tp_ins_livestock"/>
+                <Text profile="tornado_policyText" id="insPolLivestockText" position="260px -410px" text=""/>
+                <Button profile="tornado_tableButtonDanger" id="insPolLivestockCancel" position="1180px -410px" text="$l10n_tp_btn_cancel_policy" onClick="onClickAction">
+                    <ThreePartBitmap profile="tornado_actionButtonDangerBg"/>
+                </Button>
+                <Text profile="tornado_noteLine" id="insPolClaims" position="260px -560px" text=""/>
+                <Text profile="tornado_noteLine" position="260px -592px" text="$l10n_tp_ins_pol_change_hint"/>
+                <Text profile="tornado_noteLine2" position="260px -624px" text="$l10n_tp_ins_grows"/>
+            </GuiElement>
         </GuiElement>
 
         <!-- =====================================================================

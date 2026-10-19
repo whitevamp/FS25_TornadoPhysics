@@ -425,6 +425,55 @@
         <text name="tp_msg_ins_lv_claim_approved" text="Sinistre bétail de %s accepté : valeur assurée %s - %s seront versés (franchise de 5 pour cent et paiement public déduits)."/>
         <text name="tp_msg_ins_lv_gov_paid" text="Le Livestock Indemnity Program de l'USDA a versé %s."/>
         <text name="tp_msg_ins_lv_claim_paid" text="Assurance bétail versée pour %s : %s."/>
+        <text name="tp_tab_insurance" text="Assurance"/>
+        <text name="tp_ins_nav_start" text="Commencer ici"/>
+        <text name="tp_ins_nav_policies" text="Mes contrats"/>
+        <text name="tp_ins_start_title" text="Choisissez votre couverture"/>
+        <text name="tp_ins_crop" text="Assurance récolte"/>
+        <text name="tp_ins_equip" text="Assurance matériel"/>
+        <text name="tp_ins_livestock" text="Assurance bétail"/>
+        <text name="tp_ins_not_included" text="Non inclus"/>
+        <text name="tp_ins_deductible_option" text="Franchise %s"/>
+        <text name="tp_ins_livestock_all" text="Tous les animaux"/>
+        <text name="tp_btn_get_quote" text="Devis"/>
+        <text name="tp_btn_confirm_start" text="Confirmer et démarrer"/>
+        <text name="tp_btn_cancel_policy" text="Résilier"/>
+        <text name="tp_ins_q_crop" text="Récolte - %s à %d %% : %d champs, valeur assurée %s, environ %s par mois."/>
+        <text name="tp_ins_q_unchanged" text="(votre contrat actuel - aucun changement)"/>
+        <text name="tp_ins_q_change" text="(changement : environ %s -&gt; %s par mois)"/>
+        <text name="tp_ins_q_sales_closed" text="(contrats récolte seulement en fin d'hiver / début de printemps - non envoyé)"/>
+        <text name="tp_ins_q_uninsurable" text="(%d champs avec des cultures non assurables)"/>
+        <text name="tp_ins_q_crop_kept" text="Récolte - votre contrat actuel reste (résiliez-le dans Mes contrats)."/>
+        <text name="tp_ins_q_equip" text="Matériel - franchise %s : %d véhicules d'une valeur de %s, environ %s par mois."/>
+        <text name="tp_ins_q_equip_kept" text="Matériel - votre contrat actuel reste (résiliez-le dans Mes contrats)."/>
+        <text name="tp_ins_q_livestock" text="Bétail - %d animaux d'une valeur de %s, environ %s par mois."/>
+        <text name="tp_ins_q_livestock_gov" text="(le programme de l'USDA paie aussi 75 pour cent de la valeur marchande)"/>
+        <text name="tp_ins_q_livestock_kept" text="Bétail - votre contrat actuel reste (résiliez-le dans Mes contrats)."/>
+        <text name="tp_ins_q_nothing" text="Rien de choisi - choisissez la couverture ci-dessus puis Devis."/>
+        <text name="tp_ins_q_total" text="Total : environ %s par mois (échelle d'argent appliquée)."/>
+        <text name="tp_ins_q_wait" text="Une nouvelle couverture commence environ une semaine (temps réel) après confirmation ; les changements s'appliquent tout de suite."/>
+        <text name="tp_ins_q_hint" text="Choisissez la couverture ci-dessus, puis Devis pour voir le prix avant de confirmer."/>
+        <text name="tp_ins_q_nothing_new" text="Rien de nouveau à démarrer ou modifier."/>
+        <text name="tp_ins_confirm_sent" text="%d demandes envoyées - les lettres de l'assureur confirment chaque contrat."/>
+        <text name="tp_confirm_ins_start" text="Démarrer ou modifier les contrats proposés ? Les primes sont prélevées chaque mois."/>
+        <text name="tp_ins_cancel_sent" text="Demande de résiliation envoyée."/>
+        <text name="tp_confirm_ins_cancel_crop" text="Résilier votre contrat récolte ? Les sinistres en cours sont encore traités."/>
+        <text name="tp_confirm_ins_cancel_equip" text="Résilier votre assurance matériel ? Les sinistres en cours sont encore traités."/>
+        <text name="tp_confirm_ins_cancel_livestock" text="Résilier votre assurance bétail ? Les sinistres en cours sont encore traités."/>
+        <text name="tp_ins_note_off" text="L'assurance est désactivée - l'admin du serveur peut l'activer dans l'onglet Modules."/>
+        <text name="tp_ins_note_admin" text="Seul l'admin du serveur peut souscrire ou résilier - vous pouvez quand même voir les devis."/>
+        <text name="tp_ins_note_manager" text="Seuls les gérants de la ferme et l'admin peuvent souscrire ou résilier - vous pouvez quand même voir les devis."/>
+        <text name="tp_ins_note_crop_off" text="L'assurance récolte n'est pas encore proposée dans cette région (autorisation des données en attente)."/>
+        <text name="tp_ins_note_crop_none" text="Assurance récolte : les données de cette région n'ont aucun plan."/>
+        <text name="tp_ins_pol_crop" text="%s à %d %% - %s. %d champs, valeur assurée %s, environ %s par mois."/>
+        <text name="tp_ins_pol_crop_none" text="Pas de contrat récolte."/>
+        <text name="tp_ins_pol_equip" text="Franchise %s - %s. %d véhicules d'une valeur de %s, environ %s par mois."/>
+        <text name="tp_ins_pol_equip_none" text="Pas d'assurance matériel."/>
+        <text name="tp_ins_pol_livestock" text="Tous les animaux - %s. %d animaux d'une valeur de %s, environ %s par mois."/>
+        <text name="tp_ins_pol_livestock_none" text="Pas d'assurance bétail."/>
+        <text name="tp_ins_pol_claims" text="Sinistres en cours : %d (leurs lettres sont dans l'onglet Messages)."/>
+        <text name="tp_ins_grows" text="Vos contrats grandissent avec votre ferme : les champs, véhicules et animaux achetés plus tard sont couverts automatiquement, et le prix mensuel suit ce que vous possédez - inutile de racheter."/>
+        <text name="tp_ins_pol_change_hint" text="Pour modifier un contrat, choisissez la nouvelle couverture dans Commencer ici et demandez un devis."/>
         <text name="tp_dir_N" text="N"/>
         <text name="tp_dir_NE" text="NE"/>
         <text name="tp_dir_E" text="E"/>

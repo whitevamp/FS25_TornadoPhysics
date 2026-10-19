@@ -185,4 +185,36 @@
         <textColor value="$preset_fs25_colorMainLight"/>
     </Profile>
 
+    <!-- ===================================================================
+         INSURANCE TAB (side buttons + sections)
+         =================================================================== -->
+    <Profile name="tornado_navButton" extends="tornado_tableButton">
+        <size value="230px 44px"/>
+    </Profile>
+    <!-- Form rows: the game's row container is plain white; the settings pages tint it from Lua
+         (InGameMenuSettingsFrame.COLOR_ALTERNATING). Same colours here, alternating. -->
+    <Profile name="tornado_formRow" extends="fs25_multiTextOptionContainer">
+        <imageColor value="0.02956 0.02956 0.02956 0.6"/>
+    </Profile>
+    <Profile name="tornado_formRowAlt" extends="fs25_multiTextOptionContainer">
+        <imageColor value="0.02956 0.02956 0.02956 0.2"/>
+    </Profile>
+    <!-- A section fills the page; only the chosen one is visible. -->
+    <Profile name="tornado_section" extends="emptyPanel" with="anchorStretchingYStretchingX"/>
+    <Profile name="tornado_noteLine" extends="fs25_textDefault" with="anchorTopLeft">
+        <size value="1200px 24px"/>
+        <textSize value="16px"/>
+        <textColor value="$preset_fs25_colorMainHighlight"/>
+        <textVerticalAlignment value="top"/>
+    </Profile>
+    <!-- Note that may need two lines (long translations). -->
+    <Profile name="tornado_noteLine2" extends="tornado_noteLine">
+        <size value="1220px 48px"/>
+        <textMaxNumLines value="2"/>
+    </Profile>
+    <Profile name="tornado_policyText" extends="tornado_detailBody">
+        <size value="880px 130px"/>
+        <textMaxNumLines value="5"/>
+    </Profile>
+
 </GuiProfiles>

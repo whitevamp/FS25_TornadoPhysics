@@ -425,6 +425,55 @@
         <text name="tp_msg_ins_lv_claim_approved" text="Siniestro de ganado de %s aprobado: valor asegurado %s - se pagarán %s (descontados el 5 por ciento de franquicia y el pago estatal)."/>
         <text name="tp_msg_ins_lv_gov_paid" text="El Livestock Indemnity Program del USDA ha pagado %s."/>
         <text name="tp_msg_ins_lv_claim_paid" text="El seguro de ganado pagó por %s: %s."/>
+        <text name="tp_tab_insurance" text="Seguros"/>
+        <text name="tp_ins_nav_start" text="Empieza aquí"/>
+        <text name="tp_ins_nav_policies" text="Mis pólizas"/>
+        <text name="tp_ins_start_title" text="Elige tu cobertura"/>
+        <text name="tp_ins_crop" text="Seguro de cosecha"/>
+        <text name="tp_ins_equip" text="Seguro de equipos"/>
+        <text name="tp_ins_livestock" text="Seguro de ganado"/>
+        <text name="tp_ins_not_included" text="No incluido"/>
+        <text name="tp_ins_deductible_option" text="Franquicia %s"/>
+        <text name="tp_ins_livestock_all" text="Todos los animales"/>
+        <text name="tp_btn_get_quote" text="Presupuesto"/>
+        <text name="tp_btn_confirm_start" text="Confirmar e iniciar"/>
+        <text name="tp_btn_cancel_policy" text="Cancelar póliza"/>
+        <text name="tp_ins_q_crop" text="Cosecha - %s al %d %%: %d campos, valor asegurado %s, unos %s al mes."/>
+        <text name="tp_ins_q_unchanged" text="(tu póliza actual - sin cambios)"/>
+        <text name="tp_ins_q_change" text="(cambio: unos %s -&gt; %s al mes)"/>
+        <text name="tp_ins_q_sales_closed" text="(pólizas de cosecha solo a finales de invierno / principios de primavera - no enviado)"/>
+        <text name="tp_ins_q_uninsurable" text="(%d campos con cultivos no asegurables)"/>
+        <text name="tp_ins_q_crop_kept" text="Cosecha - tu póliza actual sigue (cancélala en Mis pólizas)."/>
+        <text name="tp_ins_q_equip" text="Equipos - franquicia %s: %d vehículos por valor de %s, unos %s al mes."/>
+        <text name="tp_ins_q_equip_kept" text="Equipos - tu póliza actual sigue (cancélala en Mis pólizas)."/>
+        <text name="tp_ins_q_livestock" text="Ganado - %d animales por valor de %s, unos %s al mes."/>
+        <text name="tp_ins_q_livestock_gov" text="(el programa del USDA paga además el 75 por ciento del valor de mercado)"/>
+        <text name="tp_ins_q_livestock_kept" text="Ganado - tu póliza actual sigue (cancélala en Mis pólizas)."/>
+        <text name="tp_ins_q_nothing" text="Nada elegido aún - elige la cobertura arriba y pulsa Presupuesto."/>
+        <text name="tp_ins_q_total" text="Total: unos %s al mes (escala de dinero aplicada)."/>
+        <text name="tp_ins_q_wait" text="La nueva cobertura empieza una semana (tiempo real) después de confirmar; los cambios se aplican al momento."/>
+        <text name="tp_ins_q_hint" text="Elige la cobertura arriba y pulsa Presupuesto para ver el precio antes de confirmar."/>
+        <text name="tp_ins_q_nothing_new" text="Nada nuevo que iniciar o cambiar."/>
+        <text name="tp_ins_confirm_sent" text="%d solicitudes enviadas - las cartas de la aseguradora confirman cada póliza."/>
+        <text name="tp_confirm_ins_start" text="¿Iniciar o cambiar las pólizas presupuestadas? Las primas se cobran cada mes."/>
+        <text name="tp_ins_cancel_sent" text="Cancelación enviada."/>
+        <text name="tp_confirm_ins_cancel_crop" text="¿Cancelar tu póliza de cosecha? Los siniestros abiertos se siguen tramitando."/>
+        <text name="tp_confirm_ins_cancel_equip" text="¿Cancelar tu seguro de equipos? Los siniestros abiertos se siguen tramitando."/>
+        <text name="tp_confirm_ins_cancel_livestock" text="¿Cancelar tu seguro de ganado? Los siniestros abiertos se siguen tramitando."/>
+        <text name="tp_ins_note_off" text="El seguro está desactivado - el administrador del servidor puede activarlo en la pestaña Módulos."/>
+        <text name="tp_ins_note_admin" text="Solo el administrador puede contratar o cancelar pólizas - aun así puedes ver presupuestos."/>
+        <text name="tp_ins_note_manager" text="Solo los gerentes de la granja y el administrador pueden contratar o cancelar - aun así puedes ver presupuestos."/>
+        <text name="tp_ins_note_crop_off" text="El seguro de cosecha aún no se ofrece en esta región (permiso de datos pendiente)."/>
+        <text name="tp_ins_note_crop_none" text="Seguro de cosecha: los datos de esta región no tienen planes."/>
+        <text name="tp_ins_pol_crop" text="%s al %d %% - %s. %d campos, valor asegurado %s, unos %s al mes."/>
+        <text name="tp_ins_pol_crop_none" text="Sin póliza de cosecha."/>
+        <text name="tp_ins_pol_equip" text="Franquicia %s - %s. %d vehículos por valor de %s, unos %s al mes."/>
+        <text name="tp_ins_pol_equip_none" text="Sin seguro de equipos."/>
+        <text name="tp_ins_pol_livestock" text="Todos los animales - %s. %d animales por valor de %s, unos %s al mes."/>
+        <text name="tp_ins_pol_livestock_none" text="Sin seguro de ganado."/>
+        <text name="tp_ins_pol_claims" text="Siniestros abiertos: %d (sus cartas están en la pestaña Mensajes)."/>
+        <text name="tp_ins_grows" text="Tus pólizas crecen con tu granja: los campos, vehículos y animales que compres después quedan cubiertos automáticamente, y el precio mensual sigue lo que posees - no hace falta volver a contratar."/>
+        <text name="tp_ins_pol_change_hint" text="Para cambiar una póliza, elige la nueva cobertura en Empieza aquí y pide un presupuesto."/>
         <text name="tp_dir_N" text="N"/>
         <text name="tp_dir_NE" text="NE"/>
         <text name="tp_dir_E" text="E"/>

@@ -425,6 +425,55 @@
         <text name="tp_msg_ins_lv_claim_approved" text="Szkoda zwierząt w %s uznana: wartość ubezpieczenia %s - zostanie wypłacone %s (po odjęciu 5 procent udziału własnego i wypłaty państwowej)."/>
         <text name="tp_msg_ins_lv_gov_paid" text="USDA Livestock Indemnity Program wypłacił %s."/>
         <text name="tp_msg_ins_lv_claim_paid" text="Wypłata ubezpieczenia zwierząt za %s: %s."/>
+        <text name="tp_tab_insurance" text="Ubezpieczenia"/>
+        <text name="tp_ins_nav_start" text="Zacznij tutaj"/>
+        <text name="tp_ins_nav_policies" text="Moje polisy"/>
+        <text name="tp_ins_start_title" text="Wybierz zakres ochrony"/>
+        <text name="tp_ins_crop" text="Ubezpieczenie upraw"/>
+        <text name="tp_ins_equip" text="Ubezpieczenie sprzętu"/>
+        <text name="tp_ins_livestock" text="Ubezpieczenie zwierząt"/>
+        <text name="tp_ins_not_included" text="Nie wybrano"/>
+        <text name="tp_ins_deductible_option" text="Udział własny %s"/>
+        <text name="tp_ins_livestock_all" text="Wszystkie zwierzęta"/>
+        <text name="tp_btn_get_quote" text="Wycena"/>
+        <text name="tp_btn_confirm_start" text="Potwierdź i rozpocznij"/>
+        <text name="tp_btn_cancel_policy" text="Wypowiedz polisę"/>
+        <text name="tp_ins_q_crop" text="Uprawy - %s, %d %%: %d pól, suma ubezpieczenia %s, ok. %s miesięcznie."/>
+        <text name="tp_ins_q_unchanged" text="(obecna polisa - bez zmian)"/>
+        <text name="tp_ins_q_change" text="(zmiana: ok. %s -&gt; %s miesięcznie)"/>
+        <text name="tp_ins_q_sales_closed" text="(polisy upraw tylko późną zimą / wczesną wiosną - nie wysłano)"/>
+        <text name="tp_ins_q_uninsurable" text="(%d pól z uprawami bez ubezpieczenia)"/>
+        <text name="tp_ins_q_crop_kept" text="Uprawy - obecna polisa zostaje (wypowiedz ją w Moich polisach)."/>
+        <text name="tp_ins_q_equip" text="Sprzęt - udział własny %s: %d pojazdów o wartości %s, ok. %s miesięcznie."/>
+        <text name="tp_ins_q_equip_kept" text="Sprzęt - obecna polisa zostaje (wypowiedz ją w Moich polisach)."/>
+        <text name="tp_ins_q_livestock" text="Zwierzęta - %d zwierząt o wartości %s, ok. %s miesięcznie."/>
+        <text name="tp_ins_q_livestock_gov" text="(program USDA wypłaca też 75 procent wartości rynkowej)"/>
+        <text name="tp_ins_q_livestock_kept" text="Zwierzęta - obecna polisa zostaje (wypowiedz ją w Moich polisach)."/>
+        <text name="tp_ins_q_nothing" text="Nic nie wybrano - wybierz ochronę powyżej i naciśnij Wycena."/>
+        <text name="tp_ins_q_total" text="Razem: ok. %s miesięcznie (z uwzględnieniem skali pieniędzy)."/>
+        <text name="tp_ins_q_wait" text="Nowa ochrona zaczyna się ok. tydzień (czasu rzeczywistego) po potwierdzeniu; zmiany obowiązują od razu."/>
+        <text name="tp_ins_q_hint" text="Wybierz ochronę powyżej, a potem Wycena, aby zobaczyć cenę przed potwierdzeniem."/>
+        <text name="tp_ins_q_nothing_new" text="Nic nowego do rozpoczęcia ani zmiany."/>
+        <text name="tp_ins_confirm_sent" text="Wysłano %d wniosków - listy ubezpieczyciela potwierdzą każdą polisę."/>
+        <text name="tp_confirm_ins_start" text="Rozpocząć lub zmienić wycenione polisy? Składki są pobierane co miesiąc."/>
+        <text name="tp_ins_cancel_sent" text="Wysłano wypowiedzenie."/>
+        <text name="tp_confirm_ins_cancel_crop" text="Wypowiedzieć polisę upraw? Otwarte szkody są nadal rozpatrywane."/>
+        <text name="tp_confirm_ins_cancel_equip" text="Wypowiedzieć polisę sprzętu? Otwarte szkody są nadal rozpatrywane."/>
+        <text name="tp_confirm_ins_cancel_livestock" text="Wypowiedzieć polisę zwierząt? Otwarte szkody są nadal rozpatrywane."/>
+        <text name="tp_ins_note_off" text="Ubezpieczenia są wyłączone - administrator serwera może je włączyć w karcie Moduły."/>
+        <text name="tp_ins_note_admin" text="Tylko administrator serwera może kupować lub wypowiadać polisy - wyceny możesz oglądać."/>
+        <text name="tp_ins_note_manager" text="Tylko kierownicy gospodarstwa i administrator mogą kupować lub wypowiadać polisy - wyceny możesz oglądać."/>
+        <text name="tp_ins_note_crop_off" text="Ubezpieczenie upraw nie jest jeszcze oferowane w tym regionie (czekamy na zgodę na dane)."/>
+        <text name="tp_ins_note_crop_none" text="Ubezpieczenie upraw: dane tego regionu nie mają planów."/>
+        <text name="tp_ins_pol_crop" text="%s, %d %% - %s. %d pól, suma ubezpieczenia %s, ok. %s miesięcznie."/>
+        <text name="tp_ins_pol_crop_none" text="Brak polisy upraw."/>
+        <text name="tp_ins_pol_equip" text="Udział własny %s - %s. %d pojazdów o wartości %s, ok. %s miesięcznie."/>
+        <text name="tp_ins_pol_equip_none" text="Brak ubezpieczenia sprzętu."/>
+        <text name="tp_ins_pol_livestock" text="Wszystkie zwierzęta - %s. %d zwierząt o wartości %s, ok. %s miesięcznie."/>
+        <text name="tp_ins_pol_livestock_none" text="Brak ubezpieczenia zwierząt."/>
+        <text name="tp_ins_pol_claims" text="Otwarte szkody: %d (listy są w karcie Wiadomości)."/>
+        <text name="tp_ins_grows" text="Twoje polisy rosną razem z gospodarstwem: pola, pojazdy i zwierzęta kupione później są objęte ochroną automatycznie, a miesięczna cena zależy od tego, co posiadasz - nie trzeba kupować ponownie."/>
+        <text name="tp_ins_pol_change_hint" text="Aby zmienić polisę, wybierz nową ochronę w Zacznij tutaj i poproś o wycenę."/>
         <text name="tp_dir_N" text="Pn"/>
         <text name="tp_dir_NE" text="Pn-Wsch"/>
         <text name="tp_dir_E" text="Wsch"/>

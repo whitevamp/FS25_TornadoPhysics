@@ -425,6 +425,55 @@
         <text name="tp_msg_ins_lv_claim_approved" text="Veeschade %s goedgekeurd: verzekerde waarde %s - %s wordt uitbetaald (min 5 procent eigen risico en de overheidsuitkering)."/>
         <text name="tp_msg_ins_lv_gov_paid" text="Het USDA Livestock Indemnity Program heeft %s betaald."/>
         <text name="tp_msg_ins_lv_claim_paid" text="Veeverzekering betaald voor %s: %s."/>
+        <text name="tp_tab_insurance" text="Verzekering"/>
+        <text name="tp_ins_nav_start" text="Begin hier"/>
+        <text name="tp_ins_nav_policies" text="Mijn polissen"/>
+        <text name="tp_ins_start_title" text="Kies je dekking"/>
+        <text name="tp_ins_crop" text="Oogstverzekering"/>
+        <text name="tp_ins_equip" text="Materieelverzekering"/>
+        <text name="tp_ins_livestock" text="Veeverzekering"/>
+        <text name="tp_ins_not_included" text="Niet inbegrepen"/>
+        <text name="tp_ins_deductible_option" text="%s eigen risico"/>
+        <text name="tp_ins_livestock_all" text="Alle dieren"/>
+        <text name="tp_btn_get_quote" text="Offerte"/>
+        <text name="tp_btn_confirm_start" text="Bevestigen &amp; starten"/>
+        <text name="tp_btn_cancel_policy" text="Polis opzeggen"/>
+        <text name="tp_ins_q_crop" text="Oogst - %s op %d %%: %d velden, verzekerde waarde %s, ongeveer %s per maand."/>
+        <text name="tp_ins_q_unchanged" text="(je huidige polis - geen wijziging)"/>
+        <text name="tp_ins_q_change" text="(wijziging: ongeveer %s -&gt; %s per maand)"/>
+        <text name="tp_ins_q_sales_closed" text="(oogstpolissen alleen in de late winter / vroege lente - niet verzonden)"/>
+        <text name="tp_ins_q_uninsurable" text="(%d velden met onverzekerbare gewassen)"/>
+        <text name="tp_ins_q_crop_kept" text="Oogst - je huidige polis blijft (opzeggen onder Mijn polissen)."/>
+        <text name="tp_ins_q_equip" text="Materieel - %s eigen risico: %d voertuigen ter waarde van %s, ongeveer %s per maand."/>
+        <text name="tp_ins_q_equip_kept" text="Materieel - je huidige polis blijft (opzeggen onder Mijn polissen)."/>
+        <text name="tp_ins_q_livestock" text="Vee - %d dieren ter waarde van %s, ongeveer %s per maand."/>
+        <text name="tp_ins_q_livestock_gov" text="(het USDA-programma betaalt daarnaast 75 procent van de marktwaarde)"/>
+        <text name="tp_ins_q_livestock_kept" text="Vee - je huidige polis blijft (opzeggen onder Mijn polissen)."/>
+        <text name="tp_ins_q_nothing" text="Nog niets gekozen - kies hierboven de dekking en druk op Offerte."/>
+        <text name="tp_ins_q_total" text="Totaal: ongeveer %s per maand (geldschaal toegepast)."/>
+        <text name="tp_ins_q_wait" text="Nieuwe dekking begint ongeveer een week (echte tijd) na bevestiging; wijzigingen gelden meteen."/>
+        <text name="tp_ins_q_hint" text="Kies hierboven de dekking en druk op Offerte om de prijs te zien voordat je bevestigt."/>
+        <text name="tp_ins_q_nothing_new" text="Niets nieuws om te starten of te wijzigen."/>
+        <text name="tp_ins_confirm_sent" text="%d aanvragen verzonden - de brieven van de verzekeraar bevestigen elke polis."/>
+        <text name="tp_confirm_ins_start" text="De geoffreerde polissen starten of wijzigen? De premies worden elke maand afgeschreven."/>
+        <text name="tp_ins_cancel_sent" text="Opzegging verzonden."/>
+        <text name="tp_confirm_ins_cancel_crop" text="Je oogstpolis opzeggen? Openstaande schades worden nog afgehandeld."/>
+        <text name="tp_confirm_ins_cancel_equip" text="Je materieelverzekering opzeggen? Openstaande schades worden nog afgehandeld."/>
+        <text name="tp_confirm_ins_cancel_livestock" text="Je veeverzekering opzeggen? Openstaande schades worden nog afgehandeld."/>
+        <text name="tp_ins_note_off" text="Verzekering staat uit - de serverbeheerder kan haar aanzetten op het tabblad Modules."/>
+        <text name="tp_ins_note_admin" text="Alleen de serverbeheerder mag polissen afsluiten of opzeggen - offertes kun je wel bekijken."/>
+        <text name="tp_ins_note_manager" text="Alleen boerderijbeheerders en de beheerder mogen polissen afsluiten of opzeggen - offertes kun je wel bekijken."/>
+        <text name="tp_ins_note_crop_off" text="Oogstverzekering wordt in deze regio nog niet aangeboden (toestemming voor de gegevens volgt)."/>
+        <text name="tp_ins_note_crop_none" text="Oogstverzekering: de gegevens van deze regio hebben geen plannen."/>
+        <text name="tp_ins_pol_crop" text="%s op %d %% - %s. %d velden, verzekerde waarde %s, ongeveer %s per maand."/>
+        <text name="tp_ins_pol_crop_none" text="Geen oogstpolis."/>
+        <text name="tp_ins_pol_equip" text="%s eigen risico - %s. %d voertuigen ter waarde van %s, ongeveer %s per maand."/>
+        <text name="tp_ins_pol_equip_none" text="Geen materieelverzekering."/>
+        <text name="tp_ins_pol_livestock" text="Alle dieren - %s. %d dieren ter waarde van %s, ongeveer %s per maand."/>
+        <text name="tp_ins_pol_livestock_none" text="Geen veeverzekering."/>
+        <text name="tp_ins_pol_claims" text="Openstaande schades: %d (de brieven staan op het tabblad Berichten)."/>
+        <text name="tp_ins_grows" text="Je polissen groeien mee met je boerderij: velden, voertuigen en dieren die je later koopt zijn automatisch gedekt, en de maandprijs volgt wat je bezit - opnieuw afsluiten is niet nodig."/>
+        <text name="tp_ins_pol_change_hint" text="Om een polis te wijzigen, kies je de nieuwe dekking onder Begin hier en vraag je een offerte."/>
         <text name="tp_dir_N" text="N"/>
         <text name="tp_dir_NE" text="NO"/>
         <text name="tp_dir_E" text="O"/>

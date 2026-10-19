@@ -38,23 +38,12 @@ local function hasInsurance()
     return TornadoInsurance ~= nil
 end
 
--- Crop policy rows act for the player's own farm (the server checks the permission: farm manager / admin).
-local function cropPolicyAvailable()
-    return TornadoInsurance ~= nil and TornadoInsuranceCrop ~= nil and TornadoInsurance.isEnabled
-        and TornadoInsuranceCrop:isAvailable()
-end
-
 local function getPlayerFarmId()
     local farmId = g_currentMission ~= nil and g_currentMission.getFarmId ~= nil and g_currentMission:getFarmId() or 0
     return farmId or 0
 end
 
-local function getPlayerPolicy()
-    local farm = TornadoInsurance.farms ~= nil and TornadoInsurance.farms[getPlayerFarmId()] or nil
-    return farm ~= nil and farm.crop or nil, farm
-end
-
--- Equipment policy rows: also for the player's own farm.
+-- Equipment total-loss rows act for the player's own farm (the server checks the permission).
 local function equipPolicyAvailable()
     return TornadoInsurance ~= nil and TornadoInsuranceEquipment ~= nil and TornadoInsurance.isEnabled
 end
@@ -82,15 +71,6 @@ local function getChosenTotal()
     return totals[1]
 end
 
-local function showInfo(text)
-    -- The panel's status line only fits a short sentence: longer texts go to the game's info dialog.
-    if InfoDialog ~= nil and InfoDialog.show ~= nil then
-        InfoDialog.show(text)
-        return nil
-    end
-    return text
-end
-
 local function penaltyRow(id, field, sub)
     return {
         id = id,
@@ -110,26 +90,6 @@ local function penaltyRow(id, field, sub)
             return console("cmdSet", "insurance", sub, value)
         end,
     }
-end
-
--- Choice kept on this machine until the player buys (plan / coverage of a policy not bought yet).
-local cropChoice = { plan = nil, coverage = 0.75 }
-
-local function getChosenPlan()
-    local policy = getPlayerPolicy()
-    if policy ~= nil then
-        return policy.plan
-    end
-    if cropChoice.plan == nil then
-        local plans = TornadoInsuranceCrop:getOfferedPlans()
-        cropChoice.plan = plans[1]
-    end
-    return cropChoice.plan
-end
-
-local function getChosenCoverage()
-    local policy = getPlayerPolicy()
-    return policy ~= nil and policy.coverage or cropChoice.coverage
 end
 
 --- Percent row (25 - 300 %) routed through `t_set hazards <sub> <percent>`.
@@ -484,145 +444,8 @@ TornadoPageModules = TornadoMenuPage.new("Modules", "Modules", {
     },
     penaltyRow("modInsuranceSalvage", "salvagePenalty", "salvage"),
     penaltyRow("modInsuranceRebuilt", "rebuiltPenalty", "rebuilt"),
-    {
-        id = "modInsuranceCropPlan",
-        kind = Page.KIND_CHOICE,
-        requires = cropPolicyAvailable,
-        localOnly = true,
-        keepClean = true,
-        options = function()
-            local options = { { value = "none", text = TornadoText.get("tp_plan_none") } }
-            for _, planId in ipairs(TornadoInsuranceCrop:getOfferedPlans()) do
-                options[#options + 1] = { value = planId, text = TornadoText.get(TornadoInsuranceCrop.PLAN_KEYS[planId] or planId) }
-            end
-            return options
-        end,
-        get = function()
-            local policy = getPlayerPolicy()
-            return policy ~= nil and policy.plan or "none"
-        end,
-        set = function(value)
-            local farmId = getPlayerFarmId()
-            if value == "none" then
-                if getPlayerPolicy() ~= nil then
-                    TornadoInsurance:requestAction(farmId, "cropCancel", "")
-                end
-                return nil
-            end
-            cropChoice.plan = value
-            TornadoInsurance:requestAction(farmId, "cropBuy", string.format("%s %.2f", value, getChosenCoverage()))
-            return nil
-        end,
-    },
-    {
-        id = "modInsuranceCropCoverage",
-        kind = Page.KIND_CHOICE,
-        requires = cropPolicyAvailable,
-        localOnly = true,
-        keepClean = true,
-        options = function()
-            local planId = getChosenPlan()
-            local policy = getPlayerPolicy()
-            local options = {}
-            for _, coverage in ipairs(planId ~= nil and TornadoInsuranceCrop:getCoverageLevels(planId) or {}) do
-                local quote = TornadoInsuranceCrop:getFarmQuote(getPlayerFarmId(), planId, coverage, policy)
-                options[#options + 1] = { value = coverage, text = TornadoText.format("tp_insurance_coverage_option",
-                    math.floor(coverage * 100 + 0.5), TornadoText.money(quote.monthlyPremium)) }
-            end
-            return options
-        end,
-        get = function()
-            return getChosenCoverage()
-        end,
-        set = function(value)
-            cropChoice.coverage = value
-            local policy = getPlayerPolicy()
-            if policy ~= nil then
-                TornadoInsurance:requestAction(getPlayerFarmId(), "cropBuy", string.format("%s %.2f", policy.plan, value))
-            end
-            return nil
-        end,
-    },
-    {
-        id = "modInsuranceCropStatus",
-        kind = Page.KIND_ACTION,
-        requires = cropPolicyAvailable,
-        localOnly = true,
-        keepClean = true,
-        run = function()
-            local policy, farm = getPlayerPolicy()
-            local text
-            if policy == nil then
-                text = TornadoText.get("tp_msg_ins_crop_none_status")
-            else
-                local quote = TornadoInsuranceCrop:getFarmQuote(getPlayerFarmId(), policy.plan, policy.coverage, policy)
-                text = TornadoText.format("tp_msg_ins_crop_status",
-                TornadoText.get(TornadoInsuranceCrop.PLAN_KEYS[policy.plan] or policy.plan),
-                math.floor((policy.coverage or 0) * 100 + 0.5),
-                TornadoText.get(policy.status == TornadoInsuranceCrop.STATUS_ACTIVE and "tp_ins_status_active" or "tp_ins_status_pending"),
-                    quote.fields, TornadoText.money(quote.liability), TornadoText.money(quote.monthlyPremium),
-                    farm ~= nil and (farm.openClaims or TornadoInsuranceCrop:getOpenClaimCount(farm)) or 0)
-            end
-            -- The panel's status line only fits a short sentence: show the summary in the game's info dialog.
-            if InfoDialog ~= nil and InfoDialog.show ~= nil then
-                InfoDialog.show(text)
-                return nil
-            end
-            return text
-        end,
-    },
-    -- Equipment policy (player's farm)
-    {
-        id = "modInsuranceEquipDeductible",
-        kind = Page.KIND_CHOICE,
-        requires = equipPolicyAvailable,
-        localOnly = true,
-        keepClean = true,
-        options = function()
-            local options = { { value = 0, text = TornadoText.get("tp_insurance_equip_none") } }
-            local scale = TornadoInsurance:getCostScale() or 1
-            for _, deductible in ipairs(TornadoInsuranceEquipment.DEDUCTIBLES) do
-                local quote = TornadoInsuranceEquipment:getFarmQuote(getPlayerFarmId(), deductible)
-                options[#options + 1] = { value = deductible, text = TornadoText.format("tp_insurance_equip_option",
-                    TornadoText.money(deductible * scale), TornadoText.money(quote.monthlyPremium)) }
-            end
-            return options
-        end,
-        get = function()
-            local policy = getPlayerEquipPolicy()
-            return policy ~= nil and policy.deductible or 0
-        end,
-        set = function(value)
-            local farmId = getPlayerFarmId()
-            if value == 0 then
-                if getPlayerEquipPolicy() ~= nil then
-                    TornadoInsurance:requestAction(farmId, "equipCancel", "")
-                end
-                return nil
-            end
-            TornadoInsurance:requestAction(farmId, "equipBuy", tostring(value))
-            return nil
-        end,
-    },
-    {
-        id = "modInsuranceEquipStatus",
-        kind = Page.KIND_ACTION,
-        requires = equipPolicyAvailable,
-        localOnly = true,
-        keepClean = true,
-        run = function()
-            local policy, farm = getPlayerEquipPolicy()
-            if policy == nil then
-                return showInfo(TornadoText.get("tp_msg_ins_eq_none_status"))
-            end
-            local quote = TornadoInsuranceEquipment:getFarmQuote(getPlayerFarmId(), policy.deductible)
-            local scale = TornadoInsurance:getCostScale() or 1
-            return showInfo(TornadoText.format("tp_msg_ins_eq_status", TornadoText.money(policy.deductible * scale),
-                TornadoText.get(policy.status == TornadoInsuranceEquipment.STATUS_ACTIVE and "tp_ins_status_active" or "tp_ins_status_pending"),
-                quote.vehicles, TornadoText.money(quote.value), TornadoText.money(quote.monthlyPremium),
-                #TornadoInsuranceEquipment:getPendingTotals(farm)))
-        end,
-    },
+    -- Equipment total losses waiting for a choice (moves to the Insurance tab's Claims section later).
+    -- Buying / changing / cancelling policies: Insurance tab.
     {
         id = "modInsuranceEquipTotal",
         kind = Page.KIND_CHOICE,
@@ -681,65 +504,6 @@ TornadoPageModules = TornadoMenuPage.new("Modules", "Modules", {
             TornadoInsurance:requestAction(getPlayerFarmId(), "equipBuyBack", tostring(claim.id))
             equipChoice.claimId = nil
             return nil
-        end,
-    },
-    -- Livestock policy (player's farm)
-    {
-        id = "modInsuranceLivestock",
-        kind = Page.KIND_CHOICE,
-        requires = function()
-            return TornadoInsurance ~= nil and TornadoInsuranceLivestock ~= nil and TornadoInsurance.isEnabled
-        end,
-        localOnly = true,
-        keepClean = true,
-        options = function()
-            -- What is priced: animals, their value, the monthly premium (no animals: say so instead of "$0").
-            local quote = TornadoInsuranceLivestock:getFarmQuote(getPlayerFarmId())
-            local insuredText = quote.animals > 0 and TornadoText.format("tp_insurance_livestock_option", quote.animals,
-                TornadoText.money(quote.value), TornadoText.money(quote.monthlyPremium)) or TornadoText.get("tp_insurance_livestock_empty")
-            return {
-                { value = "none", text = TornadoText.get("tp_insurance_livestock_none") },
-                { value = "insured", text = insuredText },
-            }
-        end,
-        get = function()
-            local farm = TornadoInsurance.farms ~= nil and TornadoInsurance.farms[getPlayerFarmId()] or nil
-            return farm ~= nil and farm.livestock ~= nil and "insured" or "none"
-        end,
-        set = function(value)
-            local farm = TornadoInsurance.farms ~= nil and TornadoInsurance.farms[getPlayerFarmId()] or nil
-            local has = farm ~= nil and farm.livestock ~= nil
-            if value == "insured" and not has then
-                TornadoInsurance:requestAction(getPlayerFarmId(), "livestockBuy", "")
-            elseif value == "none" and has then
-                TornadoInsurance:requestAction(getPlayerFarmId(), "livestockCancel", "")
-            end
-            return nil
-        end,
-    },
-    {
-        id = "modInsuranceLivestockStatus",
-        kind = Page.KIND_ACTION,
-        requires = function()
-            return TornadoInsurance ~= nil and TornadoInsuranceLivestock ~= nil and TornadoInsurance.isEnabled
-        end,
-        localOnly = true,
-        keepClean = true,
-        run = function()
-            local farm = TornadoInsurance.farms ~= nil and TornadoInsurance.farms[getPlayerFarmId()] or nil
-            local policy = farm ~= nil and farm.livestock or nil
-            local quote = TornadoInsuranceLivestock:getFarmQuote(getPlayerFarmId())
-            local statusKey = "tp_ins_status_none"
-            if policy ~= nil then
-                statusKey = policy.status == TornadoInsuranceLivestock.STATUS_ACTIVE and "tp_ins_status_active" or "tp_ins_status_pending"
-            end
-            local text = TornadoText.format("tp_msg_ins_lv_status", TornadoText.get(statusKey), quote.animals,
-                TornadoText.money(quote.value), TornadoText.money(quote.monthlyPremium),
-                TornadoText.get(TornadoInsuranceLivestock:hasGovProgram() and "tp_ins_lv_gov_us" or "tp_ins_lv_gov_none"))
-            if not TornadoInsuranceLivestock.isHusbandryOn() then
-                text = text .. "\n\n" .. TornadoText.get("tp_ins_lv_husbandry_off")
-            end
-            return showInfo(text)
         end,
     },
     {

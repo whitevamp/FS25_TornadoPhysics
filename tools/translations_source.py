@@ -1634,6 +1634,229 @@ t("tp_msg_ins_lv_claim_paid", "Livestock insurance paid for %s: %s.", "Tierversi
   "Assurance bétail versée pour %s : %s.", "Wypłata ubezpieczenia zwierząt za %s: %s.", "El seguro de ganado pagó por %s: %s.",
   "L'assicurazione bestiame ha pagato per %s: %s.", "Veeverzekering betaald voor %s: %s.")
 
+# =====================================================================================================
+# INSURANCE TAB (Start here, My policies)
+# =====================================================================================================
+t("tp_tab_insurance", "Insurance", "Versicherung", "Assurance", "Ubezpieczenia", "Seguros", "Assicurazioni", "Verzekering")
+t("tp_ins_nav_start", "Start here", "Hier starten", "Commencer ici", "Zacznij tutaj", "Empieza aquí", "Inizia qui", "Begin hier")
+t("tp_ins_nav_policies", "My policies", "Meine Policen", "Mes contrats", "Moje polisy", "Mis pólizas", "Le mie polizze", "Mijn polissen")
+t("tp_ins_start_title", "Choose your coverage", "Wähle deinen Versicherungsschutz", "Choisissez votre couverture", "Wybierz zakres ochrony",
+  "Elige tu cobertura", "Scegli la copertura", "Kies je dekking")
+t("tp_ins_crop", "Crop insurance", "Ernteversicherung", "Assurance récolte", "Ubezpieczenie upraw", "Seguro de cosecha",
+  "Assicurazione raccolto", "Oogstverzekering")
+t("tp_ins_equip", "Equipment insurance", "Geräteversicherung", "Assurance matériel", "Ubezpieczenie sprzętu", "Seguro de equipos",
+  "Assicurazione mezzi", "Materieelverzekering")
+t("tp_ins_livestock", "Livestock insurance", "Tierversicherung", "Assurance bétail", "Ubezpieczenie zwierząt", "Seguro de ganado",
+  "Assicurazione bestiame", "Veeverzekering")
+t("tp_ins_not_included", "Not included", "Nicht enthalten", "Non inclus", "Nie wybrano", "No incluido", "Non incluso", "Niet inbegrepen")
+t("tp_ins_deductible_option", "%s deductible", "%s Selbstbeteiligung", "Franchise %s", "Udział własny %s", "Franquicia %s",
+  "Franchigia %s", "%s eigen risico")
+t("tp_ins_livestock_all", "All animals", "Alle Tiere", "Tous les animaux", "Wszystkie zwierzęta", "Todos los animales",
+  "Tutti gli animali", "Alle dieren")
+t("tp_btn_get_quote", "Get quote", "Angebot", "Devis", "Wycena", "Presupuesto", "Preventivo", "Offerte")
+t("tp_btn_confirm_start", "Confirm & start", "Bestätigen & starten", "Confirmer et démarrer", "Potwierdź i rozpocznij",
+  "Confirmar e iniciar", "Conferma e avvia", "Bevestigen & starten")
+t("tp_btn_cancel_policy", "Cancel policy", "Police kündigen", "Résilier", "Wypowiedz polisę", "Cancelar póliza", "Disdici polizza",
+  "Polis opzeggen")
+t("tp_ins_q_crop", "Crop - %s at %d %%: %d fields, insured value %s, about %s per month.",
+  "Ernte - %s mit %d %%: %d Felder, Versicherungssumme %s, etwa %s pro Monat.",
+  "Récolte - %s à %d %% : %d champs, valeur assurée %s, environ %s par mois.",
+  "Uprawy - %s, %d %%: %d pól, suma ubezpieczenia %s, ok. %s miesięcznie.",
+  "Cosecha - %s al %d %%: %d campos, valor asegurado %s, unos %s al mes.",
+  "Raccolto - %s al %d %%: %d campi, valore assicurato %s, circa %s al mese.",
+  "Oogst - %s op %d %%: %d velden, verzekerde waarde %s, ongeveer %s per maand.")
+t("tp_ins_q_unchanged", "(your current policy - no change)", "(deine aktuelle Police - keine Änderung)",
+  "(votre contrat actuel - aucun changement)", "(obecna polisa - bez zmian)", "(tu póliza actual - sin cambios)",
+  "(la tua polizza attuale - nessuna modifica)", "(je huidige polis - geen wijziging)")
+t("tp_ins_q_change", "(change: about %s -> %s per month)", "(Änderung: etwa %s -> %s pro Monat)", "(changement : environ %s -> %s par mois)",
+  "(zmiana: ok. %s -> %s miesięcznie)", "(cambio: unos %s -> %s al mes)", "(modifica: circa %s -> %s al mese)",
+  "(wijziging: ongeveer %s -> %s per maand)")
+t("tp_ins_q_sales_closed", "(crop policies can only be bought or changed in late winter / early spring - not sent)",
+  "(Ernteversicherungen nur im Spätwinter / Frühlingsanfang - nicht gesendet)",
+  "(contrats récolte seulement en fin d'hiver / début de printemps - non envoyé)",
+  "(polisy upraw tylko późną zimą / wczesną wiosną - nie wysłano)",
+  "(pólizas de cosecha solo a finales de invierno / principios de primavera - no enviado)",
+  "(polizze raccolto solo a fine inverno / inizio primavera - non inviato)",
+  "(oogstpolissen alleen in de late winter / vroege lente - niet verzonden)")
+t("tp_ins_q_uninsurable", "(%d fields with crops that cannot be insured)", "(%d Felder mit nicht versicherbaren Kulturen)",
+  "(%d champs avec des cultures non assurables)", "(%d pól z uprawami bez ubezpieczenia)", "(%d campos con cultivos no asegurables)",
+  "(%d campi con colture non assicurabili)", "(%d velden met onverzekerbare gewassen)")
+t("tp_ins_q_crop_kept", "Crop - your current policy stays (cancel it under My policies).",
+  "Ernte - deine aktuelle Police bleibt (kündigen unter Meine Policen).",
+  "Récolte - votre contrat actuel reste (résiliez-le dans Mes contrats).",
+  "Uprawy - obecna polisa zostaje (wypowiedz ją w Moich polisach).",
+  "Cosecha - tu póliza actual sigue (cancélala en Mis pólizas).",
+  "Raccolto - la polizza attuale resta (disdicila in Le mie polizze).",
+  "Oogst - je huidige polis blijft (opzeggen onder Mijn polissen).")
+t("tp_ins_q_equip", "Equipment - %s deductible: %d vehicles worth %s, about %s per month.",
+  "Geräte - %s Selbstbeteiligung: %d Fahrzeuge im Wert von %s, etwa %s pro Monat.",
+  "Matériel - franchise %s : %d véhicules d'une valeur de %s, environ %s par mois.",
+  "Sprzęt - udział własny %s: %d pojazdów o wartości %s, ok. %s miesięcznie.",
+  "Equipos - franquicia %s: %d vehículos por valor de %s, unos %s al mes.",
+  "Mezzi - franchigia %s: %d veicoli del valore di %s, circa %s al mese.",
+  "Materieel - %s eigen risico: %d voertuigen ter waarde van %s, ongeveer %s per maand.")
+t("tp_ins_q_equip_kept", "Equipment - your current policy stays (cancel it under My policies).",
+  "Geräte - deine aktuelle Police bleibt (kündigen unter Meine Policen).",
+  "Matériel - votre contrat actuel reste (résiliez-le dans Mes contrats).",
+  "Sprzęt - obecna polisa zostaje (wypowiedz ją w Moich polisach).",
+  "Equipos - tu póliza actual sigue (cancélala en Mis pólizas).",
+  "Mezzi - la polizza attuale resta (disdicila in Le mie polizze).",
+  "Materieel - je huidige polis blijft (opzeggen onder Mijn polissen).")
+t("tp_ins_q_livestock", "Livestock - %d animals worth %s, about %s per month.",
+  "Tiere - %d Tiere im Wert von %s, etwa %s pro Monat.", "Bétail - %d animaux d'une valeur de %s, environ %s par mois.",
+  "Zwierzęta - %d zwierząt o wartości %s, ok. %s miesięcznie.", "Ganado - %d animales por valor de %s, unos %s al mes.",
+  "Bestiame - %d animali del valore di %s, circa %s al mese.", "Vee - %d dieren ter waarde van %s, ongeveer %s per maand.")
+t("tp_ins_q_livestock_gov", "(the USDA programme also pays 75 percent of the market value)",
+  "(das USDA-Programm zahlt zusätzlich 75 Prozent des Marktwerts)", "(le programme de l'USDA paie aussi 75 pour cent de la valeur marchande)",
+  "(program USDA wypłaca też 75 procent wartości rynkowej)", "(el programa del USDA paga además el 75 por ciento del valor de mercado)",
+  "(il programma USDA paga anche il 75 per cento del valore di mercato)", "(het USDA-programma betaalt daarnaast 75 procent van de marktwaarde)")
+t("tp_ins_q_livestock_kept", "Livestock - your current policy stays (cancel it under My policies).",
+  "Tiere - deine aktuelle Police bleibt (kündigen unter Meine Policen).",
+  "Bétail - votre contrat actuel reste (résiliez-le dans Mes contrats).",
+  "Zwierzęta - obecna polisa zostaje (wypowiedz ją w Moich polisach).",
+  "Ganado - tu póliza actual sigue (cancélala en Mis pólizas).",
+  "Bestiame - la polizza attuale resta (disdicila in Le mie polizze).",
+  "Vee - je huidige polis blijft (opzeggen onder Mijn polissen).")
+t("tp_ins_q_nothing", "Nothing chosen yet - pick the coverage above and press Get quote.",
+  "Noch nichts gewählt - wähle oben den Schutz und drücke Angebot.", "Rien de choisi - choisissez la couverture ci-dessus puis Devis.",
+  "Nic nie wybrano - wybierz ochronę powyżej i naciśnij Wycena.", "Nada elegido aún - elige la cobertura arriba y pulsa Presupuesto.",
+  "Niente scelto - scegli la copertura sopra e premi Preventivo.", "Nog niets gekozen - kies hierboven de dekking en druk op Offerte.")
+t("tp_ins_q_total", "Total: about %s per month (money scale applied).", "Gesamt: etwa %s pro Monat (Geldskala berücksichtigt).",
+  "Total : environ %s par mois (échelle d'argent appliquée).", "Razem: ok. %s miesięcznie (z uwzględnieniem skali pieniędzy).",
+  "Total: unos %s al mes (escala de dinero aplicada).", "Totale: circa %s al mese (scala del denaro applicata).",
+  "Totaal: ongeveer %s per maand (geldschaal toegepast).")
+t("tp_ins_q_wait", "New cover starts about a week (real-life time) after you confirm; changes to a policy apply at once.",
+  "Neuer Schutz beginnt etwa eine Woche (reale Zeit) nach der Bestätigung; Änderungen gelten sofort.",
+  "Une nouvelle couverture commence environ une semaine (temps réel) après confirmation ; les changements s'appliquent tout de suite.",
+  "Nowa ochrona zaczyna się ok. tydzień (czasu rzeczywistego) po potwierdzeniu; zmiany obowiązują od razu.",
+  "La nueva cobertura empieza una semana (tiempo real) después de confirmar; los cambios se aplican al momento.",
+  "La nuova copertura inizia circa una settimana (tempo reale) dopo la conferma; le modifiche valgono subito.",
+  "Nieuwe dekking begint ongeveer een week (echte tijd) na bevestiging; wijzigingen gelden meteen.")
+t("tp_ins_q_hint", "Choose the coverage above, then press Get quote to see the price before you confirm.",
+  "Wähle oben den Schutz und drücke Angebot, um den Preis vor der Bestätigung zu sehen.",
+  "Choisissez la couverture ci-dessus, puis Devis pour voir le prix avant de confirmer.",
+  "Wybierz ochronę powyżej, a potem Wycena, aby zobaczyć cenę przed potwierdzeniem.",
+  "Elige la cobertura arriba y pulsa Presupuesto para ver el precio antes de confirmar.",
+  "Scegli la copertura sopra, poi premi Preventivo per vedere il prezzo prima di confermare.",
+  "Kies hierboven de dekking en druk op Offerte om de prijs te zien voordat je bevestigt.")
+t("tp_ins_q_nothing_new", "Nothing new to start or change.", "Nichts Neues zu starten oder zu ändern.",
+  "Rien de nouveau à démarrer ou modifier.", "Nic nowego do rozpoczęcia ani zmiany.", "Nada nuevo que iniciar o cambiar.",
+  "Niente di nuovo da avviare o modificare.", "Niets nieuws om te starten of te wijzigen.")
+t("tp_ins_confirm_sent", "%d requests sent - the insurer's letters confirm each policy.",
+  "%d Anfragen gesendet - die Briefe der Versicherung bestätigen jede Police.",
+  "%d demandes envoyées - les lettres de l'assureur confirment chaque contrat.",
+  "Wysłano %d wniosków - listy ubezpieczyciela potwierdzą każdą polisę.",
+  "%d solicitudes enviadas - las cartas de la aseguradora confirman cada póliza.",
+  "%d richieste inviate - le lettere dell'assicuratore confermano ogni polizza.",
+  "%d aanvragen verzonden - de brieven van de verzekeraar bevestigen elke polis.")
+t("tp_confirm_ins_start", "Start or change the quoted policies? The premiums are charged every month.",
+  "Die angebotenen Policen starten oder ändern? Die Prämien werden monatlich abgebucht.",
+  "Démarrer ou modifier les contrats proposés ? Les primes sont prélevées chaque mois.",
+  "Rozpocząć lub zmienić wycenione polisy? Składki są pobierane co miesiąc.",
+  "¿Iniciar o cambiar las pólizas presupuestadas? Las primas se cobran cada mes.",
+  "Avviare o modificare le polizze del preventivo? I premi vengono addebitati ogni mese.",
+  "De geoffreerde polissen starten of wijzigen? De premies worden elke maand afgeschreven.")
+t("tp_ins_cancel_sent", "Cancel request sent.", "Kündigung gesendet.", "Demande de résiliation envoyée.", "Wysłano wypowiedzenie.",
+  "Cancelación enviada.", "Richiesta di disdetta inviata.", "Opzegging verzonden.")
+t("tp_confirm_ins_cancel_crop", "Cancel your crop policy? Open claims are still handled.",
+  "Ernteversicherung kündigen? Offene Schadensfälle werden noch bearbeitet.",
+  "Résilier votre contrat récolte ? Les sinistres en cours sont encore traités.",
+  "Wypowiedzieć polisę upraw? Otwarte szkody są nadal rozpatrywane.",
+  "¿Cancelar tu póliza de cosecha? Los siniestros abiertos se siguen tramitando.",
+  "Disdire la polizza raccolto? I sinistri aperti vengono ancora gestiti.",
+  "Je oogstpolis opzeggen? Openstaande schades worden nog afgehandeld.")
+t("tp_confirm_ins_cancel_equip", "Cancel your equipment policy? Open claims are still handled.",
+  "Geräteversicherung kündigen? Offene Schadensfälle werden noch bearbeitet.",
+  "Résilier votre assurance matériel ? Les sinistres en cours sont encore traités.",
+  "Wypowiedzieć polisę sprzętu? Otwarte szkody są nadal rozpatrywane.",
+  "¿Cancelar tu seguro de equipos? Los siniestros abiertos se siguen tramitando.",
+  "Disdire l'assicurazione mezzi? I sinistri aperti vengono ancora gestiti.",
+  "Je materieelverzekering opzeggen? Openstaande schades worden nog afgehandeld.")
+t("tp_confirm_ins_cancel_livestock", "Cancel your livestock policy? Open claims are still handled.",
+  "Tierversicherung kündigen? Offene Schadensfälle werden noch bearbeitet.",
+  "Résilier votre assurance bétail ? Les sinistres en cours sont encore traités.",
+  "Wypowiedzieć polisę zwierząt? Otwarte szkody są nadal rozpatrywane.",
+  "¿Cancelar tu seguro de ganado? Los siniestros abiertos se siguen tramitando.",
+  "Disdire l'assicurazione bestiame? I sinistri aperti vengono ancora gestiti.",
+  "Je veeverzekering opzeggen? Openstaande schades worden nog afgehandeld.")
+t("tp_ins_note_off", "Insurance is switched off - the server admin can turn it on in the Modules tab.",
+  "Die Versicherung ist ausgeschaltet - der Server-Admin kann sie im Reiter Module einschalten.",
+  "L'assurance est désactivée - l'admin du serveur peut l'activer dans l'onglet Modules.",
+  "Ubezpieczenia są wyłączone - administrator serwera może je włączyć w karcie Moduły.",
+  "El seguro está desactivado - el administrador del servidor puede activarlo en la pestaña Módulos.",
+  "L'assicurazione è disattivata - l'admin del server può attivarla nella scheda Moduli.",
+  "Verzekering staat uit - de serverbeheerder kan haar aanzetten op het tabblad Modules.")
+t("tp_ins_note_admin", "Only the server admin may buy or cancel policies - you can still look at quotes.",
+  "Nur der Server-Admin darf Policen kaufen oder kündigen - Angebote kannst du trotzdem ansehen.",
+  "Seul l'admin du serveur peut souscrire ou résilier - vous pouvez quand même voir les devis.",
+  "Tylko administrator serwera może kupować lub wypowiadać polisy - wyceny możesz oglądać.",
+  "Solo el administrador puede contratar o cancelar pólizas - aun así puedes ver presupuestos.",
+  "Solo l'admin del server può stipulare o disdire polizze - puoi comunque vedere i preventivi.",
+  "Alleen de serverbeheerder mag polissen afsluiten of opzeggen - offertes kun je wel bekijken.")
+t("tp_ins_note_manager", "Only farm managers and the admin may buy or cancel policies - you can still look at quotes.",
+  "Nur Hofmanager und der Admin dürfen Policen kaufen oder kündigen - Angebote kannst du trotzdem ansehen.",
+  "Seuls les gérants de la ferme et l'admin peuvent souscrire ou résilier - vous pouvez quand même voir les devis.",
+  "Tylko kierownicy gospodarstwa i administrator mogą kupować lub wypowiadać polisy - wyceny możesz oglądać.",
+  "Solo los gerentes de la granja y el administrador pueden contratar o cancelar - aun así puedes ver presupuestos.",
+  "Solo i gestori della fattoria e l'admin possono stipulare o disdire - puoi comunque vedere i preventivi.",
+  "Alleen boerderijbeheerders en de beheerder mogen polissen afsluiten of opzeggen - offertes kun je wel bekijken.")
+t("tp_ins_note_crop_off", "Crop insurance is not offered in this region yet (data permission pending).",
+  "Ernteversicherung wird in dieser Region noch nicht angeboten (Datenfreigabe ausstehend).",
+  "L'assurance récolte n'est pas encore proposée dans cette région (autorisation des données en attente).",
+  "Ubezpieczenie upraw nie jest jeszcze oferowane w tym regionie (czekamy na zgodę na dane).",
+  "El seguro de cosecha aún no se ofrece en esta región (permiso de datos pendiente).",
+  "L'assicurazione raccolto non è ancora offerta in questa regione (autorizzazione dei dati in attesa).",
+  "Oogstverzekering wordt in deze regio nog niet aangeboden (toestemming voor de gegevens volgt).")
+t("tp_ins_note_crop_none", "Crop insurance: this region's data has no plans.", "Ernteversicherung: die Daten dieser Region haben keine Pläne.",
+  "Assurance récolte : les données de cette région n'ont aucun plan.", "Ubezpieczenie upraw: dane tego regionu nie mają planów.",
+  "Seguro de cosecha: los datos de esta región no tienen planes.", "Assicurazione raccolto: i dati di questa regione non hanno piani.",
+  "Oogstverzekering: de gegevens van deze regio hebben geen plannen.")
+t("tp_ins_pol_crop", "%s at %d %% - %s. %d fields, insured value %s, about %s per month.",
+  "%s mit %d %% - %s. %d Felder, Versicherungssumme %s, etwa %s pro Monat.",
+  "%s à %d %% - %s. %d champs, valeur assurée %s, environ %s par mois.",
+  "%s, %d %% - %s. %d pól, suma ubezpieczenia %s, ok. %s miesięcznie.",
+  "%s al %d %% - %s. %d campos, valor asegurado %s, unos %s al mes.",
+  "%s al %d %% - %s. %d campi, valore assicurato %s, circa %s al mese.",
+  "%s op %d %% - %s. %d velden, verzekerde waarde %s, ongeveer %s per maand.")
+t("tp_ins_pol_crop_none", "No crop policy.", "Keine Ernteversicherung.", "Pas de contrat récolte.", "Brak polisy upraw.",
+  "Sin póliza de cosecha.", "Nessuna polizza raccolto.", "Geen oogstpolis.")
+t("tp_ins_pol_equip", "%s deductible - %s. %d vehicles worth %s, about %s per month.",
+  "%s Selbstbeteiligung - %s. %d Fahrzeuge im Wert von %s, etwa %s pro Monat.",
+  "Franchise %s - %s. %d véhicules d'une valeur de %s, environ %s par mois.",
+  "Udział własny %s - %s. %d pojazdów o wartości %s, ok. %s miesięcznie.",
+  "Franquicia %s - %s. %d vehículos por valor de %s, unos %s al mes.",
+  "Franchigia %s - %s. %d veicoli del valore di %s, circa %s al mese.",
+  "%s eigen risico - %s. %d voertuigen ter waarde van %s, ongeveer %s per maand.")
+t("tp_ins_pol_equip_none", "No equipment policy.", "Keine Geräteversicherung.", "Pas d'assurance matériel.",
+  "Brak ubezpieczenia sprzętu.", "Sin seguro de equipos.", "Nessuna assicurazione mezzi.", "Geen materieelverzekering.")
+t("tp_ins_pol_livestock", "All animals - %s. %d animals worth %s, about %s per month.",
+  "Alle Tiere - %s. %d Tiere im Wert von %s, etwa %s pro Monat.",
+  "Tous les animaux - %s. %d animaux d'une valeur de %s, environ %s par mois.",
+  "Wszystkie zwierzęta - %s. %d zwierząt o wartości %s, ok. %s miesięcznie.",
+  "Todos los animales - %s. %d animales por valor de %s, unos %s al mes.",
+  "Tutti gli animali - %s. %d animali del valore di %s, circa %s al mese.",
+  "Alle dieren - %s. %d dieren ter waarde van %s, ongeveer %s per maand.")
+t("tp_ins_pol_livestock_none", "No livestock policy.", "Keine Tierversicherung.", "Pas d'assurance bétail.",
+  "Brak ubezpieczenia zwierząt.", "Sin seguro de ganado.", "Nessuna assicurazione bestiame.", "Geen veeverzekering.")
+t("tp_ins_pol_claims", "Open claims: %d (their letters are on the Messages tab).", "Offene Schadensfälle: %d (die Briefe stehen im Reiter Nachrichten).",
+  "Sinistres en cours : %d (leurs lettres sont dans l'onglet Messages).", "Otwarte szkody: %d (listy są w karcie Wiadomości).",
+  "Siniestros abiertos: %d (sus cartas están en la pestaña Mensajes).", "Sinistri aperti: %d (le lettere sono nella scheda Messaggi).",
+  "Openstaande schades: %d (de brieven staan op het tabblad Berichten).")
+t("tp_ins_grows", "Your policies grow with your farm: fields, vehicles and animals you buy later are covered automatically, and the monthly price follows what you own - no need to buy again.",
+  "Deine Policen wachsen mit deinem Hof: später gekaufte Felder, Fahrzeuge und Tiere sind automatisch versichert, und der Monatspreis richtet sich nach deinem Besitz - kein erneuter Kauf nötig.",
+  "Vos contrats grandissent avec votre ferme : les champs, véhicules et animaux achetés plus tard sont couverts automatiquement, et le prix mensuel suit ce que vous possédez - inutile de racheter.",
+  "Twoje polisy rosną razem z gospodarstwem: pola, pojazdy i zwierzęta kupione później są objęte ochroną automatycznie, a miesięczna cena zależy od tego, co posiadasz - nie trzeba kupować ponownie.",
+  "Tus pólizas crecen con tu granja: los campos, vehículos y animales que compres después quedan cubiertos automáticamente, y el precio mensual sigue lo que posees - no hace falta volver a contratar.",
+  "Le tue polizze crescono con la tua fattoria: campi, veicoli e animali acquistati in seguito sono coperti automaticamente e il prezzo mensile segue ciò che possiedi - non serve riacquistare.",
+  "Je polissen groeien mee met je boerderij: velden, voertuigen en dieren die je later koopt zijn automatisch gedekt, en de maandprijs volgt wat je bezit - opnieuw afsluiten is niet nodig.")
+t("tp_ins_pol_change_hint", "To change a policy, choose the new cover under Start here and get a quote.",
+  "Um eine Police zu ändern, wähle unter Hier starten den neuen Schutz und hole ein Angebot.",
+  "Pour modifier un contrat, choisissez la nouvelle couverture dans Commencer ici et demandez un devis.",
+  "Aby zmienić polisę, wybierz nową ochronę w Zacznij tutaj i poproś o wycenę.",
+  "Para cambiar una póliza, elige la nueva cobertura en Empieza aquí y pide un presupuesto.",
+  "Per modificare una polizza, scegli la nuova copertura in Inizia qui e chiedi un preventivo.",
+  "Om een polis te wijzigen, kies je de nieuwe dekking onder Begin hier en vraag je een offerte.")
+
 # Compass directions (where the tornado is moving)
 for code, en, de, fr, pl, es, it, nl in [
     ("N", "N", "N", "N", "Pn", "N", "N", "N"),

@@ -425,6 +425,55 @@
         <text name="tp_msg_ins_lv_claim_approved" text="Livestock claim for %s approved: insured value %s - %s will be paid (5 percent excess and the state payment deducted)."/>
         <text name="tp_msg_ins_lv_gov_paid" text="USDA Livestock Indemnity Program paid %s."/>
         <text name="tp_msg_ins_lv_claim_paid" text="Livestock insurance paid for %s: %s."/>
+        <text name="tp_tab_insurance" text="Insurance"/>
+        <text name="tp_ins_nav_start" text="Start here"/>
+        <text name="tp_ins_nav_policies" text="My policies"/>
+        <text name="tp_ins_start_title" text="Choose your coverage"/>
+        <text name="tp_ins_crop" text="Crop insurance"/>
+        <text name="tp_ins_equip" text="Equipment insurance"/>
+        <text name="tp_ins_livestock" text="Livestock insurance"/>
+        <text name="tp_ins_not_included" text="Not included"/>
+        <text name="tp_ins_deductible_option" text="%s deductible"/>
+        <text name="tp_ins_livestock_all" text="All animals"/>
+        <text name="tp_btn_get_quote" text="Get quote"/>
+        <text name="tp_btn_confirm_start" text="Confirm &amp; start"/>
+        <text name="tp_btn_cancel_policy" text="Cancel policy"/>
+        <text name="tp_ins_q_crop" text="Crop - %s at %d %%: %d fields, insured value %s, about %s per month."/>
+        <text name="tp_ins_q_unchanged" text="(your current policy - no change)"/>
+        <text name="tp_ins_q_change" text="(change: about %s -&gt; %s per month)"/>
+        <text name="tp_ins_q_sales_closed" text="(crop policies can only be bought or changed in late winter / early spring - not sent)"/>
+        <text name="tp_ins_q_uninsurable" text="(%d fields with crops that cannot be insured)"/>
+        <text name="tp_ins_q_crop_kept" text="Crop - your current policy stays (cancel it under My policies)."/>
+        <text name="tp_ins_q_equip" text="Equipment - %s deductible: %d vehicles worth %s, about %s per month."/>
+        <text name="tp_ins_q_equip_kept" text="Equipment - your current policy stays (cancel it under My policies)."/>
+        <text name="tp_ins_q_livestock" text="Livestock - %d animals worth %s, about %s per month."/>
+        <text name="tp_ins_q_livestock_gov" text="(the USDA programme also pays 75 percent of the market value)"/>
+        <text name="tp_ins_q_livestock_kept" text="Livestock - your current policy stays (cancel it under My policies)."/>
+        <text name="tp_ins_q_nothing" text="Nothing chosen yet - pick the coverage above and press Get quote."/>
+        <text name="tp_ins_q_total" text="Total: about %s per month (money scale applied)."/>
+        <text name="tp_ins_q_wait" text="New cover starts about a week (real-life time) after you confirm; changes to a policy apply at once."/>
+        <text name="tp_ins_q_hint" text="Choose the coverage above, then press Get quote to see the price before you confirm."/>
+        <text name="tp_ins_q_nothing_new" text="Nothing new to start or change."/>
+        <text name="tp_ins_confirm_sent" text="%d requests sent - the insurer's letters confirm each policy."/>
+        <text name="tp_confirm_ins_start" text="Start or change the quoted policies? The premiums are charged every month."/>
+        <text name="tp_ins_cancel_sent" text="Cancel request sent."/>
+        <text name="tp_confirm_ins_cancel_crop" text="Cancel your crop policy? Open claims are still handled."/>
+        <text name="tp_confirm_ins_cancel_equip" text="Cancel your equipment policy? Open claims are still handled."/>
+        <text name="tp_confirm_ins_cancel_livestock" text="Cancel your livestock policy? Open claims are still handled."/>
+        <text name="tp_ins_note_off" text="Insurance is switched off - the server admin can turn it on in the Modules tab."/>
+        <text name="tp_ins_note_admin" text="Only the server admin may buy or cancel policies - you can still look at quotes."/>
+        <text name="tp_ins_note_manager" text="Only farm managers and the admin may buy or cancel policies - you can still look at quotes."/>
+        <text name="tp_ins_note_crop_off" text="Crop insurance is not offered in this region yet (data permission pending)."/>
+        <text name="tp_ins_note_crop_none" text="Crop insurance: this region's data has no plans."/>
+        <text name="tp_ins_pol_crop" text="%s at %d %% - %s. %d fields, insured value %s, about %s per month."/>
+        <text name="tp_ins_pol_crop_none" text="No crop policy."/>
+        <text name="tp_ins_pol_equip" text="%s deductible - %s. %d vehicles worth %s, about %s per month."/>
+        <text name="tp_ins_pol_equip_none" text="No equipment policy."/>
+        <text name="tp_ins_pol_livestock" text="All animals - %s. %d animals worth %s, about %s per month."/>
+        <text name="tp_ins_pol_livestock_none" text="No livestock policy."/>
+        <text name="tp_ins_pol_claims" text="Open claims: %d (their letters are on the Messages tab)."/>
+        <text name="tp_ins_grows" text="Your policies grow with your farm: fields, vehicles and animals you buy later are covered automatically, and the monthly price follows what you own - no need to buy again."/>
+        <text name="tp_ins_pol_change_hint" text="To change a policy, choose the new cover under Start here and get a quote."/>
         <text name="tp_dir_N" text="N"/>
         <text name="tp_dir_NE" text="NE"/>
         <text name="tp_dir_E" text="E"/>

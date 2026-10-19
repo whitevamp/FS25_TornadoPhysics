@@ -425,6 +425,55 @@
         <text name="tp_msg_ins_lv_claim_approved" text="Sinistro bestiame di %s approvato: valore assicurato %s - saranno pagati %s (dedotti il 5 per cento di franchigia e il pagamento statale)."/>
         <text name="tp_msg_ins_lv_gov_paid" text="Il Livestock Indemnity Program dell'USDA ha pagato %s."/>
         <text name="tp_msg_ins_lv_claim_paid" text="L'assicurazione bestiame ha pagato per %s: %s."/>
+        <text name="tp_tab_insurance" text="Assicurazioni"/>
+        <text name="tp_ins_nav_start" text="Inizia qui"/>
+        <text name="tp_ins_nav_policies" text="Le mie polizze"/>
+        <text name="tp_ins_start_title" text="Scegli la copertura"/>
+        <text name="tp_ins_crop" text="Assicurazione raccolto"/>
+        <text name="tp_ins_equip" text="Assicurazione mezzi"/>
+        <text name="tp_ins_livestock" text="Assicurazione bestiame"/>
+        <text name="tp_ins_not_included" text="Non incluso"/>
+        <text name="tp_ins_deductible_option" text="Franchigia %s"/>
+        <text name="tp_ins_livestock_all" text="Tutti gli animali"/>
+        <text name="tp_btn_get_quote" text="Preventivo"/>
+        <text name="tp_btn_confirm_start" text="Conferma e avvia"/>
+        <text name="tp_btn_cancel_policy" text="Disdici polizza"/>
+        <text name="tp_ins_q_crop" text="Raccolto - %s al %d %%: %d campi, valore assicurato %s, circa %s al mese."/>
+        <text name="tp_ins_q_unchanged" text="(la tua polizza attuale - nessuna modifica)"/>
+        <text name="tp_ins_q_change" text="(modifica: circa %s -&gt; %s al mese)"/>
+        <text name="tp_ins_q_sales_closed" text="(polizze raccolto solo a fine inverno / inizio primavera - non inviato)"/>
+        <text name="tp_ins_q_uninsurable" text="(%d campi con colture non assicurabili)"/>
+        <text name="tp_ins_q_crop_kept" text="Raccolto - la polizza attuale resta (disdicila in Le mie polizze)."/>
+        <text name="tp_ins_q_equip" text="Mezzi - franchigia %s: %d veicoli del valore di %s, circa %s al mese."/>
+        <text name="tp_ins_q_equip_kept" text="Mezzi - la polizza attuale resta (disdicila in Le mie polizze)."/>
+        <text name="tp_ins_q_livestock" text="Bestiame - %d animali del valore di %s, circa %s al mese."/>
+        <text name="tp_ins_q_livestock_gov" text="(il programma USDA paga anche il 75 per cento del valore di mercato)"/>
+        <text name="tp_ins_q_livestock_kept" text="Bestiame - la polizza attuale resta (disdicila in Le mie polizze)."/>
+        <text name="tp_ins_q_nothing" text="Niente scelto - scegli la copertura sopra e premi Preventivo."/>
+        <text name="tp_ins_q_total" text="Totale: circa %s al mese (scala del denaro applicata)."/>
+        <text name="tp_ins_q_wait" text="La nuova copertura inizia circa una settimana (tempo reale) dopo la conferma; le modifiche valgono subito."/>
+        <text name="tp_ins_q_hint" text="Scegli la copertura sopra, poi premi Preventivo per vedere il prezzo prima di confermare."/>
+        <text name="tp_ins_q_nothing_new" text="Niente di nuovo da avviare o modificare."/>
+        <text name="tp_ins_confirm_sent" text="%d richieste inviate - le lettere dell'assicuratore confermano ogni polizza."/>
+        <text name="tp_confirm_ins_start" text="Avviare o modificare le polizze del preventivo? I premi vengono addebitati ogni mese."/>
+        <text name="tp_ins_cancel_sent" text="Richiesta di disdetta inviata."/>
+        <text name="tp_confirm_ins_cancel_crop" text="Disdire la polizza raccolto? I sinistri aperti vengono ancora gestiti."/>
+        <text name="tp_confirm_ins_cancel_equip" text="Disdire l'assicurazione mezzi? I sinistri aperti vengono ancora gestiti."/>
+        <text name="tp_confirm_ins_cancel_livestock" text="Disdire l'assicurazione bestiame? I sinistri aperti vengono ancora gestiti."/>
+        <text name="tp_ins_note_off" text="L'assicurazione è disattivata - l'admin del server può attivarla nella scheda Moduli."/>
+        <text name="tp_ins_note_admin" text="Solo l'admin del server può stipulare o disdire polizze - puoi comunque vedere i preventivi."/>
+        <text name="tp_ins_note_manager" text="Solo i gestori della fattoria e l'admin possono stipulare o disdire - puoi comunque vedere i preventivi."/>
+        <text name="tp_ins_note_crop_off" text="L'assicurazione raccolto non è ancora offerta in questa regione (autorizzazione dei dati in attesa)."/>
+        <text name="tp_ins_note_crop_none" text="Assicurazione raccolto: i dati di questa regione non hanno piani."/>
+        <text name="tp_ins_pol_crop" text="%s al %d %% - %s. %d campi, valore assicurato %s, circa %s al mese."/>
+        <text name="tp_ins_pol_crop_none" text="Nessuna polizza raccolto."/>
+        <text name="tp_ins_pol_equip" text="Franchigia %s - %s. %d veicoli del valore di %s, circa %s al mese."/>
+        <text name="tp_ins_pol_equip_none" text="Nessuna assicurazione mezzi."/>
+        <text name="tp_ins_pol_livestock" text="Tutti gli animali - %s. %d animali del valore di %s, circa %s al mese."/>
+        <text name="tp_ins_pol_livestock_none" text="Nessuna assicurazione bestiame."/>
+        <text name="tp_ins_pol_claims" text="Sinistri aperti: %d (le lettere sono nella scheda Messaggi)."/>
+        <text name="tp_ins_grows" text="Le tue polizze crescono con la tua fattoria: campi, veicoli e animali acquistati in seguito sono coperti automaticamente e il prezzo mensile segue ciò che possiedi - non serve riacquistare."/>
+        <text name="tp_ins_pol_change_hint" text="Per modificare una polizza, scegli la nuova copertura in Inizia qui e chiedi un preventivo."/>
         <text name="tp_dir_N" text="N"/>
         <text name="tp_dir_NE" text="NE"/>
         <text name="tp_dir_E" text="E"/>

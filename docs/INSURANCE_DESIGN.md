@@ -1276,6 +1276,27 @@ insured value. Modules tab: policy choice (shows the monthly price) + status (no
 is off). Console `t_dev insurance livestock quote|buy|cancel|claims|end`. Offline test
 `tools/test/test_livestock.lua` (40 checks, real husbandry kill code).
 
+### 18.8 Insurance tab – step 1: Start here + My policies (2026-10-19)
+
+User's decisions (all five recommendations): own tab between Modules and Messages (paging arrows if the tab bar
+gets crowded); several policies in one Confirm; only farm managers + admin confirm / cancel (others see quotes);
+changes go through the quote with old -> new price; order Start here + My policies -> Claims -> Payments +
+Coverage info. `scripts/gui/pages/TornadoPageInsurance.lua` (full width, `noLayout`, side buttons switch the
+sections `insStart` / `insPolicies`). Choices start from the farm's current policies on every visit; Get quote
+builds one line per type from the modules' own `getFarmQuote` and stores a signature of the choices – Confirm is
+only enabled for a fresh quote that changes something (a crop change outside the sales window is shown but not
+sent); Confirm sends `cropBuy` / `equipBuy` / `livestockBuy` (the server checks permission and rules again).
+"Not included" never cancels – Cancel lives under My policies (with a confirm). The local permission check
+mirrors `TornadoInsurance:canManage` (single player / host, admin, farm manager unless admin-only). The
+Modules tab lost the per-farm buy / status rows; the equipment total-loss rows stay there until the Claims
+section. Offline test `tools/test/test_inspage.lua` (39 checks).
+
+Coverage follows the farm (user question: "how do I add a new tractor / more animals?"): nothing to add. Crop
+covers every field the farm owns at the time of the event, equipment every owned vehicle at tornado contact
+(value snapshotted then), livestock every animal in the farm's pastures (valued at death); the monthly premium
+is recomputed from the current assets at each billing. Only the first purchase has the waiting period. The
+quote and My policies show the note `tp_ins_grows`.
+
 ## 19. Rules for the implementation
 
 - No `pcall` / `xpcall` (GIANTS ModHub rule) – explicit nil checks only.

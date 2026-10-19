@@ -151,6 +151,20 @@
   value for free (no policy needed); a policy pays the rest. Animals only die
   with the Livestock module on. Modules tab or t_dev insurance livestock.
 
+[UI] Insurance Tab
+- New control panel tab for your farm's insurance. "Start here": choose crop
+  (plan + coverage), equipment (deductible) and livestock cover, press Get
+  quote to see what is insured, its value and the monthly price of each line
+  (old -> new for a change) and the total, then Confirm & start buys / changes
+  everything chosen at once. "My policies": every policy with its status,
+  terms and price, and Cancel. Only farm managers and the admin can confirm or
+  cancel; everybody can look at quotes. The buy rows left the Modules tab
+  (it keeps the server-wide insurance settings).
+- Policies grow with the farm: fields, vehicles and animals bought after the
+  policy started are covered automatically, and the monthly premium is
+  recalculated each month from what the farm owns. No need to buy again;
+  the quote and My policies say so.
+
 [UI] Messages Tab
 - New control panel tab with the mod's messages to your farm (insurance
   letters, storm and damage reports, alerts, tornado warnings): recent messages

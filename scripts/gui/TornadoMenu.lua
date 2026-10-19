@@ -34,8 +34,8 @@ function TornadoMenu:onGuiSetupFinished()
 
     -- Tab order. Missing page scripts are skipped so one broken file never takes the panel down.
     local order = { TornadoPageSettings, TornadoPagePhysics, TornadoPageTuning, TornadoPageEffects, TornadoPageModules,
-        TornadoPageMessages, TornadoPageDeveloper }
-    for i = 1, 7 do
+        TornadoPageInsurance, TornadoPageMessages, TornadoPageDeveloper }
+    for i = 1, 8 do
         local page = order[i]
         if page ~= nil then
             self.pages[#self.pages + 1] = page
@@ -67,7 +67,7 @@ function TornadoMenu:onGuiSetupFinished()
     end
 
     -- Hide tab buttons whose page script did not load.
-    for _, key in ipairs({ "Settings", "Physics", "Tuning", "Effects", "Modules", "Messages", "Developer" }) do
+    for _, key in ipairs({ "Settings", "Physics", "Tuning", "Effects", "Modules", "Insurance", "Messages", "Developer" }) do
         if self:getPageIndexByKey(key) == nil then
             if self["tab" .. key] ~= nil then self["tab" .. key]:setVisible(false) end
             if self["page" .. key] ~= nil then self["page" .. key]:setVisible(false) end
