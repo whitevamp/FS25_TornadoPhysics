@@ -10,14 +10,6 @@
         <text name="tp_tab_effects" text="Effecten"/>
         <text name="tp_tab_modules" text="Modules"/>
         <text name="tp_tab_messages" text="Berichten"/>
-        <text name="tp_sec_msg_recent" text="Recente berichten (laatste 24 u)"/>
-        <text name="tp_sec_msg_saved" text="Opgeslagen berichten"/>
-        <text name="tp_msg_message" text="Bericht"/>
-        <text name="tp_msg_show" text="Hele bericht lezen"/>
-        <text name="tp_msg_save" text="Dit bericht bewaren"/>
-        <text name="tp_msg_remove" text="Opgeslagen bericht verwijderen"/>
-        <text name="tp_tip_msg_recent" text="De berichten van de mod aan je boerderij (verzekeringsbrieven, stormrapporten, waarschuwingen). Ze blijven 24 speluren tenzij je ze opslaat."/>
-        <text name="tp_tip_msg_saved" text="Berichten die je hebt opgeslagen. Ze blijven tot je ze verwijdert."/>
         <text name="tp_btn_save" text="Opslaan"/>
         <text name="tp_btn_remove" text="Verwijderen"/>
         <text name="tp_msg_none" text="Geen berichten"/>
@@ -102,6 +94,8 @@
         <text name="tp_sec_objects" text="Objecten"/>
         <text name="tp_lift_bales" text="Balen optillen"/>
         <text name="tp_tip_lift_bales" text="De tornado tilt balen en pallets op."/>
+        <text name="tp_remove_bales" text="Tornado verwijdert balen"/>
+        <text name="tp_tip_remove_bales" text="Aan: de regel van de tornado uit het basisspel - balen buiten dicht bij de kern worden gewoon verwijderd (in het basisspel aan). Uit (standaard): balen worden nooit verwijderd, alleen weggeslingerd door de tornadofysica."/>
         <text name="tp_lift_logs" text="Boomstammen optillen"/>
         <text name="tp_tip_lift_logs" text="De tornado tilt boomstammen op."/>
         <text name="tp_sec_border" text="Kaartrand"/>
@@ -383,6 +377,32 @@
         <text name="tp_msg_ins_eq_rebuilt" text="%s is gerepareerd: de titel is nu Herbouwd (de verkoopprijs blijft lager)."/>
         <text name="tp_msg_ins_eq_none_status" text="Geen materieelverzekering. Kies een eigen risico om alle voertuigen en werktuigen van je boerderij te verzekeren."/>
         <text name="tp_msg_ins_eq_status" text="Materieelverzekering: %s eigen risico (%s) - %d voertuigen, waarde %s, ongeveer %s per maand, %d total losses om te beslissen."/>
+        <text name="tp_tab_messages_new" text="Berichten (%d)"/>
+        <text name="tp_msg_recent_tab" text="Recent (%d)"/>
+        <text name="tp_msg_recent_tab_new" text="Recent (%d, %d nieuw)"/>
+        <text name="tp_msg_saved_tab" text="Bewaard (%d)"/>
+        <text name="tp_msg_filter" text="Soort"/>
+        <text name="tp_msg_col_time" text="Tijd"/>
+        <text name="tp_msg_col_type" text="Soort"/>
+        <text name="tp_msg_col_message" text="Bericht"/>
+        <text name="tp_msg_selected" text="Gekozen bericht"/>
+        <text name="tp_msg_showing" text="%d - %d van %d"/>
+        <text name="tp_msg_none_recent" text="Geen recente berichten (ze blijven 24 speluren)."/>
+        <text name="tp_msg_none_saved" text="Geen bewaarde berichten."/>
+        <text name="tp_msg_hidden" text="%d berichten verborgen door het soortfilter - kies Alle om ze te zien."/>
+        <text name="tp_msg_hidden_short" text="(%d verborgen door filter)"/>
+        <text name="tp_btn_scroll_up" text="Omhoog"/>
+        <text name="tp_btn_scroll_down" text="Omlaag"/>
+        <text name="tp_btn_remove_all" text="Alle bewaarde wissen"/>
+        <text name="tp_confirm_msg_remove_all" text="ALLE bewaarde berichten van je boerderij wissen?"/>
+        <text name="tp_msg_removed_all_done" text="Alle bewaarde berichten gewist."/>
+        <text name="tp_msgtype_all" text="Alle"/>
+        <text name="tp_msgtype_insurance" text="Verzekering"/>
+        <text name="tp_msgtype_report" text="Stormrapport"/>
+        <text name="tp_msgtype_hazard" text="Natuurgevaar"/>
+        <text name="tp_msgtype_tornado" text="Tornado"/>
+        <text name="tp_msgtype_recovery" text="Berging"/>
+        <text name="tp_msgtype_other" text="Overig"/>
         <text name="tp_dir_N" text="N"/>
         <text name="tp_dir_NE" text="NO"/>
         <text name="tp_dir_E" text="O"/>

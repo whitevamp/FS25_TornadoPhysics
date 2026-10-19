@@ -148,6 +148,17 @@ function TornadoMessageLog:removeMessage(farmId, id)
     return true
 end
 
+--- Server: removes every saved message of the farm.
+function TornadoMessageLog:removeAllSaved(farmId)
+    local farm = self:getFarm(farmId)
+    if #farm.saved == 0 then
+        return false
+    end
+    farm.saved = {}
+    self:syncFarm(farmId)
+    return true
+end
+
 --- Server: is the player behind this connection on that farm (or the admin / host)?
 function TornadoMessageLog:canEdit(connection, farmId)
     if connection == nil then
@@ -174,6 +185,8 @@ function TornadoMessageLog:handleAction(connection, farmId, action, id)
         self:saveMessage(farmId, id)
     elseif action == TornadoMessageLogEvent.ACTION_REMOVE then
         self:removeMessage(farmId, id)
+    elseif action == TornadoMessageLogEvent.ACTION_REMOVE_ALL then
+        self:removeAllSaved(farmId)
     end
 end
 
@@ -233,6 +246,33 @@ function TornadoMessageLog:getPlayerMessages(list)
         table.insert(messages, source[i])
     end
     return messages
+end
+
+-- Message types (Messages tab filter and Type column), from the text key. Order = filter order.
+TornadoMessageLog.TYPES = { "INSURANCE", "REPORT", "HAZARD", "TORNADO", "RECOVERY", "OTHER" }
+TornadoMessageLog.TYPE_KEYS = {
+    INSURANCE = "tp_msgtype_insurance", REPORT = "tp_msgtype_report", HAZARD = "tp_msgtype_hazard",
+    TORNADO = "tp_msgtype_tornado", RECOVERY = "tp_msgtype_recovery", OTHER = "tp_msgtype_other",
+}
+-- Key prefixes per type (first match wins).
+TornadoMessageLog.TYPE_PREFIXES = {
+    { "tp_msg_ins_", "INSURANCE" },
+    { "tp_msg_damage_report", "REPORT" }, { "tp_msg_storm_damage", "REPORT" },
+    { "tp_msg_drought", "HAZARD" }, { "tp_msg_dry_spell", "HAZARD" }, { "tp_msg_field_fire", "HAZARD" },
+    { "tp_msg_fire_out", "HAZARD" }, { "tp_msg_flood", "HAZARD" },
+    { "tp_msg_touchdown", "TORNADO" }, { "tp_msg_outbreak", "TORNADO" },
+    { "tp_msg_tow_bill", "RECOVERY" },
+}
+
+--- Type of a message (one of TYPES).
+function TornadoMessageLog.getType(entry)
+    local key = entry ~= nil and entry.key or ""
+    for _, rule in ipairs(TornadoMessageLog.TYPE_PREFIXES) do
+        if string.sub(key, 1, #rule[1]) == rule[1] then
+            return rule[2]
+        end
+    end
+    return "OTHER"
 end
 
 --- Text of a message in this player's language.

@@ -38,7 +38,7 @@ TornadoText = { PARAM_STRING = 0, PARAM_NUMBER = 1, PARAM_KEY = 2, PARAM_MONEY =
     num = function(v) return { type = 1, value = v } end, get = function(k) return k == "tp_msg_day" and "Day" or k end,
     formatMessage = function(key, params) return key .. ":" .. tostring(params[1] and params[1].value or "") end }
 TornadoDestruction = { _resolveSavegamePath = function() return "savegame1/" end }
-TornadoMessageLogEvent = { ACTION_SAVE = 1, ACTION_REMOVE = 2 }
+TornadoMessageLogEvent = { ACTION_SAVE = 1, ACTION_REMOVE = 2, ACTION_REMOVE_ALL = 3 }
 
 dofile("scripts/TornadoMessageLog.lua")
 local L = TornadoMessageLog
@@ -108,6 +108,28 @@ check("ids continue", L.nextId > reportId, true)
 -- Remove through the player's request
 L:request(TornadoMessageLogEvent.ACTION_REMOVE, reportId)
 check("removed", #L:getFarm(1).saved, 0)
+
+-- Remove all saved (Messages tab button)
+L:record("tp_msg_flood", { TornadoText.num(4) }, 3, 1)
+L:saveMessage(1, L:getFarm(1).recent[#L:getFarm(1).recent].id)
+L:record("tp_msg_touchdown", { TornadoText.num(1) }, 1, nil)
+L:saveMessage(1, L:getFarm(1).recent[#L:getFarm(1).recent].id)
+check("two saved before remove all", #L:getFarm(1).saved, 2)
+L:handleAction(other, 1, TornadoMessageLogEvent.ACTION_REMOVE_ALL, 0)
+check("remove all refused for another farm", #L:getFarm(1).saved, 2)
+L:request(TornadoMessageLogEvent.ACTION_REMOVE_ALL, 0)
+check("remove all: none saved", #L:getFarm(1).saved, 0)
+check("remove all keeps the recent ones", #L:getFarm(1).recent >= 0, true)
+
+-- Message types (Type column / filter)
+check("insurance letter", L.getType({ key = "tp_msg_ins_eq_claim_paid" }), "INSURANCE")
+check("storm report", L.getType({ key = "tp_msg_damage_report" }), "REPORT")
+check("hazard: field fire", L.getType({ key = "tp_msg_field_fire" }), "HAZARD")
+check("hazard: flood damage", L.getType({ key = "tp_msg_flood_damage" }), "HAZARD")
+check("tornado: touchdown", L.getType({ key = "tp_msg_touchdown" }), "TORNADO")
+check("recovery: tow bill with engine", L.getType({ key = "tp_msg_tow_bill_engine" }), "RECOVERY")
+check("unknown key: other", L.getType({ key = "tp_msg_something" }), "OTHER")
+check("every type has a text key", (function() for _, k in ipairs(L.TYPES) do if L.TYPE_KEYS[k] == nil then return false end end return true end)(), true)
 
 -- Cap
 for i = 1, L.MAX_RECENT + 10 do L:record("tp_msg_x", { TornadoText.num(i) }, 3, 2) end

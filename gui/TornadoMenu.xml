@@ -244,6 +244,12 @@
                     <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_lift_bales"/>
                 </Bitmap>
                 <Bitmap profile="fs25_multiTextOptionContainer">
+                    <BinaryOption profile="fs25_settingsBinaryOption" id="physRemoveBales" onClick="onClickBinary">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_remove_bales"/>
+                    </BinaryOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_remove_bales"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
                     <BinaryOption profile="fs25_settingsBinaryOption" id="physLiftLogs" onClick="onClickBinary">
                         <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_lift_logs"/>
                     </BinaryOption>
@@ -652,54 +658,131 @@
         </GuiElement>
 
         <!-- =====================================================================
-             MESSAGES TAB  (message history)   -> scripts/gui/pages/TornadoPageMessages.lua
+             MESSAGES TAB  (message history, full-width table)   -> scripts/gui/pages/TornadoPageMessages.lua
+             Left: Recent / Saved switch, type filter, a 12-row table (TornadoTable: mouse wheel, scroll
+             buttons, controller focus). Right: the selected message and its actions. No tooltip column
+             and no shared scrollbar on this tab (the page has no layoutMessages element).
              ===================================================================== -->
         <GuiElement profile="fs25_subCategorySelectorTabbedContainer" id="pageMessages">
-            <ScrollingLayout profile="fs25_settingsLayout" id="layoutMessages">
+            <Button profile="tornado_tableButton" id="msgTabRecent" position="0px -10px" text="$l10n_tp_msg_recent_tab" onClick="onClickAction">
+                <ThreePartBitmap profile="tornado_actionButtonBg"/>
+            </Button>
+            <Button profile="tornado_tableButton" id="msgTabSaved" position="275px -10px" text="$l10n_tp_msg_saved_tab" onClick="onClickAction">
+                <ThreePartBitmap profile="tornado_actionButtonBg"/>
+            </Button>
+            <GuiElement profile="tornado_tableFilterBox" position="560px -6px">
+                <MultiTextOption profile="fs25_settingsMultiTextOption" id="msgFilter" onClick="onClickChoice"/>
+                <Text profile="tornado_tableFilterTitle" text="$l10n_tp_msg_filter"/>
+            </GuiElement>
 
-                <Text profile="fs25_settingsSectionHeader" name="sectionHeader" text="$l10n_tp_sec_msg_recent"/>
-                <Bitmap profile="fs25_multiTextOptionContainer">
-                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="msgRecent" onClick="onClickChoice">
-                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_msg_recent"/>
-                    </MultiTextOption>
-                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_msg_message"/>
-                </Bitmap>
-                <Bitmap profile="fs25_multiTextOptionContainer">
-                    <Button profile="tornado_actionButton" id="msgRecentShow" text="$l10n_tp_btn_show" onClick="onClickAction">
-                        <ThreePartBitmap profile="tornado_actionButtonBg"/>
-                    </Button>
-                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_msg_show"/>
-                </Bitmap>
-                <Bitmap profile="fs25_multiTextOptionContainer">
-                    <Button profile="tornado_actionButton" id="msgRecentSave" text="$l10n_tp_btn_save" onClick="onClickAction">
-                        <ThreePartBitmap profile="tornado_actionButtonBg"/>
-                    </Button>
-                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_msg_save"/>
-                </Bitmap>
+            <GuiElement profile="tornado_tableArea" id="msgTable" position="0px -62px">
+                <Text profile="tornado_tableHeaderText" position="40px 0px" text="$l10n_tp_msg_col_time"/>
+                <Text profile="tornado_tableHeaderText" position="230px 0px" text="$l10n_tp_msg_col_type"/>
+                <Text profile="tornado_tableHeaderText" position="400px 0px" text="$l10n_tp_msg_col_message"/>
+                <Button profile="tornado_tableRow" id="msgRow1" position="0px -30px" onClick="onClickAction" onFocus="onFocusRow">
+                    <ThreePartBitmap profile="tornado_tableRowBg" name="background"/>
+                    <Text profile="tornado_tableCellMark" name="mark" position="12px 0px" text=""/>
+                    <Text profile="tornado_tableCell" name="time" position="40px 0px" width="180px" text=""/>
+                    <Text profile="tornado_tableCell" name="type" position="230px 0px" width="160px" text=""/>
+                    <Text profile="tornado_tableCell" name="text" position="400px 0px" width="490px" text=""/>
+                </Button>
+                <Button profile="tornado_tableRow" id="msgRow2" position="0px -78px" onClick="onClickAction" onFocus="onFocusRow">
+                    <ThreePartBitmap profile="tornado_tableRowBg" name="background"/>
+                    <Text profile="tornado_tableCellMark" name="mark" position="12px 0px" text=""/>
+                    <Text profile="tornado_tableCell" name="time" position="40px 0px" width="180px" text=""/>
+                    <Text profile="tornado_tableCell" name="type" position="230px 0px" width="160px" text=""/>
+                    <Text profile="tornado_tableCell" name="text" position="400px 0px" width="490px" text=""/>
+                </Button>
+                <Button profile="tornado_tableRow" id="msgRow3" position="0px -126px" onClick="onClickAction" onFocus="onFocusRow">
+                    <ThreePartBitmap profile="tornado_tableRowBg" name="background"/>
+                    <Text profile="tornado_tableCellMark" name="mark" position="12px 0px" text=""/>
+                    <Text profile="tornado_tableCell" name="time" position="40px 0px" width="180px" text=""/>
+                    <Text profile="tornado_tableCell" name="type" position="230px 0px" width="160px" text=""/>
+                    <Text profile="tornado_tableCell" name="text" position="400px 0px" width="490px" text=""/>
+                </Button>
+                <Button profile="tornado_tableRow" id="msgRow4" position="0px -174px" onClick="onClickAction" onFocus="onFocusRow">
+                    <ThreePartBitmap profile="tornado_tableRowBg" name="background"/>
+                    <Text profile="tornado_tableCellMark" name="mark" position="12px 0px" text=""/>
+                    <Text profile="tornado_tableCell" name="time" position="40px 0px" width="180px" text=""/>
+                    <Text profile="tornado_tableCell" name="type" position="230px 0px" width="160px" text=""/>
+                    <Text profile="tornado_tableCell" name="text" position="400px 0px" width="490px" text=""/>
+                </Button>
+                <Button profile="tornado_tableRow" id="msgRow5" position="0px -222px" onClick="onClickAction" onFocus="onFocusRow">
+                    <ThreePartBitmap profile="tornado_tableRowBg" name="background"/>
+                    <Text profile="tornado_tableCellMark" name="mark" position="12px 0px" text=""/>
+                    <Text profile="tornado_tableCell" name="time" position="40px 0px" width="180px" text=""/>
+                    <Text profile="tornado_tableCell" name="type" position="230px 0px" width="160px" text=""/>
+                    <Text profile="tornado_tableCell" name="text" position="400px 0px" width="490px" text=""/>
+                </Button>
+                <Button profile="tornado_tableRow" id="msgRow6" position="0px -270px" onClick="onClickAction" onFocus="onFocusRow">
+                    <ThreePartBitmap profile="tornado_tableRowBg" name="background"/>
+                    <Text profile="tornado_tableCellMark" name="mark" position="12px 0px" text=""/>
+                    <Text profile="tornado_tableCell" name="time" position="40px 0px" width="180px" text=""/>
+                    <Text profile="tornado_tableCell" name="type" position="230px 0px" width="160px" text=""/>
+                    <Text profile="tornado_tableCell" name="text" position="400px 0px" width="490px" text=""/>
+                </Button>
+                <Button profile="tornado_tableRow" id="msgRow7" position="0px -318px" onClick="onClickAction" onFocus="onFocusRow">
+                    <ThreePartBitmap profile="tornado_tableRowBg" name="background"/>
+                    <Text profile="tornado_tableCellMark" name="mark" position="12px 0px" text=""/>
+                    <Text profile="tornado_tableCell" name="time" position="40px 0px" width="180px" text=""/>
+                    <Text profile="tornado_tableCell" name="type" position="230px 0px" width="160px" text=""/>
+                    <Text profile="tornado_tableCell" name="text" position="400px 0px" width="490px" text=""/>
+                </Button>
+                <Button profile="tornado_tableRow" id="msgRow8" position="0px -366px" onClick="onClickAction" onFocus="onFocusRow">
+                    <ThreePartBitmap profile="tornado_tableRowBg" name="background"/>
+                    <Text profile="tornado_tableCellMark" name="mark" position="12px 0px" text=""/>
+                    <Text profile="tornado_tableCell" name="time" position="40px 0px" width="180px" text=""/>
+                    <Text profile="tornado_tableCell" name="type" position="230px 0px" width="160px" text=""/>
+                    <Text profile="tornado_tableCell" name="text" position="400px 0px" width="490px" text=""/>
+                </Button>
+                <Button profile="tornado_tableRow" id="msgRow9" position="0px -414px" onClick="onClickAction" onFocus="onFocusRow">
+                    <ThreePartBitmap profile="tornado_tableRowBg" name="background"/>
+                    <Text profile="tornado_tableCellMark" name="mark" position="12px 0px" text=""/>
+                    <Text profile="tornado_tableCell" name="time" position="40px 0px" width="180px" text=""/>
+                    <Text profile="tornado_tableCell" name="type" position="230px 0px" width="160px" text=""/>
+                    <Text profile="tornado_tableCell" name="text" position="400px 0px" width="490px" text=""/>
+                </Button>
+                <Button profile="tornado_tableRow" id="msgRow10" position="0px -462px" onClick="onClickAction" onFocus="onFocusRow">
+                    <ThreePartBitmap profile="tornado_tableRowBg" name="background"/>
+                    <Text profile="tornado_tableCellMark" name="mark" position="12px 0px" text=""/>
+                    <Text profile="tornado_tableCell" name="time" position="40px 0px" width="180px" text=""/>
+                    <Text profile="tornado_tableCell" name="type" position="230px 0px" width="160px" text=""/>
+                    <Text profile="tornado_tableCell" name="text" position="400px 0px" width="490px" text=""/>
+                </Button>
+                <Button profile="tornado_tableRow" id="msgRow11" position="0px -510px" onClick="onClickAction" onFocus="onFocusRow">
+                    <ThreePartBitmap profile="tornado_tableRowBg" name="background"/>
+                    <Text profile="tornado_tableCellMark" name="mark" position="12px 0px" text=""/>
+                    <Text profile="tornado_tableCell" name="time" position="40px 0px" width="180px" text=""/>
+                    <Text profile="tornado_tableCell" name="type" position="230px 0px" width="160px" text=""/>
+                    <Text profile="tornado_tableCell" name="text" position="400px 0px" width="490px" text=""/>
+                </Button>
+                <Button profile="tornado_tableRow" id="msgRow12" position="0px -558px" onClick="onClickAction" onFocus="onFocusRow">
+                    <ThreePartBitmap profile="tornado_tableRowBg" name="background"/>
+                    <Text profile="tornado_tableCellMark" name="mark" position="12px 0px" text=""/>
+                    <Text profile="tornado_tableCell" name="time" position="40px 0px" width="180px" text=""/>
+                    <Text profile="tornado_tableCell" name="type" position="230px 0px" width="160px" text=""/>
+                    <Text profile="tornado_tableCell" name="text" position="400px 0px" width="490px" text=""/>
+                </Button>
+            </GuiElement>
+            <Button profile="tornado_tableButton" id="msgScrollUp" position="0px -684px" width="160px" text="$l10n_tp_btn_scroll_up" onClick="onClickAction">
+                <ThreePartBitmap profile="tornado_actionButtonBg"/>
+            </Button>
+            <Button profile="tornado_tableButton" id="msgScrollDown" position="175px -684px" width="160px" text="$l10n_tp_btn_scroll_down" onClick="onClickAction">
+                <ThreePartBitmap profile="tornado_actionButtonBg"/>
+            </Button>
+            <Text profile="tornado_tableInfoText" id="msgInfo" position="350px -692px" text=""/>
 
-                <Text profile="fs25_settingsSectionHeader" name="sectionHeader" text="$l10n_tp_sec_msg_saved"/>
-                <Bitmap profile="fs25_multiTextOptionContainer">
-                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="msgSaved" onClick="onClickChoice">
-                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_msg_saved"/>
-                    </MultiTextOption>
-                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_msg_message"/>
-                </Bitmap>
-                <Bitmap profile="fs25_multiTextOptionContainer">
-                    <Button profile="tornado_actionButton" id="msgSavedShow" text="$l10n_tp_btn_show" onClick="onClickAction">
-                        <ThreePartBitmap profile="tornado_actionButtonBg"/>
-                    </Button>
-                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_msg_show"/>
-                </Bitmap>
-                <Bitmap profile="fs25_multiTextOptionContainer">
-                    <Button profile="tornado_actionButton" id="msgSavedRemove" text="$l10n_tp_btn_remove" onClick="onClickAction">
-                        <ThreePartBitmap profile="tornado_actionButtonBg"/>
-                    </Button>
-                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_msg_remove"/>
-                </Bitmap>
-            </ScrollingLayout>
-            <Bitmap profile="fs25_settingsTooltipSeparator"/>
+            <Text profile="tornado_detailTitle" position="940px -14px" text="$l10n_tp_msg_selected"/>
+            <Text profile="tornado_detailLine" id="msgDetailTime" position="940px -60px" text=""/>
+            <Text profile="tornado_detailLine" id="msgDetailType" position="940px -88px" text=""/>
+            <Text profile="tornado_detailBody" id="msgDetailText" position="940px -128px" text=""/>
+            <Button profile="tornado_tableButton" id="msgAction" position="940px -580px" width="300px" text="$l10n_tp_btn_save" onClick="onClickAction">
+                <ThreePartBitmap profile="tornado_actionButtonBg"/>
+            </Button>
+            <Button profile="tornado_tableButtonDanger" id="msgRemoveAll" position="940px -632px" width="300px" text="$l10n_tp_btn_remove_all" onClick="onClickAction">
+                <ThreePartBitmap profile="tornado_actionButtonDangerBg"/>
+            </Button>
         </GuiElement>
-
         <!-- =====================================================================
              DEVELOPER TAB  (t_dev, t_set mapui dump)   -> scripts/gui/pages/TornadoPageDeveloper.lua
              ===================================================================== -->

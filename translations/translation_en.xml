@@ -10,14 +10,6 @@
         <text name="tp_tab_effects" text="Effects"/>
         <text name="tp_tab_modules" text="Modules"/>
         <text name="tp_tab_messages" text="Messages"/>
-        <text name="tp_sec_msg_recent" text="Recent messages (last 24 h)"/>
-        <text name="tp_sec_msg_saved" text="Saved messages"/>
-        <text name="tp_msg_message" text="Message"/>
-        <text name="tp_msg_show" text="Read the whole message"/>
-        <text name="tp_msg_save" text="Keep this message"/>
-        <text name="tp_msg_remove" text="Remove this saved message"/>
-        <text name="tp_tip_msg_recent" text="The mod's messages to your farm (insurance letters, storm reports, alerts). They are kept for 24 in-game hours unless you save them."/>
-        <text name="tp_tip_msg_saved" text="Messages you saved. They stay until you remove them."/>
         <text name="tp_btn_save" text="Save"/>
         <text name="tp_btn_remove" text="Remove"/>
         <text name="tp_msg_none" text="No messages"/>
@@ -102,6 +94,8 @@
         <text name="tp_sec_objects" text="Objects"/>
         <text name="tp_lift_bales" text="Lift bales"/>
         <text name="tp_tip_lift_bales" text="Let the tornado pick up bales and pallets."/>
+        <text name="tp_remove_bales" text="Twister removes bales"/>
+        <text name="tp_tip_remove_bales" text="On: the base game's twister rule - bales lying outside near the core are simply deleted (the base game has this on). Off (default): bales are never deleted, only thrown by the tornado physics."/>
         <text name="tp_lift_logs" text="Lift logs"/>
         <text name="tp_tip_lift_logs" text="Let the tornado pick up logs."/>
         <text name="tp_sec_border" text="Map border"/>
@@ -383,6 +377,32 @@
         <text name="tp_msg_ins_eq_rebuilt" text="%s is repaired: its title is now Rebuilt (the sell price stays lower)."/>
         <text name="tp_msg_ins_eq_none_status" text="No equipment policy. Choose a deductible to insure every vehicle and tool your farm owns."/>
         <text name="tp_msg_ins_eq_status" text="Equipment insurance: %s deductible (%s) - %d vehicles, value %s, about %s per month, %d total losses to decide."/>
+        <text name="tp_tab_messages_new" text="Messages (%d)"/>
+        <text name="tp_msg_recent_tab" text="Recent (%d)"/>
+        <text name="tp_msg_recent_tab_new" text="Recent (%d, %d new)"/>
+        <text name="tp_msg_saved_tab" text="Saved (%d)"/>
+        <text name="tp_msg_filter" text="Type"/>
+        <text name="tp_msg_col_time" text="Time"/>
+        <text name="tp_msg_col_type" text="Type"/>
+        <text name="tp_msg_col_message" text="Message"/>
+        <text name="tp_msg_selected" text="Selected message"/>
+        <text name="tp_msg_showing" text="Showing %d - %d of %d"/>
+        <text name="tp_msg_none_recent" text="No recent messages (they are kept for 24 in-game hours)."/>
+        <text name="tp_msg_none_saved" text="No saved messages."/>
+        <text name="tp_msg_hidden" text="%d messages hidden by the type filter - set Type to All to see them."/>
+        <text name="tp_msg_hidden_short" text="(%d hidden by the filter)"/>
+        <text name="tp_btn_scroll_up" text="Up"/>
+        <text name="tp_btn_scroll_down" text="Down"/>
+        <text name="tp_btn_remove_all" text="Remove all saved"/>
+        <text name="tp_confirm_msg_remove_all" text="Remove ALL saved messages of your farm?"/>
+        <text name="tp_msg_removed_all_done" text="All saved messages removed."/>
+        <text name="tp_msgtype_all" text="All"/>
+        <text name="tp_msgtype_insurance" text="Insurance"/>
+        <text name="tp_msgtype_report" text="Storm report"/>
+        <text name="tp_msgtype_hazard" text="Hazard"/>
+        <text name="tp_msgtype_tornado" text="Tornado"/>
+        <text name="tp_msgtype_recovery" text="Recovery"/>
+        <text name="tp_msgtype_other" text="Other"/>
         <text name="tp_dir_N" text="N"/>
         <text name="tp_dir_NE" text="NE"/>
         <text name="tp_dir_E" text="E"/>

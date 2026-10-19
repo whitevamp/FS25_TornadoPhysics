@@ -39,33 +39,6 @@ t("tp_tab_tuning", "Tuning", "Feinabstimmung", "Ajustements", "Strojenie", "Ajus
 t("tp_tab_effects", "Effects", "Effekte", "Effets", "Efekty", "Efectos", "Effetti", "Effecten")
 t("tp_tab_modules", "Modules", "Module", "Modules", "Moduły", "Módulos", "Moduli", "Modules")
 t("tp_tab_messages", "Messages", "Nachrichten", "Messages", "Wiadomości", "Mensajes", "Messaggi", "Berichten")
-t("tp_sec_msg_recent", "Recent messages (last 24 h)", "Neue Nachrichten (letzte 24 Std.)", "Messages récents (24 dernières h)",
-  "Ostatnie wiadomości (24 godz.)", "Mensajes recientes (últimas 24 h)", "Messaggi recenti (ultime 24 h)",
-  "Recente berichten (laatste 24 u)")
-t("tp_sec_msg_saved", "Saved messages", "Gespeicherte Nachrichten", "Messages enregistrés", "Zapisane wiadomości",
-  "Mensajes guardados", "Messaggi salvati", "Opgeslagen berichten")
-t("tp_msg_message", "Message", "Nachricht", "Message", "Wiadomość", "Mensaje", "Messaggio", "Bericht")
-t("tp_msg_show", "Read the whole message", "Ganze Nachricht lesen", "Lire le message entier", "Przeczytaj całą wiadomość",
-  "Leer el mensaje completo", "Leggi tutto il messaggio", "Hele bericht lezen")
-t("tp_msg_save", "Keep this message", "Diese Nachricht behalten", "Garder ce message", "Zachowaj tę wiadomość",
-  "Guardar este mensaje", "Conserva questo messaggio", "Dit bericht bewaren")
-t("tp_msg_remove", "Remove this saved message", "Gespeicherte Nachricht entfernen", "Supprimer ce message enregistré",
-  "Usuń zapisaną wiadomość", "Quitar este mensaje guardado", "Rimuovi questo messaggio salvato", "Opgeslagen bericht verwijderen")
-t("tp_tip_msg_recent",
-  "The mod's messages to your farm (insurance letters, storm reports, alerts). They are kept for 24 in-game hours unless you save them.",
-  "Die Nachrichten des Mods an deinen Hof (Versicherungsbriefe, Sturmberichte, Warnungen). Sie bleiben 24 Spielstunden, wenn du sie nicht speicherst.",
-  "Les messages du mod à votre ferme (lettres d'assurance, rapports de tempête, alertes). Ils restent 24 heures de jeu si vous ne les enregistrez pas.",
-  "Wiadomości moda dla twojego gospodarstwa (listy ubezpieczyciela, raporty burzowe, ostrzeżenia). Zostają 24 godziny gry, jeśli ich nie zapiszesz.",
-  "Los mensajes del mod para tu granja (cartas del seguro, informes de tormentas, avisos). Se guardan 24 horas de juego si no los guardas tú.",
-  "I messaggi del mod alla tua fattoria (lettere dell'assicurazione, rapporti sui temporali, avvisi). Restano 24 ore di gioco se non li salvi.",
-  "De berichten van de mod aan je boerderij (verzekeringsbrieven, stormrapporten, waarschuwingen). Ze blijven 24 speluren tenzij je ze opslaat.")
-t("tp_tip_msg_saved", "Messages you saved. They stay until you remove them.",
-  "Von dir gespeicherte Nachrichten. Sie bleiben, bis du sie entfernst.",
-  "Les messages que vous avez enregistrés. Ils restent jusqu'à ce que vous les supprimiez.",
-  "Zapisane przez ciebie wiadomości. Zostają, dopóki ich nie usuniesz.",
-  "Mensajes que has guardado. Se quedan hasta que los quites.",
-  "I messaggi che hai salvato. Restano finché non li rimuovi.",
-  "Berichten die je hebt opgeslagen. Ze blijven tot je ze verwijdert.")
 t("tp_btn_save", "Save", "Speichern", "Enregistrer", "Zapisz", "Guardar", "Salva", "Opslaan")
 t("tp_btn_remove", "Remove", "Entfernen", "Supprimer", "Usuń", "Quitar", "Rimuovi", "Verwijderen")
 t("tp_msg_none", "No messages", "Keine Nachrichten", "Aucun message", "Brak wiadomości", "Sin mensajes", "Nessun messaggio",
@@ -365,6 +338,16 @@ t("tp_lift_bales", "Lift bales", "Ballen anheben", "Soulever les balles", "Podno
 t("tp_tip_lift_bales", "Let the tornado pick up bales and pallets.", "Der Tornado hebt Ballen und Paletten an.",
   "La tornade soulève les balles et les palettes.", "Tornado podnosi bele i palety.", "El tornado levanta pacas y palés.",
   "Il tornado solleva balle e pallet.", "De tornado tilt balen en pallets op.")
+t("tp_remove_bales", "Twister removes bales", "Twister entfernt Ballen", "La tornade supprime les balles", "Trąba usuwa bele",
+  "El tornado elimina pacas", "Il tornado rimuove le balle", "Tornado verwijdert balen")
+t("tp_tip_remove_bales",
+  "On: the base game's twister rule - bales lying outside near the core are simply deleted (the base game has this on). Off (default): bales are never deleted, only thrown by the tornado physics.",
+  "An: die Regel des Twisters im Grundspiel - Ballen draußen in Kernnähe werden einfach gelöscht (im Grundspiel immer an). Aus (Standard): Ballen werden nie gelöscht, nur von der Tornado-Physik geworfen.",
+  "Activé : la règle de la tornade du jeu de base - les balles dehors près du cœur sont simplement supprimées (activé dans le jeu de base). Désactivé (par défaut) : les balles ne sont jamais supprimées, seulement projetées par la physique de la tornade.",
+  "Wł.: zasada trąby z gry podstawowej - bele leżące na zewnątrz blisko rdzenia są po prostu usuwane (w grze podstawowej włączone). Wył. (domyślnie): bele nigdy nie są usuwane, tylko rzucane przez fizykę tornada.",
+  "Activado: la regla del tornado del juego base - las pacas al aire libre cerca del núcleo se eliminan sin más (activado en el juego base). Desactivado (por defecto): las pacas nunca se eliminan, solo las lanza la física del tornado.",
+  "Attivo: la regola del tornado del gioco base - le balle all'aperto vicino al nucleo vengono semplicemente eliminate (attivo nel gioco base). Disattivo (predefinito): le balle non vengono mai eliminate, solo lanciate dalla fisica del tornado.",
+  "Aan: de regel van de tornado uit het basisspel - balen buiten dicht bij de kern worden gewoon verwijderd (in het basisspel aan). Uit (standaard): balen worden nooit verwijderd, alleen weggeslingerd door de tornadofysica.")
 t("tp_lift_logs", "Lift logs", "Baumstämme anheben", "Soulever les troncs", "Podnoś kłody", "Levantar troncos",
   "Solleva tronchi", "Boomstammen optillen")
 t("tp_tip_lift_logs", "Let the tornado pick up logs.", "Der Tornado hebt Baumstämme an.", "La tornade soulève les troncs.",
@@ -1490,6 +1473,59 @@ t("tp_msg_ins_eq_status", "Equipment insurance: %s deductible (%s) - %d vehicles
   "Seguro de equipos: franquicia %s (%s) - %d vehículos, valor %s, unos %s al mes, %d siniestros totales por decidir.",
   "Assicurazione mezzi: franchigia %s (%s) - %d veicoli, valore %s, circa %s al mese, %d danni totali da decidere.",
   "Materieelverzekering: %s eigen risico (%s) - %d voertuigen, waarde %s, ongeveer %s per maand, %d total losses om te beslissen.")
+
+# =====================================================================================================
+# MESSAGES TAB (full-width table)
+# =====================================================================================================
+t("tp_tab_messages_new", "Messages (%d)", "Nachrichten (%d)", "Messages (%d)", "Wiadomości (%d)", "Mensajes (%d)", "Messaggi (%d)",
+  "Berichten (%d)")
+t("tp_msg_recent_tab", "Recent (%d)", "Neueste (%d)", "Récents (%d)", "Najnowsze (%d)", "Recientes (%d)", "Recenti (%d)", "Recent (%d)")
+t("tp_msg_recent_tab_new", "Recent (%d, %d new)", "Neueste (%d, %d neu)", "Récents (%d, %d nouv.)", "Najnowsze (%d, %d nowe)",
+  "Recientes (%d, %d nuevos)", "Recenti (%d, %d nuovi)", "Recent (%d, %d nieuw)")
+t("tp_msg_saved_tab", "Saved (%d)", "Gespeichert (%d)", "Enregistrés (%d)", "Zapisane (%d)", "Guardados (%d)", "Salvati (%d)",
+  "Bewaard (%d)")
+t("tp_msg_filter", "Type", "Art", "Type", "Rodzaj", "Tipo", "Tipo", "Soort")
+t("tp_msg_col_time", "Time", "Zeit", "Heure", "Czas", "Hora", "Ora", "Tijd")
+t("tp_msg_col_type", "Type", "Art", "Type", "Rodzaj", "Tipo", "Tipo", "Soort")
+t("tp_msg_col_message", "Message", "Nachricht", "Message", "Wiadomość", "Mensaje", "Messaggio", "Bericht")
+t("tp_msg_selected", "Selected message", "Ausgewählte Nachricht", "Message sélectionné", "Wybrana wiadomość", "Mensaje seleccionado",
+  "Messaggio selezionato", "Gekozen bericht")
+t("tp_msg_showing", "Showing %d - %d of %d", "Zeige %d - %d von %d", "Affichage %d - %d sur %d", "Pozycje %d - %d z %d",
+  "Mostrando %d - %d de %d", "Mostrati %d - %d di %d", "%d - %d van %d")
+t("tp_msg_none_recent", "No recent messages (they are kept for 24 in-game hours).",
+  "Keine neuen Nachrichten (sie bleiben 24 Spielstunden).", "Aucun message récent (ils restent 24 heures de jeu).",
+  "Brak najnowszych wiadomości (są przechowywane 24 godziny gry).", "No hay mensajes recientes (se guardan 24 horas de juego).",
+  "Nessun messaggio recente (restano 24 ore di gioco).", "Geen recente berichten (ze blijven 24 speluren).")
+t("tp_msg_none_saved", "No saved messages.", "Keine gespeicherten Nachrichten.", "Aucun message enregistré.",
+  "Brak zapisanych wiadomości.", "No hay mensajes guardados.", "Nessun messaggio salvato.", "Geen bewaarde berichten.")
+t("tp_msg_hidden", "%d messages hidden by the type filter - set Type to All to see them.",
+  "%d Nachrichten durch den Artfilter ausgeblendet - Art auf Alle stellen, um sie zu sehen.",
+  "%d messages masqués par le filtre de type - choisissez Tous pour les voir.",
+  "%d wiadomości ukrytych przez filtr rodzaju - ustaw Wszystkie, aby je zobaczyć.",
+  "%d mensajes ocultos por el filtro de tipo - elige Todos para verlos.",
+  "%d messaggi nascosti dal filtro tipo - scegli Tutti per vederli.",
+  "%d berichten verborgen door het soortfilter - kies Alle om ze te zien.")
+t("tp_msg_hidden_short", "(%d hidden by the filter)", "(%d durch Filter ausgeblendet)", "(%d masqués par le filtre)",
+  "(%d ukrytych przez filtr)", "(%d ocultos por el filtro)", "(%d nascosti dal filtro)", "(%d verborgen door filter)")
+t("tp_btn_scroll_up", "Up", "Hoch", "Haut", "W górę", "Arriba", "Su", "Omhoog")
+t("tp_btn_scroll_down", "Down", "Runter", "Bas", "W dół", "Abajo", "Giù", "Omlaag")
+t("tp_btn_remove_all", "Remove all saved", "Alle gespeicherten löschen", "Supprimer tous", "Usuń wszystkie zapisane",
+  "Eliminar todos", "Rimuovi tutti", "Alle bewaarde wissen")
+t("tp_confirm_msg_remove_all", "Remove ALL saved messages of your farm?", "ALLE gespeicherten Nachrichten deines Hofs löschen?",
+  "Supprimer TOUS les messages enregistrés de votre ferme ?", "Usunąć WSZYSTKIE zapisane wiadomości gospodarstwa?",
+  "¿Eliminar TODOS los mensajes guardados de tu granja?", "Rimuovere TUTTI i messaggi salvati della fattoria?",
+  "ALLE bewaarde berichten van je boerderij wissen?")
+t("tp_msg_removed_all_done", "All saved messages removed.", "Alle gespeicherten Nachrichten gelöscht.",
+  "Tous les messages enregistrés supprimés.", "Usunięto wszystkie zapisane wiadomości.", "Todos los mensajes guardados eliminados.",
+  "Tutti i messaggi salvati rimossi.", "Alle bewaarde berichten gewist.")
+t("tp_msgtype_all", "All", "Alle", "Tous", "Wszystkie", "Todos", "Tutti", "Alle")
+t("tp_msgtype_insurance", "Insurance", "Versicherung", "Assurance", "Ubezpieczenie", "Seguro", "Assicurazione", "Verzekering")
+t("tp_msgtype_report", "Storm report", "Unwetterbericht", "Rapport d'orage", "Raport burzy", "Informe de tormenta",
+  "Rapporto tempesta", "Stormrapport")
+t("tp_msgtype_hazard", "Hazard", "Naturgefahr", "Aléa", "Zagrożenie", "Riesgo natural", "Calamità", "Natuurgevaar")
+t("tp_msgtype_tornado", "Tornado", "Tornado", "Tornade", "Tornado", "Tornado", "Tornado", "Tornado")
+t("tp_msgtype_recovery", "Recovery", "Bergung", "Dépannage", "Holowanie", "Rescate", "Soccorso", "Berging")
+t("tp_msgtype_other", "Other", "Sonstiges", "Autre", "Inne", "Otros", "Altro", "Overig")
 
 # Compass directions (where the tornado is moving)
 for code, en, de, fr, pl, es, it, nl in [

@@ -1209,6 +1209,18 @@ save / remove are client → server actions checked against the player's farm (a
 insurance OFF. This is the first part of the phase 4 inbox. Offline test `tools/test/test_messagelog.lua`
 (22 checks).
 
+2026-10-18 – full-width table (user's decisions: 12 rows, type filter, Remove all saved, unread marker, basic
+controller support). `scripts/gui/TornadoTable.lua` is the reusable part: scroll / selection state of a
+fixed-row table (pure logic, kept by entry key so it survives new entries and filters) – meant for the phase 4
+insurance pages too. `TornadoPageMessages` (v2) draws it with normal TornadoMenuPage defs (Recent / Saved
+buttons, type filter choice, 12 row buttons, Up / Down, Save / Remove, Remove all saved with confirm); the page
+has no settings list (`noLayout`), so the shared scrollbar is hidden on it. Types come from the text key
+(`TornadoMessageLog.getType`: INSURANCE / REPORT / HAZARD / TORNADO / RECOVERY / OTHER). Unread: messages newer
+than the last visit of the tab (this session) get a * (the font has no bullet character); the tab button shows how many. Remove all = new event
+action `ACTION_REMOVE_ALL`. Mouse wheel via `TornadoMenu:mouseEvent`, row focus via `onFocusRow`. The panel's
+shoulder buttons keep switching panel tabs; Recent / Saved are focusable buttons instead. Offline tests
+`test_table.lua` (24), `test_msgpage.lua` (33, page drawn on fake elements), `test_messagelog.lua` (34).
+
 ### 18.6 Phase 3 – equipment insurance (2026-10-17)
 
 `scripts/insurance/TornadoInsuranceEquipment.lua`, installed by `TornadoInsurance:loadMap` like the crop module.

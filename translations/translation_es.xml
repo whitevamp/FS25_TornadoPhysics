@@ -10,14 +10,6 @@
         <text name="tp_tab_effects" text="Efectos"/>
         <text name="tp_tab_modules" text="Módulos"/>
         <text name="tp_tab_messages" text="Mensajes"/>
-        <text name="tp_sec_msg_recent" text="Mensajes recientes (últimas 24 h)"/>
-        <text name="tp_sec_msg_saved" text="Mensajes guardados"/>
-        <text name="tp_msg_message" text="Mensaje"/>
-        <text name="tp_msg_show" text="Leer el mensaje completo"/>
-        <text name="tp_msg_save" text="Guardar este mensaje"/>
-        <text name="tp_msg_remove" text="Quitar este mensaje guardado"/>
-        <text name="tp_tip_msg_recent" text="Los mensajes del mod para tu granja (cartas del seguro, informes de tormentas, avisos). Se guardan 24 horas de juego si no los guardas tú."/>
-        <text name="tp_tip_msg_saved" text="Mensajes que has guardado. Se quedan hasta que los quites."/>
         <text name="tp_btn_save" text="Guardar"/>
         <text name="tp_btn_remove" text="Quitar"/>
         <text name="tp_msg_none" text="Sin mensajes"/>
@@ -102,6 +94,8 @@
         <text name="tp_sec_objects" text="Objetos"/>
         <text name="tp_lift_bales" text="Levantar pacas"/>
         <text name="tp_tip_lift_bales" text="El tornado levanta pacas y palés."/>
+        <text name="tp_remove_bales" text="El tornado elimina pacas"/>
+        <text name="tp_tip_remove_bales" text="Activado: la regla del tornado del juego base - las pacas al aire libre cerca del núcleo se eliminan sin más (activado en el juego base). Desactivado (por defecto): las pacas nunca se eliminan, solo las lanza la física del tornado."/>
         <text name="tp_lift_logs" text="Levantar troncos"/>
         <text name="tp_tip_lift_logs" text="El tornado levanta troncos."/>
         <text name="tp_sec_border" text="Borde del mapa"/>
@@ -383,6 +377,32 @@
         <text name="tp_msg_ins_eq_rebuilt" text="%s está reparado: su título ahora es Reconstruido (el precio de venta sigue siendo más bajo)."/>
         <text name="tp_msg_ins_eq_none_status" text="Sin seguro de equipos. Elige una franquicia para asegurar todos los vehículos y aperos de tu granja."/>
         <text name="tp_msg_ins_eq_status" text="Seguro de equipos: franquicia %s (%s) - %d vehículos, valor %s, unos %s al mes, %d siniestros totales por decidir."/>
+        <text name="tp_tab_messages_new" text="Mensajes (%d)"/>
+        <text name="tp_msg_recent_tab" text="Recientes (%d)"/>
+        <text name="tp_msg_recent_tab_new" text="Recientes (%d, %d nuevos)"/>
+        <text name="tp_msg_saved_tab" text="Guardados (%d)"/>
+        <text name="tp_msg_filter" text="Tipo"/>
+        <text name="tp_msg_col_time" text="Hora"/>
+        <text name="tp_msg_col_type" text="Tipo"/>
+        <text name="tp_msg_col_message" text="Mensaje"/>
+        <text name="tp_msg_selected" text="Mensaje seleccionado"/>
+        <text name="tp_msg_showing" text="Mostrando %d - %d de %d"/>
+        <text name="tp_msg_none_recent" text="No hay mensajes recientes (se guardan 24 horas de juego)."/>
+        <text name="tp_msg_none_saved" text="No hay mensajes guardados."/>
+        <text name="tp_msg_hidden" text="%d mensajes ocultos por el filtro de tipo - elige Todos para verlos."/>
+        <text name="tp_msg_hidden_short" text="(%d ocultos por el filtro)"/>
+        <text name="tp_btn_scroll_up" text="Arriba"/>
+        <text name="tp_btn_scroll_down" text="Abajo"/>
+        <text name="tp_btn_remove_all" text="Eliminar todos"/>
+        <text name="tp_confirm_msg_remove_all" text="¿Eliminar TODOS los mensajes guardados de tu granja?"/>
+        <text name="tp_msg_removed_all_done" text="Todos los mensajes guardados eliminados."/>
+        <text name="tp_msgtype_all" text="Todos"/>
+        <text name="tp_msgtype_insurance" text="Seguro"/>
+        <text name="tp_msgtype_report" text="Informe de tormenta"/>
+        <text name="tp_msgtype_hazard" text="Riesgo natural"/>
+        <text name="tp_msgtype_tornado" text="Tornado"/>
+        <text name="tp_msgtype_recovery" text="Rescate"/>
+        <text name="tp_msgtype_other" text="Otros"/>
         <text name="tp_dir_N" text="N"/>
         <text name="tp_dir_NE" text="NE"/>
         <text name="tp_dir_E" text="E"/>

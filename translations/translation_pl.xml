@@ -10,14 +10,6 @@
         <text name="tp_tab_effects" text="Efekty"/>
         <text name="tp_tab_modules" text="Moduły"/>
         <text name="tp_tab_messages" text="Wiadomości"/>
-        <text name="tp_sec_msg_recent" text="Ostatnie wiadomości (24 godz.)"/>
-        <text name="tp_sec_msg_saved" text="Zapisane wiadomości"/>
-        <text name="tp_msg_message" text="Wiadomość"/>
-        <text name="tp_msg_show" text="Przeczytaj całą wiadomość"/>
-        <text name="tp_msg_save" text="Zachowaj tę wiadomość"/>
-        <text name="tp_msg_remove" text="Usuń zapisaną wiadomość"/>
-        <text name="tp_tip_msg_recent" text="Wiadomości moda dla twojego gospodarstwa (listy ubezpieczyciela, raporty burzowe, ostrzeżenia). Zostają 24 godziny gry, jeśli ich nie zapiszesz."/>
-        <text name="tp_tip_msg_saved" text="Zapisane przez ciebie wiadomości. Zostają, dopóki ich nie usuniesz."/>
         <text name="tp_btn_save" text="Zapisz"/>
         <text name="tp_btn_remove" text="Usuń"/>
         <text name="tp_msg_none" text="Brak wiadomości"/>
@@ -102,6 +94,8 @@
         <text name="tp_sec_objects" text="Obiekty"/>
         <text name="tp_lift_bales" text="Podnoś bele"/>
         <text name="tp_tip_lift_bales" text="Tornado podnosi bele i palety."/>
+        <text name="tp_remove_bales" text="Trąba usuwa bele"/>
+        <text name="tp_tip_remove_bales" text="Wł.: zasada trąby z gry podstawowej - bele leżące na zewnątrz blisko rdzenia są po prostu usuwane (w grze podstawowej włączone). Wył. (domyślnie): bele nigdy nie są usuwane, tylko rzucane przez fizykę tornada."/>
         <text name="tp_lift_logs" text="Podnoś kłody"/>
         <text name="tp_tip_lift_logs" text="Tornado podnosi kłody."/>
         <text name="tp_sec_border" text="Krawędź mapy"/>
@@ -383,6 +377,32 @@
         <text name="tp_msg_ins_eq_rebuilt" text="%s jest naprawiony: jego tytuł to teraz Odbudowany (cena sprzedaży pozostaje niższa)."/>
         <text name="tp_msg_ins_eq_none_status" text="Brak ubezpieczenia sprzętu. Wybierz udział własny, aby ubezpieczyć wszystkie pojazdy i maszyny gospodarstwa."/>
         <text name="tp_msg_ins_eq_status" text="Ubezpieczenie sprzętu: udział własny %s (%s) - %d pojazdów, wartość %s, ok. %s miesięcznie, %d szkód całkowitych do decyzji."/>
+        <text name="tp_tab_messages_new" text="Wiadomości (%d)"/>
+        <text name="tp_msg_recent_tab" text="Najnowsze (%d)"/>
+        <text name="tp_msg_recent_tab_new" text="Najnowsze (%d, %d nowe)"/>
+        <text name="tp_msg_saved_tab" text="Zapisane (%d)"/>
+        <text name="tp_msg_filter" text="Rodzaj"/>
+        <text name="tp_msg_col_time" text="Czas"/>
+        <text name="tp_msg_col_type" text="Rodzaj"/>
+        <text name="tp_msg_col_message" text="Wiadomość"/>
+        <text name="tp_msg_selected" text="Wybrana wiadomość"/>
+        <text name="tp_msg_showing" text="Pozycje %d - %d z %d"/>
+        <text name="tp_msg_none_recent" text="Brak najnowszych wiadomości (są przechowywane 24 godziny gry)."/>
+        <text name="tp_msg_none_saved" text="Brak zapisanych wiadomości."/>
+        <text name="tp_msg_hidden" text="%d wiadomości ukrytych przez filtr rodzaju - ustaw Wszystkie, aby je zobaczyć."/>
+        <text name="tp_msg_hidden_short" text="(%d ukrytych przez filtr)"/>
+        <text name="tp_btn_scroll_up" text="W górę"/>
+        <text name="tp_btn_scroll_down" text="W dół"/>
+        <text name="tp_btn_remove_all" text="Usuń wszystkie zapisane"/>
+        <text name="tp_confirm_msg_remove_all" text="Usunąć WSZYSTKIE zapisane wiadomości gospodarstwa?"/>
+        <text name="tp_msg_removed_all_done" text="Usunięto wszystkie zapisane wiadomości."/>
+        <text name="tp_msgtype_all" text="Wszystkie"/>
+        <text name="tp_msgtype_insurance" text="Ubezpieczenie"/>
+        <text name="tp_msgtype_report" text="Raport burzy"/>
+        <text name="tp_msgtype_hazard" text="Zagrożenie"/>
+        <text name="tp_msgtype_tornado" text="Tornado"/>
+        <text name="tp_msgtype_recovery" text="Holowanie"/>
+        <text name="tp_msgtype_other" text="Inne"/>
         <text name="tp_dir_N" text="Pn"/>
         <text name="tp_dir_NE" text="Pn-Wsch"/>
         <text name="tp_dir_E" text="Wsch"/>

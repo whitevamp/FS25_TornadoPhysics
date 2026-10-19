@@ -2,7 +2,8 @@
 ---@description Message history (TornadoMessageLog) in multiplayer:
 ---   STATE  server -> the players of one farm (or a joining player): farm id, recent + saved messages
 ---          (id, key, parameters, in-game time)
----   ACTION client -> server: farm id, save / remove, message id (the server checks the player is on that farm)
+---   ACTION client -> server: farm id, save / remove / remove all saved, message id (the server checks the
+---          player is on that farm)
 
 -- Events may only be registered while no mission exists (when the mod's scripts load). If this file is
 -- loaded again for another savegame in the same game session, keep using the class registered the first time.
@@ -17,6 +18,7 @@ TornadoMessageLogEvent.MODE_STATE = 0
 TornadoMessageLogEvent.MODE_ACTION = 1
 TornadoMessageLogEvent.ACTION_SAVE = 1
 TornadoMessageLogEvent.ACTION_REMOVE = 2
+TornadoMessageLogEvent.ACTION_REMOVE_ALL = 3   -- every saved message of the farm (id unused)
 TornadoMessageLogEvent.MAX_ENTRIES = 63     -- 6 bits per list
 TornadoMessageLogEvent.MAX_PARAMS = 15      -- 4 bits
 

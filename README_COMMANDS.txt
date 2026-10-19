@@ -34,6 +34,8 @@ t_physics fence <m>             - Safety distance from the map border (default 4
 t_physics dmg_in <number>       - Vehicle damage per second in the core (default 0.25).
 t_physics dmg_out <number>      - Vehicle damage per second in the outer winds (default 0.08).
 t_physics lift_bales            - Toggles lifting bales (default ON).
+t_physics remove_bales          - Toggles the game twister deleting bales near its core (base game: ON,
+                                  default here OFF = bales are only thrown).
 t_physics lift_logs             - Toggles lifting logs (default ON).
 t_physics border                - Toggles map border protection (default ON).
 t_physics indoor_damage         - Toggles damage to vehicles inside sheds (default OFF).
@@ -150,6 +152,7 @@ t_dev twister                   - Twister at your position right now, in any sea
                                   summer twister when the current season has none).
 t_dev twister areas             - Prints the running twister's crop destruction areas (perlin, points,
                                   convex or not) and draws them on the ground; again = drawing off.
+t_dev messages                  - Prints the Messages tab's state and every table row (display problems).
 t_dev kill_test (!)             - Husbandry kill test on the nearest pasture (kills animals).
 
 -- WILDLIFE --

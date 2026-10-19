@@ -13,6 +13,7 @@ TornadoPhysics.settings = {
     indoor_damage         = false,
     outdoor_damage        = true,
     lift_bales            = true,
+    remove_bales          = false,   -- true = the game twister's own rule: bales near its core are deleted
     lift_logs             = true,
     lift_props            = true,
     border_safety         = true,
@@ -1510,10 +1511,11 @@ function TornadoPhysics:applyTwisterDestruction(twister, radius, efNum)
     twister.objectDestructionHeight = math.max(self.OBJECT_MIN_HEIGHT, twister.objectDestructionHeight or 0)
 
     if TornadoDebug then
-        TornadoDebug:info("EVENT", string.format("Crop damage: circles %.0f / %.0f / %.0f m crush %d / %d / %d %% (perlin %d / %d / %d), EF-%s | objects: always %.0f m, trees / buildings to %.0f m, bales left to the physics",
+        TornadoDebug:info("EVENT", string.format("Crop damage: circles %.0f / %.0f / %.0f m crush %d / %d / %d %% (perlin %d / %d / %d), EF-%s | objects: always %.0f m, trees / buildings to %.0f m, bales %s",
             zones[1].radius, zones[2].radius, zones[3].radius, math.floor(zones[1].share * 100 + 0.5),
             math.floor(zones[2].share * 100 + 0.5), math.floor(zones[3].share * 100 + 0.5), zones[1].perlin, zones[2].perlin,
-            zones[3].perlin, tostring(efNum), twister.objectDestructionInnerRadius, twister.objectDestructionRadius))
+            zones[3].perlin, tostring(efNum), twister.objectDestructionInnerRadius, twister.objectDestructionRadius,
+            self.settings.remove_bales and "removed near the core (game rule)" or "left to the physics"))
     end
 end
 
@@ -1529,8 +1531,11 @@ function TornadoPhysics:installTwisterHooks(twister)
     local originalFinish = twister.onFinishCallback
     if originalFinish ~= nil then
         twister.onFinishCallback = function(tw, ...)
-            TornadoPhysics.removeBales(tw.foundObjects)
-            TornadoPhysics.removeBales(tw.currentObjects)
+            -- "Remove bales" setting ON = the base game's behaviour (bales near the core are deleted).
+            if not (TornadoPhysics.settings ~= nil and TornadoPhysics.settings.remove_bales) then
+                TornadoPhysics.removeBales(tw.foundObjects)
+                TornadoPhysics.removeBales(tw.currentObjects)
+            end
             return originalFinish(tw, ...)
         end
     end

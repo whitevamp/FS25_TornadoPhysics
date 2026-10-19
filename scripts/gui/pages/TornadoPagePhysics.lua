@@ -147,6 +147,7 @@ TornadoPagePhysics = TornadoMenuPage.new("Physics", "Physics", {
 
     -- Objects
     toggleRow("physLiftBales", "lift_bales", "lift_bales"),
+    toggleRow("physRemoveBales", "remove_bales", "remove_bales"),
     toggleRow("physLiftLogs", "lift_logs", "lift_logs"),
 
     -- Map border

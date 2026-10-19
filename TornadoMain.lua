@@ -102,6 +102,7 @@ function TornadoMain:loadMap(name)
 
     -- Load the control panel UI (base page first, then one script per tab, then the screen).
     source(Utils.getFilename("scripts/gui/TornadoMenuPage.lua", modDir))
+    source(Utils.getFilename("scripts/gui/TornadoTable.lua", modDir))
     source(Utils.getFilename("scripts/gui/pages/TornadoPageSettings.lua", modDir))
     source(Utils.getFilename("scripts/gui/pages/TornadoPagePhysics.lua", modDir))
     source(Utils.getFilename("scripts/gui/pages/TornadoPageTuning.lua", modDir))

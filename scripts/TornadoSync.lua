@@ -55,6 +55,7 @@ TornadoSync.SETTINGS = {
     physicsSetting("damage_center", "f"),
     physicsSetting("damage_outer", "f"),
     physicsSetting("lift_bales", "b"),
+    physicsSetting("remove_bales", "b"),
     physicsSetting("lift_logs", "b"),
     physicsSetting("border_safety", "b"),
     physicsSetting("indoor_damage", "b"),

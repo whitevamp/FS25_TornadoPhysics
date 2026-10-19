@@ -73,6 +73,7 @@ function TornadoConsole:cmdHelp(command)
         print("  dmg_in <number>       - Sets damage/sec inside the core (0-100). Ex: t_physics dmg_in 0.3")
         print("  dmg_out <number>      - Sets damage/sec in outer winds (0-100). Ex: t_physics dmg_out 0.1")
         print("  lift_bales            - Toggles lifting bales.")
+        print("  remove_bales          - Toggles the game twister deleting bales near its core (base game: ON, mod default OFF).")
         print("  lift_logs             - Toggles lifting logs.")
         print("  border                - Toggles map border safety protection.")
         print("  indoor_damage         - Toggles damage to vehicles inside sheds.")
@@ -184,6 +185,7 @@ function TornadoConsole:cmdHelp(command)
         print("  twister               - Spawns a twister at your position now, in any season (the map's own")
         print("                          twister weather; outside its season the summer one). Host / single player.")
         print("  twister areas         - Prints the running twister's crop destruction areas and draws them on the ground (toggle).")
+        print("  messages              - Prints the Messages tab's state and every table row (finds display problems).")
         print("  wildlife list         - Lists this map's wildlife species and how many are spawned around you.")
         print("  wildlife spawn <species> [distance] [count] [rotation]")
         print("                        - Spawns wildlife in front of you (to test fleeing). Ex: t_dev wildlife spawn crow 60 5")
@@ -307,6 +309,10 @@ function TornadoConsole:cmdPhysics(setting, value)
     elseif setting == "lift_bales" then
         TornadoPhysics.settings.lift_bales = not TornadoPhysics.settings.lift_bales
         return "Physics: Lift Bales = " .. tostring(TornadoPhysics.settings.lift_bales)
+    elseif setting == "remove_bales" then
+        TornadoPhysics.settings.remove_bales = not TornadoPhysics.settings.remove_bales
+        return "Physics: Twister removes bales = " .. tostring(TornadoPhysics.settings.remove_bales)
+            .. (TornadoPhysics.settings.remove_bales and " (base game rule: bales near the core are deleted)" or " (bales are only thrown)")
     elseif setting == "lift_logs" then
         TornadoPhysics.settings.lift_logs = not TornadoPhysics.settings.lift_logs
         return "Physics: Lift Logs = " .. tostring(TornadoPhysics.settings.lift_logs)
@@ -323,7 +329,7 @@ function TornadoConsole:cmdPhysics(setting, value)
         TornadoPhysics:randomizeTornado()
         return "Physics: Forcing new Tornado scale/rating..."
     else
-        return "Unknown Physics CMD. Try: radius, power, heavy, fence, dmg_in, dmg_out, lift_bales, lift_logs, border, indoor_damage, outdoor_damage, randomize..."
+        return "Unknown Physics CMD. Try: radius, power, heavy, fence, dmg_in, dmg_out, lift_bales, remove_bales, lift_logs, border, indoor_damage, outdoor_damage, randomize..."
     end
 end
 
@@ -852,6 +858,10 @@ function TornadoConsole:cmdDev(tool, arg1, arg2, arg3, arg4, arg5)
     elseif tool == "insurance" then
         if not TornadoInsurance then return "Error: Insurance Module missing." end
         return TornadoInsurance:consoleCommand(arg1, arg2, arg3, arg4)
+
+    elseif tool == "messages" then
+        if TornadoPageMessages == nil then return "Error: Messages page missing." end
+        return TornadoPageMessages:debugDump()
 
     elseif tool == "twister" then
         if arg1 == "areas" then

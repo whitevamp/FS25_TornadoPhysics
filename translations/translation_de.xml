@@ -10,14 +10,6 @@
         <text name="tp_tab_effects" text="Effekte"/>
         <text name="tp_tab_modules" text="Module"/>
         <text name="tp_tab_messages" text="Nachrichten"/>
-        <text name="tp_sec_msg_recent" text="Neue Nachrichten (letzte 24 Std.)"/>
-        <text name="tp_sec_msg_saved" text="Gespeicherte Nachrichten"/>
-        <text name="tp_msg_message" text="Nachricht"/>
-        <text name="tp_msg_show" text="Ganze Nachricht lesen"/>
-        <text name="tp_msg_save" text="Diese Nachricht behalten"/>
-        <text name="tp_msg_remove" text="Gespeicherte Nachricht entfernen"/>
-        <text name="tp_tip_msg_recent" text="Die Nachrichten des Mods an deinen Hof (Versicherungsbriefe, Sturmberichte, Warnungen). Sie bleiben 24 Spielstunden, wenn du sie nicht speicherst."/>
-        <text name="tp_tip_msg_saved" text="Von dir gespeicherte Nachrichten. Sie bleiben, bis du sie entfernst."/>
         <text name="tp_btn_save" text="Speichern"/>
         <text name="tp_btn_remove" text="Entfernen"/>
         <text name="tp_msg_none" text="Keine Nachrichten"/>
@@ -102,6 +94,8 @@
         <text name="tp_sec_objects" text="Objekte"/>
         <text name="tp_lift_bales" text="Ballen anheben"/>
         <text name="tp_tip_lift_bales" text="Der Tornado hebt Ballen und Paletten an."/>
+        <text name="tp_remove_bales" text="Twister entfernt Ballen"/>
+        <text name="tp_tip_remove_bales" text="An: die Regel des Twisters im Grundspiel - Ballen draußen in Kernnähe werden einfach gelöscht (im Grundspiel immer an). Aus (Standard): Ballen werden nie gelöscht, nur von der Tornado-Physik geworfen."/>
         <text name="tp_lift_logs" text="Baumstämme anheben"/>
         <text name="tp_tip_lift_logs" text="Der Tornado hebt Baumstämme an."/>
         <text name="tp_sec_border" text="Kartenrand"/>
@@ -383,6 +377,32 @@
         <text name="tp_msg_ins_eq_rebuilt" text="%s ist repariert: Der Titel lautet jetzt Wiederaufbau (der Verkaufspreis bleibt niedriger)."/>
         <text name="tp_msg_ins_eq_none_status" text="Keine Geräteversicherung. Wähle eine Selbstbeteiligung, um alle Fahrzeuge und Geräte deines Hofs zu versichern."/>
         <text name="tp_msg_ins_eq_status" text="Geräteversicherung: %s Selbstbeteiligung (%s) - %d Fahrzeuge, Wert %s, etwa %s pro Monat, %d Totalschäden zu entscheiden."/>
+        <text name="tp_tab_messages_new" text="Nachrichten (%d)"/>
+        <text name="tp_msg_recent_tab" text="Neueste (%d)"/>
+        <text name="tp_msg_recent_tab_new" text="Neueste (%d, %d neu)"/>
+        <text name="tp_msg_saved_tab" text="Gespeichert (%d)"/>
+        <text name="tp_msg_filter" text="Art"/>
+        <text name="tp_msg_col_time" text="Zeit"/>
+        <text name="tp_msg_col_type" text="Art"/>
+        <text name="tp_msg_col_message" text="Nachricht"/>
+        <text name="tp_msg_selected" text="Ausgewählte Nachricht"/>
+        <text name="tp_msg_showing" text="Zeige %d - %d von %d"/>
+        <text name="tp_msg_none_recent" text="Keine neuen Nachrichten (sie bleiben 24 Spielstunden)."/>
+        <text name="tp_msg_none_saved" text="Keine gespeicherten Nachrichten."/>
+        <text name="tp_msg_hidden" text="%d Nachrichten durch den Artfilter ausgeblendet - Art auf Alle stellen, um sie zu sehen."/>
+        <text name="tp_msg_hidden_short" text="(%d durch Filter ausgeblendet)"/>
+        <text name="tp_btn_scroll_up" text="Hoch"/>
+        <text name="tp_btn_scroll_down" text="Runter"/>
+        <text name="tp_btn_remove_all" text="Alle gespeicherten löschen"/>
+        <text name="tp_confirm_msg_remove_all" text="ALLE gespeicherten Nachrichten deines Hofs löschen?"/>
+        <text name="tp_msg_removed_all_done" text="Alle gespeicherten Nachrichten gelöscht."/>
+        <text name="tp_msgtype_all" text="Alle"/>
+        <text name="tp_msgtype_insurance" text="Versicherung"/>
+        <text name="tp_msgtype_report" text="Unwetterbericht"/>
+        <text name="tp_msgtype_hazard" text="Naturgefahr"/>
+        <text name="tp_msgtype_tornado" text="Tornado"/>
+        <text name="tp_msgtype_recovery" text="Bergung"/>
+        <text name="tp_msgtype_other" text="Sonstiges"/>
         <text name="tp_dir_N" text="N"/>
         <text name="tp_dir_NE" text="NO"/>
         <text name="tp_dir_E" text="O"/>

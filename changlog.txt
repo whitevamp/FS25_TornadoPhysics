@@ -148,7 +148,13 @@
 - New control panel tab with the mod's messages to your farm (insurance
   letters, storm and damage reports, alerts, tornado warnings): recent messages
   stay for 24 in-game hours, save the ones you want to keep and remove them when
-  you no longer need them. Show opens the whole text.
+  you no longer need them.
+- Full-page table: Recent / Saved lists with counts, a type filter (insurance,
+  storm reports, hazards, tornado, recovery, other), Time / Type / Message
+  columns, the selected message in full on the right with Save / Remove, and
+  "Remove all saved". Mouse wheel, Up / Down buttons or a controller scroll it.
+  A * marks messages that arrived since you last opened the tab, and the tab
+  button shows how many.
 
 [GAMEPLAY] Tornado Crop Damage Follows Its Size
 - The strip of crop a tornado destroys now matches the tornado's real radius
@@ -162,7 +168,9 @@
   within 30 m. Now a bigger tornado reaches further (always inside 30 % of
   the radius, the game's 30 % tree chance up to 60 %).
 - Bales are no longer deleted by the game's tornado (it silently removed
-  every bale near the core); they are only thrown by our physics.
+  every bale near the core); they are only thrown by our physics. Setting
+  "Twister removes bales" (Physics tab, t_physics remove_bales) brings the
+  base game's rule back.
 - Both follow the savegame's "Disaster destruction" setting, like the game.
 
 [COMPATIBILITY] Moisture System (FS25_MoistureSystem by Ozz)

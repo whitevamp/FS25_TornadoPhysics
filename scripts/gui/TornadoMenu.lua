@@ -152,6 +152,13 @@ function TornadoMenu:selectPage(index)
             self.settingsSlider:setDataElement(page.layoutElement)
         end
     end
+    -- Full-width pages (no scrolling settings list) have no use for the shared scrollbar.
+    if self.settingsSliderBox ~= nil then
+        self.settingsSliderBox:setVisible(page.layoutElement ~= nil)
+    end
+    if page.onShow ~= nil then
+        page:onShow()
+    end
 
     local focusElement = page:getFirstFocusElement()
     if focusElement ~= nil then
@@ -217,6 +224,30 @@ function TornadoMenu:onClickAction(element)
     if entry ~= nil then
         entry.page:onAction(entry.def)
     end
+end
+
+--- Row focus (controller / keyboard) on a table page: the page selects that row.
+function TornadoMenu:onFocusRow(element)
+    local entry = self.controls[element]
+    if entry ~= nil and entry.page.onRowFocus ~= nil then
+        entry.page:onRowFocus(entry.def)
+    end
+end
+
+--- Mouse wheel over a table page's rows scrolls the table.
+function TornadoMenu:mouseEvent(posX, posY, isDown, isUp, button, eventUsed)
+    eventUsed = TornadoMenu:superClass().mouseEvent(self, posX, posY, isDown, isUp, button, eventUsed)
+    if not eventUsed and isDown and Input ~= nil
+        and (button == Input.MOUSE_BUTTON_WHEEL_UP or button == Input.MOUSE_BUTTON_WHEEL_DOWN) then
+        local page = self.pages[self.activePageIndex]
+        if page ~= nil and page.onMouseWheel ~= nil then
+            local direction = button == Input.MOUSE_BUTTON_WHEEL_UP and -1 or 1
+            if page:onMouseWheel(posX, posY, direction) then
+                eventUsed = true
+            end
+        end
+    end
+    return eventUsed
 end
 
 function TornadoMenu:onClickSave()

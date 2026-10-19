@@ -94,4 +94,95 @@
         <textColor value="$preset_colorWhite_50"/>
     </Profile>
 
+    <!-- ===================================================================
+         TABLE (Messages tab; reused by later full-width pages)
+         A fixed set of row buttons; scrolling, selection and contents are handled in Lua
+         (scripts/gui/TornadoTable.lua). Positions are relative to the page container.
+         =================================================================== -->
+    <!-- Small top-left button: list switches (Recent / Saved), scroll and detail actions. -->
+    <Profile name="tornado_tableButton" extends="tornado_actionButton" with="anchorTopLeft">
+        <size value="260px 40px"/>
+        <position value="0px 0px"/>
+    </Profile>
+    <Profile name="tornado_tableButtonDanger" extends="tornado_actionButtonDanger" with="anchorTopLeft">
+        <size value="260px 40px"/>
+        <position value="0px 0px"/>
+    </Profile>
+
+    <!-- Filter selector box: title left, the game's 280px selector against the right edge (-10px).
+         360px wide so it ends at 920px, left of the detail panel (940px). -->
+    <Profile name="tornado_tableFilterBox" extends="emptyPanel" with="anchorTopLeft">
+        <size value="360px 48px"/>
+    </Profile>
+    <Profile name="tornado_tableFilterTitle" extends="fs25_settingsMultiTextOptionTitle">
+        <width value="60px"/>
+    </Profile>
+
+    <!-- Table area: header row + the row buttons (the mouse wheel scrolls while the cursor is over it). -->
+    <Profile name="tornado_tableArea" extends="emptyPanel" with="anchorTopLeft">
+        <size value="900px 620px"/>
+    </Profile>
+    <Profile name="tornado_tableHeaderText" extends="fs25_textDefault" with="anchorTopLeft">
+        <size value="200px 24px"/>
+        <textSize value="15px"/>
+        <textBold value="true"/>
+        <textUpperCase value="true"/>
+        <textColor value="$preset_fs25_colorGreyText"/>
+    </Profile>
+
+    <!-- One row: transparent focusable button, background bitmap and cell texts as children.
+         Hover only highlights; the row is selected on click / controller focus. -->
+    <Profile name="tornado_tableRow" extends="emptyPanel" with="anchorTopLeft">
+        <size value="900px 44px"/>
+        <focusOnHighlight value="false"/>
+    </Profile>
+    <Profile name="tornado_tableRowBg" extends="fs25_settingsButtonBg">
+        <imageColor value="$preset_fs25_colorMainDark"/>
+        <imageHighlightedColor value="$preset_fs25_colorGreyLight_50"/>
+        <imageSelectedColor value="$preset_fs25_colorMainHighlight"/>
+        <startImageHighlightedColor value="$preset_fs25_colorGreyLight_50"/>
+        <startImageSelectedColor value="$preset_fs25_colorMainHighlight"/>
+        <endImageHighlightedColor value="$preset_fs25_colorGreyLight_50"/>
+        <endImageSelectedColor value="$preset_fs25_colorMainHighlight"/>
+    </Profile>
+    <Profile name="tornado_tableCell" extends="fs25_textDefault" with="anchorMiddleLeft">
+        <size value="200px 24px"/>
+        <textSize value="15px"/>
+        <textMaxNumLines value="1"/>
+        <textColor value="$preset_fs25_colorMainLight"/>
+        <textFocusedColor value="$preset_fs25_colorMainDark"/>
+        <textSelectedColor value="$preset_fs25_colorMainDark"/>
+        <textHighlightedColor value="$preset_fs25_colorMainLight"/>
+    </Profile>
+    <Profile name="tornado_tableCellMark" extends="tornado_tableCell">
+        <size value="20px 24px"/>
+        <textBold value="true"/>
+        <textColor value="$preset_fs25_colorMainHighlight"/>
+    </Profile>
+    <Profile name="tornado_tableInfoText" extends="fs25_textDefault" with="anchorTopLeft">
+        <size value="560px 24px"/>
+        <textColor value="$preset_colorWhite_50"/>
+    </Profile>
+
+    <!-- Detail panel (right of the table). -->
+    <Profile name="tornado_detailTitle" extends="fs25_textDefault" with="anchorTopLeft">
+        <size value="560px 30px"/>
+        <textSize value="22px"/>
+        <textBold value="true"/>
+        <textUpperCase value="true"/>
+    </Profile>
+    <Profile name="tornado_detailLine" extends="fs25_textDefault" with="anchorTopLeft">
+        <size value="560px 24px"/>
+        <textSize value="16px"/>
+        <textVerticalAlignment value="top"/>
+        <textColor value="$preset_fs25_colorGreyText"/>
+    </Profile>
+    <Profile name="tornado_detailBody" extends="fs25_textDefault" with="anchorTopLeft">
+        <size value="560px 420px"/>
+        <textSize value="17px"/>
+        <textMaxNumLines value="18"/>
+        <textVerticalAlignment value="top"/>
+        <textColor value="$preset_fs25_colorMainLight"/>
+    </Profile>
+
 </GuiProfiles>

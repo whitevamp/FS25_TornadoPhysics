@@ -69,7 +69,7 @@ function TornadoMenuPage:bind(menu)
     self.pageElement = menu["page" .. self.key]
     self.layoutElement = menu["layout" .. self.key]
 
-    if self.pageElement == nil or self.layoutElement == nil then
+    if self.pageElement == nil or (self.layoutElement == nil and not self.noLayout) then
         print(string.format("TORNADO MENU: page '%s' has no container/layout in TornadoMenu.xml", self.key))
     end
 

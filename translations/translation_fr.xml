@@ -10,14 +10,6 @@
         <text name="tp_tab_effects" text="Effets"/>
         <text name="tp_tab_modules" text="Modules"/>
         <text name="tp_tab_messages" text="Messages"/>
-        <text name="tp_sec_msg_recent" text="Messages récents (24 dernières h)"/>
-        <text name="tp_sec_msg_saved" text="Messages enregistrés"/>
-        <text name="tp_msg_message" text="Message"/>
-        <text name="tp_msg_show" text="Lire le message entier"/>
-        <text name="tp_msg_save" text="Garder ce message"/>
-        <text name="tp_msg_remove" text="Supprimer ce message enregistré"/>
-        <text name="tp_tip_msg_recent" text="Les messages du mod à votre ferme (lettres d'assurance, rapports de tempête, alertes). Ils restent 24 heures de jeu si vous ne les enregistrez pas."/>
-        <text name="tp_tip_msg_saved" text="Les messages que vous avez enregistrés. Ils restent jusqu'à ce que vous les supprimiez."/>
         <text name="tp_btn_save" text="Enregistrer"/>
         <text name="tp_btn_remove" text="Supprimer"/>
         <text name="tp_msg_none" text="Aucun message"/>
@@ -102,6 +94,8 @@
         <text name="tp_sec_objects" text="Objets"/>
         <text name="tp_lift_bales" text="Soulever les balles"/>
         <text name="tp_tip_lift_bales" text="La tornade soulève les balles et les palettes."/>
+        <text name="tp_remove_bales" text="La tornade supprime les balles"/>
+        <text name="tp_tip_remove_bales" text="Activé : la règle de la tornade du jeu de base - les balles dehors près du cœur sont simplement supprimées (activé dans le jeu de base). Désactivé (par défaut) : les balles ne sont jamais supprimées, seulement projetées par la physique de la tornade."/>
         <text name="tp_lift_logs" text="Soulever les troncs"/>
         <text name="tp_tip_lift_logs" text="La tornade soulève les troncs."/>
         <text name="tp_sec_border" text="Bord de carte"/>
@@ -383,6 +377,32 @@
         <text name="tp_msg_ins_eq_rebuilt" text="%s est réparé : son titre est maintenant Reconstruit (le prix de vente reste plus bas)."/>
         <text name="tp_msg_ins_eq_none_status" text="Pas d'assurance matériel. Choisissez une franchise pour assurer tous les véhicules et outils de votre ferme."/>
         <text name="tp_msg_ins_eq_status" text="Assurance matériel : franchise %s (%s) - %d véhicules, valeur %s, environ %s par mois, %d pertes totales à décider."/>
+        <text name="tp_tab_messages_new" text="Messages (%d)"/>
+        <text name="tp_msg_recent_tab" text="Récents (%d)"/>
+        <text name="tp_msg_recent_tab_new" text="Récents (%d, %d nouv.)"/>
+        <text name="tp_msg_saved_tab" text="Enregistrés (%d)"/>
+        <text name="tp_msg_filter" text="Type"/>
+        <text name="tp_msg_col_time" text="Heure"/>
+        <text name="tp_msg_col_type" text="Type"/>
+        <text name="tp_msg_col_message" text="Message"/>
+        <text name="tp_msg_selected" text="Message sélectionné"/>
+        <text name="tp_msg_showing" text="Affichage %d - %d sur %d"/>
+        <text name="tp_msg_none_recent" text="Aucun message récent (ils restent 24 heures de jeu)."/>
+        <text name="tp_msg_none_saved" text="Aucun message enregistré."/>
+        <text name="tp_msg_hidden" text="%d messages masqués par le filtre de type - choisissez Tous pour les voir."/>
+        <text name="tp_msg_hidden_short" text="(%d masqués par le filtre)"/>
+        <text name="tp_btn_scroll_up" text="Haut"/>
+        <text name="tp_btn_scroll_down" text="Bas"/>
+        <text name="tp_btn_remove_all" text="Supprimer tous"/>
+        <text name="tp_confirm_msg_remove_all" text="Supprimer TOUS les messages enregistrés de votre ferme ?"/>
+        <text name="tp_msg_removed_all_done" text="Tous les messages enregistrés supprimés."/>
+        <text name="tp_msgtype_all" text="Tous"/>
+        <text name="tp_msgtype_insurance" text="Assurance"/>
+        <text name="tp_msgtype_report" text="Rapport d'orage"/>
+        <text name="tp_msgtype_hazard" text="Aléa"/>
+        <text name="tp_msgtype_tornado" text="Tornade"/>
+        <text name="tp_msgtype_recovery" text="Dépannage"/>
+        <text name="tp_msgtype_other" text="Autre"/>
         <text name="tp_dir_N" text="N"/>
         <text name="tp_dir_NE" text="NE"/>
         <text name="tp_dir_E" text="E"/>

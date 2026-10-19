@@ -60,6 +60,7 @@ function TornadoSettings:resetToDefaults(category)
             s.damage_center = 0.25
             s.damage_outer = 0.08
             s.lift_bales = true
+            s.remove_bales = false
             s.lift_logs = true
             s.border_safety = true
             s.indoor_damage = false
@@ -206,6 +207,7 @@ function TornadoSettings:createDefaultXML()
 
     -- 2. OBJECTS
     setXMLBool(xmlId, "TornadoPhysics.objects.liftBales", true)
+    setXMLBool(xmlId, "TornadoPhysics.objects.removeBales", false)
     setXMLBool(xmlId, "TornadoPhysics.objects.liftLogs", true)
 
     -- 3. SAFETY
@@ -325,6 +327,8 @@ function TornadoSettings:loadFromXML()
         
         local lb = getXMLBool(xmlId, "TornadoPhysics.objects.liftBales")
         if lb ~= nil then s.lift_bales = lb end
+        local rb = getXMLBool(xmlId, "TornadoPhysics.objects.removeBales")
+        if rb ~= nil then s.remove_bales = rb end
         local ll = getXMLBool(xmlId, "TornadoPhysics.objects.liftLogs")
         if ll ~= nil then s.lift_logs = ll end
 
@@ -514,6 +518,7 @@ function TornadoSettings:saveToXML()
         setXMLFloat(xmlId, "TornadoPhysics.general.moneyScale", self.moneyScale or 1.0)
         
         setXMLBool(xmlId, "TornadoPhysics.objects.liftBales", s.lift_bales)
+        setXMLBool(xmlId, "TornadoPhysics.objects.removeBales", s.remove_bales == true)
         setXMLBool(xmlId, "TornadoPhysics.objects.liftLogs", s.lift_logs)
         setXMLBool(xmlId, "TornadoPhysics.safety.borderProtection", s.border_safety)
         setXMLFloat(xmlId, "TornadoPhysics.safety.geoFenceBuffer", s.geo_fence)
