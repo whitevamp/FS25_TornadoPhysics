@@ -1,48 +1,21 @@
--- Offline test for TornadoPhysics:applyCropDamageScale (twister crop damage sized to the physics radius,
--- strength by EF) - Lua 5.1. Run from the mod root:
+-- Offline test for the twister destruction hooks in TornadoPhysics (our crop circles by EF, object radius,
+-- bales left to the physics) - Lua 5.1. Run from the mod root:
 --     lua-5.1.5_Win64_bin/lua5.1.exe tools/test/test_cropscale.lua
--- A small node tree stands in for the twister i3d: rootNode -> component -> destructionAreas -> ring -> points.
--- World positions follow the scales of every parent (no rotation). Exit code 0 = all checks passed.
+-- Stubs: the twister object, DensityMapCircle, FSDensityMapUtil.updateDisasterArea, the damage module's cause.
+-- Exit code 0 = all checks passed.
 
--- ---------------------------------------------------------------- node tree stubs
-local nodes = {}
-local function newNode(parent, x, z, scale)
-    local id = #nodes + 1
-    nodes[id] = { parent = parent or 0, x = x or 0, z = z or 0, sx = scale or 1, sy = scale or 1, sz = scale or 1 }
-    return id
-end
-function getParent(id) return nodes[id] ~= nil and nodes[id].parent or 0 end
-function getScale(id) local n = nodes[id] return n.sx, n.sy, n.sz end
-function setScale(id, x, y, z) local n = nodes[id] n.sx, n.sy, n.sz = x, y, z end
-function getWorldTranslation(id)
-    -- walk to the root: world = parent world + parent scale * local
-    local chain = {}
-    local n = id
-    while n ~= 0 do table.insert(chain, 1, n) n = nodes[n].parent end
-    local wx, wz, scaleX, scaleZ = 0, 0, 1, 1
-    for _, c in ipairs(chain) do
-        local node = nodes[c]
-        wx, wz = wx + node.x * scaleX, wz + node.z * scaleZ
-        scaleX, scaleZ = scaleX * node.sx, scaleZ * node.sz
-    end
-    return wx, 0, wz
-end
+local twisterPos = { 500, 0, 300 }
+function getWorldTranslation() return twisterPos[1], twisterPos[2], twisterPos[3] end
 
--- Game twister: outer ring 35 m, middle 20 m, inner strip at 10 m; perlin 1500 / 3000 / 6000.
-local function buildTwister(outer, componentScale)
-    nodes = {}
-    local root = newNode(0, 500, 300)
-    local component = newNode(root, 0, 0, componentScale or 1)
-    local areasNode = newNode(component)
-    local function ring(radius, perlin)
-        local group = newNode(areasNode)
-        local polygon = { nodes = { newNode(group, radius, 0), newNode(group, radius * 0.5, radius * 0.866),
-            newNode(group, radius * 0.48, radius * 0.83), newNode(group, radius * 0.95, 0) } }
-        return { polygon = polygon, perlinPercentage = perlin }
-    end
-    local twister = { rootNode = root, destructionAreas = { ring(10, 1500), ring(outer * 20 / 35, 3000), ring(outer, 6000) } }
-    return twister, areasNode
-end
+local calls = {}
+DensityMapCircle = { new = function()
+    return { updateFromWorldPosition = function(self, x, z, r, segments) self.x, self.z, self.r, self.segments = x, z, r, segments end }
+end }
+local causeDuringCall = nil
+FSDensityMapUtil = { updateDisasterArea = function(area, perlin)
+    table.insert(calls, { x = area.x, z = area.z, r = area.r, perlin = perlin, cause = causeDuringCall })
+end }
+TornadoInsuranceDamage = { CAUSE_TORNADO = "TORNADO", setCause = function(_, cause) causeDuringCall = cause end }
 
 TornadoPhysics = nil
 dofile("scripts/TornadoPhysics.lua")
@@ -52,53 +25,93 @@ local failures, total = 0, 0
 local function check(label, got, want)
     total = total + 1
     local ok = got == want
-    if type(want) == "function" then ok = want(got) end
+    if type(want) == "number" and type(got) == "number" then ok = math.abs(got - want) < 0.01 end
     if not ok then
         failures = failures + 1
-        print(string.format("FAIL  %-62s got %s", label, tostring(got)))
+        print(string.format("FAIL  %-62s got %s, want %s", label, tostring(got), tostring(want)))
     else
         print(string.format("ok    %-62s %s", label, tostring(got)))
     end
 end
-local function near(v, eps) return function(got) return math.abs(got - v) <= eps end end
-local function outerRadius(twister)
-    local cx, _, cz = getWorldTranslation(twister.rootNode)
-    local best = 0
-    for _, area in ipairs(twister.destructionAreas) do
-        for _, node in ipairs(area.polygon.nodes) do
-            local x, _, z = getWorldTranslation(node)
-            best = math.max(best, math.sqrt((x - cx) ^ 2 + (z - cz) ^ 2))
-        end
-    end
-    return best
-end
 
--- EF-0, physics radius 25 m, visual root scale 1.0
-local twister, areasNode = buildTwister(35)
-P:applyCropDamageScale(twister, 25, 0)
-check("EF-0: outer ring sized to the 25 m physics radius", outerRadius(twister), near(25, 0.01))
-check("EF-0 strength x0.6: inner 85 % -> 51 % (perlin 4900)", twister.destructionAreas[1].perlinPercentage, 4900)
-check("EF-0: outer 40 % -> 24 % (perlin 7600)", twister.destructionAreas[3].perlinPercentage, 7600)
-check("areas node found", twister.tornadoAreasNode, areasNode)
+-- The game's twister object (only what the hooks touch)
+local finishCalls = 0
+local twister = { rootNode = 1, isSpawned = true, fadeValue = 1, objectDestructionRadius = 30,
+    objectDestructionInnerRadius = 10, objectDestructionHeight = 30, foundObjects = {}, currentObjects = {} }
+twister.onFinishCallback = function(self) finishCalls = finishCalls + 1 end
+twister.updateDestructionAreas = function() error("game's sliver areas must not run") end
 
--- Same twister object, respawn as EF-2 radius 82 m with the root scaled visually (1 + 2 * 0.8)
-setScale(twister.rootNode, 2.6, 2.6, 2.6)
-P:applyCropDamageScale(twister, 82, 2)
-check("respawn EF-2 (root scaled 2.6): outer ring 82 m", outerRadius(twister), near(82, 0.01))
-check("EF-2 strength x1.0 from the ORIGINAL value: inner back to 1500", twister.destructionAreas[1].perlinPercentage, 1500)
+-- Curve (measured in game 2026-10-18)
+check("measured: 60 % -> 4000", P.perlinForShare(0.60), 4000)
+check("measured: 31 % -> 7000", P.perlinForShare(0.31), 7000)
+check("100 % -> 0, 0 % -> 10000", P.perlinForShare(1.0) == 0 and P.perlinForShare(0) == 10000, true)
 
--- EF-5: capped at 98 %
-P:applyCropDamageScale(twister, 150, 5)
-check("EF-5: inner 85 % x1.45 capped at 98 % (perlin 200)", twister.destructionAreas[1].perlinPercentage, 200)
-check("EF-5: outer 40 % x1.45 = 58 % (perlin 4200)", twister.destructionAreas[3].perlinPercentage, 4200)
+-- EF-2, radius 80 m
+P:applyTwisterDestruction(twister, 80, 2)
+local zones = twister.tornadoCropZones
+check("three zones", #zones, 3)
+check("inner circle 30 % = 24 m", zones[1].radius, 24)
+check("middle circle 60 % = 48 m", zones[2].radius, 48)
+check("outer circle = the radius", zones[3].radius, 80)
+check("EF-2 inner 90 %", zones[1].perlin, P.perlinForShare(0.90))
+check("EF-2 outer 60 % -> 4000", zones[3].perlin, 4000)
+check("objects always destroyed inside 24 m", twister.objectDestructionInnerRadius, 24)
+check("trees / buildings up to 48 m", twister.objectDestructionRadius, 48)
+check("cylinder height kept at least 30", twister.objectDestructionHeight, 30)
 
--- A map's own twister: rings twice as large, component scaled 1.3 (like the Hutan Pantai one)
-local mapTwister = buildTwister(70, 1.3)
-P:applyCropDamageScale(mapTwister, 43, 1)
-check("map twister (70 m rings, component x1.3) -> 43 m", outerRadius(mapTwister), near(43, 0.01))
+-- The game calls updateDestructionAreas: one zone per call, our circles at the funnel, cause TORNADO
+twister:updateDestructionAreas()
+twister:updateDestructionAreas()
+twister:updateDestructionAreas()
+check("three calls = three zones crushed", #calls, 3)
+check("first call: inner 24 m at the funnel", calls[1].r == 24 and calls[1].x == 500 and calls[1].z == 300, true)
+check("third call: outer 80 m with its perlin", calls[3].r == 80 and calls[3].perlin == 4000, true)
+check("damage report sees the cause TORNADO", calls[1].cause, "TORNADO")
+check("cause cleared after the call", causeDuringCall, nil)
 
--- Client / no areas: nothing happens
-check("no destruction areas (client): no error", P:applyCropDamageScale({ rootNode = 1 }, 30, 1), nil)
+-- Not moved: nothing again; moved a little: only the small zone (its step is 2.4 m, the outer one 8 m)
+twister:updateDestructionAreas()
+check("funnel did not move: no new crush", #calls, 3)
+twisterPos[1] = 503
+twister:updateDestructionAreas()
+check("moved 3 m: the inner zone again", #calls == 4 and calls[4].r == 24, true)
+twister:updateDestructionAreas()
+twister:updateDestructionAreas()
+check("moved 3 m: middle (step 4.8) and outer (step 8) wait", #calls, 4)
+twisterPos[1] = 510
+for _ = 1, 3 do twister:updateDestructionAreas() end
+check("moved 10 m: every zone again", #calls, 7)
+
+-- Fading in: the game's own rule, nothing happens
+twister.fadeValue = 0.5
+twisterPos[1] = 600
+twister:updateDestructionAreas()
+check("still fading in: nothing", #calls, 7)
+twister.fadeValue = 1
+
+-- Bales are never deleted by the game's object destruction; trees / buildings are
+twister.foundObjects = { [11] = { isBale = true }, [12] = { isSplitShape = true }, [13] = { isPlaceable = true } }
+twister.currentObjects = { [14] = { isBale = true, destructObject = true } }
+twister:onFinishCallback()
+check("game's object check still runs", finishCalls, 1)
+check("bale removed from the found objects", twister.foundObjects[11], nil)
+check("tree kept", twister.foundObjects[12] ~= nil, true)
+check("building kept", twister.foundObjects[13] ~= nil, true)
+check("bale removed from the current objects", twister.currentObjects[14], nil)
+
+-- Re-roll to EF-4, 143 m: hooks stay once, zones and object radius follow
+local hookedUpdate = twister.updateDestructionAreas
+P:applyTwisterDestruction(twister, 143, 4)
+check("hooks installed once", twister.updateDestructionAreas, hookedUpdate)
+check("EF-4 outer circle 143 m, 80 %", twister.tornadoCropZones[3].radius == 143 and twister.tornadoCropZones[3].perlin == P.perlinForShare(0.80), true)
+check("EF-4 trees / buildings up to 85.8 m", twister.objectDestructionRadius, 85.8)
+twister:onFinishCallback()
+check("bale filter wraps once (one game call per check)", finishCalls, 2)
+
+-- EF-0 small: inner 60 %
+P:applyTwisterDestruction(twister, 20, 0)
+check("EF-0 inner 60 % -> 4000", twister.tornadoCropZones[1].perlin, 4000)
+check("EF-0 outer 30 %", twister.tornadoCropZones[3].perlin, P.perlinForShare(0.30))
 
 print(string.format("\n%d / %d checks passed", total - failures, total))
 os.exit(failures == 0 and 0 or 1)

@@ -7,6 +7,11 @@ TornadoEffects = {}
 TornadoEffects.i3dFilename = nil
 TornadoEffects.fireI3dFilename = nil
 TornadoEffects.activeEffects = {}
+-- Fire roll per vehicle (rootNode -> true = burns, false = does not). Kept apart from activeEffects: an effect
+-- entry is removed by the time-skip flush or after its smoke has faded, and a vehicle still past the ignite
+-- threshold must not roll again then (every new roll made a fire more likely - in the end almost certain).
+-- Cleared when the vehicle is repaired (TornadoRecovery) or removed.
+TornadoEffects.fireFate = {}
 
 -- =========================
 -- CINEMATIC CONFIGURATION
@@ -22,8 +27,11 @@ TornadoEffects.CONFIG = {
     FADE_TIME           = 5000,   -- Takes 5s to fade in/out smoothly
 
     -- LOGIC
-    RANDOM_FIRE_MODE    = true,   -- true = 50/50 chance; false = ALL engines burn if damaged
-    FIRE_CHANCE         = 0.50,   -- 50% chance if RANDOM_MODE is true
+    RANDOM_FIRE_MODE    = true,   -- true = engines past the ignite threshold may burn (chance by EF); false = no vehicle fires
+    -- Chance per vehicle (rolled once, kept until it is repaired) by the tornado's EF rating - real tornado
+    -- vehicle fires (fuel leaks, shorted wiring) are uncommon (decided 2026-10-17).
+    FIRE_CHANCE_BY_EF   = { [0] = 0.05, [1] = 0.10, [2] = 0.15, [3] = 0.25, [4] = 0.35, [5] = 0.45 },
+    FIRE_CHANCE         = 0.15,   -- EF rating not known yet
 
     -- VISUALS (Smoke)
     rotateSpeed = 0.005,
@@ -45,6 +53,7 @@ function TornadoEffects:loadMap(name, baseDir)
     self.i3dFilename = Utils.getFilename("FX/smokeTrailSubUV.i3d", dir)
     self.fireI3dFilename = Utils.getFilename("FX/FireTrailSubUV.i3d", dir)
     self.activeEffects = {}
+    self.fireFate = {}
 
     -- Baseline the tracking anchors so they are numbers, not nil on frame 1
     if g_currentMission and g_currentMission.environment then
@@ -63,6 +72,7 @@ function TornadoEffects:deleteMap()
         self:cleanupEffectNodes(effect)
     end
     self.activeEffects = {}
+    self.fireFate = {}
 end
 
 function TornadoEffects:cleanupEffectNodes(effect)
@@ -87,18 +97,23 @@ function TornadoEffects:update(dt)
     local currentDay = g_currentMission.environment.currentDay
     local timeSkipDetected = false
 
-    -- Detect Day/Month/Season jumps
+    -- Detect Day/Month/Season jumps forward (a day going BACK - an environment reload - is not a skip)
     if currentDay ~= self.lastTrackedDay then
         local daysSkipped = currentDay - self.lastTrackedDay
-        if daysSkipped > 1 or daysSkipped < 0 then
+        if daysSkipped > 1 then
             timeSkipDetected = true
         end
     end
 
-    -- Detect intra-day fast-forward jumps (e.g., changing hour via EDC)
+    -- Detect intra-day fast-forward jumps (e.g., changing hour via EDC). Over midnight the day changes by one,
+    -- so the time of day wraps; on the same day a time going back is not a skip.
     local absoluteDelta = currentAbsTime - self.lastAbsoluteTime
     if absoluteDelta < 0 then
-        absoluteDelta = absoluteDelta + 86400000 -- Account for midnight wrap
+        if currentDay ~= self.lastTrackedDay then
+            absoluteDelta = absoluteDelta + 86400000 -- midnight wrap
+        else
+            absoluteDelta = 0
+        end
     end
 
     local expectedMaxDelta = dt * g_currentMission.missionInfo.timeScale * 2
@@ -166,6 +181,7 @@ function TornadoEffects:update(dt)
         if not entityExists(vehicleId) then
             self:cleanupEffectNodes(effect)
             self.activeEffects[vehicleId] = nil
+            self.fireFate[vehicleId] = nil
         else
             -- 2. UPDATE POSITIONS
             local vx, vy, vz = getWorldTranslation(vehicleId)
@@ -268,21 +284,39 @@ function TornadoEffects:igniteVehicle(vehicleId)
         effect = self.activeEffects[vehicleId]
     end
 
-    -- DECIDE FATE: Random or Guaranteed?
-    -- Rolled once per effect: applyDamage() calls this every frame for a burning vehicle, and
-    -- re-rolling each frame would turn the 50/50 chance into an almost certain fire.
-    if not effect.willBurn and not effect.fireRolled then
-        effect.fireRolled = true
-        local ignite = true
+    -- DECIDE FATE: a chance by EF (random fire on) or never (off).
+    -- Rolled once per VEHICLE (fireFate), not per effect: applyDamage() calls this every frame while the
+    -- vehicle is past the ignite threshold, and a new effect entry (after a time-skip flush or a faded
+    -- smoke) used to roll again - which turned the 50/50 chance into an almost certain fire.
+    local fate = self.fireFate[vehicleId]
+    if fate == nil then
+        fate = false
         if self.CONFIG.RANDOM_FIRE_MODE then
-            ignite = math.random() < self.CONFIG.FIRE_CHANCE
+            fate = math.random() < self:getFireChance()
         end
-        
-        if ignite then
-            effect.willBurn = true
-            if TornadoDebug then TornadoDebug:log("FX", "Vehicle marked for Delayed Ignition: " .. getName(vehicleId)) end
+        self.fireFate[vehicleId] = fate
+        if TornadoDebug then
+            TornadoDebug:log("FX", string.format("Fire roll for %s (node %d, EF%s chance %d %%): %s", getName(vehicleId), vehicleId,
+                tostring(TornadoPhysics ~= nil and TornadoPhysics.currentEfNum or "?"), math.floor(self:getFireChance() * 100 + 0.5),
+                fate and "marked for delayed ignition" or "no fire"))
         end
     end
+    effect.fireRolled = true
+    if fate then
+        effect.willBurn = true
+    end
+end
+
+--- Fire chance of the current tornado (FIRE_CHANCE_BY_EF; FIRE_CHANCE while its EF rating is not known).
+function TornadoEffects:getFireChance()
+    local ef = TornadoPhysics ~= nil and TornadoPhysics.currentEfNum or nil
+    local chance = ef ~= nil and self.CONFIG.FIRE_CHANCE_BY_EF[math.max(0, math.min(5, math.floor(ef)))] or nil
+    return chance or self.CONFIG.FIRE_CHANCE
+end
+
+--- Server: does this vehicle burn (its fire roll came up)? Insurance treats a burned vehicle as a total loss.
+function TornadoEffects:willBurn(vehicleId)
+    return vehicleId ~= nil and self.fireFate ~= nil and self.fireFate[vehicleId] == true
 end
 
 --- Multiplayer client: the server decided this vehicle burns (TornadoFxEvent). No roll here.
@@ -296,6 +330,7 @@ function TornadoEffects:markBurning(vehicleId)
     end
     effect.willBurn = true
     effect.fireRolled = true
+    self.fireFate[vehicleId] = true
 end
 
 -- =========================

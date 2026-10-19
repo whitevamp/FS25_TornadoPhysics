@@ -9,6 +9,22 @@
         <text name="tp_tab_tuning" text="Ajustements"/>
         <text name="tp_tab_effects" text="Effets"/>
         <text name="tp_tab_modules" text="Modules"/>
+        <text name="tp_tab_messages" text="Messages"/>
+        <text name="tp_sec_msg_recent" text="Messages récents (24 dernières h)"/>
+        <text name="tp_sec_msg_saved" text="Messages enregistrés"/>
+        <text name="tp_msg_message" text="Message"/>
+        <text name="tp_msg_show" text="Lire le message entier"/>
+        <text name="tp_msg_save" text="Garder ce message"/>
+        <text name="tp_msg_remove" text="Supprimer ce message enregistré"/>
+        <text name="tp_tip_msg_recent" text="Les messages du mod à votre ferme (lettres d'assurance, rapports de tempête, alertes). Ils restent 24 heures de jeu si vous ne les enregistrez pas."/>
+        <text name="tp_tip_msg_saved" text="Les messages que vous avez enregistrés. Ils restent jusqu'à ce que vous les supprimiez."/>
+        <text name="tp_btn_save" text="Enregistrer"/>
+        <text name="tp_btn_remove" text="Supprimer"/>
+        <text name="tp_msg_none" text="Aucun message"/>
+        <text name="tp_msg_day" text="Jour"/>
+        <text name="tp_msg_saved_done" text="Message enregistré."/>
+        <text name="tp_msg_removed_done" text="Message enregistré supprimé."/>
+        <text name="tp_confirm_msg_remove" text="Supprimer ce message enregistré ?"/>
         <text name="tp_tab_developer" text="Développeur"/>
         <text name="tp_btn_close" text="Fermer"/>
         <text name="tp_btn_save_settings" text="Enregistrer les réglages"/>
@@ -122,8 +138,8 @@
         <text name="tp_sec_visuals" text="Visuels"/>
         <text name="tp_ring" text="Anneau de zone dangereuse"/>
         <text name="tp_tip_ring" text="Affiche l'anneau rouge de zone dangereuse autour de la tornade."/>
-        <text name="tp_fire" text="Feu aléatoire"/>
-        <text name="tp_tip_fire" text="Activé : les moteurs endommagés ont une chance sur deux de prendre feu. Désactivé : chaque moteur endommagé brûle."/>
+        <text name="tp_fire" text="Incendies de véhicules"/>
+        <text name="tp_tip_fire" text="Activé : un moteur gravement endommagé peut prendre feu - plus la tornade est forte, plus c'est probable (5 pour cent en EF0 jusqu'à 45 pour cent en EF5, décidé une fois par véhicule jusqu'à sa réparation). Un véhicule brûlé est une perte totale pour l'assurance. Désactivé : aucun incendie de véhicule."/>
         <text name="tp_sec_gameplay" text="Jouabilité"/>
         <text name="tp_destruction" text="Destruction des véhicules"/>
         <text name="tp_tip_destruction" text="Les véhicules pris dans la tempête perdent des pièces (réparés automatiquement après 24 heures de jeu)."/>
@@ -202,6 +218,31 @@
         <text name="tp_plan_APH" text="Rendement, cultures spéciales (APH)"/>
         <text name="tp_plan_COST" text="Coûts de production (COST)"/>
         <text name="tp_plan_FULL" text="Rendement complet (FULL)"/>
+        <text name="tp_plan_HAIL" text="Grêle"/>
+        <text name="tp_plan_HAIL_STORM" text="Grêle + tempête + fortes pluies"/>
+        <text name="tp_plan_HAIL_PLUS" text="Grêle plus (vent, feu)"/>
+        <text name="tp_plan_HAIL_ONLY" text="Grêle seule (sans aide)"/>
+        <text name="tp_plan_PACKAGE" text="Formule multirisque"/>
+        <text name="tp_plan_PACKAGE_WIND" text="Formule multirisque + tempête"/>
+        <text name="tp_plan_NAMED" text="Risques nommés"/>
+        <text name="tp_plan_MULTI" text="Multirisque"/>
+        <text name="tp_plan_MRC" text="Assurance multirisque climatique"/>
+        <text name="tp_plan_MOD1" text="Module 1 - toute l'exploitation, catastrophes"/>
+        <text name="tp_plan_MOD2" text="Module 2 - tous risques par parcelle"/>
+        <text name="tp_plan_MODP" text="Module P - risques nommés"/>
+        <text name="tp_plan_IT_A" text="Tous risques (type A)"/>
+        <text name="tp_plan_IT_B" text="Catastrophes + météo (type B)"/>
+        <text name="tp_plan_IT_C" text="Risques météo (type C)"/>
+        <text name="tp_plan_IT_C2" text="Grêle + vent (type C)"/>
+        <text name="tp_plan_IT_D" text="Catastrophes seules (type D)"/>
+        <text name="tp_plan_IT_F" text="Contrat simplifié (SMART)"/>
+        <text name="tp_plan_STATE" text="Programme public riz"/>
+        <text name="tp_insurance_value" text="Capital assuré"/>
+        <text name="tp_tip_insurance_value" text="Valeurs du jeu : la récolte du champ aux prix de la carte. Valeurs réelles : les sommes par hectare du pays issues des données d'assurance, converties en argent du jeu (euros, taux approximatifs). Les États-Unis, le Canada et le Brésil utilisent toujours les valeurs du jeu."/>
+        <text name="tp_insurance_value_game" text="Valeurs du jeu"/>
+        <text name="tp_insurance_value_real" text="Valeurs réelles"/>
+        <text name="tp_msg_ins_claim_not_covered" text="Sinistre du champ %d clos : votre contrat ne couvre pas : %s."/>
+        <text name="tp_msg_ins_claim_threshold" text="Sinistre du champ %d : %d %% perdus restent sous le seuil de %d %% du programme - pas encore d'indemnité."/>
         <text name="tp_insurance_crop_plan" text="Assurance récolte (votre ferme)"/>
         <text name="tp_tip_insurance_crop_plan" text="Assure chaque champ de votre ferme portant une culture assurable contre les pertes dues aux tornades, à la grêle, à la sécheresse, aux inondations et au feu. Les plans de rendement paient au prix fixé pour l'année du contrat ; la protection du revenu paie au plus élevé du prix fixé et du prix actuel. La couverture commence environ une semaine (temps réel) après l'achat."/>
         <text name="tp_insurance_crop_coverage" text="Niveau de couverture"/>
@@ -294,6 +335,54 @@
         <text name="tp_supercell_lp" text="Supercellule LP"/>
         <text name="tp_supercell_classic" text="Supercellule classique"/>
         <text name="tp_supercell_hp" text="Supercellule HP"/>
+        <text name="tp_insurance_replacement" text="Matériel : valeur de remplacement"/>
+        <text name="tp_tip_insurance_replacement" text="Désactivé : les sinistres matériel sont payés au prix de vente du véhicule. Activé : à la valeur de remplacement du concessionnaire, 15 pour cent de plus - plus proche du prix pour racheter le même véhicule."/>
+        <text name="tp_insurance_remove_totaled" text="Matériel : retirer les épaves"/>
+        <text name="tp_tip_insurance_remove_totaled" text="Activé : accepter une perte totale paie la valeur assurée et l'assureur récupère l'épave (le véhicule est retiré). Désactivé : rien n'est jamais retiré - accepter fonctionne comme un rachat (valeur d'épave retenue, titre Épave)."/>
+        <text name="tp_insurance_salvage" text="Titre Épave : prix de vente"/>
+        <text name="tp_tip_insurance_salvage" text="De combien baisse le prix de vente d'un véhicule racheté après une perte totale, jusqu'à sa réparation. Les vraies épaves se vendent environ à moitié prix."/>
+        <text name="tp_insurance_rebuilt" text="Titre Reconstruit : prix de vente"/>
+        <text name="tp_tip_insurance_rebuilt" text="Un véhicule racheté puis réparé garde pour toujours un titre Reconstruit : son prix de vente reste plus bas d'autant. Les vrais véhicules reconstruits se vendent 20 à 40 pour cent moins cher."/>
+        <text name="tp_insurance_title_penalty_option" text="-%d %%"/>
+        <text name="tp_insurance_equip" text="Assurance matériel (votre ferme)"/>
+        <text name="tp_tip_insurance_equip" text="Assure chaque véhicule et outil de votre ferme (hors véhicules loués ou de mission) contre les dégâts des tornades. Choisissez la franchise : plus elle est élevée, plus la prime mensuelle est basse. Les réparations sont payées moins la franchise ; une perte totale paie la valeur du véhicule. La couverture commence environ une semaine (temps réel) après l'achat."/>
+        <text name="tp_insurance_equip_none" text="Pas d'assurance matériel"/>
+        <text name="tp_insurance_equip_option" text="Franchise %s - environ %s par mois"/>
+        <text name="tp_insurance_equip_status" text="État de l'assurance matériel"/>
+        <text name="tp_tip_insurance_equip_status" text="Affiche l'assurance matériel de votre ferme : franchise, véhicules assurés, leur valeur et la prime mensuelle."/>
+        <text name="tp_insurance_equip_total" text="Perte totale à décider"/>
+        <text name="tp_tip_insurance_equip_total" text="Un véhicule que l'assureur a déclaré en perte totale. Accepter : l'indemnité complète et l'assureur prend l'épave. Racheter : moins d'argent, vous gardez le véhicule avec un titre Épave. Sans choix dans la semaine (temps réel), c'est accepté."/>
+        <text name="tp_insurance_equip_total_option" text="%s : accepter %s / racheter %s"/>
+        <text name="tp_insurance_equip_total_none" text="Aucune perte totale à décider"/>
+        <text name="tp_insurance_equip_accept" text="Accepter la perte totale"/>
+        <text name="tp_insurance_equip_buyback" text="Racheter le véhicule"/>
+        <text name="tp_btn_equip_accept" text="Accepter"/>
+        <text name="tp_btn_equip_buyback" text="Racheter"/>
+        <text name="tp_confirm_equip_accept" text="Accepter la perte totale ? L'assureur paie le montant complet et prend le véhicule."/>
+        <text name="tp_confirm_equip_buyback" text="Racheter le véhicule ? Vous recevez moins d'argent et le gardez avec un titre Épave (prix de vente plus bas)."/>
+        <text name="tp_msg_ins_eq_unknown_deductible" text="Cette franchise n'est pas proposée."/>
+        <text name="tp_msg_ins_eq_bought" text="Assurance matériel confirmée : franchise %s, %d véhicules, environ %s par mois. La couverture commence dans %d j %d h."/>
+        <text name="tp_msg_ins_eq_changed" text="Assurance matériel modifiée : franchise %s, %d véhicules, environ %s par mois."/>
+        <text name="tp_msg_ins_eq_none" text="Votre ferme n'a pas d'assurance matériel."/>
+        <text name="tp_msg_ins_eq_cancelled" text="Assurance matériel résiliée. Les sinistres en cours sont encore traités."/>
+        <text name="tp_msg_ins_eq_active" text="L'assurance matériel est maintenant active (franchise %s)."/>
+        <text name="tp_msg_ins_eq_claim_received" text="Déclaration de sinistre pour %s reçue (devis de réparation %s) - un expert va l'examiner."/>
+        <text name="tp_msg_ins_eq_claim_inspected" text="L'expert a examiné %s. Une décision suit bientôt."/>
+        <text name="tp_msg_ins_eq_claim_approved" text="Sinistre de %s accepté : devis %s moins la franchise de %s - %s seront versés."/>
+        <text name="tp_msg_ins_eq_claim_paid" text="Indemnité versée pour %s : %s."/>
+        <text name="tp_msg_ins_eq_claim_deductible" text="Sinistre de %s clos : le devis de réparation de %s ne dépasse pas votre franchise de %s."/>
+        <text name="tp_msg_ins_eq_total" text="%s est une perte totale (valeur %s). Accepter %s ou racheter %s (titre Épave) - choisissez dans le panneau, Modules, sous %d j %d h."/>
+        <text name="tp_msg_ins_eq_total_burned" text="%s a brûlé - perte totale (valeur %s). Accepter %s ou racheter %s (titre Épave) - choisissez dans le panneau, Modules, sous %d j %d h."/>
+        <text name="tp_msg_ins_eq_total_reminder" text="Rappel : décidez de la perte totale de %s sous %d j %d h (panneau de contrôle, Modules), sinon elle est acceptée."/>
+        <text name="tp_msg_ins_eq_settled" text="Perte totale de %s réglée : %s versés, l'épave a été enlevée."/>
+        <text name="tp_msg_ins_eq_settled_auto" text="Pas de décision à temps : la perte totale de %s a été acceptée, %s versés, l'épave a été enlevée."/>
+        <text name="tp_msg_ins_eq_bought_back" text="%s racheté : %s versés. Il porte un titre Épave (prix de vente plus bas) jusqu'à sa réparation."/>
+        <text name="tp_msg_ins_eq_kept" text="Perte totale de %s acceptée : %s versés. Les épaves sont conservées (réglage), il reste avec un titre Épave."/>
+        <text name="tp_msg_ins_eq_kept_auto" text="Pas de décision à temps : la perte totale de %s a été acceptée, %s versés. Les épaves sont conservées (réglage) : titre Épave."/>
+        <text name="tp_msg_ins_eq_no_total" text="Aucune perte totale n'attend de décision."/>
+        <text name="tp_msg_ins_eq_rebuilt" text="%s est réparé : son titre est maintenant Reconstruit (le prix de vente reste plus bas)."/>
+        <text name="tp_msg_ins_eq_none_status" text="Pas d'assurance matériel. Choisissez une franchise pour assurer tous les véhicules et outils de votre ferme."/>
+        <text name="tp_msg_ins_eq_status" text="Assurance matériel : franchise %s (%s) - %d véhicules, valeur %s, environ %s par mois, %d pertes totales à décider."/>
         <text name="tp_dir_N" text="N"/>
         <text name="tp_dir_NE" text="NE"/>
         <text name="tp_dir_E" text="E"/>

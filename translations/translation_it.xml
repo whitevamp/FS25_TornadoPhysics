@@ -9,6 +9,22 @@
         <text name="tp_tab_tuning" text="Regolazione"/>
         <text name="tp_tab_effects" text="Effetti"/>
         <text name="tp_tab_modules" text="Moduli"/>
+        <text name="tp_tab_messages" text="Messaggi"/>
+        <text name="tp_sec_msg_recent" text="Messaggi recenti (ultime 24 h)"/>
+        <text name="tp_sec_msg_saved" text="Messaggi salvati"/>
+        <text name="tp_msg_message" text="Messaggio"/>
+        <text name="tp_msg_show" text="Leggi tutto il messaggio"/>
+        <text name="tp_msg_save" text="Conserva questo messaggio"/>
+        <text name="tp_msg_remove" text="Rimuovi questo messaggio salvato"/>
+        <text name="tp_tip_msg_recent" text="I messaggi del mod alla tua fattoria (lettere dell'assicurazione, rapporti sui temporali, avvisi). Restano 24 ore di gioco se non li salvi."/>
+        <text name="tp_tip_msg_saved" text="I messaggi che hai salvato. Restano finché non li rimuovi."/>
+        <text name="tp_btn_save" text="Salva"/>
+        <text name="tp_btn_remove" text="Rimuovi"/>
+        <text name="tp_msg_none" text="Nessun messaggio"/>
+        <text name="tp_msg_day" text="Giorno"/>
+        <text name="tp_msg_saved_done" text="Messaggio salvato."/>
+        <text name="tp_msg_removed_done" text="Messaggio salvato rimosso."/>
+        <text name="tp_confirm_msg_remove" text="Rimuovere questo messaggio salvato?"/>
         <text name="tp_tab_developer" text="Sviluppatore"/>
         <text name="tp_btn_close" text="Chiudi"/>
         <text name="tp_btn_save_settings" text="Salva impostazioni"/>
@@ -122,8 +138,8 @@
         <text name="tp_sec_visuals" text="Grafica"/>
         <text name="tp_ring" text="Anello zona di pericolo"/>
         <text name="tp_tip_ring" text="Disegna l'anello rosso della zona di pericolo attorno al tornado."/>
-        <text name="tp_fire" text="Fuoco casuale"/>
-        <text name="tp_tip_fire" text="Attivo: i motori danneggiati hanno una probabilità di 50/50 di prendere fuoco. Disattivo: ogni motore danneggiato brucia."/>
+        <text name="tp_fire" text="Incendi dei veicoli"/>
+        <text name="tp_tip_fire" text="Attivo: un motore gravemente danneggiato può prendere fuoco - più il tornado è forte, più è probabile (dal 5 per cento con EF0 al 45 per cento con EF5, deciso una volta per veicolo finché non viene riparato). Un veicolo bruciato è un danno totale per l'assicurazione. Disattivo: nessun incendio dei veicoli."/>
         <text name="tp_sec_gameplay" text="Gameplay"/>
         <text name="tp_destruction" text="Distruzione veicoli"/>
         <text name="tp_tip_destruction" text="I veicoli nella tempesta perdono pezzi (riparati automaticamente dopo 24 ore di gioco)."/>
@@ -202,6 +218,31 @@
         <text name="tp_plan_APH" text="Resa, colture speciali (APH)"/>
         <text name="tp_plan_COST" text="Costi di produzione (COST)"/>
         <text name="tp_plan_FULL" text="Resa completa (FULL)"/>
+        <text name="tp_plan_HAIL" text="Grandine"/>
+        <text name="tp_plan_HAIL_STORM" text="Grandine + vento + pioggia intensa"/>
+        <text name="tp_plan_HAIL_PLUS" text="Grandine plus (vento, incendio)"/>
+        <text name="tp_plan_HAIL_ONLY" text="Solo grandine (senza contributo)"/>
+        <text name="tp_plan_PACKAGE" text="Pacchetto multirischio"/>
+        <text name="tp_plan_PACKAGE_WIND" text="Pacchetto multirischio + vento"/>
+        <text name="tp_plan_NAMED" text="Rischi nominati"/>
+        <text name="tp_plan_MULTI" text="Multirischio"/>
+        <text name="tp_plan_MRC" text="Polizza multirischio"/>
+        <text name="tp_plan_MOD1" text="Modulo 1 - intera azienda, catastrofi"/>
+        <text name="tp_plan_MOD2" text="Modulo 2 - tutti i rischi per campo"/>
+        <text name="tp_plan_MODP" text="Modulo P - rischi nominati"/>
+        <text name="tp_plan_IT_A" text="Tutti i rischi (tipo A)"/>
+        <text name="tp_plan_IT_B" text="Catastrofali + frequenza (tipo B)"/>
+        <text name="tp_plan_IT_C" text="Rischi di frequenza (tipo C)"/>
+        <text name="tp_plan_IT_C2" text="Grandine + vento (tipo C)"/>
+        <text name="tp_plan_IT_D" text="Solo catastrofali (tipo D)"/>
+        <text name="tp_plan_IT_F" text="Polizza semplificata (SMART)"/>
+        <text name="tp_plan_STATE" text="Programma statale per il riso"/>
+        <text name="tp_insurance_value" text="Somma assicurata"/>
+        <text name="tp_tip_insurance_value" text="Valori di gioco: il raccolto del campo ai prezzi della mappa. Valori reali: le somme per ettaro del paese dai dati assicurativi, convertite in denaro di gioco (euro, cambi approssimativi). Stati Uniti, Canada e Brasile usano sempre i valori di gioco."/>
+        <text name="tp_insurance_value_game" text="Valori di gioco"/>
+        <text name="tp_insurance_value_real" text="Valori reali"/>
+        <text name="tp_msg_ins_claim_not_covered" text="Sinistro del campo %d chiuso: la tua polizza non copre: %s."/>
+        <text name="tp_msg_ins_claim_threshold" text="Sinistro del campo %d: il %d %% perso è sotto la soglia del %d %% - ancora nessun pagamento."/>
         <text name="tp_insurance_crop_plan" text="Assicurazione raccolto (la tua fattoria)"/>
         <text name="tp_tip_insurance_crop_plan" text="Assicura ogni campo della tua fattoria con una coltura assicurabile contro le perdite da tornado, grandine, siccità, alluvione e incendio. I piani di resa pagano al prezzo fissato per l'anno di polizza; la protezione del reddito paga al maggiore tra il prezzo fissato e quello attuale. La copertura inizia circa una settimana (tempo reale) dopo l'acquisto."/>
         <text name="tp_insurance_crop_coverage" text="Livello di copertura"/>
@@ -294,6 +335,54 @@
         <text name="tp_supercell_lp" text="Supercella LP"/>
         <text name="tp_supercell_classic" text="Supercella classica"/>
         <text name="tp_supercell_hp" text="Supercella HP"/>
+        <text name="tp_insurance_replacement" text="Mezzi: valore di rimpiazzo"/>
+        <text name="tp_tip_insurance_replacement" text="Disattivato: i sinistri dei mezzi sono pagati al prezzo di vendita del veicolo. Attivato: al valore di rimpiazzo del concessionario, il 15 per cento in più - più vicino al costo per ricomprare lo stesso veicolo."/>
+        <text name="tp_insurance_remove_totaled" text="Mezzi: rimuovi i danni totali"/>
+        <text name="tp_tip_insurance_remove_totaled" text="Attivato: accettare un danno totale paga il valore assicurato e l'assicuratore ritira il relitto (il veicolo viene rimosso). Disattivato: non viene mai rimosso nulla - accettare funziona come un riacquisto (valore di recupero trattenuto, titolo Relitto)."/>
+        <text name="tp_insurance_salvage" text="Titolo Relitto: prezzo di vendita"/>
+        <text name="tp_tip_insurance_salvage" text="Di quanto si abbassa il prezzo di vendita di un veicolo riacquistato dopo un danno totale, finché non viene riparato. I veri relitti si vendono a circa metà prezzo."/>
+        <text name="tp_insurance_rebuilt" text="Titolo Ricostruito: prezzo di vendita"/>
+        <text name="tp_tip_insurance_rebuilt" text="Un veicolo riacquistato e riparato mantiene per sempre un titolo Ricostruito: il suo prezzo di vendita resta più basso di tanto. I veri veicoli ricostruiti si vendono dal 20 al 40 per cento in meno."/>
+        <text name="tp_insurance_title_penalty_option" text="-%d %%"/>
+        <text name="tp_insurance_equip" text="Assicurazione mezzi (la tua fattoria)"/>
+        <text name="tp_tip_insurance_equip" text="Assicura ogni veicolo e attrezzo della tua fattoria (non quelli in leasing o delle missioni) contro i danni da tornado. Scegli la franchigia: più è alta, più basso è il premio mensile. Le riparazioni sono pagate meno la franchigia; un danno totale paga il valore del veicolo. La copertura inizia circa una settimana (tempo reale) dopo l'acquisto."/>
+        <text name="tp_insurance_equip_none" text="Nessuna assicurazione mezzi"/>
+        <text name="tp_insurance_equip_option" text="Franchigia %s - circa %s al mese"/>
+        <text name="tp_insurance_equip_status" text="Stato dell'assicurazione mezzi"/>
+        <text name="tp_tip_insurance_equip_status" text="Mostra l'assicurazione mezzi della tua fattoria: franchigia, veicoli assicurati, il loro valore e il premio mensile."/>
+        <text name="tp_insurance_equip_total" text="Danno totale da decidere"/>
+        <text name="tp_tip_insurance_equip_total" text="Un veicolo che l'assicuratore ha dichiarato danno totale. Accetta: il risarcimento pieno e l'assicuratore prende il relitto. Riacquista: meno soldi, tieni il veicolo con titolo Relitto. Senza scelta entro una settimana (tempo reale) viene accettato."/>
+        <text name="tp_insurance_equip_total_option" text="%s: accetta %s / riacquista %s"/>
+        <text name="tp_insurance_equip_total_none" text="Nessun danno totale da decidere"/>
+        <text name="tp_insurance_equip_accept" text="Accetta il danno totale"/>
+        <text name="tp_insurance_equip_buyback" text="Riacquista il veicolo"/>
+        <text name="tp_btn_equip_accept" text="Accetta"/>
+        <text name="tp_btn_equip_buyback" text="Riacquista"/>
+        <text name="tp_confirm_equip_accept" text="Accettare il danno totale? L'assicuratore paga l'intero importo e prende il veicolo."/>
+        <text name="tp_confirm_equip_buyback" text="Riacquistare il veicolo? Ricevi meno soldi e lo tieni con titolo Relitto (prezzo di vendita più basso)."/>
+        <text name="tp_msg_ins_eq_unknown_deductible" text="Questa franchigia non è offerta."/>
+        <text name="tp_msg_ins_eq_bought" text="Assicurazione mezzi confermata: franchigia %s, %d veicoli, circa %s al mese. La copertura inizia tra %d g %d h."/>
+        <text name="tp_msg_ins_eq_changed" text="Assicurazione mezzi modificata: franchigia %s, %d veicoli, circa %s al mese."/>
+        <text name="tp_msg_ins_eq_none" text="La tua fattoria non ha un'assicurazione mezzi."/>
+        <text name="tp_msg_ins_eq_cancelled" text="Assicurazione mezzi disdetta. I sinistri aperti vengono ancora gestiti."/>
+        <text name="tp_msg_ins_eq_active" text="L'assicurazione mezzi è ora attiva (franchigia %s)."/>
+        <text name="tp_msg_ins_eq_claim_received" text="Denuncia di sinistro per %s ricevuta (preventivo di riparazione %s) - un perito la esaminerà."/>
+        <text name="tp_msg_ins_eq_claim_inspected" text="Il perito ha esaminato %s. Una decisione arriverà presto."/>
+        <text name="tp_msg_ins_eq_claim_approved" text="Sinistro di %s approvato: preventivo %s meno franchigia di %s - saranno pagati %s."/>
+        <text name="tp_msg_ins_eq_claim_paid" text="Risarcimento pagato per %s: %s."/>
+        <text name="tp_msg_ins_eq_claim_deductible" text="Sinistro di %s chiuso: il preventivo di riparazione di %s rientra nella tua franchigia di %s."/>
+        <text name="tp_msg_ins_eq_total" text="%s è un danno totale (valore %s). Accetta %s o riacquista %s (titolo Relitto) - scegli nel pannello, Moduli, entro %d g %d h."/>
+        <text name="tp_msg_ins_eq_total_burned" text="%s è bruciato - danno totale (valore %s). Accetta %s o riacquista %s (titolo Relitto) - scegli nel pannello, Moduli, entro %d g %d h."/>
+        <text name="tp_msg_ins_eq_total_reminder" text="Promemoria: decidi sul danno totale di %s entro %d g %d h (pannello di controllo, Moduli), altrimenti viene accettato."/>
+        <text name="tp_msg_ins_eq_settled" text="Danno totale di %s liquidato: %s pagati, il relitto è stato ritirato."/>
+        <text name="tp_msg_ins_eq_settled_auto" text="Nessuna decisione in tempo: il danno totale di %s è stato accettato, %s pagati, il relitto è stato ritirato."/>
+        <text name="tp_msg_ins_eq_bought_back" text="%s riacquistato: %s pagati. Ha un titolo Relitto (prezzo di vendita più basso) finché non viene riparato."/>
+        <text name="tp_msg_ins_eq_kept" text="Danno totale di %s accettato: %s pagati. I relitti vengono tenuti (impostazione), resta con titolo Relitto."/>
+        <text name="tp_msg_ins_eq_kept_auto" text="Nessuna decisione in tempo: il danno totale di %s è stato accettato, %s pagati. I relitti vengono tenuti (impostazione): titolo Relitto."/>
+        <text name="tp_msg_ins_eq_no_total" text="Nessun danno totale in attesa di decisione."/>
+        <text name="tp_msg_ins_eq_rebuilt" text="%s è riparato: il suo titolo è ora Ricostruito (il prezzo di vendita resta più basso)."/>
+        <text name="tp_msg_ins_eq_none_status" text="Nessuna assicurazione mezzi. Scegli una franchigia per assicurare tutti i veicoli e gli attrezzi della tua fattoria."/>
+        <text name="tp_msg_ins_eq_status" text="Assicurazione mezzi: franchigia %s (%s) - %d veicoli, valore %s, circa %s al mese, %d danni totali da decidere."/>
         <text name="tp_dir_N" text="N"/>
         <text name="tp_dir_NE" text="NE"/>
         <text name="tp_dir_E" text="E"/>

@@ -52,7 +52,7 @@ function TornadoConsole:cmdHelp(command)
         print("---------------- TORNADO ENGINE HELP ----------------")
         print("Usage: t_help [command] for more details.")
         print("t_physics: Adjust Physics: radius, power, heavy, fence, randomize...")
-        print("t_sfx: Adjust SFX: sound, ring, particles...")
+        print("t_sfx: Adjust SFX: sound, ring, fire_random")
         print("t_set: Module Settings: cargo, husbandry, destruction, traffic, wildlife, hazards, insurance, climate, save...")
         print("t_dev: Developer Tools: status, verbose, hud, hotspotdump, kill_test...")
         print("t_tune: Fine-tune Physics Constants")
@@ -86,7 +86,7 @@ function TornadoConsole:cmdHelp(command)
         print("Sub-commands:")
         print("  sound                 - Mutes/Unmutes the tornado siren.")
         print("  ring                  - Toggles the red 'Danger Zone' debug ring.")
-        print("  fire_random           - Toggles random fire effects ON/OFF.")
+        print("  fire_random           - Vehicle fires ON (chance by EF: 5 % at EF0 ... 45 % at EF5) / OFF (none).")
         print("--------------------------------------------------")
     elseif command == "t_set" then
         print("---------------- t_set HELP ----------------")
@@ -144,12 +144,17 @@ function TornadoConsole:cmdHelp(command)
         print("    frequency <percent> - How fast the soil dries out, 25 - 300. Ex: t_set hazards frequency 150")
         print("    status              - Soil water, dry days, drought state and settings.")
         print(" ")
-        print("  insurance [sub-command] - Per-farm insurance (OFF by default). Policies come in a later update.")
+        print("  insurance [sub-command] - Per-farm crop + equipment insurance (OFF by default).")
         print("    (no sub-command)    - Toggles insurance ON/OFF.")
         print("    on|off              - Explicitly turns insurance ON or OFF.")
         print("    managers <farm|admin> - Who may buy / change policies: farm managers + admin, or the admin only.")
         print("    region <value|auto> - Whose insurance rules apply. Ex: t_set insurance region DE | US_KS | auto")
         print("    sales <auto|on|off> - Crop policies only in late winter / early spring (auto: only with seasonal growth).")
+        print("    value <game|real>   - Sum insured: game values (yield x price) or the real-world sums per ha of the data.")
+        print("    replacement <on|off> - Equipment claims paid at the dealer's replacement value (+15 %) instead of the sell price.")
+        print("    totaled <remove|keep> - An accepted equipment total loss removes the wreck, or keeps it (like a buy-back).")
+        print("    salvage <0-90>      - Sell price reduction in % for a Salvage title (default 50).")
+        print("    rebuilt <0-90>      - Sell price reduction in % for a Rebuilt title (default 30).")
         print("    list                - Prints all insurance regions.")
         print("    status              - Region, data file, settings, records.")
         print(" ")
@@ -170,11 +175,15 @@ function TornadoConsole:cmdHelp(command)
         print("Usage: t_dev [sub-command]")
         print(" ")
         print("Sub-commands:")
-        print("  verbose               - Toggles global verbose logging for all modules.")
+        print("  verbose [all|physics|destruction|destruction_indoor_bypass] - Toggles verbose logging (default all).")
         print("  hud                   - Toggles the physics telemetry HUD over vehicles.")
+        print("  pos                   - Toggles position tracking (your coordinates in the log / HUD).")
         print("  status                - Prints a status summary to the console.")
         print("  hotspotdump           - Prints internal state of Hotspot and MapUI modules.")
         print("  kill_test             - Triggers a test of the husbandry kill logic.")
+        print("  twister               - Spawns a twister at your position now, in any season (the map's own")
+        print("                          twister weather; outside its season the summer one). Host / single player.")
+        print("  twister areas         - Prints the running twister's crop destruction areas and draws them on the ground (toggle).")
         print("  wildlife list         - Lists this map's wildlife species and how many are spawned around you.")
         print("  wildlife spawn <species> [distance] [count] [rotation]")
         print("                        - Spawns wildlife in front of you (to test fleeing). Ex: t_dev wildlife spawn crow 60 5")
@@ -204,7 +213,15 @@ function TornadoConsole:cmdHelp(command)
         print("  insurance crop quote <PLAN> <coverage %> - Price of a crop policy for your farm, field by field.")
         print("  insurance crop buy <PLAN> <coverage %> | cancel - Buys / changes / cancels your farm's crop policy.")
         print("  insurance crop claims - Your farm's crop policy and claims.")
-        print("  insurance hit <field> [radius] [perlin] - DESTROYS crop in a circle at the field centre (tests the report).")
+        print("  insurance crop unlock - Opens switched-off countries (data permission pending) for testing, this session only.")
+        print("  insurance hit <field|here> [radius] [perlin] - DESTROYS crop in a circle at the field centre / where you stand.")
+        print("  insurance equip quote - Your farm's vehicles, their values and the price of each deductible.")
+        print("  insurance equip buy <1000|2500|5000|10000> | cancel - Buys / changes / cancels the equipment policy.")
+        print("  insurance equip claims - Equipment claims, titles and the values recorded in the running storm.")
+        print("  insurance equip accept|buyback [claim] - Decides a total loss (the oldest waiting one without a number).")
+        print("  insurance equip hit <damage 0-1> [fire] - Test: the vehicle you sit in is hit (value recorded, damage added).")
+        print("  insurance equip end   - Test: ends the storm for the insurance - claims open for the damaged vehicles.")
+        print("  insurance equip title <salvage|rebuilt|none> - Test: sets the title of the vehicle you sit in.")
         print("--------------------------------------------------")
     elseif command == "t_tune" then
         print("---------------- t_tune HELP ----------------")
@@ -235,7 +252,7 @@ function TornadoConsole:cmdHelp(command)
         print("  traffic               - Resets traffic roadblock settings.")
         print("  wildlife              - Resets wildlife settings (ON, flee distance 150 m).")
         print("  hazards               - Resets natural hazards (OFF, drought + flood + fire ON, all fields, 100 %).")
-        print("  insurance             - Resets insurance settings (OFF, farm managers + admin, region Auto).")
+        print("  insurance             - Resets insurance settings (OFF, farm managers + admin, region Auto, equipment defaults).")
         print("  climate               - Resets real-life climate mode (OFF, region Auto).")
         print("--------------------------------------------------")
     else
@@ -328,7 +345,7 @@ function TornadoConsole:cmdSFX(setting, value)
     elseif setting == "fire_random" then
         if TornadoEffects then
             TornadoEffects.CONFIG.RANDOM_FIRE_MODE = not TornadoEffects.CONFIG.RANDOM_FIRE_MODE
-            return "SFX: Random Fire Mode = " .. tostring(TornadoEffects.CONFIG.RANDOM_FIRE_MODE)
+            return "SFX: Vehicle fires = " .. (TornadoEffects.CONFIG.RANDOM_FIRE_MODE and "ON (chance by EF: 5 / 10 / 15 / 25 / 35 / 45 %)" or "OFF (no vehicle fires)")
         end
     else
         return "Unknown SFX CMD. Try: sound, ring, fire_random"
@@ -668,6 +685,35 @@ end
             end
             TornadoInsurance.salesClosing = value
             return "Insurance: Sales closing date = " .. value
+        elseif subCmd == "value" then
+            if value ~= "game" and value ~= "real" then
+                return "Usage: t_set insurance value <game | real>  (sum insured: game yield x price, or the real-world sums per ha)"
+            end
+            TornadoInsurance.valueBasis = value
+            return "Insurance: Sum insured = " .. (value == "real" and "real-world sums per ha (converted)" or "game values")
+        elseif subCmd == "replacement" then
+            if value ~= "on" and value ~= "off" then
+                return "Usage: t_set insurance replacement <on | off>  (equipment paid at the dealer's replacement value, +15 %)"
+            end
+            TornadoInsurance.replacementValue = value == "on"
+            return "Insurance: Equipment value = " .. (TornadoInsurance.replacementValue and "replacement value (+15 %)" or "sell price")
+        elseif subCmd == "totaled" or subCmd == "totalled" then
+            if value ~= "remove" and value ~= "keep" then
+                return "Usage: t_set insurance totaled <remove | keep>  (an accepted total loss removes the wreck or keeps it)"
+            end
+            TornadoInsurance.removeTotaled = value == "remove"
+            return "Insurance: Accepted total losses = " .. (TornadoInsurance.removeTotaled and "wreck removed" or "wreck kept (like a buy-back)")
+        elseif subCmd == "salvage" or subCmd == "rebuilt" then
+            local percent = tonumber(value)
+            if percent == nil or percent < 0 or percent > 90 then
+                return "Usage: t_set insurance " .. subCmd .. " <0 - 90>  (sell price reduction in % for a " .. subCmd .. " title)"
+            end
+            if subCmd == "salvage" then
+                TornadoInsurance.salvagePenalty = percent / 100
+            else
+                TornadoInsurance.rebuiltPenalty = percent / 100
+            end
+            return string.format("Insurance: %s title = sell price -%d %%", subCmd == "salvage" and "Salvage" or "Rebuilt", math.floor(percent + 0.5))
         elseif subCmd == "list" then
             return TornadoInsurance:consoleCommand("regions")
         elseif subCmd == "status" then
@@ -675,7 +721,7 @@ end
         elseif subCmd == nil or subCmd == "toggle" then
             TornadoInsurance.isEnabled = not TornadoInsurance.isEnabled
         else
-            return "Unknown Insurance CMD. Try: on, off, managers, region, sales, list, status"
+            return "Unknown Insurance CMD. Try: on, off, managers, region, sales, value, replacement, totaled, salvage, rebuilt, list, status"
         end
         return "Insurance: Insurance = " .. tostring(TornadoInsurance.isEnabled)
     end
@@ -686,6 +732,76 @@ end
 -- =========================================================================
 -- 4. DEV COMMANDS
 -- =========================================================================
+--- t_dev twister: a twister at the player's position now, in any season. Works like the game's
+--- gsWeatherTwisterSpawn (which fails when the map has no twister weather in the current season), but falls back
+--- to the twister weather of another season (summer first). A forecast instance keeps its own season, so a summer
+--- twister runs fine in autumn. Testing only: host / single player.
+function TornadoConsole:devSpawnTwister()
+    local mission = g_currentMission
+    if mission == nil or not mission:getIsServer() then
+        return "Twister: host / single player only."
+    end
+    local environment = mission.environment
+    local weather = environment ~= nil and environment.weather or nil
+    if weather == nil or weather.typeToWeatherObject == nil or WeatherType == nil or WeatherInstance == nil then
+        return "Twister: weather system not ready."
+    end
+    if g_localPlayer == nil or g_localPlayer.getPosition == nil then
+        return "Twister: needs a player in the world."
+    end
+    local twisterType = WeatherType.TWISTER or (WeatherType.getByName ~= nil and WeatherType.getByName("TWISTER")) or nil
+    if twisterType == nil then
+        return "Twister: this game version has no twister weather type."
+    end
+    local seasons = { environment.currentSeason }
+    if Season ~= nil then
+        for _, season in ipairs({ Season.SUMMER, Season.SPRING, Season.AUTUMN, Season.WINTER }) do
+            if season ~= environment.currentSeason then
+                table.insert(seasons, season)
+            end
+        end
+    end
+    local season, twister = nil, nil
+    for _, candidate in ipairs(seasons) do
+        local objects = weather.typeToWeatherObject[candidate]
+        if objects ~= nil and objects[twisterType] ~= nil then
+            season, twister = candidate, objects[twisterType]
+            break
+        end
+    end
+    if twister == nil then
+        return "Twister: this map has no twister weather in any season."
+    end
+
+    -- Same steps as Weather:consoleCommandWeatherTwisterSpawn, with the season found above.
+    local current = weather.forecastItems[1]
+    local currentObject = current ~= nil and weather:getWeatherObjectByIndex(current.season, current.objectIndex) or nil
+    weather.forecastItems = {}
+    local variationIndex = twister:getRandomVariationIndex()
+    local variation = twister:getVariationByIndex(variationIndex)
+    local duration = MathUtil.hoursToMs(math.random(variation.minHours, variation.maxHours))
+    local day, dayTime = environment:getDayAndDayTime(environment.dayTime + duration, environment.currentMonotonicDay)
+    local instance = WeatherInstance.createInstance(twister.index, variationIndex, day, dayTime, duration, season)
+    local x, _, z = g_localPlayer:getPosition()
+    instance.twisterStartPosX = x
+    instance.twisterStartPosZ = z
+    table.insert(weather.forecastItems, 1, instance)
+    weather:fillWeatherForecast()
+    if currentObject ~= nil then
+        currentObject:deactivate(1)
+        currentObject:update(9999999)
+    end
+    weather:init()
+    if g_localPlayer.getYaw ~= nil and weather.windUpdater ~= nil then
+        local dirX, dirZ = MathUtil.getDirectionFromYRotation(g_localPlayer:getYaw())
+        weather.windUpdater.targetDirX = dirX
+        weather.windUpdater.targetDirZ = dirZ
+    end
+    local seasonNames = { "spring", "summer", "autumn", "winter" }
+    return string.format("Twister: spawned at your position (%s twister weather%s).", seasonNames[season] or tostring(season),
+        season ~= environment.currentSeason and ", the current season has none on this map" or "")
+end
+
 function TornadoConsole:cmdDev(tool, arg1, arg2, arg3, arg4, arg5)
     if tool == "verbose" then
         if TornadoDebug then
@@ -737,6 +853,13 @@ function TornadoConsole:cmdDev(tool, arg1, arg2, arg3, arg4, arg5)
         if not TornadoInsurance then return "Error: Insurance Module missing." end
         return TornadoInsurance:consoleCommand(arg1, arg2, arg3, arg4)
 
+    elseif tool == "twister" then
+        if arg1 == "areas" then
+            if TornadoPhysics == nil then return "Error: Physics module missing." end
+            return TornadoPhysics:debugDestructionAreas()
+        end
+        return self:devSpawnTwister()
+
     elseif tool == "pos" then 
         if TornadoDebug then
             TornadoDebug.showPosition = not TornadoDebug.showPosition
@@ -775,7 +898,7 @@ function TornadoConsole:cmdDev(tool, arg1, arg2, arg3, arg4, arg5)
         end
 
     else
-        return "Unknown Dev CMD. Try: verbose, hud, pos, status, hotspotdump, kill_test"
+        return "Unknown Dev CMD. Try: verbose, hud, pos, status, hotspotdump, kill_test, twister"
     end
 end
 

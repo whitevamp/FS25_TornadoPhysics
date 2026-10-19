@@ -19,7 +19,12 @@
 --- after PAYOUT_DAYS. Per field and crop the policy year adds up the lost share; the insured loss is what goes
 --- beyond the uninsured part (1 - coverage) - like a real yield guarantee, no extra deductible (decided 2026-10-17).
 --- RP pays at the higher of the locked and the current price (capped at 200 %), the other plans at the locked price.
---- Other programme types (named perils, multi-risk ...) follow in phase 2b; buying is refused there for now.
+--- Phase 2b: the other programme types (named perils, multi-risk, modules, peril groups, state schemes) come from
+--- TornadoInsurancePrograms as cover options with the causes they pay for, a deductible (100 % minus coverage) or a
+--- damage threshold, and the farmer-paid rate per year of the sum insured. Sum insured: the game value (yield x
+--- price) or, with the "real values" setting, the data's own sums per hectare converted to game money.
+--- Countries in DISABLED_COUNTRIES are loaded but not sold (data use not cleared yet); t_dev insurance crop unlock
+--- opens them for testing in this session.
 
 TornadoInsuranceCrop = {}
 
@@ -33,8 +38,14 @@ TornadoInsuranceCrop.RP_PRICE_CAP = 2.0
 TornadoInsuranceCrop.DEFAULT_COVERAGE = 0.75
 TornadoInsuranceCrop.SALES_PERIODS = { [12] = true, [1] = true }   -- late winter, early spring
 TornadoInsuranceCrop.PLAN_FALLBACK = { "YP", "APH", "FULL", "COST", "RPHPE", "RP" }
-TornadoInsuranceCrop.PLAN_KEYS = { YP = "tp_plan_YP", RP = "tp_plan_RP", RPHPE = "tp_plan_RPHPE", APH = "tp_plan_APH",
-    COST = "tp_plan_COST", FULL = "tp_plan_FULL" }
+-- Text key of every plan / cover option: tp_plan_<ID>.
+TornadoInsuranceCrop.PLAN_KEYS = setmetatable({}, { __index = function(_, planId) return "tp_plan_" .. tostring(planId) end })
+-- Loaded but not sold until the use of the data is cleared (user, 2026-10-17); t_dev insurance crop unlock tests it.
+TornadoInsuranceCrop.DISABLED_COUNTRIES = {
+    AU = "permission for the Australian data pending",
+    CA = "permission for the SCIC (Saskatchewan) figures pending",   -- user 2026-10-17: until SCIC answers
+}
+TornadoInsuranceCrop.devUnlock = false
 TornadoInsuranceCrop.MAX_CLAIMS = 100
 TornadoInsuranceCrop.MIN_CLAIM_SHARE = 0.01    -- events below 1 % of a field open no claim (hail specks)
 
@@ -98,10 +109,26 @@ end
 -- DATA: plans, levels, prices, yields
 -- =========================================================================
 
---- Crop insurance can be sold with the loaded profile (phase 2a: coverage curves only).
+local function isCurves(profile)
+    return profile ~= nil and profile.programType == TornadoInsuranceData.PROGRAM_CURVES
+end
+
+--- Why the region's crop insurance is switched off (nil = it is sold).
+function TornadoInsuranceCrop:getDisabledReason()
+    if TornadoInsurance == nil or self.devUnlock then
+        return nil
+    end
+    local country = TornadoInsurance:resolveRegion().country
+    return self.DISABLED_COUNTRIES[country or ""]
+end
+
+--- Crop insurance can be sold with the loaded profile (any programme type with options; not disabled).
 function TornadoInsuranceCrop:isAvailable()
     local profile = TornadoInsurance ~= nil and TornadoInsurance:getProfile() or nil
-    return profile ~= nil and profile.programType == TornadoInsuranceData.PROGRAM_CURVES
+    if profile == nil or self:getDisabledReason() ~= nil then
+        return false
+    end
+    return #self:getOfferedPlans() > 0
 end
 
 --- Plans the region offers (from the DEFAULT crop, plus every crop's plans), in PLAN_FALLBACK order then others.
@@ -110,6 +137,9 @@ function TornadoInsuranceCrop:getOfferedPlans()
     local seen, plans = {}, {}
     if profile == nil then
         return plans
+    end
+    if not isCurves(profile) then
+        return TornadoInsurancePrograms ~= nil and TornadoInsurancePrograms.getOptions(profile, regionId) or plans
     end
     for _, region in ipairs(TornadoInsuranceData.getRegionChain(profile, regionId)) do
         for _, crop in pairs(region.crops) do
@@ -134,6 +164,9 @@ end
 --- Coverage levels offered for a plan (the DEFAULT crop's curve, else the first crop curve that has the plan).
 function TornadoInsuranceCrop:getCoverageLevels(planId)
     local profile, regionId = TornadoInsurance:getProfile()
+    if profile ~= nil and not isCurves(profile) then
+        return TornadoInsurancePrograms ~= nil and TornadoInsurancePrograms.getLevels(profile, regionId, planId) or {}
+    end
     local curve = profile ~= nil and TornadoInsuranceData.getCurve(profile, regionId, TornadoInsuranceData.DEFAULT_CROP, planId) or nil
     if curve == nil and profile ~= nil then
         for _, region in ipairs(TornadoInsuranceData.getRegionChain(profile, regionId)) do
@@ -279,6 +312,9 @@ function TornadoInsuranceCrop:getFieldTerms(crop, planId, coverage, policy)
     if info == nil or not info.insurable then
         return nil
     end
+    if not isCurves(profile) then
+        return self:getProgramTerms(profile, regionId, info, crop, planId, coverage, policy)
+    end
     local plan, curve = self:resolvePlan(profile, regionId, info.ratedAs, planId)
     if curve == nil then
         return nil
@@ -299,7 +335,45 @@ function TornadoInsuranceCrop:getFieldTerms(crop, planId, coverage, policy)
         rate = rate * (1 + self.UNUSUAL_SURCHARGE)
     end
     return { crop = crop, ratedAs = info.ratedAs, isLocal = info.isLocal, plan = plan, coverage = level.coverage,
-        price = price, yieldPerHa = yieldPerHa, liability = liability, yearlyPremium = liability * rate }
+        price = price, yieldPerHa = yieldPerHa, valuePerHa = yieldPerHa * price, liability = liability,
+        yearlyPremium = liability * rate, rule = "guarantee" }
+end
+
+--- Terms from a non-curve programme (TornadoInsurancePrograms). The sum insured is the whole value of the field
+--- (the deductible lowers the payout, not the sum); the rate is per year of the sum insured.
+function TornadoInsuranceCrop:getProgramTerms(profile, regionId, info, crop, planId, coverage, policy)
+    if TornadoInsurancePrograms == nil then
+        return nil
+    end
+    local wanted = coverage or 1
+    local terms = TornadoInsurancePrograms.getTerms(profile, regionId, info.ratedAs, planId, wanted)
+    if terms == nil then
+        -- The crop does not have this option: the first one it has.
+        for _, optionId in ipairs(TornadoInsurancePrograms.getOptions(profile, regionId)) do
+            terms = TornadoInsurancePrograms.getTerms(profile, regionId, info.ratedAs, optionId, wanted)
+            if terms ~= nil then break end
+        end
+    end
+    if terms == nil then
+        return nil
+    end
+    local isLocal = info.isLocal and not terms.noStateScheme
+    local effectiveCoverage = terms.coverage
+    local rate = terms.rate
+    if not isLocal then
+        effectiveCoverage = math.min(effectiveCoverage, self.UNUSUAL_MAX_COVERAGE)
+        rate = rate * (1 + self.UNUSUAL_SURCHARGE)
+    end
+    local price = self:getLockedPrice(policy, crop)
+    local yieldPerHa = self.getYieldPerHa(crop.fruitType)
+    local valuePerHa = yieldPerHa * price
+    if TornadoInsurance.valueBasis == "real" and terms.realValuePerHa ~= nil then
+        valuePerHa = terms.realValuePerHa
+    end
+    local sumInsured = crop.areaHa * valuePerHa
+    return { crop = crop, ratedAs = info.ratedAs, isLocal = isLocal, plan = terms.plan, coverage = effectiveCoverage,
+        price = price, yieldPerHa = yieldPerHa, valuePerHa = valuePerHa, liability = sumInsured,
+        yearlyPremium = sumInsured * rate, causes = terms.causes, rule = terms.rule, threshold = terms.threshold }
 end
 
 --- Totals over the farm's owned fields: { fields, uninsurable, liability, monthlyPremium (cost scale applied) }.
@@ -487,6 +561,14 @@ function TornadoInsuranceCrop:onDamage(entry)
     if field == nil or field.getOwner == nil or field:getOwner() ~= entry.farmId then
         return
     end
+    -- A cause the policy does not cover: declined at once, no adjuster visit.
+    local claimCrop = self:getClaimCrop({ fieldId = entry.fieldId, crop = entry.crop })
+    local terms = claimCrop ~= nil and self:getFieldTerms(claimCrop, policy.plan, policy.coverage, policy) or nil
+    if terms ~= nil and terms.causes ~= nil and not terms.causes[entry.cause or ""] then
+        local causeKey = TornadoInsuranceDamage ~= nil and TornadoInsuranceDamage.CAUSE_KEYS[entry.cause] or entry.cause
+        insurance:addInbox(entry.farmId, "tp_msg_ins_claim_not_covered", { TornadoText.num(entry.fieldId), TornadoText.key(causeKey) }, MSG_INFO)
+        return
+    end
     farm.claims = farm.claims or {}
     farm.nextClaimId = (farm.nextClaimId or 0) + 1
     local claim = { id = farm.nextClaimId, fieldId = entry.fieldId, cause = entry.cause, crop = entry.crop,
@@ -562,6 +644,11 @@ function TornadoInsuranceCrop:decide(farmId, farm, claim)
     if terms == nil then
         return denied("tp_msg_ins_claim_no_crop", { TornadoText.num(claim.fieldId) })
     end
+    -- Named-peril style policies pay only for the causes they cover.
+    if terms.causes ~= nil and not terms.causes[claim.cause or ""] then
+        local causeKey = TornadoInsuranceDamage ~= nil and TornadoInsuranceDamage.CAUSE_KEYS[claim.cause] or claim.cause
+        return denied("tp_msg_ins_claim_not_covered", { TornadoText.num(claim.fieldId), TornadoText.key(causeKey) })
+    end
     policy.fields = policy.fields or {}
     local record = policy.fields[claim.fieldId]
     if record == nil or record.crop ~= claim.crop then
@@ -569,18 +656,29 @@ function TornadoInsuranceCrop:decide(farmId, farm, claim)
         policy.fields[claim.fieldId] = record
     end
     record.lost = math.min(1, record.lost + (claim.share or 0))
-    local insuredShare = math.max(0, record.lost - (1 - terms.coverage)) - record.paid
+    local insuredShare
+    if terms.rule == "threshold" then
+        -- State scheme: nothing below the damage threshold, then the whole loss (up to the coverage).
+        if record.lost + 0.0001 < (terms.threshold or 0) then
+            return denied("tp_msg_ins_claim_threshold", { TornadoText.num(claim.fieldId),
+                TornadoText.num(percent(record.lost)), TornadoText.num(percent(terms.threshold)) })
+        end
+        insuredShare = math.min(record.lost, terms.coverage) - record.paid
+    else
+        insuredShare = math.max(0, record.lost - (1 - terms.coverage)) - record.paid
+    end
     if insuredShare <= 0.0001 then
         return denied("tp_msg_ins_claim_deductible", { TornadoText.num(claim.fieldId),
             TornadoText.num(percent(record.lost)), TornadoText.num(percent(terms.coverage)) })
     end
-    local price = terms.price
+    local valuePerHa = terms.valuePerHa or (terms.yieldPerHa * terms.price)
     if terms.plan == "RP" then
         local current = self:getAveragePrice(crop.fillTypeIndex)
-        price = math.min(math.max(price, current), price * self.RP_PRICE_CAP)
+        local price = math.min(math.max(terms.price, current), terms.price * self.RP_PRICE_CAP)
+        valuePerHa = terms.yieldPerHa * price
     end
     record.paid = record.paid + insuredShare
-    local payout = insuredShare * crop.areaHa * terms.yieldPerHa * price
+    local payout = insuredShare * crop.areaHa * valuePerHa
     return { status = "APPROVED", payout = payout }
 end
 
@@ -704,9 +802,15 @@ function TornadoInsuranceCrop:consoleCommand(farmId, sub, value, extra)
             end
             table.insert(lines, string.format("%s (%s %%)", planId, table.concat(levels, "/")))
         end
-        return string.format("Crop insurance in %s: %s. Sales %s. Use t_dev insurance crop quote <PLAN> <coverage>.",
-            TornadoInsurance:getRegionName(), #lines > 0 and table.concat(lines, ", ") or "not available (phase 2b)",
-            self:isSalesOpen() and "OPEN" or "closed (late winter / early spring only)")
+        local reason = self:getDisabledReason()
+        return string.format("Crop insurance in %s: %s. Sales %s. Sum insured: %s. Use t_dev insurance crop quote <PLAN> <coverage>.",
+            TornadoInsurance:getRegionName(), reason ~= nil and ("switched off - " .. reason .. " (t_dev insurance crop unlock tests it)")
+            or (#lines > 0 and table.concat(lines, ", ") or "nothing offered"),
+            self:isSalesOpen() and "OPEN" or "closed (late winter / early spring only)",
+            TornadoInsurance.valueBasis == "real" and "real-world sums" or "game values")
+    elseif sub == "unlock" then
+        self.devUnlock = not self.devUnlock
+        return "Crop insurance: disabled countries " .. (self.devUnlock and "UNLOCKED for testing (this session only)." or "locked again.")
     elseif sub == "quote" then
         local planId = string.upper(value or "RP")
         local coverage = (tonumber(extra) or 75) / 100
@@ -717,10 +821,11 @@ function TornadoInsuranceCrop:consoleCommand(farmId, sub, value, extra)
                 if crop ~= nil and crop.owner == farmId then
                     local terms = self:getFieldTerms(crop, planId, coverage, farm.crop)
                     if terms ~= nil then
-                        print(string.format("  field %3d %-12s %5.2f ha  %s%s %d %%  value %9.0f  premium %8.0f / year%s",
+                        print(string.format("  field %3d %-12s %5.2f ha  %s%s %d %%  value %9.0f  premium %8.0f / year%s%s",
                             crop.fieldId, crop.fillTypeName, crop.areaHa, terms.plan, terms.ratedAs ~= crop.fillTypeName
                             and (" as " .. terms.ratedAs) or "", percent(terms.coverage), terms.liability, terms.yearlyPremium,
-                            terms.isLocal and "" or "  (unusual crop: +25 %, max 70 %)"))
+                            terms.isLocal and "" or "  (unusual crop: +25 %, max 70 %)",
+                            terms.causes ~= nil and ("  pays for: " .. TornadoInsurancePrograms.causesText(terms.causes)) or ""))
                     else
                         print(string.format("  field %3d %-12s not insurable", crop.fieldId, crop.fillTypeName))
                     end
@@ -746,5 +851,5 @@ function TornadoInsuranceCrop:consoleCommand(farmId, sub, value, extra)
         return policy ~= nil and string.format("Crop policy: %s %d %% %s, %d claims (%d open).", policy.plan, percent(policy.coverage),
             policy.status, #(farm.claims or {}), self:getOpenClaimCount(farm)) or "Crop policy: none."
     end
-    return "Usage: t_dev insurance crop <plans | quote <PLAN> <coverage> | buy <PLAN> <coverage> | cancel | claims>"
+    return "Usage: t_dev insurance crop <plans | quote <PLAN> <coverage> | buy <PLAN> <coverage> | cancel | claims | unlock>"
 end

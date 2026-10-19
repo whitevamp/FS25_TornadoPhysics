@@ -9,6 +9,22 @@
         <text name="tp_tab_tuning" text="Ajuste fino"/>
         <text name="tp_tab_effects" text="Efectos"/>
         <text name="tp_tab_modules" text="Módulos"/>
+        <text name="tp_tab_messages" text="Mensajes"/>
+        <text name="tp_sec_msg_recent" text="Mensajes recientes (últimas 24 h)"/>
+        <text name="tp_sec_msg_saved" text="Mensajes guardados"/>
+        <text name="tp_msg_message" text="Mensaje"/>
+        <text name="tp_msg_show" text="Leer el mensaje completo"/>
+        <text name="tp_msg_save" text="Guardar este mensaje"/>
+        <text name="tp_msg_remove" text="Quitar este mensaje guardado"/>
+        <text name="tp_tip_msg_recent" text="Los mensajes del mod para tu granja (cartas del seguro, informes de tormentas, avisos). Se guardan 24 horas de juego si no los guardas tú."/>
+        <text name="tp_tip_msg_saved" text="Mensajes que has guardado. Se quedan hasta que los quites."/>
+        <text name="tp_btn_save" text="Guardar"/>
+        <text name="tp_btn_remove" text="Quitar"/>
+        <text name="tp_msg_none" text="Sin mensajes"/>
+        <text name="tp_msg_day" text="Día"/>
+        <text name="tp_msg_saved_done" text="Mensaje guardado."/>
+        <text name="tp_msg_removed_done" text="Mensaje guardado quitado."/>
+        <text name="tp_confirm_msg_remove" text="¿Quitar este mensaje guardado?"/>
         <text name="tp_tab_developer" text="Desarrollador"/>
         <text name="tp_btn_close" text="Cerrar"/>
         <text name="tp_btn_save_settings" text="Guardar ajustes"/>
@@ -122,8 +138,8 @@
         <text name="tp_sec_visuals" text="Visuales"/>
         <text name="tp_ring" text="Anillo de zona de peligro"/>
         <text name="tp_tip_ring" text="Dibuja el anillo rojo de zona de peligro alrededor del tornado."/>
-        <text name="tp_fire" text="Fuego aleatorio"/>
-        <text name="tp_tip_fire" text="Activado: los motores dañados tienen una probabilidad de 50/50 de arder. Desactivado: todos los motores dañados arden."/>
+        <text name="tp_fire" text="Incendios de vehículos"/>
+        <text name="tp_tip_fire" text="Activado: un motor muy dañado puede incendiarse - cuanto más fuerte el tornado, más probable (del 5 por ciento en EF0 al 45 por ciento en EF5, decidido una vez por vehículo hasta que se repara). Un vehículo quemado es un siniestro total para el seguro. Desactivado: sin incendios de vehículos."/>
         <text name="tp_sec_gameplay" text="Jugabilidad"/>
         <text name="tp_destruction" text="Destrucción de vehículos"/>
         <text name="tp_tip_destruction" text="Los vehículos atrapados en la tormenta pierden piezas (se reparan solos tras 24 horas de juego)."/>
@@ -202,6 +218,31 @@
         <text name="tp_plan_APH" text="Rendimiento, cultivos especiales (APH)"/>
         <text name="tp_plan_COST" text="Costes de producción (COST)"/>
         <text name="tp_plan_FULL" text="Rendimiento completo (FULL)"/>
+        <text name="tp_plan_HAIL" text="Granizo"/>
+        <text name="tp_plan_HAIL_STORM" text="Granizo + viento + lluvia intensa"/>
+        <text name="tp_plan_HAIL_PLUS" text="Granizo plus (viento, incendio)"/>
+        <text name="tp_plan_HAIL_ONLY" text="Solo granizo (sin subvención)"/>
+        <text name="tp_plan_PACKAGE" text="Paquete multirriesgo"/>
+        <text name="tp_plan_PACKAGE_WIND" text="Paquete multirriesgo + viento"/>
+        <text name="tp_plan_NAMED" text="Riesgos nombrados"/>
+        <text name="tp_plan_MULTI" text="Multirriesgo"/>
+        <text name="tp_plan_MRC" text="Póliza multirriesgo"/>
+        <text name="tp_plan_MOD1" text="Módulo 1 - explotación, catastróficos"/>
+        <text name="tp_plan_MOD2" text="Módulo 2 - todos los riesgos por parcela"/>
+        <text name="tp_plan_MODP" text="Módulo P - riesgos nombrados"/>
+        <text name="tp_plan_IT_A" text="Todo riesgo (tipo A)"/>
+        <text name="tp_plan_IT_B" text="Catastróficos + clima (tipo B)"/>
+        <text name="tp_plan_IT_C" text="Riesgos climáticos (tipo C)"/>
+        <text name="tp_plan_IT_C2" text="Granizo + viento (tipo C)"/>
+        <text name="tp_plan_IT_D" text="Solo catastróficos (tipo D)"/>
+        <text name="tp_plan_IT_F" text="Póliza simplificada (SMART)"/>
+        <text name="tp_plan_STATE" text="Programa estatal de arroz"/>
+        <text name="tp_insurance_value" text="Suma asegurada"/>
+        <text name="tp_tip_insurance_value" text="Valores del juego: la cosecha del campo a los precios del mapa. Valores reales: las sumas por hectárea del país según los datos del seguro, convertidas a dinero del juego (euros, tipos aproximados). EE. UU., Canadá y Brasil usan siempre valores del juego."/>
+        <text name="tp_insurance_value_game" text="Valores del juego"/>
+        <text name="tp_insurance_value_real" text="Valores reales"/>
+        <text name="tp_msg_ins_claim_not_covered" text="Siniestro del campo %d cerrado: tu póliza no cubre: %s."/>
+        <text name="tp_msg_ins_claim_threshold" text="Siniestro del campo %d: el %d %% perdido está por debajo del umbral del %d %% - aún sin pago."/>
         <text name="tp_insurance_crop_plan" text="Seguro de cosecha (tu granja)"/>
         <text name="tp_tip_insurance_crop_plan" text="Asegura cada campo de tu granja con un cultivo asegurable contra pérdidas por tornado, granizo, sequía, inundación e incendio. Los planes de rendimiento pagan al precio fijado para el año de la póliza; la protección de ingresos paga al mayor entre el precio fijado y el actual. La cobertura empieza una semana (tiempo real) después de la compra."/>
         <text name="tp_insurance_crop_coverage" text="Nivel de cobertura"/>
@@ -294,6 +335,54 @@
         <text name="tp_supercell_lp" text="Supercélula LP"/>
         <text name="tp_supercell_classic" text="Supercélula clásica"/>
         <text name="tp_supercell_hp" text="Supercélula HP"/>
+        <text name="tp_insurance_replacement" text="Equipos: valor de reposición"/>
+        <text name="tp_tip_insurance_replacement" text="Desactivado: los siniestros de equipos se pagan al precio de venta del vehículo. Activado: al valor de reposición del concesionario, un 15 por ciento más - más cerca de lo que cuesta volver a comprar el mismo vehículo."/>
+        <text name="tp_insurance_remove_totaled" text="Equipos: retirar siniestros totales"/>
+        <text name="tp_tip_insurance_remove_totaled" text="Activado: aceptar un siniestro total paga el valor asegurado y la aseguradora retira el vehículo siniestrado (se elimina). Desactivado: nunca se elimina nada - aceptar funciona como una recompra (se descuenta el valor de restos, título de Siniestro)."/>
+        <text name="tp_insurance_salvage" text="Título Siniestro: precio de venta"/>
+        <text name="tp_tip_insurance_salvage" text="Cuánto baja el precio de venta de un vehículo recomprado tras un siniestro total, hasta que se repara. Los vehículos siniestrados reales se venden por la mitad aproximadamente."/>
+        <text name="tp_insurance_rebuilt" text="Título Reconstruido: precio de venta"/>
+        <text name="tp_tip_insurance_rebuilt" text="Un vehículo recomprado y ya reparado conserva para siempre un título de Reconstruido: su precio de venta sigue siendo así de bajo. Los vehículos reconstruidos reales se venden entre un 20 y un 40 por ciento más baratos."/>
+        <text name="tp_insurance_title_penalty_option" text="-%d %%"/>
+        <text name="tp_insurance_equip" text="Seguro de equipos (tu granja)"/>
+        <text name="tp_tip_insurance_equip" text="Asegura cada vehículo y apero de tu granja (no los de alquiler ni de misiones) contra daños por tornado. Elige la franquicia: cuanto más alta, más baja la prima mensual. Las reparaciones se pagan menos la franquicia; un siniestro total paga el valor del vehículo. La cobertura empieza una semana (tiempo real) después de la compra."/>
+        <text name="tp_insurance_equip_none" text="Sin seguro de equipos"/>
+        <text name="tp_insurance_equip_option" text="Franquicia %s - unos %s al mes"/>
+        <text name="tp_insurance_equip_status" text="Estado del seguro de equipos"/>
+        <text name="tp_tip_insurance_equip_status" text="Muestra el seguro de equipos de tu granja: franquicia, vehículos asegurados, su valor y la prima mensual."/>
+        <text name="tp_insurance_equip_total" text="Siniestro total por decidir"/>
+        <text name="tp_tip_insurance_equip_total" text="Un vehículo que la aseguradora ha declarado siniestro total. Aceptar: el pago completo y la aseguradora se lleva los restos. Recomprar: menos dinero, te quedas el vehículo con título de Siniestro. Sin elegir en una semana (tiempo real), se acepta."/>
+        <text name="tp_insurance_equip_total_option" text="%s: aceptar %s / recomprar %s"/>
+        <text name="tp_insurance_equip_total_none" text="Ningún siniestro total por decidir"/>
+        <text name="tp_insurance_equip_accept" text="Aceptar el siniestro total"/>
+        <text name="tp_insurance_equip_buyback" text="Recomprar el vehículo"/>
+        <text name="tp_btn_equip_accept" text="Aceptar"/>
+        <text name="tp_btn_equip_buyback" text="Recomprar"/>
+        <text name="tp_confirm_equip_accept" text="¿Aceptar el siniestro total? La aseguradora paga el importe completo y se lleva el vehículo."/>
+        <text name="tp_confirm_equip_buyback" text="¿Recomprar el vehículo? Recibes menos dinero y te lo quedas con título de Siniestro (precio de venta más bajo)."/>
+        <text name="tp_msg_ins_eq_unknown_deductible" text="Esa franquicia no se ofrece."/>
+        <text name="tp_msg_ins_eq_bought" text="Seguro de equipos confirmado: franquicia %s, %d vehículos, unos %s al mes. La cobertura empieza en %d d %d h."/>
+        <text name="tp_msg_ins_eq_changed" text="Seguro de equipos cambiado: franquicia %s, %d vehículos, unos %s al mes."/>
+        <text name="tp_msg_ins_eq_none" text="Tu granja no tiene seguro de equipos."/>
+        <text name="tp_msg_ins_eq_cancelled" text="Seguro de equipos cancelado. Los siniestros abiertos se siguen tramitando."/>
+        <text name="tp_msg_ins_eq_active" text="El seguro de equipos ya está activo (franquicia %s)."/>
+        <text name="tp_msg_ins_eq_claim_received" text="Parte de siniestro de %s recibido (presupuesto de reparación %s) - un perito lo revisará."/>
+        <text name="tp_msg_ins_eq_claim_inspected" text="El perito ha revisado %s. La decisión llegará pronto."/>
+        <text name="tp_msg_ins_eq_claim_approved" text="Siniestro de %s aprobado: presupuesto %s menos franquicia de %s - se pagarán %s."/>
+        <text name="tp_msg_ins_eq_claim_paid" text="Indemnización pagada por %s: %s."/>
+        <text name="tp_msg_ins_eq_claim_deductible" text="Siniestro de %s cerrado: el presupuesto de reparación de %s no supera tu franquicia de %s."/>
+        <text name="tp_msg_ins_eq_total" text="%s es un siniestro total (valor %s). Aceptar %s o recomprar %s (título Siniestro) - elige en el panel, Módulos, en %d d %d h."/>
+        <text name="tp_msg_ins_eq_total_burned" text="%s se ha quemado - siniestro total (valor %s). Aceptar %s o recomprar %s (título Siniestro) - elige en el panel, Módulos, en %d d %d h."/>
+        <text name="tp_msg_ins_eq_total_reminder" text="Recordatorio: decide sobre el siniestro total de %s en %d d %d h (panel de control, Módulos), o se aceptará."/>
+        <text name="tp_msg_ins_eq_settled" text="Siniestro total de %s liquidado: %s pagados, los restos se han retirado."/>
+        <text name="tp_msg_ins_eq_settled_auto" text="Sin decisión a tiempo: se aceptó el siniestro total de %s, %s pagados, los restos se han retirado."/>
+        <text name="tp_msg_ins_eq_bought_back" text="%s recomprado: %s pagados. Tiene título de Siniestro (precio de venta más bajo) hasta que se repare."/>
+        <text name="tp_msg_ins_eq_kept" text="Siniestro total de %s aceptado: %s pagados. Los siniestros totales se conservan (ajuste), se queda con título de Siniestro."/>
+        <text name="tp_msg_ins_eq_kept_auto" text="Sin decisión a tiempo: se aceptó el siniestro total de %s, %s pagados. Los siniestros totales se conservan (ajuste): título de Siniestro."/>
+        <text name="tp_msg_ins_eq_no_total" text="No hay ningún siniestro total pendiente de decisión."/>
+        <text name="tp_msg_ins_eq_rebuilt" text="%s está reparado: su título ahora es Reconstruido (el precio de venta sigue siendo más bajo)."/>
+        <text name="tp_msg_ins_eq_none_status" text="Sin seguro de equipos. Elige una franquicia para asegurar todos los vehículos y aperos de tu granja."/>
+        <text name="tp_msg_ins_eq_status" text="Seguro de equipos: franquicia %s (%s) - %d vehículos, valor %s, unos %s al mes, %d siniestros totales por decidir."/>
         <text name="tp_dir_N" text="N"/>
         <text name="tp_dir_NE" text="NE"/>
         <text name="tp_dir_E" text="E"/>

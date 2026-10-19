@@ -400,6 +400,10 @@ end
 --- The tornado is over (despawned, or a new one spawned on the twister): report its damage now instead of
 --- waiting for the quiet time.
 function TornadoInsuranceDamage:onTornadoEnded()
+    -- Equipment claims for the vehicles the storm damaged.
+    if isServer() and TornadoInsuranceEquipment ~= nil and TornadoInsuranceEquipment.onStormEnded ~= nil then
+        TornadoInsuranceEquipment:onStormEnded()
+    end
     if isServer() and self.events ~= nil and next(self.events) ~= nil then
         self:closeEvents(true, self.CAUSE_TORNADO)
     end
@@ -582,14 +586,29 @@ function TornadoInsuranceDamage:printLog(farmId)
     return string.format("Damage: %d logged events, %d open.", #entries, open)
 end
 
---- t_dev insurance hit <field> [radius] [perlin]  - real disaster call on a circle at the field centre (TORNADO).
+--- t_dev insurance hit <field | here> [radius] [perlin]  - real disaster call on a circle at the field centre, or
+--- where the player stands ("here": several sizes on one big field, e.g. to find the size the game still handles).
 function TornadoInsuranceDamage:testHit(fieldId, radius, perlin)
     if not isServer() then
         return "Damage: run on the host / server."
     end
+    if fieldId == "here" then
+        if g_localPlayer == nil or g_localPlayer.getPosition == nil or DensityMapCircle == nil then
+            return "Damage: needs a player in the world."
+        end
+        local px, _, pz = g_localPlayer:getPosition()
+        local r = tonumber(radius) or 20
+        local hereCircle = DensityMapCircle.new()
+        hereCircle:updateFromWorldPosition(px, pz, r, 16)
+        self:setCause(self.CAUSE_TORNADO, nil)
+        FSDensityMapUtil.updateDisasterArea(hereCircle, tonumber(perlin) or 2500)
+        self:setCause(nil, nil)
+        return string.format("Damage: test hit at your position (%.0f, %.0f), %.0f m radius = %.0f m across, perlin %d - look at the crop; the report follows %s.",
+            px, pz, r, r * 2, tonumber(perlin) or 2500, self:isTornadoOnMap() and "when the tornado ends" or "within a game minute")
+    end
     local field = g_fieldManager ~= nil and g_fieldManager:getFieldById(tonumber(fieldId) or -1) or nil
     if field == nil or DensityMapCircle == nil then
-        return "Usage: t_dev insurance hit <field number> [radius m, default 20] [perlin 0-10000, default 2500]"
+        return "Usage: t_dev insurance hit <field number | here> [radius m, default 20] [perlin 0-10000, default 2500]"
     end
     local x, z = field:getCenterOfFieldWorldPosition()
     local circle = DensityMapCircle.new()
@@ -598,6 +617,7 @@ function TornadoInsuranceDamage:testHit(fieldId, radius, perlin)
     FSDensityMapUtil.updateDisasterArea(circle, tonumber(perlin) or 2500)
     self:setCause(nil, nil)
     local crop = self:getDestroyableCrop(field)
-    return string.format("Damage: test hit on field %d (%s) - the report follows after %d quiet game minutes; t_dev insurance damage shows it now.",
-        field:getId(), crop or "no destroyable crop", self.QUIET_MINUTES.TORNADO)
+    -- No tornado on the map: the event closes at the next game minute (onMinuteChanged), else when the tornado ends.
+    return string.format("Damage: test hit on field %d (%s) - the report follows %s; t_dev insurance damage shows it now.",
+        field:getId(), crop or "no destroyable crop", self:isTornadoOnMap() and "when the tornado ends" or "within a game minute")
 end

@@ -209,6 +209,10 @@ function TornadoRecovery:processRecovery(vehicle)
         return
     end
     local towFee, engineCost, totalCost = estimate.towFee, estimate.engineCost, estimate.total
+    -- Equipment insurance: the storm's claim keeps this estimate (the vehicle is repaired now); Salvage -> Rebuilt.
+    if TornadoInsuranceEquipment ~= nil and TornadoInsuranceEquipment.onVehicleRecovered ~= nil then
+        TornadoInsuranceEquipment:onVehicleRecovered(vehicle, estimate)
+    end
     local vehiclePrice = estimate.vehiclePrice
 
     -- 1. Fix the Mechanical Engine Damage (The Wrench Icon)
@@ -231,6 +235,9 @@ function TornadoRecovery:processRecovery(vehicle)
     if vehicle.rootNode and TornadoEffects and TornadoEffects.activeEffects[vehicle.rootNode] then
         TornadoEffects:cleanupEffectNodes(TornadoEffects.activeEffects[vehicle.rootNode])
         TornadoEffects.activeEffects[vehicle.rootNode] = nil
+    end
+    if vehicle.rootNode and TornadoEffects and TornadoEffects.fireFate ~= nil then
+        TornadoEffects.fireFate[vehicle.rootNode] = nil   -- repaired: a later storm rolls again
     end
 
     -- 5. Restore the Visual Destruction (Fix missing windows and meshes)

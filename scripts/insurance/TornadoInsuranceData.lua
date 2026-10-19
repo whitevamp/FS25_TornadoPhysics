@@ -15,6 +15,82 @@ TornadoInsuranceData.PROGRAM_CURVES = "curves"     -- plan / level elements, no 
 TornadoInsuranceData.PROGRAM_SCHEMES = "schemes"   -- state schemes, no <program> (South-East Asia)
 TornadoInsuranceData.DEFAULT_CROP = "DEFAULT"
 
+-- Attributes read for the programme types other than coverage curves (phase 2b). The GIANTS XML functions cannot
+-- list an element's attributes, so the names are spelled out.
+local PROGRAM_NUMBERS = { "subsidyShare", "subsidy", "insuranceTax", "insurancePremiumTax", "gst", "threshold",
+    "maxSubsidy", "rateCap", "hailPlusFactor", "multiPerilRate", "calibration" }
+local PROGRAM_STRINGS = { "basePeril", "perils", "optionalPerils", "multiPeril", "insuranceTaxPerils" }
+local RATE_KEYS = { "hail", "package", "namedPeril", "multiPeril", "multiRisk", "hailOnly", "hailPlus", "allRisk" }
+
+local function readNumbers(xmlId, key, names, into)
+    for _, name in ipairs(names) do
+        local value = getXMLFloat(xmlId, key .. "#" .. name)
+        if value ~= nil then
+            into[name] = value
+        end
+    end
+end
+
+local function readStrings(xmlId, key, names, into)
+    for _, name in ipairs(names) do
+        local value = getXMLString(xmlId, key .. "#" .. name)
+        if value ~= nil then
+            into[name] = value
+        end
+    end
+end
+
+--- Repeated child elements: { { attr = value ... }, ... } with the given number / string attributes.
+local function readList(xmlId, key, element, numbers, strings)
+    local list = {}
+    local i = 0
+    while true do
+        local itemKey = string.format("%s.%s(%d)", key, element, i)
+        local present = false
+        local item = {}
+        for _, name in ipairs(numbers or {}) do
+            local value = getXMLFloat(xmlId, itemKey .. "#" .. name)
+            if value ~= nil then item[name] = value present = true end
+        end
+        for _, name in ipairs(strings or {}) do
+            local value = getXMLString(xmlId, itemKey .. "#" .. name)
+            if value ~= nil then item[name] = value present = true end
+        end
+        if not present then break end
+        table.insert(list, item)
+        i = i + 1
+    end
+    return list
+end
+
+--- The <program> element of named-peril / multi-risk / modules / peril-group files (nil for curves / schemes).
+local function readProgram(xmlId)
+    local key = "cropInsurance.program"
+    if getXMLString(xmlId, key .. "#type") == nil then
+        return nil
+    end
+    local program = {}
+    readNumbers(xmlId, key, PROGRAM_NUMBERS, program)
+    readStrings(xmlId, key, PROGRAM_STRINGS, program)
+    program.deductibles = readList(xmlId, key, "deductible", { "share", "rateFactor" })
+    program.franchises = readList(xmlId, key, "franchise", { "share", "rateFactor" })
+    program.perilList = readList(xmlId, key, "peril", nil, { "id", "mandatory", "optional", "base" })
+    program.packages = readList(xmlId, key, "package", nil, { "perils" })
+    program.policyTypes = readList(xmlId, key, "policyType", { "subsidy", "rateFactor" }, { "id", "needs", "label" })
+    program.modules = readList(xmlId, key, "module", { "subsidy", "rateFactor" }, { "id", "cover" })
+    program.perilGroups = readList(xmlId, key, "perilGroup", nil, { "id", "perils" })
+    program.rateCaps = {}
+    for _, cap in ipairs(readList(xmlId, key, "rateCap", { "share" }, { "group" })) do
+        program.rateCaps[cap.group] = cap.share
+    end
+    program.years = readList(xmlId, key, "year", { "share" }, { "id" })
+    program.hailOnlyTax = getXMLFloat(xmlId, key .. ".hailOnly#insuranceTax")
+    program.subsidyBase = getXMLFloat(xmlId, key .. ".subsidy#base")
+    program.cerealBonus = getXMLFloat(xmlId, key .. ".bonuses#cereals")
+    program.poolMaxShare = getXMLFloat(xmlId, key .. ".subsidyPool#maxShare")
+    return program
+end
+
 --- Loads one profile file. Returns the profile table or nil (missing / broken file).
 --- profile = { file, source, years, currency, programType,
 ---             regions = { id -> { id, name, parent, defaultChild, currency, curvesFrom, crops = { fillType -> crop } } },
@@ -35,6 +111,7 @@ function TornadoInsuranceData.load(path, fileName)
         years = getXMLString(xmlId, "cropInsurance#years") or "",
         currency = getXMLString(xmlId, "cropInsurance#currency") or "",
         programType = getXMLString(xmlId, "cropInsurance.program#type"),
+        program = readProgram(xmlId),
         regions = {},
         regionOrder = {},
         rootId = nil,
@@ -53,9 +130,19 @@ function TornadoInsuranceData.load(path, fileName)
             defaultChild = getXMLString(xmlId, regionKey .. "#defaultChild"),
             currency = getXMLString(xmlId, regionKey .. "#currency"),
             curvesFrom = getXMLString(xmlId, regionKey .. "#curvesFrom"),
+            rateFactor = getXMLFloat(xmlId, regionKey .. "#rateFactor"),
+            stampDuty = getXMLFloat(xmlId, regionKey .. "#stampDuty"),
+            cropStampDutyExempt = getXMLBool(xmlId, regionKey .. "#cropStampDutyExempt"),
             crops = {},
             numCrops = 0,
         }
+        local schemeKey = regionKey .. ".scheme"
+        if getXMLString(xmlId, schemeKey .. "#name") ~= nil then
+            region.scheme = { name = getXMLString(xmlId, schemeKey .. "#name"), perils = getXMLString(xmlId, schemeKey .. "#perils"),
+                rate = getXMLFloat(xmlId, schemeKey .. "#rate"), subsidy = getXMLFloat(xmlId, schemeKey .. "#subsidy"),
+                damageThreshold = getXMLFloat(xmlId, schemeKey .. "#damageThreshold"),
+                sumInsuredPerHa = getXMLFloat(xmlId, schemeKey .. "#sumInsuredPerHaSeason") }
+        end
         local c = 0
         while true do
             local cropKey = string.format("%s.crop(%d)", regionKey, c)
@@ -66,7 +153,31 @@ function TornadoInsuranceData.load(path, fileName)
                 borrowedFrom = getXMLString(xmlId, cropKey .. "#borrowedFrom"),
                 rateFactor = getXMLFloat(xmlId, cropKey .. "#rateFactor"),
                 plans = {},
+                group = getXMLString(xmlId, cropKey .. "#group"),
+                capGroup = getXMLString(xmlId, cropKey .. "#capGroup"),
+                cerealBonus = getXMLBool(xmlId, cropKey .. "#cerealBonus"),
+                noStateScheme = getXMLBool(xmlId, cropKey .. "#noStateScheme"),
+                sumPerHa = getXMLFloat(xmlId, cropKey .. "#sumPerHa") or getXMLFloat(xmlId, cropKey .. "#maxSumPerHa"),
+                rates = nil,
+                addOns = nil,
+                modules = nil,
             }
+            local ratesKey = cropKey .. ".rates"
+            for _, name in ipairs(RATE_KEYS) do
+                local value = getXMLFloat(xmlId, ratesKey .. "#" .. name)
+                if value ~= nil then
+                    crop.rates = crop.rates or {}
+                    crop.rates[name] = value
+                end
+            end
+            for _, addOn in ipairs(readList(xmlId, cropKey, "addOn", { "rate" }, { "peril" })) do
+                crop.addOns = crop.addOns or {}
+                crop.addOns[addOn.peril] = addOn.rate
+            end
+            for _, module in ipairs(readList(xmlId, cropKey, "module", { "rate", "baseSubsidy" }, { "id" })) do
+                crop.modules = crop.modules or {}
+                crop.modules[module.id] = module
+            end
             local p = 0
             while true do
                 local planKey = string.format("%s.plan(%d)", cropKey, p)

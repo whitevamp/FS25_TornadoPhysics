@@ -9,6 +9,22 @@
         <text name="tp_tab_tuning" text="Tuning"/>
         <text name="tp_tab_effects" text="Effects"/>
         <text name="tp_tab_modules" text="Modules"/>
+        <text name="tp_tab_messages" text="Messages"/>
+        <text name="tp_sec_msg_recent" text="Recent messages (last 24 h)"/>
+        <text name="tp_sec_msg_saved" text="Saved messages"/>
+        <text name="tp_msg_message" text="Message"/>
+        <text name="tp_msg_show" text="Read the whole message"/>
+        <text name="tp_msg_save" text="Keep this message"/>
+        <text name="tp_msg_remove" text="Remove this saved message"/>
+        <text name="tp_tip_msg_recent" text="The mod's messages to your farm (insurance letters, storm reports, alerts). They are kept for 24 in-game hours unless you save them."/>
+        <text name="tp_tip_msg_saved" text="Messages you saved. They stay until you remove them."/>
+        <text name="tp_btn_save" text="Save"/>
+        <text name="tp_btn_remove" text="Remove"/>
+        <text name="tp_msg_none" text="No messages"/>
+        <text name="tp_msg_day" text="Day"/>
+        <text name="tp_msg_saved_done" text="Message saved."/>
+        <text name="tp_msg_removed_done" text="Saved message removed."/>
+        <text name="tp_confirm_msg_remove" text="Remove this saved message?"/>
         <text name="tp_tab_developer" text="Developer"/>
         <text name="tp_btn_close" text="Close"/>
         <text name="tp_btn_save_settings" text="Save settings"/>
@@ -122,8 +138,8 @@
         <text name="tp_sec_visuals" text="Visuals"/>
         <text name="tp_ring" text="Danger zone ring"/>
         <text name="tp_tip_ring" text="Draw the red danger-zone ring around the tornado."/>
-        <text name="tp_fire" text="Random fire"/>
-        <text name="tp_tip_fire" text="On: damaged engines have a 50/50 chance to catch fire. Off: every damaged engine burns."/>
+        <text name="tp_fire" text="Vehicle fires"/>
+        <text name="tp_tip_fire" text="On: a badly damaged engine can catch fire - the stronger the tornado, the likelier (5 percent at EF0 up to 45 percent at EF5, decided once per vehicle until it is repaired). A burned vehicle is a total loss for the insurance. Off: no vehicle fires."/>
         <text name="tp_sec_gameplay" text="Gameplay"/>
         <text name="tp_destruction" text="Vehicle destruction"/>
         <text name="tp_tip_destruction" text="Vehicles caught in the storm lose parts (auto-repaired after 24 in-game hours)."/>
@@ -202,6 +218,31 @@
         <text name="tp_plan_APH" text="Yield cover, specialty crops (APH)"/>
         <text name="tp_plan_COST" text="Production cost cover (COST)"/>
         <text name="tp_plan_FULL" text="Full yield cover (FULL)"/>
+        <text name="tp_plan_HAIL" text="Hail"/>
+        <text name="tp_plan_HAIL_STORM" text="Hail + storm + heavy rain"/>
+        <text name="tp_plan_HAIL_PLUS" text="Hail plus (wind, fire)"/>
+        <text name="tp_plan_HAIL_ONLY" text="Hail only (no subsidy)"/>
+        <text name="tp_plan_PACKAGE" text="Multi-peril package"/>
+        <text name="tp_plan_PACKAGE_WIND" text="Multi-peril package + windstorm"/>
+        <text name="tp_plan_NAMED" text="Named perils"/>
+        <text name="tp_plan_MULTI" text="Multi-peril"/>
+        <text name="tp_plan_MRC" text="Multi-risk policy"/>
+        <text name="tp_plan_MOD1" text="Module 1 - whole farm, disasters"/>
+        <text name="tp_plan_MOD2" text="Module 2 - all risks per field"/>
+        <text name="tp_plan_MODP" text="Module P - named perils"/>
+        <text name="tp_plan_IT_A" text="All-risk policy (type A)"/>
+        <text name="tp_plan_IT_B" text="Disasters + weather (type B)"/>
+        <text name="tp_plan_IT_C" text="Weather perils (type C)"/>
+        <text name="tp_plan_IT_C2" text="Hail + wind (type C)"/>
+        <text name="tp_plan_IT_D" text="Disasters only (type D)"/>
+        <text name="tp_plan_IT_F" text="Simplified policy (SMART)"/>
+        <text name="tp_plan_STATE" text="State rice scheme"/>
+        <text name="tp_insurance_value" text="Sum insured"/>
+        <text name="tp_tip_insurance_value" text="Game values: the field's harvest at the map's prices. Real-world values: the country's own sums per hectare from the insurance data, converted to game money (euros, approximate rates). The US, Canada and Brazil always use game values."/>
+        <text name="tp_insurance_value_game" text="Game values"/>
+        <text name="tp_insurance_value_real" text="Real-world values"/>
+        <text name="tp_msg_ins_claim_not_covered" text="Claim for field %d closed: your policy does not cover %s."/>
+        <text name="tp_msg_ins_claim_threshold" text="Claim for field %d: %d %% lost is below the scheme's %d %% damage threshold - no payout yet."/>
         <text name="tp_insurance_crop_plan" text="Crop insurance (your farm)"/>
         <text name="tp_tip_insurance_crop_plan" text="Insures every field your farm owns with an insurable crop against tornado, hail, drought, flood and fire losses. Yield plans pay at the price locked for the policy year; Revenue Protection pays at the higher of the locked and the current price. Cover starts about a week (real-life time) after buying."/>
         <text name="tp_insurance_crop_coverage" text="Coverage level"/>
@@ -294,6 +335,54 @@
         <text name="tp_supercell_lp" text="LP supercell"/>
         <text name="tp_supercell_classic" text="Classic supercell"/>
         <text name="tp_supercell_hp" text="HP supercell"/>
+        <text name="tp_insurance_replacement" text="Equipment: replacement value"/>
+        <text name="tp_tip_insurance_replacement" text="Off: equipment claims are paid on the vehicle's sell price. On: on the dealer's replacement value, 15 percent more - closer to what buying the same vehicle again costs."/>
+        <text name="tp_insurance_remove_totaled" text="Equipment: remove total losses"/>
+        <text name="tp_tip_insurance_remove_totaled" text="On: accepting a total loss pays the insured value and the insurer collects the wreck (the vehicle is removed). Off: nothing is ever removed - accepting works like a buy-back (salvage value kept back, Salvage title)."/>
+        <text name="tp_insurance_salvage" text="Salvage title: sell price"/>
+        <text name="tp_tip_insurance_salvage" text="How much lower the sell price of a vehicle is that you bought back after a total loss, until it is repaired. Real salvage vehicles sell for about half."/>
+        <text name="tp_insurance_rebuilt" text="Rebuilt title: sell price"/>
+        <text name="tp_tip_insurance_rebuilt" text="A bought-back vehicle that has been repaired keeps a Rebuilt title for good: its sell price stays this much lower. Real rebuilt vehicles sell for 20 to 40 percent less."/>
+        <text name="tp_insurance_title_penalty_option" text="-%d %%"/>
+        <text name="tp_insurance_equip" text="Equipment insurance (your farm)"/>
+        <text name="tp_tip_insurance_equip" text="Insures every vehicle and tool your farm owns (not leased or mission vehicles) against tornado damage. Pick the deductible: the higher it is, the lower the monthly premium. Repairs are paid minus the deductible; a total loss pays the vehicle's value. Cover starts about a week (real-life time) after buying."/>
+        <text name="tp_insurance_equip_none" text="No equipment policy"/>
+        <text name="tp_insurance_equip_option" text="%s deductible - about %s per month"/>
+        <text name="tp_insurance_equip_status" text="Equipment policy status"/>
+        <text name="tp_tip_insurance_equip_status" text="Shows your farm's equipment policy: deductible, insured vehicles, their value and the monthly premium."/>
+        <text name="tp_insurance_equip_total" text="Total loss to decide"/>
+        <text name="tp_tip_insurance_equip_total" text="A vehicle the insurer has declared a total loss. Accept: the full payout and the insurer takes the wreck. Buy back: less money, you keep the vehicle with a Salvage title. Without a choice within a week (real-life time) it is accepted."/>
+        <text name="tp_insurance_equip_total_option" text="%s: accept %s / buy back %s"/>
+        <text name="tp_insurance_equip_total_none" text="No total loss to decide"/>
+        <text name="tp_insurance_equip_accept" text="Accept the total loss"/>
+        <text name="tp_insurance_equip_buyback" text="Buy the vehicle back"/>
+        <text name="tp_btn_equip_accept" text="Accept"/>
+        <text name="tp_btn_equip_buyback" text="Buy back"/>
+        <text name="tp_confirm_equip_accept" text="Accept the total loss? The insurer pays the full amount and takes the vehicle."/>
+        <text name="tp_confirm_equip_buyback" text="Buy the vehicle back? You get less money and keep it with a Salvage title (lower sell price)."/>
+        <text name="tp_msg_ins_eq_unknown_deductible" text="That deductible is not offered."/>
+        <text name="tp_msg_ins_eq_bought" text="Equipment insurance confirmed: %s deductible, %d vehicles, about %s per month. Cover starts in %d d %d h."/>
+        <text name="tp_msg_ins_eq_changed" text="Equipment insurance changed: %s deductible, %d vehicles, about %s per month."/>
+        <text name="tp_msg_ins_eq_none" text="Your farm has no equipment policy."/>
+        <text name="tp_msg_ins_eq_cancelled" text="Equipment insurance cancelled. Open claims are still handled."/>
+        <text name="tp_msg_ins_eq_active" text="Equipment insurance is now active (%s deductible)."/>
+        <text name="tp_msg_ins_eq_claim_received" text="Insurance claim for %s received (repair estimate %s) - an adjuster will inspect it."/>
+        <text name="tp_msg_ins_eq_claim_inspected" text="The adjuster has inspected %s. A decision follows soon."/>
+        <text name="tp_msg_ins_eq_claim_approved" text="Claim for %s approved: estimate %s minus %s deductible - %s will be paid."/>
+        <text name="tp_msg_ins_eq_claim_paid" text="Insurance paid for %s: %s."/>
+        <text name="tp_msg_ins_eq_claim_deductible" text="Claim for %s closed: the repair estimate of %s is within your %s deductible."/>
+        <text name="tp_msg_ins_eq_total" text="%s is a total loss (value %s). Accept %s or buy back %s (Salvage title) - choose in the control panel, Modules, within %d d %d h."/>
+        <text name="tp_msg_ins_eq_total_burned" text="%s burned out - total loss (value %s). Accept %s or buy back %s (Salvage title) - choose in the control panel, Modules, within %d d %d h."/>
+        <text name="tp_msg_ins_eq_total_reminder" text="Reminder: decide on the total loss of %s within %d d %d h (control panel, Modules), or it is accepted."/>
+        <text name="tp_msg_ins_eq_settled" text="Total loss of %s settled: %s paid, the wreck has been collected."/>
+        <text name="tp_msg_ins_eq_settled_auto" text="No decision in time: the total loss of %s was accepted, %s paid, the wreck has been collected."/>
+        <text name="tp_msg_ins_eq_bought_back" text="%s bought back: %s paid. It has a Salvage title (lower sell price) until it is repaired."/>
+        <text name="tp_msg_ins_eq_kept" text="Total loss of %s accepted: %s paid. Totalled vehicles are kept (setting), so it stays with a Salvage title."/>
+        <text name="tp_msg_ins_eq_kept_auto" text="No decision in time: the total loss of %s was accepted, %s paid. Totalled vehicles are kept (setting): Salvage title."/>
+        <text name="tp_msg_ins_eq_no_total" text="There is no total loss waiting for a decision."/>
+        <text name="tp_msg_ins_eq_rebuilt" text="%s is repaired: its title is now Rebuilt (the sell price stays lower)."/>
+        <text name="tp_msg_ins_eq_none_status" text="No equipment policy. Choose a deductible to insure every vehicle and tool your farm owns."/>
+        <text name="tp_msg_ins_eq_status" text="Equipment insurance: %s deductible (%s) - %d vehicles, value %s, about %s per month, %d total losses to decide."/>
         <text name="tp_dir_N" text="N"/>
         <text name="tp_dir_NE" text="NE"/>
         <text name="tp_dir_E" text="E"/>

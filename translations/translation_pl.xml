@@ -9,6 +9,22 @@
         <text name="tp_tab_tuning" text="Strojenie"/>
         <text name="tp_tab_effects" text="Efekty"/>
         <text name="tp_tab_modules" text="Moduły"/>
+        <text name="tp_tab_messages" text="Wiadomości"/>
+        <text name="tp_sec_msg_recent" text="Ostatnie wiadomości (24 godz.)"/>
+        <text name="tp_sec_msg_saved" text="Zapisane wiadomości"/>
+        <text name="tp_msg_message" text="Wiadomość"/>
+        <text name="tp_msg_show" text="Przeczytaj całą wiadomość"/>
+        <text name="tp_msg_save" text="Zachowaj tę wiadomość"/>
+        <text name="tp_msg_remove" text="Usuń zapisaną wiadomość"/>
+        <text name="tp_tip_msg_recent" text="Wiadomości moda dla twojego gospodarstwa (listy ubezpieczyciela, raporty burzowe, ostrzeżenia). Zostają 24 godziny gry, jeśli ich nie zapiszesz."/>
+        <text name="tp_tip_msg_saved" text="Zapisane przez ciebie wiadomości. Zostają, dopóki ich nie usuniesz."/>
+        <text name="tp_btn_save" text="Zapisz"/>
+        <text name="tp_btn_remove" text="Usuń"/>
+        <text name="tp_msg_none" text="Brak wiadomości"/>
+        <text name="tp_msg_day" text="Dzień"/>
+        <text name="tp_msg_saved_done" text="Wiadomość zapisana."/>
+        <text name="tp_msg_removed_done" text="Zapisana wiadomość usunięta."/>
+        <text name="tp_confirm_msg_remove" text="Usunąć tę zapisaną wiadomość?"/>
         <text name="tp_tab_developer" text="Deweloper"/>
         <text name="tp_btn_close" text="Zamknij"/>
         <text name="tp_btn_save_settings" text="Zapisz ustawienia"/>
@@ -122,8 +138,8 @@
         <text name="tp_sec_visuals" text="Wygląd"/>
         <text name="tp_ring" text="Pierścień strefy zagrożenia"/>
         <text name="tp_tip_ring" text="Rysuje czerwony pierścień strefy zagrożenia wokół tornada."/>
-        <text name="tp_fire" text="Losowy pożar"/>
-        <text name="tp_tip_fire" text="Wł.: uszkodzone silniki zapalają się z szansą 50/50. Wył.: każdy uszkodzony silnik płonie."/>
+        <text name="tp_fire" text="Pożary pojazdów"/>
+        <text name="tp_tip_fire" text="Wł.: mocno uszkodzony silnik może się zapalić - im silniejsze tornado, tym bardziej prawdopodobne (od 5 procent przy EF0 do 45 procent przy EF5, losowane raz na pojazd do jego naprawy). Spalony pojazd to dla ubezpieczenia szkoda całkowita. Wył.: brak pożarów pojazdów."/>
         <text name="tp_sec_gameplay" text="Rozgrywka"/>
         <text name="tp_destruction" text="Niszczenie pojazdów"/>
         <text name="tp_tip_destruction" text="Pojazdy w burzy tracą części (automatyczna naprawa po 24 godzinach gry)."/>
@@ -202,6 +218,31 @@
         <text name="tp_plan_APH" text="Plon, uprawy specjalne (APH)"/>
         <text name="tp_plan_COST" text="Koszty produkcji (COST)"/>
         <text name="tp_plan_FULL" text="Pełny plon (FULL)"/>
+        <text name="tp_plan_HAIL" text="Grad"/>
+        <text name="tp_plan_HAIL_STORM" text="Grad + huragan + ulewa"/>
+        <text name="tp_plan_HAIL_PLUS" text="Grad plus (wiatr, ogień)"/>
+        <text name="tp_plan_HAIL_ONLY" text="Tylko grad (bez dopłaty)"/>
+        <text name="tp_plan_PACKAGE" text="Pakiet wieloryzykowy"/>
+        <text name="tp_plan_PACKAGE_WIND" text="Pakiet wieloryzykowy + huragan"/>
+        <text name="tp_plan_NAMED" text="Wymienione ryzyka"/>
+        <text name="tp_plan_MULTI" text="Wieloryzykowe"/>
+        <text name="tp_plan_MRC" text="Polisa wieloryzykowa"/>
+        <text name="tp_plan_MOD1" text="Moduł 1 - całe gospodarstwo, katastrofy"/>
+        <text name="tp_plan_MOD2" text="Moduł 2 - wszystkie ryzyka na pole"/>
+        <text name="tp_plan_MODP" text="Moduł P - wymienione ryzyka"/>
+        <text name="tp_plan_IT_A" text="Wszystkie ryzyka (typ A)"/>
+        <text name="tp_plan_IT_B" text="Katastrofy + pogoda (typ B)"/>
+        <text name="tp_plan_IT_C" text="Ryzyka pogodowe (typ C)"/>
+        <text name="tp_plan_IT_C2" text="Grad + wiatr (typ C)"/>
+        <text name="tp_plan_IT_D" text="Tylko katastrofy (typ D)"/>
+        <text name="tp_plan_IT_F" text="Polisa uproszczona (SMART)"/>
+        <text name="tp_plan_STATE" text="Państwowy program ryżowy"/>
+        <text name="tp_insurance_value" text="Suma ubezpieczenia"/>
+        <text name="tp_tip_insurance_value" text="Wartości z gry: plon pola po cenach z mapy. Wartości rzeczywiste: kwoty na hektar danego kraju z danych ubezpieczeniowych, przeliczone na pieniądze w grze (euro, kursy przybliżone). USA, Kanada i Brazylia zawsze używają wartości z gry."/>
+        <text name="tp_insurance_value_game" text="Wartości z gry"/>
+        <text name="tp_insurance_value_real" text="Wartości rzeczywiste"/>
+        <text name="tp_msg_ins_claim_not_covered" text="Szkoda na polu %d zamknięta: twoja polisa nie obejmuje: %s."/>
+        <text name="tp_msg_ins_claim_threshold" text="Szkoda na polu %d: strata %d %% jest poniżej progu %d %% programu - na razie brak wypłaty."/>
         <text name="tp_insurance_crop_plan" text="Ubezpieczenie upraw (twoje gospodarstwo)"/>
         <text name="tp_tip_insurance_crop_plan" text="Ubezpiecza każde pole twojego gospodarstwa z uprawą podlegającą ubezpieczeniu od strat po tornadzie, gradzie, suszy, powodzi i pożarze. Plany plonu wypłacają według ceny ustalonej na rok polisy; ochrona przychodu według wyższej z cen ustalonej i bieżącej. Ochrona zaczyna się ok. tydzień (czasu rzeczywistego) po zakupie."/>
         <text name="tp_insurance_crop_coverage" text="Poziom ochrony"/>
@@ -294,6 +335,54 @@
         <text name="tp_supercell_lp" text="Superkomórka LP"/>
         <text name="tp_supercell_classic" text="Klasyczna superkomórka"/>
         <text name="tp_supercell_hp" text="Superkomórka HP"/>
+        <text name="tp_insurance_replacement" text="Sprzęt: wartość odtworzeniowa"/>
+        <text name="tp_tip_insurance_replacement" text="Wył.: szkody sprzętu są wypłacane według ceny sprzedaży pojazdu. Wł.: według wartości odtworzeniowej u dealera, o 15 procent więcej - bliżej kosztu ponownego zakupu tego samego pojazdu."/>
+        <text name="tp_insurance_remove_totaled" text="Sprzęt: usuwaj szkody całkowite"/>
+        <text name="tp_tip_insurance_remove_totaled" text="Wł.: przyjęcie szkody całkowitej wypłaca wartość ubezpieczenia, a ubezpieczyciel zabiera wrak (pojazd zostaje usunięty). Wył.: nic nie jest usuwane - przyjęcie działa jak odkup (wartość wraku potrącona, tytuł Wrak)."/>
+        <text name="tp_insurance_salvage" text="Tytuł Wrak: cena sprzedaży"/>
+        <text name="tp_tip_insurance_salvage" text="O ile niższa jest cena sprzedaży pojazdu odkupionego po szkodzie całkowitej, dopóki nie zostanie naprawiony. Prawdziwe wraki sprzedają się za około połowę."/>
+        <text name="tp_insurance_rebuilt" text="Tytuł Odbudowany: cena sprzedaży"/>
+        <text name="tp_tip_insurance_rebuilt" text="Odkupiony i naprawiony pojazd zachowuje na zawsze tytuł Odbudowany: jego cena sprzedaży pozostaje o tyle niższa. Prawdziwe odbudowane pojazdy sprzedają się o 20 do 40 procent taniej."/>
+        <text name="tp_insurance_title_penalty_option" text="-%d %%"/>
+        <text name="tp_insurance_equip" text="Ubezpieczenie sprzętu (twoje gospodarstwo)"/>
+        <text name="tp_tip_insurance_equip" text="Ubezpiecza każdy pojazd i maszynę twojego gospodarstwa (bez leasingowanych i z zleceń) od szkód po tornadzie. Wybierz udział własny: im wyższy, tym niższa miesięczna składka. Naprawy są opłacane po odjęciu udziału własnego; szkoda całkowita wypłaca wartość pojazdu. Ochrona zaczyna się ok. tydzień (czasu rzeczywistego) po zakupie."/>
+        <text name="tp_insurance_equip_none" text="Brak ubezpieczenia sprzętu"/>
+        <text name="tp_insurance_equip_option" text="Udział własny %s - ok. %s miesięcznie"/>
+        <text name="tp_insurance_equip_status" text="Status ubezpieczenia sprzętu"/>
+        <text name="tp_tip_insurance_equip_status" text="Pokazuje ubezpieczenie sprzętu twojego gospodarstwa: udział własny, ubezpieczone pojazdy, ich wartość i miesięczną składkę."/>
+        <text name="tp_insurance_equip_total" text="Szkoda całkowita do decyzji"/>
+        <text name="tp_tip_insurance_equip_total" text="Pojazd uznany przez ubezpieczyciela za szkodę całkowitą. Przyjmij: pełna wypłata, ubezpieczyciel zabiera wrak. Odkup: mniej pieniędzy, zatrzymujesz pojazd z tytułem Wrak. Bez wyboru w ciągu tygodnia (czasu rzeczywistego) zostaje przyjęte."/>
+        <text name="tp_insurance_equip_total_option" text="%s: przyjmij %s / odkup %s"/>
+        <text name="tp_insurance_equip_total_none" text="Brak szkody całkowitej do decyzji"/>
+        <text name="tp_insurance_equip_accept" text="Przyjmij szkodę całkowitą"/>
+        <text name="tp_insurance_equip_buyback" text="Odkup pojazd"/>
+        <text name="tp_btn_equip_accept" text="Przyjmij"/>
+        <text name="tp_btn_equip_buyback" text="Odkup"/>
+        <text name="tp_confirm_equip_accept" text="Przyjąć szkodę całkowitą? Ubezpieczyciel wypłaca pełną kwotę i zabiera pojazd."/>
+        <text name="tp_confirm_equip_buyback" text="Odkupić pojazd? Dostajesz mniej pieniędzy i zatrzymujesz go z tytułem Wrak (niższa cena sprzedaży)."/>
+        <text name="tp_msg_ins_eq_unknown_deductible" text="Taki udział własny nie jest oferowany."/>
+        <text name="tp_msg_ins_eq_bought" text="Ubezpieczenie sprzętu potwierdzone: udział własny %s, %d pojazdów, ok. %s miesięcznie. Ochrona zaczyna się za %d d %d h."/>
+        <text name="tp_msg_ins_eq_changed" text="Ubezpieczenie sprzętu zmienione: udział własny %s, %d pojazdów, ok. %s miesięcznie."/>
+        <text name="tp_msg_ins_eq_none" text="Twoje gospodarstwo nie ma ubezpieczenia sprzętu."/>
+        <text name="tp_msg_ins_eq_cancelled" text="Ubezpieczenie sprzętu wypowiedziane. Otwarte szkody są nadal rozpatrywane."/>
+        <text name="tp_msg_ins_eq_active" text="Ubezpieczenie sprzętu jest teraz aktywne (udział własny %s)."/>
+        <text name="tp_msg_ins_eq_claim_received" text="Zgłoszenie szkody dla %s przyjęte (kosztorys naprawy %s) - rzeczoznawca obejrzy pojazd."/>
+        <text name="tp_msg_ins_eq_claim_inspected" text="Rzeczoznawca obejrzał %s. Decyzja wkrótce."/>
+        <text name="tp_msg_ins_eq_claim_approved" text="Szkoda %s uznana: kosztorys %s minus udział własny %s - zostanie wypłacone %s."/>
+        <text name="tp_msg_ins_eq_claim_paid" text="Wypłata ubezpieczenia za %s: %s."/>
+        <text name="tp_msg_ins_eq_claim_deductible" text="Szkoda %s zamknięta: kosztorys naprawy %s mieści się w twoim udziale własnym %s."/>
+        <text name="tp_msg_ins_eq_total" text="%s to szkoda całkowita (wartość %s). Przyjmij %s lub odkup %s (tytuł Wrak) - wybierz w panelu, Moduły, w ciągu %d d %d h."/>
+        <text name="tp_msg_ins_eq_total_burned" text="%s spłonął - szkoda całkowita (wartość %s). Przyjmij %s lub odkup %s (tytuł Wrak) - wybierz w panelu, Moduły, w ciągu %d d %d h."/>
+        <text name="tp_msg_ins_eq_total_reminder" text="Przypomnienie: zdecyduj o szkodzie całkowitej %s w ciągu %d d %d h (panel sterowania, Moduły), inaczej zostanie przyjęta."/>
+        <text name="tp_msg_ins_eq_settled" text="Szkoda całkowita %s rozliczona: wypłacono %s, wrak został zabrany."/>
+        <text name="tp_msg_ins_eq_settled_auto" text="Brak decyzji na czas: szkoda całkowita %s została przyjęta, wypłacono %s, wrak został zabrany."/>
+        <text name="tp_msg_ins_eq_bought_back" text="%s odkupiony: wypłacono %s. Ma tytuł Wrak (niższa cena sprzedaży), dopóki nie zostanie naprawiony."/>
+        <text name="tp_msg_ins_eq_kept" text="Szkoda całkowita %s przyjęta: wypłacono %s. Wraki są zachowywane (ustawienie), pojazd zostaje z tytułem Wrak."/>
+        <text name="tp_msg_ins_eq_kept_auto" text="Brak decyzji na czas: szkoda całkowita %s została przyjęta, wypłacono %s. Wraki są zachowywane (ustawienie): tytuł Wrak."/>
+        <text name="tp_msg_ins_eq_no_total" text="Żadna szkoda całkowita nie czeka na decyzję."/>
+        <text name="tp_msg_ins_eq_rebuilt" text="%s jest naprawiony: jego tytuł to teraz Odbudowany (cena sprzedaży pozostaje niższa)."/>
+        <text name="tp_msg_ins_eq_none_status" text="Brak ubezpieczenia sprzętu. Wybierz udział własny, aby ubezpieczyć wszystkie pojazdy i maszyny gospodarstwa."/>
+        <text name="tp_msg_ins_eq_status" text="Ubezpieczenie sprzętu: udział własny %s (%s) - %d pojazdów, wartość %s, ok. %s miesięcznie, %d szkód całkowitych do decyzji."/>
         <text name="tp_dir_N" text="Pn"/>
         <text name="tp_dir_NE" text="Pn-Wsch"/>
         <text name="tp_dir_E" text="Wsch"/>

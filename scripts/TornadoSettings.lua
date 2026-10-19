@@ -167,6 +167,11 @@ function TornadoSettings:resetToDefaults(category)
             TornadoInsurance.adminOnly = false
             TornadoInsurance.regionSetting = "auto"
             TornadoInsurance.salesClosing = "auto"
+            TornadoInsurance.valueBasis = "game"
+            TornadoInsurance.replacementValue = false
+            TornadoInsurance.removeTotaled = true
+            TornadoInsurance.salvagePenalty = 0.5
+            TornadoInsurance.rebuiltPenalty = 0.3
             TornadoInsurance.resolved = nil
             print("TORNADO RESET: Insurance defaults restored.")
         end
@@ -254,7 +259,7 @@ function TornadoSettings:createDefaultXML()
     setXMLBool(xmlId, "TornadoPhysics.mapui.onlyWhenSelected", true)
     
     -- 12. EFFECTS
-    setXMLBool(xmlId, "TornadoPhysics.effects.fireRandom", false)
+    setXMLBool(xmlId, "TornadoPhysics.effects.fireRandom", true)
 
     -- 13. AI TRAFFIC ROADBLOCKS
     setXMLBool(xmlId, "TornadoPhysics.traffic.enabled", true)
@@ -278,6 +283,11 @@ function TornadoSettings:createDefaultXML()
     setXMLBool(xmlId, "TornadoPhysics.insurance.adminOnly", false)
     setXMLString(xmlId, "TornadoPhysics.insurance.region", "auto")
     setXMLString(xmlId, "TornadoPhysics.insurance.salesClosing", "auto")
+    setXMLString(xmlId, "TornadoPhysics.insurance.valueBasis", "game")
+    setXMLBool(xmlId, "TornadoPhysics.insurance.replacementValue", false)
+    setXMLBool(xmlId, "TornadoPhysics.insurance.removeTotaled", true)
+    setXMLFloat(xmlId, "TornadoPhysics.insurance.salvagePenalty", 0.5)
+    setXMLFloat(xmlId, "TornadoPhysics.insurance.rebuiltPenalty", 0.3)
 
     -- 14. REAL-LIFE CLIMATE MODE
     setXMLBool(xmlId, "TornadoPhysics.climate.enabled", false)
@@ -432,6 +442,13 @@ function TornadoSettings:loadFromXML()
         -- Stored as given; an unknown country falls back to the default profile when the data loads.
         TornadoInsurance.regionSetting = getXMLString(xmlId, "TornadoPhysics.insurance.region") or TornadoInsurance.regionSetting
         TornadoInsurance.salesClosing = getXMLString(xmlId, "TornadoPhysics.insurance.salesClosing") or TornadoInsurance.salesClosing
+        TornadoInsurance.valueBasis = getXMLString(xmlId, "TornadoPhysics.insurance.valueBasis") or TornadoInsurance.valueBasis
+        local replacementValue = getXMLBool(xmlId, "TornadoPhysics.insurance.replacementValue")
+        if replacementValue ~= nil then TornadoInsurance.replacementValue = replacementValue end
+        local removeTotaled = getXMLBool(xmlId, "TornadoPhysics.insurance.removeTotaled")
+        if removeTotaled ~= nil then TornadoInsurance.removeTotaled = removeTotaled end
+        TornadoInsurance.salvagePenalty = getXMLFloat(xmlId, "TornadoPhysics.insurance.salvagePenalty") or TornadoInsurance.salvagePenalty
+        TornadoInsurance.rebuiltPenalty = getXMLFloat(xmlId, "TornadoPhysics.insurance.rebuiltPenalty") or TornadoInsurance.rebuiltPenalty
         TornadoInsurance.resolved = nil
     end
 
@@ -575,6 +592,11 @@ function TornadoSettings:saveToXML()
         setXMLBool(xmlId, "TornadoPhysics.insurance.adminOnly", TornadoInsurance.adminOnly)
         setXMLString(xmlId, "TornadoPhysics.insurance.region", TornadoInsurance.regionSetting or "auto")
         setXMLString(xmlId, "TornadoPhysics.insurance.salesClosing", TornadoInsurance.salesClosing or "auto")
+        setXMLString(xmlId, "TornadoPhysics.insurance.valueBasis", TornadoInsurance.valueBasis or "game")
+        setXMLBool(xmlId, "TornadoPhysics.insurance.replacementValue", TornadoInsurance.replacementValue == true)
+        setXMLBool(xmlId, "TornadoPhysics.insurance.removeTotaled", TornadoInsurance.removeTotaled ~= false)
+        setXMLFloat(xmlId, "TornadoPhysics.insurance.salvagePenalty", TornadoInsurance.salvagePenalty or 0.5)
+        setXMLFloat(xmlId, "TornadoPhysics.insurance.rebuiltPenalty", TornadoInsurance.rebuiltPenalty or 0.3)
     end
 
     if TornadoClimate then

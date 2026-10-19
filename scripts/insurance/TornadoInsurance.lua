@@ -21,6 +21,11 @@ TornadoInsurance.isEnabled = false
 TornadoInsurance.adminOnly = false            -- true: only the server admin may buy / change / cancel policies
 TornadoInsurance.regionSetting = "auto"       -- "auto", a profile country ("DE") or "country:region" ("US:US_KS")
 TornadoInsurance.salesClosing = "auto"        -- crop policies only in late winter / early spring: "auto" (with seasonal growth), "on", "off"
+TornadoInsurance.valueBasis = "game"          -- sum insured: "game" (yield x price) or "real" (the data's sums per ha, converted)
+TornadoInsurance.replacementValue = false     -- equipment: pay the dealer's replacement value (+15 %) instead of the sell price
+TornadoInsurance.removeTotaled = true         -- equipment: an accepted total loss removes the wreck (off: kept like a buy-back)
+TornadoInsurance.salvagePenalty = 0.5         -- equipment: sell price -50 % with a Salvage title
+TornadoInsurance.rebuiltPenalty = 0.3         -- equipment: sell price -30 % with a Rebuilt title
 
 TornadoInsurance.REGION_AUTO = "auto"
 TornadoInsurance.FILE = "TornadoInsurance.xml"
@@ -69,6 +74,9 @@ function TornadoInsurance:loadMap(modDir, modName)
     if TornadoInsuranceCrop ~= nil then
         TornadoInsuranceCrop:install(self)
     end
+    if TornadoInsuranceEquipment ~= nil then
+        TornadoInsuranceEquipment:install(self)
+    end
 
     if isServer() then
         self:loadState()
@@ -89,6 +97,9 @@ function TornadoInsurance:deleteMap()
     end
     if TornadoInsuranceCrop ~= nil then
         TornadoInsuranceCrop:uninstall()
+    end
+    if TornadoInsuranceEquipment ~= nil then
+        TornadoInsuranceEquipment:uninstall()
     end
     self.farms = {}
     self.timers = {}
@@ -531,6 +542,14 @@ function TornadoInsurance:applyFarmState(farmId, state)
         farm.crop = nil
     end
     farm.openClaims = state.openClaims or 0
+    -- Equipment policy summary, titles (the sell price wrapper reads them here too) and total losses to choose.
+    if state.equipDeductible ~= nil and state.equipDeductible > 0 then
+        farm.equipment = { deductible = state.equipDeductible, status = state.equipStatus }
+    else
+        farm.equipment = nil
+    end
+    farm.titles = state.titles or {}
+    farm.equipClaims = state.equipTotals or {}
     if TornadoMenu ~= nil and TornadoMenu.INSTANCE ~= nil and TornadoMenu.INSTANCE.isOpen then
         TornadoMenu.INSTANCE:refreshAllPages()
     end
@@ -857,12 +876,19 @@ function TornadoInsurance:getStatusText()
     end
     local crop = "n/a"
     if TornadoInsuranceCrop ~= nil then
-        crop = string.format("%s, sales %s (%s)", TornadoInsuranceCrop:isAvailable() and "available" or "not available yet (phase 2b)",
-            TornadoInsuranceCrop:isSalesOpen() and "open" or "closed", self.salesClosing or "auto")
+        local reason = TornadoInsuranceCrop:getDisabledReason()
+        crop = string.format("%s, sales %s (%s), sum insured %s", reason ~= nil and ("switched off: " .. reason)
+            or (TornadoInsuranceCrop:isAvailable() and "available" or "nothing offered"),
+            TornadoInsuranceCrop:isSalesOpen() and "open" or "closed", self.salesClosing or "auto",
+            self.valueBasis == "real" and "real-world sums" or "game values")
     end
-    return string.format("Insurance: Enabled = %s | Policy managers = %s | %s | Days per month = %d | Cost scale = %.0f %% | Farms with records = %d | Countdowns = %d | Damage events logged = %d | Finances = %s | Crop insurance = %s",
+    local equipment = string.format("%s value, remove totalled %s, titles Salvage -%d %% / Rebuilt -%d %%",
+        self.replacementValue and "replacement" or "sell", tostring(self.removeTotaled ~= false),
+        math.floor((self.salvagePenalty or 0) * 100 + 0.5), math.floor((self.rebuiltPenalty or 0) * 100 + 0.5))
+    return string.format("Insurance: Enabled = %s | Policy managers = %s | %s | Days per month = %d | Cost scale = %.0f %% | Farms with records = %d | Countdowns = %d | Damage events logged = %d | Finances = %s | Crop insurance = %s | Equipment insurance = %s",
         tostring(self.isEnabled), self.adminOnly and "server admin only" or "farm manager + admin",
-        self:getRegionStatusText(), self:getDaysPerMonth(), self:getCostScale() * 100, farms, #(self.timers or {}), damage, finance, crop)
+        self:getRegionStatusText(), self:getDaysPerMonth(), self:getCostScale() * 100, farms, #(self.timers or {}), damage, finance, crop,
+        equipment)
 end
 
 --- Farm the console works on: the player's own farm, else farm 1.
@@ -879,11 +905,15 @@ function TornadoInsurance:getConsoleFarmId(value)
 end
 
 --- t_dev insurance <status | bill | testpremium <amount> | charge <amount> [farm] | pay <amount> [farm] |
----                  timer <real days> [farm] | timers | inbox [farm] | rate <FILLTYPE> <PLAN> <coverage %> | regions | crops>
+---                  timer <real days> [farm] | timers | inbox [farm] | rate <FILLTYPE> <PLAN> <coverage %> | regions | crops |
+---                  crop ... | equip ...>
 function TornadoInsurance:consoleCommand(sub, value, extra, more)
     if sub == "crop" then
         if TornadoInsuranceCrop == nil then return "Insurance: crop policies missing." end
         return TornadoInsuranceCrop:consoleCommand(self:getConsoleFarmId(nil), value, extra, more)
+    elseif sub == "equip" or sub == "equipment" then
+        if TornadoInsuranceEquipment == nil then return "Insurance: equipment policies missing." end
+        return TornadoInsuranceEquipment:consoleCommand(self:getConsoleFarmId(nil), value, extra, more)
     elseif sub == "damage" then
         if TornadoInsuranceDamage == nil then return "Insurance: damage report missing." end
         return TornadoInsuranceDamage:printLog(tonumber(value))

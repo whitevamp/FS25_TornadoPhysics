@@ -9,6 +9,22 @@
         <text name="tp_tab_tuning" text="Afstelling"/>
         <text name="tp_tab_effects" text="Effecten"/>
         <text name="tp_tab_modules" text="Modules"/>
+        <text name="tp_tab_messages" text="Berichten"/>
+        <text name="tp_sec_msg_recent" text="Recente berichten (laatste 24 u)"/>
+        <text name="tp_sec_msg_saved" text="Opgeslagen berichten"/>
+        <text name="tp_msg_message" text="Bericht"/>
+        <text name="tp_msg_show" text="Hele bericht lezen"/>
+        <text name="tp_msg_save" text="Dit bericht bewaren"/>
+        <text name="tp_msg_remove" text="Opgeslagen bericht verwijderen"/>
+        <text name="tp_tip_msg_recent" text="De berichten van de mod aan je boerderij (verzekeringsbrieven, stormrapporten, waarschuwingen). Ze blijven 24 speluren tenzij je ze opslaat."/>
+        <text name="tp_tip_msg_saved" text="Berichten die je hebt opgeslagen. Ze blijven tot je ze verwijdert."/>
+        <text name="tp_btn_save" text="Opslaan"/>
+        <text name="tp_btn_remove" text="Verwijderen"/>
+        <text name="tp_msg_none" text="Geen berichten"/>
+        <text name="tp_msg_day" text="Dag"/>
+        <text name="tp_msg_saved_done" text="Bericht opgeslagen."/>
+        <text name="tp_msg_removed_done" text="Opgeslagen bericht verwijderd."/>
+        <text name="tp_confirm_msg_remove" text="Dit opgeslagen bericht verwijderen?"/>
         <text name="tp_tab_developer" text="Ontwikkelaar"/>
         <text name="tp_btn_close" text="Sluiten"/>
         <text name="tp_btn_save_settings" text="Instellingen opslaan"/>
@@ -122,8 +138,8 @@
         <text name="tp_sec_visuals" text="Beeld"/>
         <text name="tp_ring" text="Ring gevarenzone"/>
         <text name="tp_tip_ring" text="Tekent de rode gevarenzone-ring rond de tornado."/>
-        <text name="tp_fire" text="Willekeurig vuur"/>
-        <text name="tp_tip_fire" text="Aan: beschadigde motoren hebben 50/50 kans om vlam te vatten. Uit: elke beschadigde motor brandt."/>
+        <text name="tp_fire" text="Voertuigbranden"/>
+        <text name="tp_tip_fire" text="Aan: een zwaar beschadigde motor kan vlam vatten - hoe sterker de tornado, hoe waarschijnlijker (5 procent bij EF0 tot 45 procent bij EF5, eenmaal per voertuig bepaald tot het gerepareerd is). Een uitgebrand voertuig is voor de verzekering total loss. Uit: geen voertuigbranden."/>
         <text name="tp_sec_gameplay" text="Gameplay"/>
         <text name="tp_destruction" text="Voertuigvernietiging"/>
         <text name="tp_tip_destruction" text="Voertuigen in de storm verliezen onderdelen (automatisch gerepareerd na 24 speluren)."/>
@@ -202,6 +218,31 @@
         <text name="tp_plan_APH" text="Opbrengst, bijzondere gewassen (APH)"/>
         <text name="tp_plan_COST" text="Productiekosten (COST)"/>
         <text name="tp_plan_FULL" text="Volledige opbrengst (FULL)"/>
+        <text name="tp_plan_HAIL" text="Hagel"/>
+        <text name="tp_plan_HAIL_STORM" text="Hagel + storm + hevige regen"/>
+        <text name="tp_plan_HAIL_PLUS" text="Hagel plus (wind, brand)"/>
+        <text name="tp_plan_HAIL_ONLY" text="Alleen hagel (zonder subsidie)"/>
+        <text name="tp_plan_PACKAGE" text="Meerdere-risicopakket"/>
+        <text name="tp_plan_PACKAGE_WIND" text="Meerdere-risicopakket + storm"/>
+        <text name="tp_plan_NAMED" text="Benoemde risico's"/>
+        <text name="tp_plan_MULTI" text="Meerdere risico's"/>
+        <text name="tp_plan_MRC" text="Brede weersverzekering"/>
+        <text name="tp_plan_MOD1" text="Module 1 - heel bedrijf, rampen"/>
+        <text name="tp_plan_MOD2" text="Module 2 - alle risico's per veld"/>
+        <text name="tp_plan_MODP" text="Module P - benoemde risico's"/>
+        <text name="tp_plan_IT_A" text="Alle risico's (type A)"/>
+        <text name="tp_plan_IT_B" text="Rampen + weer (type B)"/>
+        <text name="tp_plan_IT_C" text="Weerrisico's (type C)"/>
+        <text name="tp_plan_IT_C2" text="Hagel + wind (type C)"/>
+        <text name="tp_plan_IT_D" text="Alleen rampen (type D)"/>
+        <text name="tp_plan_IT_F" text="Vereenvoudigde polis (SMART)"/>
+        <text name="tp_plan_STATE" text="Overheidsregeling rijst"/>
+        <text name="tp_insurance_value" text="Verzekerde som"/>
+        <text name="tp_tip_insurance_value" text="Spelwaarden: de oogst van het veld tegen de prijzen van de kaart. Echte waarden: de bedragen per hectare van het land uit de verzekeringsgegevens, omgerekend naar speelgeld (euro, benaderde koersen). De VS, Canada en Brazilië gebruiken altijd spelwaarden."/>
+        <text name="tp_insurance_value_game" text="Spelwaarden"/>
+        <text name="tp_insurance_value_real" text="Echte waarden"/>
+        <text name="tp_msg_ins_claim_not_covered" text="Schade veld %d gesloten: je polis dekt dit niet: %s."/>
+        <text name="tp_msg_ins_claim_threshold" text="Schade veld %d: %d %% verlies ligt onder de schadedrempel van %d %% - nog geen uitkering."/>
         <text name="tp_insurance_crop_plan" text="Oogstverzekering (je boerderij)"/>
         <text name="tp_tip_insurance_crop_plan" text="Verzekert elk veld van je boerderij met een verzekerbaar gewas tegen verliezen door tornado, hagel, droogte, overstroming en brand. Opbrengstplannen betalen tegen de prijs die voor het polisjaar is vastgelegd; inkomensbescherming betaalt tegen de hoogste van de vastgelegde en de huidige prijs. De dekking begint ongeveer een week (echte tijd) na aankoop."/>
         <text name="tp_insurance_crop_coverage" text="Dekkingsniveau"/>
@@ -294,6 +335,54 @@
         <text name="tp_supercell_lp" text="LP-supercel"/>
         <text name="tp_supercell_classic" text="Klassieke supercel"/>
         <text name="tp_supercell_hp" text="HP-supercel"/>
+        <text name="tp_insurance_replacement" text="Materieel: vervangingswaarde"/>
+        <text name="tp_tip_insurance_replacement" text="Uit: schades aan materieel worden betaald tegen de verkoopprijs van het voertuig. Aan: tegen de vervangingswaarde bij de dealer, 15 procent meer - dichter bij wat hetzelfde voertuig opnieuw kopen kost."/>
+        <text name="tp_insurance_remove_totaled" text="Materieel: total loss verwijderen"/>
+        <text name="tp_tip_insurance_remove_totaled" text="Aan: wie een total loss accepteert, krijgt de verzekerde waarde en de verzekeraar haalt het wrak op (het voertuig verdwijnt). Uit: er verdwijnt nooit iets - accepteren werkt als terugkopen (restwaarde ingehouden, titel Wrak)."/>
+        <text name="tp_insurance_salvage" text="Titel Wrak: verkoopprijs"/>
+        <text name="tp_tip_insurance_salvage" text="Hoeveel lager de verkoopprijs is van een voertuig dat je na een total loss hebt teruggekocht, tot het gerepareerd is. Echte wrakken gaan voor ongeveer de helft weg."/>
+        <text name="tp_insurance_rebuilt" text="Titel Herbouwd: verkoopprijs"/>
+        <text name="tp_tip_insurance_rebuilt" text="Een teruggekocht voertuig dat gerepareerd is, houdt voorgoed de titel Herbouwd: de verkoopprijs blijft zoveel lager. Echte herbouwde voertuigen gaan voor 20 tot 40 procent minder weg."/>
+        <text name="tp_insurance_title_penalty_option" text="-%d %%"/>
+        <text name="tp_insurance_equip" text="Materieelverzekering (je boerderij)"/>
+        <text name="tp_tip_insurance_equip" text="Verzekert elk voertuig en werktuig van je boerderij (geen geleasde of opdrachtvoertuigen) tegen tornadoschade. Kies het eigen risico: hoe hoger, hoe lager de maandpremie. Reparaties worden betaald min het eigen risico; een total loss betaalt de waarde van het voertuig. De dekking begint ongeveer een week (echte tijd) na aankoop."/>
+        <text name="tp_insurance_equip_none" text="Geen materieelverzekering"/>
+        <text name="tp_insurance_equip_option" text="%s eigen risico - ongeveer %s per maand"/>
+        <text name="tp_insurance_equip_status" text="Status materieelverzekering"/>
+        <text name="tp_tip_insurance_equip_status" text="Toont de materieelverzekering van je boerderij: eigen risico, verzekerde voertuigen, hun waarde en de maandpremie."/>
+        <text name="tp_insurance_equip_total" text="Total loss om te beslissen"/>
+        <text name="tp_tip_insurance_equip_total" text="Een voertuig dat de verzekeraar total loss heeft verklaard. Accepteren: de volle uitkering en de verzekeraar neemt het wrak mee. Terugkopen: minder geld, je houdt het voertuig met de titel Wrak. Zonder keuze binnen een week (echte tijd) wordt het geaccepteerd."/>
+        <text name="tp_insurance_equip_total_option" text="%s: accepteren %s / terugkopen %s"/>
+        <text name="tp_insurance_equip_total_none" text="Geen total loss om te beslissen"/>
+        <text name="tp_insurance_equip_accept" text="Total loss accepteren"/>
+        <text name="tp_insurance_equip_buyback" text="Voertuig terugkopen"/>
+        <text name="tp_btn_equip_accept" text="Accepteren"/>
+        <text name="tp_btn_equip_buyback" text="Terugkopen"/>
+        <text name="tp_confirm_equip_accept" text="Total loss accepteren? De verzekeraar betaalt het volle bedrag en neemt het voertuig mee."/>
+        <text name="tp_confirm_equip_buyback" text="Voertuig terugkopen? Je krijgt minder geld en houdt het met de titel Wrak (lagere verkoopprijs)."/>
+        <text name="tp_msg_ins_eq_unknown_deductible" text="Dat eigen risico wordt niet aangeboden."/>
+        <text name="tp_msg_ins_eq_bought" text="Materieelverzekering bevestigd: %s eigen risico, %d voertuigen, ongeveer %s per maand. De dekking begint over %d d %d u."/>
+        <text name="tp_msg_ins_eq_changed" text="Materieelverzekering gewijzigd: %s eigen risico, %d voertuigen, ongeveer %s per maand."/>
+        <text name="tp_msg_ins_eq_none" text="Je boerderij heeft geen materieelverzekering."/>
+        <text name="tp_msg_ins_eq_cancelled" text="Materieelverzekering opgezegd. Openstaande schades worden nog afgehandeld."/>
+        <text name="tp_msg_ins_eq_active" text="De materieelverzekering is nu actief (%s eigen risico)."/>
+        <text name="tp_msg_ins_eq_claim_received" text="Schademelding voor %s ontvangen (reparatieschatting %s) - een expert komt kijken."/>
+        <text name="tp_msg_ins_eq_claim_inspected" text="De expert heeft %s bekeken. Een beslissing volgt binnenkort."/>
+        <text name="tp_msg_ins_eq_claim_approved" text="Schade aan %s goedgekeurd: schatting %s min %s eigen risico - %s wordt uitbetaald."/>
+        <text name="tp_msg_ins_eq_claim_paid" text="Uitkering voor %s: %s."/>
+        <text name="tp_msg_ins_eq_claim_deductible" text="Schade aan %s gesloten: de reparatieschatting van %s valt binnen je eigen risico van %s."/>
+        <text name="tp_msg_ins_eq_total" text="%s is total loss (waarde %s). Accepteren %s of terugkopen %s (titel Wrak) - kies in het paneel, Modules, binnen %d d %d u."/>
+        <text name="tp_msg_ins_eq_total_burned" text="%s is uitgebrand - total loss (waarde %s). Accepteren %s of terugkopen %s (titel Wrak) - kies in het paneel, Modules, binnen %d d %d u."/>
+        <text name="tp_msg_ins_eq_total_reminder" text="Herinnering: beslis over de total loss van %s binnen %d d %d u (bedieningspaneel, Modules), anders wordt die geaccepteerd."/>
+        <text name="tp_msg_ins_eq_settled" text="Total loss van %s afgehandeld: %s uitbetaald, het wrak is opgehaald."/>
+        <text name="tp_msg_ins_eq_settled_auto" text="Geen beslissing op tijd: de total loss van %s is geaccepteerd, %s uitbetaald, het wrak is opgehaald."/>
+        <text name="tp_msg_ins_eq_bought_back" text="%s teruggekocht: %s uitbetaald. Het heeft de titel Wrak (lagere verkoopprijs) tot het gerepareerd is."/>
+        <text name="tp_msg_ins_eq_kept" text="Total loss van %s geaccepteerd: %s uitbetaald. Wrakken worden behouden (instelling), het blijft met de titel Wrak."/>
+        <text name="tp_msg_ins_eq_kept_auto" text="Geen beslissing op tijd: de total loss van %s is geaccepteerd, %s uitbetaald. Wrakken worden behouden (instelling): titel Wrak."/>
+        <text name="tp_msg_ins_eq_no_total" text="Er wacht geen total loss op een beslissing."/>
+        <text name="tp_msg_ins_eq_rebuilt" text="%s is gerepareerd: de titel is nu Herbouwd (de verkoopprijs blijft lager)."/>
+        <text name="tp_msg_ins_eq_none_status" text="Geen materieelverzekering. Kies een eigen risico om alle voertuigen en werktuigen van je boerderij te verzekeren."/>
+        <text name="tp_msg_ins_eq_status" text="Materieelverzekering: %s eigen risico (%s) - %d voertuigen, waarde %s, ongeveer %s per maand, %d total losses om te beslissen."/>
         <text name="tp_dir_N" text="N"/>
         <text name="tp_dir_NE" text="NO"/>
         <text name="tp_dir_E" text="O"/>

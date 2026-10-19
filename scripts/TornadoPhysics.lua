@@ -299,6 +299,15 @@ function TornadoPhysics:update(dt)
         DebugUtil.drawDebugSphere(tX, tY, tZ, 2.0, 16, 16, debugColor, true)
     end
 
+    -- DEBUG: the twister's crop destruction areas drawn on the ground (t_dev twister areas)
+    if self.debugDrawAreas and g_currentMission.environment.weather.twister ~= nil then
+        for _, area in ipairs(g_currentMission.environment.weather.twister.destructionAreas or {}) do
+            if area.polygon ~= nil and area.polygon.drawDebug ~= nil then
+                area.polygon:drawDebug()
+            end
+        end
+    end
+
     -- VISUAL SYNC
     -- Check if we have a visual tornado active
     if g_currentMission.environment.weather.twister ~= nil then
@@ -319,8 +328,9 @@ function TornadoPhysics:update(dt)
 
                 print(string.format("Tornado Visuals Synced: Scale %.2f (EF-%d)", scale, efScale))
 
-                -- Crop damage path = the physics radius, strength by EF (server: the areas only exist there).
-                self:applyCropDamageScale(twister, currentOuterRadius, efScale)
+                -- Crop damage + object destruction follow the physics radius and EF (server: the twister's
+                -- destruction only runs there).
+                self:applyTwisterDestruction(twister, currentOuterRadius, efScale)
             end
         end
     end
@@ -348,6 +358,11 @@ function TornadoPhysics:processNearbyObjects(dt, tX, tY, tZ)
 
                     if dist < self.settings.base_radius then
                         -- self:applyTornadoForces(vehicle, dist, dt)
+
+                        -- Equipment insurance: value before any damage (first contact per storm)
+                        if TornadoInsuranceEquipment ~= nil then
+                            TornadoInsuranceEquipment:onVehicleContact(vehicle)
+                        end
 
                         -- Trigger Destruction
                         if TornadoDestruction then
@@ -965,6 +980,11 @@ end
 function TornadoPhysics:applyDamage(vehicle, amount, currentOuterRadius)
     if vehicle == nil then return end
 
+    -- Equipment insurance: value before any damage (first contact per storm)
+    if TornadoInsuranceEquipment ~= nil then
+        TornadoInsuranceEquipment:onVehicleContact(vehicle)
+    end
+
     -- Attempt to trigger visual destruction before applying stat damage
     if TornadoDestruction and TornadoDestruction.destroyTarget then
         TornadoDestruction:destroyTarget(vehicle)
@@ -1311,6 +1331,14 @@ function TornadoPhysics:randomizeTornado()
         self.currentWindMax = windMax; TornadoPhysics.currentWindMax = windMax
         self.currentRadiusM = math.floor(currentOuterRadius + 0.5); TornadoPhysics.currentRadiusM = self.currentRadiusM
 
+        -- Every roll (touchdown, respawn, t_physics randomize / radius, the panel) re-syncs the funnel visual and
+        -- the crop damage path to the new EF and radius on the next frame. Only a respawn did that before, so a
+        -- re-rolled tornado kept the first roll's sizes (user, 2026-10-18).
+        local rolledWeather = g_currentMission.environment ~= nil and g_currentMission.environment.weather or nil
+        if rolledWeather ~= nil and rolledWeather.twister ~= nil then
+            rolledWeather.twister.isTornadoModScaled = nil
+        end
+
         if TornadoHotspot ~= nil and TornadoHotspot.updateStats ~= nil then
             TornadoHotspot:updateStats(efNum, windMin, windMax, self.currentRadiusM)
         end
@@ -1322,6 +1350,10 @@ function TornadoPhysics:randomizeTornado()
         if g_currentMission and g_dedicatedServer == nil then
             g_currentMission:showBlinkingWarning(TornadoText.format("tp_msg_touchdown", efNum,
                 math.floor(currentOuterRadius), self.sizeMultiplier), 20000)
+        end
+        if TornadoMessageLog ~= nil and TornadoMessageLog.record ~= nil then
+            TornadoMessageLog:record("tp_msg_touchdown", { TornadoText.num(efNum), TornadoText.num(math.floor(currentOuterRadius)),
+                TornadoText.num(self.sizeMultiplier) }, 1, nil)   -- Messages tab history (everybody)
         end
         if TornadoAPI then TornadoAPI:fireTouchdownEvent() end
 
@@ -1400,68 +1432,195 @@ function TornadoPhysics:applyClientState(state)
 end
 
 --- Client: funnel size and extra debris the way the server set them in randomizeTornado / visual sync.
--- Crop damage strength by EF rating: multiplies the destroyed share of every twister destruction area
--- (game default: inner 85 %, middle ring 70 %, outer ring 40 % = EF-2 here). Capped at 5 - 98 %.
-TornadoPhysics.CROP_STRENGTH_BY_EF = { [0] = 0.6, [1] = 0.8, [2] = 1.0, [3] = 1.15, [4] = 1.3, [5] = 1.45 }
+-- Crop damage by EF rating: the crushed share wanted in each zone of the twister's destruction areas
+-- (decided 2026-10-18; outer raised the same day - the game's heavy zones only reach ~57 % of the radius, so a
+-- light outer ring made the path look narrow). Zones come from the twister file's own values: its lowest perlin = inner, highest =
+-- outer, the rest = middle - so a map's own twister works too. The edge stays lighter on purpose: our radius
+-- is the whole wind field.
+TornadoPhysics.CROP_TARGETS_BY_EF = {
+    [0] = { inner = 0.60, middle = 0.35, outer = 0.30 },
+    [1] = { inner = 0.75, middle = 0.50, outer = 0.45 },
+    [2] = { inner = 0.90, middle = 0.65, outer = 0.60 },
+    [3] = { inner = 0.95, middle = 0.75, outer = 0.70 },
+    [4] = { inner = 0.98, middle = 0.85, outer = 0.80 },
+    [5] = { inner = 0.98, middle = 0.90, outer = 0.85 },
+}
+-- Crushed share per perlin value (the game crushes the cells where its noise is above the value), used to find
+-- the value for a wanted share. Measured in game 2026-10-18 (t_dev insurance hit, 20 m circles on four fields):
+-- 4000 -> 60 %, 5000 -> 50 %, 6000 -> 40 %, 7000 -> 31 % - about 1 - value / 10000; the ends follow that line.
+TornadoPhysics.PERLIN_SHARE_CURVE = {
+    { 0, 1.00 }, { 2000, 0.80 }, { 4000, 0.60 }, { 5000, 0.50 }, { 6000, 0.40 }, { 7000, 0.31 }, { 10000, 0.00 },
+}
 
---- The game's twister destroys crops along its destruction areas (polygons of child nodes of the twister i3d,
---- $data/sky/twister.xml: outer ring 35 m; maps can bring their own twister, e.g. 70 m). Scaling the twister root by
---- EF (visual sync) scales them too, but not to our physics radius. This sizes the areas' common parent node so
---- the outermost ring sits on targetRadius (measured in world space, so any twister i3d and any parent scale
---- work), and sets each area's perlin value from its original one by CROP_STRENGTH_BY_EF.
---- Nothing is copied from the twister files; the storm damage report measures the scaled areas as they are.
-function TornadoPhysics:applyCropDamageScale(twister, targetRadius, efNum)
-    local areas = twister ~= nil and twister.destructionAreas or nil
-    if areas == nil or #areas == 0 or twister.rootNode == nil or targetRadius == nil or targetRadius <= 0 then
+--- Perlin value that crushes about this share (linear between the curve's points).
+function TornadoPhysics.perlinForShare(share)
+    local curve = TornadoPhysics.PERLIN_SHARE_CURVE
+    if share >= curve[1][2] then
+        return curve[1][1]
+    end
+    for i = 2, #curve do
+        local p1, s1 = curve[i - 1][1], curve[i - 1][2]
+        local p2, s2 = curve[i][1], curve[i][2]
+        if share >= s2 then
+            if s1 == s2 then
+                return p1
+            end
+            return math.floor(p1 + (p2 - p1) * (s1 - share) / (s1 - s2) + 0.5)
+        end
+    end
+    return curve[#curve][1]
+end
+
+--- Our own crop damage and object destruction for the game's twister (decided 2026-10-18).
+--- The twister file's crop "areas" are seven thin slivers on one side of the funnel, and resizing them proved
+--- unreliable, so each twister gets, once per object (runtime, nothing in the game's files is changed):
+---   * updateDestructionAreas -> three nested circles round the funnel (inner 30 % / middle 60 % / outer 100 %
+---     of our radius), each crushing its CROP_TARGETS_BY_EF share. The game's noise pattern is fixed to the
+---     ground, so nested circles stack cleanly. The game still decides WHEN it runs: server, twister spawned and
+---     fully faded in, savegame setting "Disaster destruction" enabled.
+---   * onFinishCallback -> the game's object destruction without bales (it deleted every bale near the core -
+---     tested 2026-10-18); bales are only thrown by our physics.
+---   * objectDestructionRadius / InnerRadius from our radius (trees break, destructible buildings fall in a
+---     bigger area for a bigger tornado) - set on every roll.
+TornadoPhysics.CROP_ZONES = { { name = "inner", share = 0.30 }, { name = "middle", share = 0.60 }, { name = "outer", share = 1.00 } }
+TornadoPhysics.CROP_CIRCLE_SEGMENTS = 32
+TornadoPhysics.CROP_MIN_STEP = 2.0          -- metres the funnel moves before a zone is crushed again ...
+TornadoPhysics.CROP_STEP_SHARE = 0.10       -- ... or 10 % of the zone's radius, whichever is larger
+TornadoPhysics.OBJECT_INNER_SHARE = 0.30    -- objects inside: always destroyed
+TornadoPhysics.OBJECT_OUTER_SHARE = 0.60    -- objects inside: trees 30 % chance (game rule), buildings destroyed
+TornadoPhysics.OBJECT_MIN_HEIGHT = 30       -- the game's own cylinder height
+
+--- Called on every roll (visual sync): hooks the twister once, sets the zones and the object radius.
+function TornadoPhysics:applyTwisterDestruction(twister, radius, efNum)
+    if twister == nil or radius == nil or radius <= 0 then
         return
     end
-
-    -- The areas' common parent: walk up from a polygon node to the node directly under the i3d component
-    -- (the component itself is linked to twister.rootNode).
-    local areasNode = twister.tornadoAreasNode
-    if areasNode == nil then
-        local first = areas[1].polygon ~= nil and areas[1].polygon.nodes ~= nil and areas[1].polygon.nodes[1] or nil
-        local node = first
-        while node ~= nil and node ~= 0 and getParent(node) ~= 0 and getParent(getParent(node)) ~= twister.rootNode do
-            node = getParent(node)
-        end
-        if node == nil or node == 0 or getParent(node) == 0 then
-            return
-        end
-        areasNode = node
-        twister.tornadoAreasNode = areasNode
+    self:installTwisterHooks(twister)
+    local targets = self.CROP_TARGETS_BY_EF[math.max(0, math.min(5, efNum or 2))] or self.CROP_TARGETS_BY_EF[2]
+    local zones = {}
+    for _, zone in ipairs(self.CROP_ZONES) do
+        local zoneRadius = radius * zone.share
+        table.insert(zones, { name = zone.name, radius = zoneRadius, perlin = self.perlinForShare(targets[zone.name]),
+            share = targets[zone.name], step = math.max(self.CROP_MIN_STEP, zoneRadius * self.CROP_STEP_SHARE) })
     end
-
-    -- Size: outermost polygon point from the twister centre, in world space.
-    local cx, _, cz = getWorldTranslation(twister.rootNode)
-    local current = 0
-    for _, area in ipairs(areas) do
-        for _, node in ipairs(area.polygon ~= nil and area.polygon.nodes or {}) do
-            local x, _, z = getWorldTranslation(node)
-            current = math.max(current, math.sqrt((x - cx) * (x - cx) + (z - cz) * (z - cz)))
-        end
-    end
-    if current > 0.5 then
-        local sx, sy, sz = getScale(areasNode)
-        local factor = targetRadius / current
-        setScale(areasNode, sx * factor, sy, sz * factor)
-    end
-
-    -- Strength: destroyed share = 1 - perlin / 10000, scaled from the twister file's own value.
-    local strength = self.CROP_STRENGTH_BY_EF[efNum or 2] or 1.0
-    for _, area in ipairs(areas) do
-        if area.tornadoBasePerlin == nil then
-            area.tornadoBasePerlin = area.perlinPercentage or 2500
-        end
-        local destroyed = 1 - area.tornadoBasePerlin / 10000
-        destroyed = math.max(0.05, math.min(0.98, destroyed * strength))
-        area.perlinPercentage = math.floor((1 - destroyed) * 10000 + 0.5)
-    end
+    twister.tornadoCropZones = zones
+    twister.tornadoCropNext = 1
+    twister.objectDestructionInnerRadius = radius * self.OBJECT_INNER_SHARE
+    twister.objectDestructionRadius = radius * self.OBJECT_OUTER_SHARE
+    twister.objectDestructionHeight = math.max(self.OBJECT_MIN_HEIGHT, twister.objectDestructionHeight or 0)
 
     if TornadoDebug then
-        TornadoDebug:info("EVENT", string.format("Crop damage path: outer ring %.0f m -> %.0f m, strength x%.2f (EF-%s)",
-            current, targetRadius, strength, tostring(efNum)))
+        TornadoDebug:info("EVENT", string.format("Crop damage: circles %.0f / %.0f / %.0f m crush %d / %d / %d %% (perlin %d / %d / %d), EF-%s | objects: always %.0f m, trees / buildings to %.0f m, bales left to the physics",
+            zones[1].radius, zones[2].radius, zones[3].radius, math.floor(zones[1].share * 100 + 0.5),
+            math.floor(zones[2].share * 100 + 0.5), math.floor(zones[3].share * 100 + 0.5), zones[1].perlin, zones[2].perlin,
+            zones[3].perlin, tostring(efNum), twister.objectDestructionInnerRadius, twister.objectDestructionRadius))
     end
+end
+
+--- Replaces the twister's crop destruction and filters bales out of its object destruction (once per object).
+function TornadoPhysics:installTwisterHooks(twister)
+    if twister.tornadoHooksInstalled then
+        return
+    end
+    twister.tornadoHooksInstalled = true
+    twister.updateDestructionAreas = function(tw)
+        TornadoPhysics:updateCropDestruction(tw)
+    end
+    local originalFinish = twister.onFinishCallback
+    if originalFinish ~= nil then
+        twister.onFinishCallback = function(tw, ...)
+            TornadoPhysics.removeBales(tw.foundObjects)
+            TornadoPhysics.removeBales(tw.currentObjects)
+            return originalFinish(tw, ...)
+        end
+    end
+end
+
+function TornadoPhysics.removeBales(objects)
+    for id, info in pairs(objects or {}) do
+        if type(info) == "table" and info.isBale then
+            objects[id] = nil
+        end
+    end
+end
+
+--- Server, called by the game's Twister:update instead of its own area update: crushes one zone per call,
+--- when the funnel has moved far enough since that zone was last crushed.
+function TornadoPhysics:updateCropDestruction(twister)
+    local zones = twister.tornadoCropZones
+    if zones == nil or not twister.isSpawned or twister.fadeValue ~= 1 or twister.rootNode == nil
+        or FSDensityMapUtil == nil or DensityMapCircle == nil then
+        return
+    end
+    local x, _, z = getWorldTranslation(twister.rootNode)
+    for _ = 1, #zones do
+        local index = twister.tornadoCropNext or 1
+        twister.tornadoCropNext = index % #zones + 1
+        local zone = zones[index]
+        local moved = zone.lastX == nil or ((x - zone.lastX) ^ 2 + (z - zone.lastZ) ^ 2) >= zone.step * zone.step
+        if moved then
+            zone.lastX, zone.lastZ = x, z
+            zone.circle = zone.circle or DensityMapCircle.new()
+            zone.circle:updateFromWorldPosition(x, z, zone.radius, self.CROP_CIRCLE_SEGMENTS)
+            if TornadoInsuranceDamage ~= nil and TornadoInsuranceDamage.setCause ~= nil then
+                TornadoInsuranceDamage:setCause(TornadoInsuranceDamage.CAUSE_TORNADO, nil)
+            end
+            FSDensityMapUtil.updateDisasterArea(zone.circle, zone.perlin)
+            if TornadoInsuranceDamage ~= nil and TornadoInsuranceDamage.setCause ~= nil then
+                TornadoInsuranceDamage:setCause(nil, nil)
+            end
+            return   -- one zone per call (the game's own pace: one area per update)
+        end
+    end
+end
+
+--- t_dev twister areas: prints every crop destruction area of the running twister (perlin, points as
+--- distance / direction from the centre, convex or not) and toggles drawing them on the ground.
+function TornadoPhysics:debugDestructionAreas()
+    local weather = g_currentMission ~= nil and g_currentMission.environment ~= nil and g_currentMission.environment.weather or nil
+    local twister = weather ~= nil and weather.twister or nil
+    if twister == nil or twister.destructionAreas == nil or twister.rootNode == nil then
+        return "Twister areas: no twister with destruction areas right now (host / single player, tornado on the ground)."
+    end
+    self.debugDrawAreas = not self.debugDrawAreas
+    local cx, _, cz = getWorldTranslation(twister.rootNode)
+    print("---------------- TWISTER DESTRUCTION AREAS ----------------")
+    for i, area in ipairs(twister.destructionAreas) do
+        local nodes = area.polygon ~= nil and area.polygon.nodes or {}
+        local points, sign, convex = {}, 0, true
+        local coords = {}
+        for _, node in ipairs(nodes) do
+            local x, _, z = getWorldTranslation(node)
+            table.insert(coords, { x - cx, z - cz })
+        end
+        for k, c in ipairs(coords) do
+            local nxt = coords[k % #coords + 1]
+            local after = coords[(k + 1) % #coords + 1]
+            local cross = (nxt[1] - c[1]) * (after[2] - nxt[2]) - (nxt[2] - c[2]) * (after[1] - nxt[1])
+            if math.abs(cross) > 1e-6 then
+                local s = cross > 0 and 1 or -1
+                if sign == 0 then
+                    sign = s
+                elseif s ~= sign then
+                    convex = false
+                end
+            end
+            local dist = math.sqrt(c[1] * c[1] + c[2] * c[2])
+            local angle = math.deg(math.atan2(c[1], c[2])) % 360
+            table.insert(points, string.format("%.0fm@%.0f", dist, angle))
+        end
+        print(string.format("  #%d perlin %5d (file %5s)  %2d points  %-7s  %s", i, area.perlinPercentage or -1,
+            tostring(area.tornadoBasePerlin or "?"), #coords, convex and "convex" or "CONCAVE", table.concat(points, " ")))
+    end
+    for _, zone in ipairs(twister.tornadoCropZones or {}) do
+        print(string.format("  our %-6s circle %4.0f m  perlin %5d  (crushes %d %%)%s", zone.name, zone.radius, zone.perlin,
+            math.floor(zone.share * 100 + 0.5), twister.tornadoHooksInstalled and "" or "  - hooks NOT installed"))
+    end
+    print(string.format("  objects: always destroyed inside %.0f m, trees / buildings up to %.0f m (game's own areas above are not used)",
+        twister.objectDestructionInnerRadius or 0, twister.objectDestructionRadius or 0))
+    print("-----------------------------------------------------------")
+    return string.format("Twister areas: %d printed above (distance m @ direction deg from the centre). Drawing on the ground %s.",
+        #twister.destructionAreas, self.debugDrawAreas and "ON (t_dev twister areas again = off)" or "OFF")
 end
 
 function TornadoPhysics:applyClientVisuals()
@@ -1722,6 +1881,44 @@ function TornadoPhysics:onTornadoRespawn()
     end
 end
 
+--- The savegame's calendar, before the environment reload (clearTornadoState) resets it.
+function TornadoPhysics:captureCalendar(environment)
+    return {
+        monotonicDay = environment.currentMonotonicDay, day = environment.currentDay, dayTime = environment.dayTime,
+        daysPerPeriod = environment.daysPerPeriod, plannedDaysPerPeriod = environment.plannedDaysPerPeriod,
+        realHourTimer = environment.realHourTimer, visualPeriodLocked = environment.visualPeriodLocked,
+        visualPeriod = environment.currentVisualPeriod, visualSeason = environment.currentVisualSeason,
+    }
+end
+
+--- Puts the calendar back after the environment reload: date, time of day, days per month (also the planned
+--- value the game switches to at the next season), the fixed seasonal visuals, and the light for that time.
+function TornadoPhysics:restoreCalendar(environment, calendar)
+    if calendar == nil or calendar.monotonicDay == nil or calendar.dayTime == nil or environment.setEnvironmentTime == nil then
+        return
+    end
+    local daysPerPeriod = calendar.daysPerPeriod or 1
+    environment.plannedDaysPerPeriod = calendar.plannedDaysPerPeriod or daysPerPeriod
+    environment.timeAdjustment = 1 / daysPerPeriod
+    if calendar.realHourTimer ~= nil then
+        environment.realHourTimer = calendar.realHourTimer
+    end
+    if calendar.visualPeriodLocked then
+        environment.visualPeriodLocked = true
+        environment.currentVisualPeriod = calendar.visualPeriod
+        environment.currentVisualSeason = calendar.visualSeason
+    end
+    environment:setEnvironmentTime(calendar.monotonicDay, calendar.day, calendar.dayTime, daysPerPeriod, false)
+    if environment.lighting ~= nil and environment.daylight ~= nil then
+        environment.lighting:setSunHeightAngle(environment.daylight:getSunHeightAngle())
+        environment.lighting:setDaylightTimes(environment.daylight:getDaylightTimes())
+        environment.lighting:updateCurves()
+        environment.lighting:setDayTime(environment.dayTime, true)
+    end
+    print(string.format("TornadoPhysics: Calendar kept after the environment reload (day %d, %02d:%02d, %d days per month).",
+        environment.currentDay or 0, environment.currentHour or 0, environment.currentMinute or 0, daysPerPeriod))
+end
+
 function TornadoPhysics:clearTornadoState()
     print("TornadoPhysics: WATCHDOG TRIGGERED! Cleaning up despawned tornado.")
 
@@ -1807,7 +2004,11 @@ function TornadoPhysics:clearTornadoState()
         -- Force the engine to execute its full, native environment data reload.
         if environment.consoleCommandReloadEnvironment ~= nil then
             print("TornadoPhysics: Running consoleCommandReloadEnvironment to restore map definitions...")
+            -- Environment:load (inside the reload) also resets the calendar: day 6, 08:00, 1 day per month,
+            -- early spring. Keep the savegame's calendar and put it back right after.
+            local calendar = self:captureCalendar(environment)
             environment:consoleCommandReloadEnvironment()
+            self:restoreCalendar(environment, calendar)
         else
             print("TornadoPhysics: Warning - consoleCommandReloadEnvironment not found on environment object.")
         end

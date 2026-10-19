@@ -30,3 +30,6 @@ email_*.txt
 
 # Local Lua 5.1 interpreter for syntax checks (dev tool, never ship)
 lua-5.1.5_Win64_bin/
+
+# Other authors' mods kept for UI research only - never commit or ship
+mods_for_research/

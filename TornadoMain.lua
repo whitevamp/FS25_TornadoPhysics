@@ -23,6 +23,7 @@ source(Utils.getFilename("scripts/events/TornadoMessageEvent.lua", modDir))
 source(Utils.getFilename("scripts/events/TornadoFieldFireEvent.lua", modDir))
 source(Utils.getFilename("scripts/events/TornadoInsuranceActionEvent.lua", modDir))
 source(Utils.getFilename("scripts/events/TornadoInsuranceStateEvent.lua", modDir))
+source(Utils.getFilename("scripts/events/TornadoMessageLogEvent.lua", modDir))
 
 -- Insurance rows on the Finances page: must exist before the savegame builds the farms' finance tables.
 source(Utils.getFilename("scripts/insurance/TornadoInsuranceFinance.lua", modDir))
@@ -82,11 +83,16 @@ function TornadoMain:loadMap(name)
     source(Utils.getFilename("scripts/insurance/TornadoInsuranceData.lua", modDir))
     source(Utils.getFilename("scripts/insurance/TornadoInsuranceCrops.lua", modDir))
     source(Utils.getFilename("scripts/insurance/TornadoInsuranceDamage.lua", modDir))
+    source(Utils.getFilename("scripts/insurance/TornadoInsurancePrograms.lua", modDir))
     source(Utils.getFilename("scripts/insurance/TornadoInsuranceCrop.lua", modDir))
+    source(Utils.getFilename("scripts/insurance/TornadoInsuranceEquipment.lua", modDir))
     source(Utils.getFilename("scripts/insurance/TornadoInsurance.lua", modDir))
 
     -- Saves the active tornado / outbreak with the savegame so a reload carries on.
     source(Utils.getFilename("scripts/TornadoPersistence.lua", modDir))
+
+    -- Message history for the control panel's Messages tab.
+    source(Utils.getFilename("scripts/TornadoMessageLog.lua", modDir))
 
     -- Multiplayer sync (settings, tornado state, weather, destruction, effects, messages).
     source(Utils.getFilename("scripts/TornadoSync.lua", modDir))
@@ -101,6 +107,7 @@ function TornadoMain:loadMap(name)
     source(Utils.getFilename("scripts/gui/pages/TornadoPageTuning.lua", modDir))
     source(Utils.getFilename("scripts/gui/pages/TornadoPageEffects.lua", modDir))
     source(Utils.getFilename("scripts/gui/pages/TornadoPageModules.lua", modDir))
+    source(Utils.getFilename("scripts/gui/pages/TornadoPageMessages.lua", modDir))
     source(Utils.getFilename("scripts/gui/pages/TornadoPageDeveloper.lua", modDir))
     source(Utils.getFilename("scripts/gui/TornadoMenu.lua", modDir))
 
@@ -156,6 +163,7 @@ function TornadoMain:loadMap(name)
     if TornadoRegion then TornadoRegion:loadMap(modDir) end
     if TornadoClimate then TornadoClimate:loadMap(modDir) end
     if TornadoOutbreak then TornadoOutbreak:loadMap() end
+    if TornadoMessageLog then TornadoMessageLog:loadMap() end
     if TornadoInsuranceCrops then TornadoInsuranceCrops:loadMap(modDir) end
     if TornadoInsuranceDamage then TornadoInsuranceDamage:loadMap() end   -- storm damage report (also with insurance OFF)
     if TornadoInsurance then TornadoInsurance:loadMap(modDir, modName) end   -- after Region / Climate (region detection)
@@ -195,6 +203,7 @@ function TornadoMain:deleteMap()
     if TornadoOutbreak then TornadoOutbreak:deleteMap() end
     if TornadoInsurance then TornadoInsurance:deleteMap() end
     if TornadoInsuranceCrops then TornadoInsuranceCrops:deleteMap() end
+    if TornadoMessageLog then TornadoMessageLog:deleteMap() end
     if TornadoInsuranceDamage then TornadoInsuranceDamage:deleteMap() end
     if TornadoEffects then TornadoEffects:deleteMap() end
     if TornadoDebug then TornadoDebug:deleteMap() end
@@ -257,6 +266,9 @@ if not FSBaseMission.tornadoSaveHooked then
         end
         if TornadoInsuranceDamage and TornadoInsuranceDamage.save then
             TornadoInsuranceDamage:save()
+        end
+        if TornadoMessageLog and TornadoMessageLog.save then
+            TornadoMessageLog:save()
         end
         if TornadoInsurance and TornadoInsurance.save then
             TornadoInsurance:save()

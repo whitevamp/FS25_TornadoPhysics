@@ -159,9 +159,12 @@ TornadoText = { PARAM_STRING = 0, PARAM_NUMBER = 1, PARAM_KEY = 2, PARAM_MONEY =
     key = function(v) return { type = 2, value = v } end, formatMessage = function(key) return key end }
 TornadoSettings = { getCostScale = function() return 1.0 end }
 TornadoDestruction = { _resolveSavegamePath = function() return "savegame1/" end }
-TornadoRegion = { isLoaded = true, profiles = { US = { file = "CropInsurance_US.xml", name = "United States" } },
+TornadoRegion = { isLoaded = true, profiles = { US = { file = "CropInsurance_US.xml", name = "United States" },
+        DE = { file = "CropInsurance_DE.xml", name = "Germany" }, AU = { file = "CropInsurance_AU.xml", name = "Australia" },
+        SEA = { file = "CropInsurance_SEA.xml", name = "South-East Asia" } },
     detect = function() return { country = "US", source = "baseMap" } end,
-    getProfileCountry = function() return "US" end, getCountryName = function() return "United States" end }
+    getProfileCountry = function(self, country) return self.profiles[country] ~= nil and country or "US" end,
+    getCountryName = function(self, country) return self.profiles[country] ~= nil and self.profiles[country].name or country end }
 TornadoClimate = { regions = {}, detectRegionShared = function() return "US_KS" end }
 TornadoInsuranceDamage = { CAUSE_KEYS = { TORNADO = "tp_cause_tornado", HAIL = "tp_cause_hail" } }
 TornadoPhysics = { tornadoNode = nil }
@@ -169,6 +172,7 @@ TornadoOutbreak = { isActive = false }
 
 dofile("scripts/insurance/TornadoInsuranceData.lua")
 dofile("scripts/insurance/TornadoInsuranceCrops.lua")
+dofile("scripts/insurance/TornadoInsurancePrograms.lua")
 dofile("scripts/insurance/TornadoInsuranceCrop.lua")
 dofile("scripts/insurance/TornadoInsurance.lua")
 
@@ -339,6 +343,80 @@ check("changed", farm.crop.plan == "YP" and farm.crop.coverage == 0.85, true)
 check("cancel", I:handleAction(nil, 1, "cropCancel", ""), nil)
 check("policy gone", farm.crop, nil)
 check("cancel again: nothing to cancel", I:handleAction(nil, 1, "cropCancel", ""), "tp_msg_ins_crop_none")
+
+-- ---------------------------------------------------------------- phase 2b: Germany (named perils)
+publish(MessageType.MINUTE_CHANGED)   -- clock baseline after the reload above
+I.salesClosing = "off"
+I.regionSetting = "DE"
+I.resolved = nil
+check("Germany: crop insurance available", C:isAvailable(), true)
+check("Germany: options", table.concat(C:getOfferedPlans(), ","), "PACKAGE,HAIL_STORM,HAIL")
+check("Germany: levels 80 / 90 / 100 %", table.concat(C:getCoverageLevels("PACKAGE"), ","), "0.8,0.9,1")
+local deTerms = C:getFieldTerms(wheat, "PACKAGE", 0.8, nil)
+check("Germany: sum insured = whole field value (10 ha x 9000 l x price)", deTerms.liability, near(10 * 9000 * C:getAveragePrice(101), 0.01))
+check("Germany: premium = sum x (6.62 % x 0.7 + 0.03 % tax)", deTerms.yearlyPremium, near(10 * 9000 * C:getAveragePrice(101) * (0.0662 * 0.7 + 0.0003), 0.01))
+check("buy package 80 %", I:handleAction(nil, 1, "cropBuy", "PACKAGE 80"), nil)
+farm = I:getFarm(1)
+realDays(7)
+check("package active", farm.crop.status, "ACTIVE")
+local claimsBefore = #farm.claims
+local function claimOf(cause, share, fieldId)
+    I:onDamageLogged({ cause = cause, day = environment.currentMonotonicDay, fieldId = fieldId or 1, farmId = 1,
+        crop = fieldId == 2 and "RICE" or "WHEAT", share = share })
+    realDays(3) realDays(2)
+    return farm.claims[#farm.claims]
+end
+local claimsBeforeFire = #farm.claims
+I:onDamageLogged({ cause = "FIRE", day = environment.currentMonotonicDay, fieldId = 1, farmId = 1, crop = "WHEAT", share = 0.30 })
+check("package does not cover field fire: declined at once, no claim", #farm.claims, claimsBeforeFire)
+check("letter: not covered", lastMessage(), "tp_msg_ins_claim_not_covered")
+check("not covered loss does not count towards the field total", farm.crop.fields[1] == nil or farm.crop.fields[1].lost == 0, true)
+local storm = claimOf("TORNADO", 0.30)
+local locked = farm.crop.prices.WHEAT
+check("tornado (windstorm) covered: 30 % - 20 % deductible paid", storm.payout, near(0.10 * 10 * 9000 * locked, 0.5))
+I.valueBasis = "real"
+local real = claimOf("HAIL", 0.10)
+check("real values: next 10 % paid on 1 500 / ha", real.payout, near(0.10 * 10 * 1500, 0.5))
+I.valueBasis = "game"
+check("cancel German policy", I:handleAction(nil, 1, "cropCancel", ""), nil)
+
+-- ---------------------------------------------------------------- Australia: switched off until the data is cleared
+I.regionSetting = "AU"
+I.resolved = nil
+check("Australia: switched off", C:isAvailable(), false)
+check("Australia: reason given", C:getDisabledReason() ~= nil, true)
+check("Australia: buying refused", I:handleAction(nil, 1, "cropBuy", "NAMED 100"), "tp_msg_ins_crop_unavailable")
+C:consoleCommand(1, "unlock")
+check("t_dev unlock: Australia available for testing", C:isAvailable(), true)
+C:consoleCommand(1, "unlock")
+check("unlock again: off", C:isAvailable(), false)
+
+-- ---------------------------------------------------------------- South-East Asia: state rice scheme (threshold)
+I.regionSetting = "SEA"
+I.resolved = nil
+check("SEA: state scheme offered", table.concat(C:getOfferedPlans(), ","), "STATE")
+local riceTermsSea = C:getFieldTerms(rice, "STATE", 1, nil)
+check("SEA rice: local, 100 %", riceTermsSea.isLocal and riceTermsSea.coverage == 1, true)
+local wheatTermsSea = C:getFieldTerms(wheat, "STATE", 1, nil)
+check("SEA wheat: no state scheme -> unusual (70 %, +25 %)", (not wheatTermsSea.isLocal) and wheatTermsSea.coverage == 0.7, true)
+check("buy state scheme", I:handleAction(nil, 1, "cropBuy", "STATE 100"), nil)
+realDays(7)
+local flood1 = claimOf("FLOOD", 0.50, 2)
+check("rice 50 % flooded: below the 75 % threshold", flood1.status, "DENIED")
+check("letter: threshold", lastMessage(), "tp_msg_ins_claim_threshold")
+local flood2 = claimOf("FLOOD", 0.30, 2)
+local ricePrice = farm.crop.prices.RICE
+check("80 % lost: whole loss paid", flood2.payout, near(0.80 * 4 * 8000 * ricePrice, 0.5))
+check("SEA tornado not covered by the rice scheme", (function()
+    local n = #farm.claims
+    I:onDamageLogged({ cause = "TORNADO", day = environment.currentMonotonicDay, fieldId = 2, farmId = 1, crop = "RICE", share = 0.9 })
+    return #farm.claims == n and lastMessage() == "tp_msg_ins_claim_not_covered" end)(), true)
+I.regionSetting = "CA"
+I.resolved = nil
+TornadoRegion.profiles.CA = { file = "CropInsurance_CA.xml", name = "Canada" }
+check("Canada: switched off until SCIC answers", C:isAvailable(), false)
+I.regionSetting = "auto"
+I.resolved = nil
 
 print(string.format("\n%d / %d checks passed", total - failures, total))
 os.exit(failures == 0 and 0 or 1)

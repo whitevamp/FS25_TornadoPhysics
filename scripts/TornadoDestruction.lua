@@ -122,9 +122,9 @@ function TornadoDestruction:loadMap(name, baseDir)
     end
 
     if g_currentMission.environment then
-        self.lastAbsoluteTime = g_currentMission.environment.dayTime
+        self.lastAbsoluteTime = (g_currentMission.environment.currentMonotonicDay or 0) * 86400000 + (g_currentMission.environment.dayTime or 0)
     else
-        self.lastAbsoluteTime = 0
+        self.lastAbsoluteTime = nil   -- the first update sets the baseline
     end
 
     self:_loadFromXML()
@@ -174,12 +174,14 @@ function TornadoDestruction:update(dt)
     end
 
     if g_currentMission.environment then
-        local currentAbsTime = g_currentMission.environment.dayTime
-        local absoluteDelta = currentAbsTime - self.lastAbsoluteTime
-
-        -- Handle midnight clock rollover
+        -- Monotonic game time (day + time of day): midnight needs no special case, and the clock going
+        -- BACK (an environment reload, a mod setting the time) is not a skip - it used to count as almost a
+        -- whole day and expired every repair timer at once.
+        local environment = g_currentMission.environment
+        local currentAbsTime = (environment.currentMonotonicDay or 0) * 86400000 + (environment.dayTime or 0)
+        local absoluteDelta = currentAbsTime - (self.lastAbsoluteTime or currentAbsTime)
         if absoluteDelta < 0 then
-            absoluteDelta = absoluteDelta + 86400000 -- Milliseconds in a day
+            absoluteDelta = 0
         end
 
         -- Time-skip delta check

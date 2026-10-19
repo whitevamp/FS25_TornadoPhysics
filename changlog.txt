@@ -17,7 +17,7 @@
                 randomize, plus the real-life climate options
     Tuning    - suction, lift, chaos, hover height, max speed, core ratio,
                 bale orbit/suction, ejection duration and interval
-    Effects   - siren, danger ring, random fire
+    Effects   - siren, danger ring, vehicle fires
     Modules   - destruction, recovery bill, map overlay, cargo spilling,
                 livestock, road traffic
     Developer - telemetry HUD, position tracking, verbose log channels,
@@ -114,20 +114,56 @@
   of crop were lost and the worst field. Every crop loss (tornado, hail,
   drought, flood, field fire) is recorded per field for the coming crop
   insurance claims. Works with the insurance switched off too.
-- Crop insurance (US, Canada, Brazil maps first): insure all your farm's fields
-  with one plan (Revenue / Yield Protection and the country's own plans) and a
-  coverage level, Modules tab or console. Real premium rates and subsidies,
+- Crop insurance for every supported country: insure all your farm's fields with
+  one plan and a coverage level, Modules tab or console - US / Canada / Brazil
+  yield and revenue plans, German and Polish hail / multi-peril packages, UK and
+  Chilean named perils, Argentine hail covers, French and Dutch multi-risk,
+  Spanish modules, Italian policy types and the Hutan Pantai rice scheme, each
+  with its own subsidies, taxes and deductibles. Policies only pay for the
+  perils they cover (a hail policy does not pay for a tornado). Australian
+  and Canadian insurance are prepared but not available yet. Setting: sum insured from game
+  values or real-world values. Real premium rates and subsidies,
   prices locked for the policy year, monthly premiums. Every recorded loss
   (tornado, hail, drought, flood, fire) opens a claim: an adjuster visits, a
   decision letter follows, then the payout. Losses within your uninsured part
   (e.g. 25 % at 75 % coverage) are not paid. Policies can only be bought in
   late winter / early spring (setting: auto / always / never).
-- Equipment insurance comes in a later update.
+- Equipment insurance: one policy covers every vehicle and tool your farm owns
+  (not leased or mission vehicles). Choose the deductible ($1,000 / $2,500 /
+  $5,000 / $10,000, x cost scale) - the higher it is, the lower the premium
+  (1.5 % down to 0.8 % of the farm's vehicle value a year, billed monthly).
+  The vehicle's value is recorded the moment the tornado reaches it, before any
+  damage (Advanced Damage System's value when it is installed). When the storm
+  is over a claim opens for every damaged vehicle: the estimate is the tow bill
+  plus the engine and ADS repairs the storm caused. Repairs are paid minus the
+  deductible. A vehicle that burned or whose repair would cost 75 % of its value
+  is a total loss: accept (full value, the insurer takes the wreck) or buy it
+  back (15 % less, you keep it with a Salvage title). No choice within a week =
+  accepted. A Salvage title lowers the sell price by 50 %; once repaired it
+  becomes Rebuilt, -30 % for good (both adjustable). Settings: replacement value
+  (+15 %), remove or keep accepted total losses. Modules tab or
+  t_dev insurance equip.
+
+[UI] Messages Tab
+- New control panel tab with the mod's messages to your farm (insurance
+  letters, storm and damage reports, alerts, tornado warnings): recent messages
+  stay for 24 in-game hours, save the ones you want to keep and remove them when
+  you no longer need them. Show opens the whole text.
 
 [GAMEPLAY] Tornado Crop Damage Follows Its Size
-- The strip of crop a tornado destroys now matches the tornado's real radius,
-  and stronger tornadoes destroy more of the crop inside it (EF-0 about 60 %
-  of the base-game damage, EF-5 about 145 %).
+- The strip of crop a tornado destroys now matches the tornado's real radius
+  (the danger ring), the same in every direction and on every map - our own
+  crop damage replaces the game's narrow one. Stronger tornadoes crush more of
+  it. Heavy in the core, lighter toward the edge (crushed share core / middle
+  / edge):
+  EF-0 60 / 35 / 30 %, EF-1 75 / 50 / 45 %, EF-2 90 / 65 / 60 %,
+  EF-3 95 / 75 / 70 %, EF-4 98 / 85 / 80 %, EF-5 98 / 90 / 85 %.
+- Trees and destructible buildings: the game's tornado only ever broke them
+  within 30 m. Now a bigger tornado reaches further (always inside 30 % of
+  the radius, the game's 30 % tree chance up to 60 %).
+- Bales are no longer deleted by the game's tornado (it silently removed
+  every bale near the core); they are only thrown by our physics.
+- Both follow the savegame's "Disaster destruction" setting, like the game.
 
 [COMPATIBILITY] Moisture System (FS25_MoistureSystem by Ozz)
 - With Moisture System installed, our own drought switches off (Moisture System
@@ -210,6 +246,12 @@
   roll, no second touchdown alert, no siren replay.
 - A running outbreak carries on after loading instead of starting over.
 
+[TOOLS] Test Twister Anywhere
+- t_dev twister spawns a twister at your position right away, in any season.
+  The game's gsWeatherTwisterSpawn fails when the map has no twister weather
+  in the current season; this uses the map's summer twister then.
+  Host / single player only.
+
 [TOOLS] Climate Data Builder (modders only, not part of the mod download)
 - tools/build_tornado_climate.py turns the NOAA SPC tornado, hail and wind
   CSV files into DB/TornadoClimate.xml. Re-run it when NOAA publishes a new
@@ -244,8 +286,27 @@ Physics / gameplay
   change or randomize (4x, 16x, 64x ...), which could hurt performance.
 - Fixed smoke/fire fading and the 24-hour repair timer running at double speed
   while a tornado was active (several modules were updated twice per frame).
+- Fixed the calendar jumping back when a tornado ended: the environment
+  reload that repairs the twister weather also reset the date to day 6,
+  08:00 and the days per month to 1 (often seen as "always August, 8 AM"
+  after a storm). The date, time, days per month and fixed seasonal visuals
+  are now kept. Check your days-per-month setting if you played with tornado
+  ends before this fix.
+- Fixed every vehicle's 24-hour auto-repair finishing the moment a tornado
+  ended (the calendar jump above looked like a skipped day). The clock going
+  back is no longer counted as skipped time; the smoke/fire time-skip check
+  likewise.
+- Fixed the funnel keeping the first roll's size when the tornado was
+  re-rolled (t_physics randomize / radius, the control panel); the crop
+  damage now follows every roll too.
 - Fixed random fire mode making almost every damaged engine burn (the 50/50
-  chance was re-rolled every frame).
+  chance was re-rolled every frame, and again whenever the smoke effect was
+  cleared - after a time skip or once the smoke faded). The roll is now made
+  once per vehicle and kept until the vehicle is repaired.
+- Vehicle fires are now rarer and depend on the tornado's strength: 5 % at
+  EF0, 10 % EF1, 15 % EF2, 25 % EF3, 35 % EF4, 45 % EF5 for an engine past
+  the ignite damage. The Effects tab switch is now "Vehicle fires": off means
+  no vehicle fires at all (it used to mean every damaged engine burns).
 - Fixed the 24-hour auto-repair countdown barely moving when time was
   fast-forwarded (EDC time skips, sleeping). Skipped time now counts fully.
 - Fixed fractional chaos values in t_tune chaos being rounded away.

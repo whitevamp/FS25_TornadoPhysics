@@ -115,6 +115,11 @@ TornadoSync.SETTINGS = {
     fieldSetting(function() return TornadoInsurance end, "adminOnly", "b"),
     fieldSetting(function() return TornadoInsurance end, "regionSetting", "s"),
     fieldSetting(function() return TornadoInsurance end, "salesClosing", "s"),
+    fieldSetting(function() return TornadoInsurance end, "valueBasis", "s"),
+    fieldSetting(function() return TornadoInsurance end, "replacementValue", "b"),
+    fieldSetting(function() return TornadoInsurance end, "removeTotaled", "b"),
+    fieldSetting(function() return TornadoInsurance end, "salvagePenalty", "f"),
+    fieldSetting(function() return TornadoInsurance end, "rebuiltPenalty", "f"),
     -- t_set climate
     fieldSetting(function() return TornadoClimate end, "isEnabled", "b"),
     fieldSetting(function() return TornadoClimate end, "regionSetting", "s"),
@@ -326,6 +331,9 @@ end
 --- Shows a message to everyone (farmId nil) or one farm, including the host. key = text key,
 --- params = TornadoText.str/num/key/cash list; every player formats it in their own language.
 function TornadoSync:sendMessage(key, params, kind, farmId)
+    if TornadoMessageLog ~= nil and TornadoMessageLog.record ~= nil then
+        TornadoMessageLog:record(key, params, kind, farmId)   -- Messages tab history
+    end
     if not self:isMultiplayer() then
         TornadoMessageEvent.show(TornadoText.formatMessage(key, params), kind)
         return
@@ -359,6 +367,10 @@ function TornadoSync:sendInitialState(connection)
 
     if TornadoInsurance ~= nil and TornadoInsurance.sendInitialState ~= nil then
         TornadoInsurance:sendInitialState(connection)
+    end
+
+    if TornadoMessageLog ~= nil and TornadoMessageLog.sendInitialState ~= nil then
+        TornadoMessageLog:sendInitialState(connection)
     end
 
     if TornadoDestruction ~= nil and TornadoDestruction._destroyedObjects ~= nil then

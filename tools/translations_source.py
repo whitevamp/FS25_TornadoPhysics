@@ -38,6 +38,46 @@ t("tp_tab_physics", "Physics", "Physik", "Physique", "Fizyka", "Física", "Fisic
 t("tp_tab_tuning", "Tuning", "Feinabstimmung", "Ajustements", "Strojenie", "Ajuste fino", "Regolazione", "Afstelling")
 t("tp_tab_effects", "Effects", "Effekte", "Effets", "Efekty", "Efectos", "Effetti", "Effecten")
 t("tp_tab_modules", "Modules", "Module", "Modules", "Moduły", "Módulos", "Moduli", "Modules")
+t("tp_tab_messages", "Messages", "Nachrichten", "Messages", "Wiadomości", "Mensajes", "Messaggi", "Berichten")
+t("tp_sec_msg_recent", "Recent messages (last 24 h)", "Neue Nachrichten (letzte 24 Std.)", "Messages récents (24 dernières h)",
+  "Ostatnie wiadomości (24 godz.)", "Mensajes recientes (últimas 24 h)", "Messaggi recenti (ultime 24 h)",
+  "Recente berichten (laatste 24 u)")
+t("tp_sec_msg_saved", "Saved messages", "Gespeicherte Nachrichten", "Messages enregistrés", "Zapisane wiadomości",
+  "Mensajes guardados", "Messaggi salvati", "Opgeslagen berichten")
+t("tp_msg_message", "Message", "Nachricht", "Message", "Wiadomość", "Mensaje", "Messaggio", "Bericht")
+t("tp_msg_show", "Read the whole message", "Ganze Nachricht lesen", "Lire le message entier", "Przeczytaj całą wiadomość",
+  "Leer el mensaje completo", "Leggi tutto il messaggio", "Hele bericht lezen")
+t("tp_msg_save", "Keep this message", "Diese Nachricht behalten", "Garder ce message", "Zachowaj tę wiadomość",
+  "Guardar este mensaje", "Conserva questo messaggio", "Dit bericht bewaren")
+t("tp_msg_remove", "Remove this saved message", "Gespeicherte Nachricht entfernen", "Supprimer ce message enregistré",
+  "Usuń zapisaną wiadomość", "Quitar este mensaje guardado", "Rimuovi questo messaggio salvato", "Opgeslagen bericht verwijderen")
+t("tp_tip_msg_recent",
+  "The mod's messages to your farm (insurance letters, storm reports, alerts). They are kept for 24 in-game hours unless you save them.",
+  "Die Nachrichten des Mods an deinen Hof (Versicherungsbriefe, Sturmberichte, Warnungen). Sie bleiben 24 Spielstunden, wenn du sie nicht speicherst.",
+  "Les messages du mod à votre ferme (lettres d'assurance, rapports de tempête, alertes). Ils restent 24 heures de jeu si vous ne les enregistrez pas.",
+  "Wiadomości moda dla twojego gospodarstwa (listy ubezpieczyciela, raporty burzowe, ostrzeżenia). Zostają 24 godziny gry, jeśli ich nie zapiszesz.",
+  "Los mensajes del mod para tu granja (cartas del seguro, informes de tormentas, avisos). Se guardan 24 horas de juego si no los guardas tú.",
+  "I messaggi del mod alla tua fattoria (lettere dell'assicurazione, rapporti sui temporali, avvisi). Restano 24 ore di gioco se non li salvi.",
+  "De berichten van de mod aan je boerderij (verzekeringsbrieven, stormrapporten, waarschuwingen). Ze blijven 24 speluren tenzij je ze opslaat.")
+t("tp_tip_msg_saved", "Messages you saved. They stay until you remove them.",
+  "Von dir gespeicherte Nachrichten. Sie bleiben, bis du sie entfernst.",
+  "Les messages que vous avez enregistrés. Ils restent jusqu'à ce que vous les supprimiez.",
+  "Zapisane przez ciebie wiadomości. Zostają, dopóki ich nie usuniesz.",
+  "Mensajes que has guardado. Se quedan hasta que los quites.",
+  "I messaggi che hai salvato. Restano finché non li rimuovi.",
+  "Berichten die je hebt opgeslagen. Ze blijven tot je ze verwijdert.")
+t("tp_btn_save", "Save", "Speichern", "Enregistrer", "Zapisz", "Guardar", "Salva", "Opslaan")
+t("tp_btn_remove", "Remove", "Entfernen", "Supprimer", "Usuń", "Quitar", "Rimuovi", "Verwijderen")
+t("tp_msg_none", "No messages", "Keine Nachrichten", "Aucun message", "Brak wiadomości", "Sin mensajes", "Nessun messaggio",
+  "Geen berichten")
+t("tp_msg_day", "Day", "Tag", "Jour", "Dzień", "Día", "Giorno", "Dag")
+t("tp_msg_saved_done", "Message saved.", "Nachricht gespeichert.", "Message enregistré.", "Wiadomość zapisana.",
+  "Mensaje guardado.", "Messaggio salvato.", "Bericht opgeslagen.")
+t("tp_msg_removed_done", "Saved message removed.", "Gespeicherte Nachricht entfernt.", "Message enregistré supprimé.",
+  "Zapisana wiadomość usunięta.", "Mensaje guardado quitado.", "Messaggio salvato rimosso.", "Opgeslagen bericht verwijderd.")
+t("tp_confirm_msg_remove", "Remove this saved message?", "Diese gespeicherte Nachricht entfernen?",
+  "Supprimer ce message enregistré ?", "Usunąć tę zapisaną wiadomość?", "¿Quitar este mensaje guardado?",
+  "Rimuovere questo messaggio salvato?", "Dit opgeslagen bericht verwijderen?")
 t("tp_tab_developer", "Developer", "Entwickler", "Développeur", "Deweloper", "Desarrollador", "Sviluppatore", "Ontwikkelaar")
 t("tp_btn_close", "Close", "Schließen", "Fermer", "Zamknij", "Cerrar", "Chiudi", "Sluiten")
 t("tp_btn_save_settings", "Save settings", "Einstellungen speichern", "Enregistrer les réglages", "Zapisz ustawienia",
@@ -418,14 +458,16 @@ t("tp_tip_ring", "Draw the red danger-zone ring around the tornado.", "Zeichnet 
   "Affiche l'anneau rouge de zone dangereuse autour de la tornade.", "Rysuje czerwony pierścień strefy zagrożenia wokół tornada.",
   "Dibuja el anillo rojo de zona de peligro alrededor del tornado.", "Disegna l'anello rosso della zona di pericolo attorno al tornado.",
   "Tekent de rode gevarenzone-ring rond de tornado.")
-t("tp_fire", "Random fire", "Zufälliges Feuer", "Feu aléatoire", "Losowy pożar", "Fuego aleatorio", "Fuoco casuale", "Willekeurig vuur")
-t("tp_tip_fire", "On: damaged engines have a 50/50 chance to catch fire. Off: every damaged engine burns.",
-  "An: Beschädigte Motoren fangen mit 50/50-Chance Feuer. Aus: Jeder beschädigte Motor brennt.",
-  "Activé : les moteurs endommagés ont une chance sur deux de prendre feu. Désactivé : chaque moteur endommagé brûle.",
-  "Wł.: uszkodzone silniki zapalają się z szansą 50/50. Wył.: każdy uszkodzony silnik płonie.",
-  "Activado: los motores dañados tienen una probabilidad de 50/50 de arder. Desactivado: todos los motores dañados arden.",
-  "Attivo: i motori danneggiati hanno una probabilità di 50/50 di prendere fuoco. Disattivo: ogni motore danneggiato brucia.",
-  "Aan: beschadigde motoren hebben 50/50 kans om vlam te vatten. Uit: elke beschadigde motor brandt.")
+t("tp_fire", "Vehicle fires", "Fahrzeugbrände", "Incendies de véhicules", "Pożary pojazdów", "Incendios de vehículos",
+  "Incendi dei veicoli", "Voertuigbranden")
+t("tp_tip_fire",
+  "On: a badly damaged engine can catch fire - the stronger the tornado, the likelier (5 percent at EF0 up to 45 percent at EF5, decided once per vehicle until it is repaired). A burned vehicle is a total loss for the insurance. Off: no vehicle fires.",
+  "An: Ein schwer beschädigter Motor kann Feuer fangen - je stärker der Tornado, desto wahrscheinlicher (5 Prozent bei EF0 bis 45 Prozent bei EF5, einmal pro Fahrzeug entschieden, bis es repariert ist). Ein ausgebranntes Fahrzeug ist für die Versicherung ein Totalschaden. Aus: keine Fahrzeugbrände.",
+  "Activé : un moteur gravement endommagé peut prendre feu - plus la tornade est forte, plus c'est probable (5 pour cent en EF0 jusqu'à 45 pour cent en EF5, décidé une fois par véhicule jusqu'à sa réparation). Un véhicule brûlé est une perte totale pour l'assurance. Désactivé : aucun incendie de véhicule.",
+  "Wł.: mocno uszkodzony silnik może się zapalić - im silniejsze tornado, tym bardziej prawdopodobne (od 5 procent przy EF0 do 45 procent przy EF5, losowane raz na pojazd do jego naprawy). Spalony pojazd to dla ubezpieczenia szkoda całkowita. Wył.: brak pożarów pojazdów.",
+  "Activado: un motor muy dañado puede incendiarse - cuanto más fuerte el tornado, más probable (del 5 por ciento en EF0 al 45 por ciento en EF5, decidido una vez por vehículo hasta que se repara). Un vehículo quemado es un siniestro total para el seguro. Desactivado: sin incendios de vehículos.",
+  "Attivo: un motore gravemente danneggiato può prendere fuoco - più il tornado è forte, più è probabile (dal 5 per cento con EF0 al 45 per cento con EF5, deciso una volta per veicolo finché non viene riparato). Un veicolo bruciato è un danno totale per l'assicurazione. Disattivo: nessun incendio dei veicoli.",
+  "Aan: een zwaar beschadigde motor kan vlam vatten - hoe sterker de tornado, hoe waarschijnlijker (5 procent bij EF0 tot 45 procent bij EF5, eenmaal per voertuig bepaald tot het gerepareerd is). Een uitgebrand voertuig is voor de verzekering total loss. Uit: geen voertuigbranden.")
 
 # =====================================================================================================
 # MODULES TAB
@@ -714,6 +756,74 @@ t("tp_plan_COST", "Production cost cover (COST)", "Produktionskostenschutz (COST
   "Koszty produkcji (COST)", "Costes de producción (COST)", "Costi di produzione (COST)", "Productiekosten (COST)")
 t("tp_plan_FULL", "Full yield cover (FULL)", "Voller Ertragsschutz (FULL)", "Rendement complet (FULL)", "Pełny plon (FULL)",
   "Rendimiento completo (FULL)", "Resa completa (FULL)", "Volledige opbrengst (FULL)")
+# Crop insurance phase 2b - cover options of the other countries, value setting, claim letters
+t("tp_plan_HAIL", "Hail", "Hagel", "Grêle", "Grad", "Granizo", "Grandine", "Hagel")
+t("tp_plan_HAIL_STORM", "Hail + storm + heavy rain", "Hagel + Sturm + Starkregen", "Grêle + tempête + fortes pluies",
+  "Grad + huragan + ulewa", "Granizo + viento + lluvia intensa", "Grandine + vento + pioggia intensa",
+  "Hagel + storm + hevige regen")
+t("tp_plan_HAIL_PLUS", "Hail plus (wind, fire)", "Hagel plus (Sturm, Feuer)", "Grêle plus (vent, feu)", "Grad plus (wiatr, ogień)",
+  "Granizo plus (viento, incendio)", "Grandine plus (vento, incendio)", "Hagel plus (wind, brand)")
+t("tp_plan_HAIL_ONLY", "Hail only (no subsidy)", "Nur Hagel (ohne Zuschuss)", "Grêle seule (sans aide)", "Tylko grad (bez dopłaty)",
+  "Solo granizo (sin subvención)", "Solo grandine (senza contributo)", "Alleen hagel (zonder subsidie)")
+t("tp_plan_PACKAGE", "Multi-peril package", "Mehrgefahrenpaket", "Formule multirisque", "Pakiet wieloryzykowy",
+  "Paquete multirriesgo", "Pacchetto multirischio", "Meerdere-risicopakket")
+t("tp_plan_PACKAGE_WIND", "Multi-peril package + windstorm", "Mehrgefahrenpaket + Sturm", "Formule multirisque + tempête",
+  "Pakiet wieloryzykowy + huragan", "Paquete multirriesgo + viento", "Pacchetto multirischio + vento",
+  "Meerdere-risicopakket + storm")
+t("tp_plan_NAMED", "Named perils", "Benannte Gefahren", "Risques nommés", "Wymienione ryzyka", "Riesgos nombrados",
+  "Rischi nominati", "Benoemde risico's")
+t("tp_plan_MULTI", "Multi-peril", "Mehrgefahren", "Multirisque", "Wieloryzykowe", "Multirriesgo", "Multirischio", "Meerdere risico's")
+t("tp_plan_MRC", "Multi-risk policy", "Mehrgefahrenversicherung", "Assurance multirisque climatique", "Polisa wieloryzykowa",
+  "Póliza multirriesgo", "Polizza multirischio", "Brede weersverzekering")
+t("tp_plan_MOD1", "Module 1 - whole farm, disasters", "Modul 1 - ganzer Betrieb, Katastrophen", "Module 1 - toute l'exploitation, catastrophes",
+  "Moduł 1 - całe gospodarstwo, katastrofy", "Módulo 1 - explotación, catastróficos", "Modulo 1 - intera azienda, catastrofi",
+  "Module 1 - heel bedrijf, rampen")
+t("tp_plan_MOD2", "Module 2 - all risks per field", "Modul 2 - alle Risiken je Feld", "Module 2 - tous risques par parcelle",
+  "Moduł 2 - wszystkie ryzyka na pole", "Módulo 2 - todos los riesgos por parcela", "Modulo 2 - tutti i rischi per campo",
+  "Module 2 - alle risico's per veld")
+t("tp_plan_MODP", "Module P - named perils", "Modul P - benannte Gefahren", "Module P - risques nommés", "Moduł P - wymienione ryzyka",
+  "Módulo P - riesgos nombrados", "Modulo P - rischi nominati", "Module P - benoemde risico's")
+t("tp_plan_IT_A", "All-risk policy (type A)", "Allgefahren (Typ A)", "Tous risques (type A)", "Wszystkie ryzyka (typ A)",
+  "Todo riesgo (tipo A)", "Tutti i rischi (tipo A)", "Alle risico's (type A)")
+t("tp_plan_IT_B", "Disasters + weather (type B)", "Katastrophen + Wetter (Typ B)", "Catastrophes + météo (type B)",
+  "Katastrofy + pogoda (typ B)", "Catastróficos + clima (tipo B)", "Catastrofali + frequenza (tipo B)", "Rampen + weer (type B)")
+t("tp_plan_IT_C", "Weather perils (type C)", "Wettergefahren (Typ C)", "Risques météo (type C)", "Ryzyka pogodowe (typ C)",
+  "Riesgos climáticos (tipo C)", "Rischi di frequenza (tipo C)", "Weerrisico's (type C)")
+t("tp_plan_IT_C2", "Hail + wind (type C)", "Hagel + Sturm (Typ C)", "Grêle + vent (type C)", "Grad + wiatr (typ C)",
+  "Granizo + viento (tipo C)", "Grandine + vento (tipo C)", "Hagel + wind (type C)")
+t("tp_plan_IT_D", "Disasters only (type D)", "Nur Katastrophen (Typ D)", "Catastrophes seules (type D)", "Tylko katastrofy (typ D)",
+  "Solo catastróficos (tipo D)", "Solo catastrofali (tipo D)", "Alleen rampen (type D)")
+t("tp_plan_IT_F", "Simplified policy (SMART)", "Vereinfachte Police (SMART)", "Contrat simplifié (SMART)", "Polisa uproszczona (SMART)",
+  "Póliza simplificada (SMART)", "Polizza semplificata (SMART)", "Vereenvoudigde polis (SMART)")
+t("tp_plan_STATE", "State rice scheme", "Staatliches Reisprogramm", "Programme public riz", "Państwowy program ryżowy",
+  "Programa estatal de arroz", "Programma statale per il riso", "Overheidsregeling rijst")
+t("tp_insurance_value", "Sum insured", "Versicherungssumme", "Capital assuré", "Suma ubezpieczenia", "Suma asegurada",
+  "Somma assicurata", "Verzekerde som")
+t("tp_tip_insurance_value",
+  "Game values: the field's harvest at the map's prices. Real-world values: the country's own sums per hectare from the insurance data, converted to game money (euros, approximate rates). The US, Canada and Brazil always use game values.",
+  "Spielwerte: die Ernte des Feldes zu den Preisen der Karte. Reale Werte: die Summen pro Hektar des Landes aus den Versicherungsdaten, in Spielgeld umgerechnet (Euro, ungefähre Kurse). USA, Kanada und Brasilien nutzen immer Spielwerte.",
+  "Valeurs du jeu : la récolte du champ aux prix de la carte. Valeurs réelles : les sommes par hectare du pays issues des données d'assurance, converties en argent du jeu (euros, taux approximatifs). Les États-Unis, le Canada et le Brésil utilisent toujours les valeurs du jeu.",
+  "Wartości z gry: plon pola po cenach z mapy. Wartości rzeczywiste: kwoty na hektar danego kraju z danych ubezpieczeniowych, przeliczone na pieniądze w grze (euro, kursy przybliżone). USA, Kanada i Brazylia zawsze używają wartości z gry.",
+  "Valores del juego: la cosecha del campo a los precios del mapa. Valores reales: las sumas por hectárea del país según los datos del seguro, convertidas a dinero del juego (euros, tipos aproximados). EE. UU., Canadá y Brasil usan siempre valores del juego.",
+  "Valori di gioco: il raccolto del campo ai prezzi della mappa. Valori reali: le somme per ettaro del paese dai dati assicurativi, convertite in denaro di gioco (euro, cambi approssimativi). Stati Uniti, Canada e Brasile usano sempre i valori di gioco.",
+  "Spelwaarden: de oogst van het veld tegen de prijzen van de kaart. Echte waarden: de bedragen per hectare van het land uit de verzekeringsgegevens, omgerekend naar speelgeld (euro, benaderde koersen). De VS, Canada en Brazilië gebruiken altijd spelwaarden.")
+t("tp_insurance_value_game", "Game values", "Spielwerte", "Valeurs du jeu", "Wartości z gry", "Valores del juego", "Valori di gioco", "Spelwaarden")
+t("tp_insurance_value_real", "Real-world values", "Reale Werte", "Valeurs réelles", "Wartości rzeczywiste", "Valores reales",
+  "Valori reali", "Echte waarden")
+t("tp_msg_ins_claim_not_covered", "Claim for field %d closed: your policy does not cover %s.",
+  "Schadensfall Feld %d geschlossen: Deine Police deckt %s nicht ab.",
+  "Sinistre du champ %d clos : votre contrat ne couvre pas : %s.",
+  "Szkoda na polu %d zamknięta: twoja polisa nie obejmuje: %s.",
+  "Siniestro del campo %d cerrado: tu póliza no cubre: %s.",
+  "Sinistro del campo %d chiuso: la tua polizza non copre: %s.",
+  "Schade veld %d gesloten: je polis dekt dit niet: %s.")
+t("tp_msg_ins_claim_threshold", "Claim for field %d: %d %% lost is below the scheme's %d %% damage threshold - no payout yet.",
+  "Schadensfall Feld %d: %d %% Verlust liegen unter der Schadensschwelle von %d %% - noch keine Auszahlung.",
+  "Sinistre du champ %d : %d %% perdus restent sous le seuil de %d %% du programme - pas encore d'indemnité.",
+  "Szkoda na polu %d: strata %d %% jest poniżej progu %d %% programu - na razie brak wypłaty.",
+  "Siniestro del campo %d: el %d %% perdido está por debajo del umbral del %d %% - aún sin pago.",
+  "Sinistro del campo %d: il %d %% perso è sotto la soglia del %d %% - ancora nessun pagamento.",
+  "Schade veld %d: %d %% verlies ligt onder de schadedrempel van %d %% - nog geen uitkering.")
 t("tp_insurance_crop_plan", "Crop insurance (your farm)", "Ernteversicherung (dein Hof)", "Assurance récolte (votre ferme)",
   "Ubezpieczenie upraw (twoje gospodarstwo)", "Seguro de cosecha (tu granja)", "Assicurazione raccolto (la tua fattoria)",
   "Oogstverzekering (je boerderij)")
@@ -1128,6 +1238,258 @@ t("tp_supercell_classic", "Classic supercell", "Klassische Superzelle", "Superce
   "Supercélula clásica", "Supercella classica", "Klassieke supercel")
 t("tp_supercell_hp", "HP supercell", "HP-Superzelle", "Supercellule HP", "Superkomórka HP", "Supercélula HP", "Supercella HP",
   "HP-supercel")
+
+# =====================================================================================================
+# INSURANCE - EQUIPMENT (phase 3)
+# =====================================================================================================
+t("tp_insurance_replacement", "Equipment: replacement value", "Geräte: Wiederbeschaffungswert", "Matériel : valeur de remplacement",
+  "Sprzęt: wartość odtworzeniowa", "Equipos: valor de reposición", "Mezzi: valore di rimpiazzo", "Materieel: vervangingswaarde")
+t("tp_tip_insurance_replacement",
+  "Off: equipment claims are paid on the vehicle's sell price. On: on the dealer's replacement value, 15 percent more - closer to what buying the same vehicle again costs.",
+  "Aus: Geräteschäden werden zum Verkaufspreis des Fahrzeugs bezahlt. An: zum Wiederbeschaffungswert beim Händler, 15 Prozent mehr - näher an dem, was der Neukauf desselben Fahrzeugs kostet.",
+  "Désactivé : les sinistres matériel sont payés au prix de vente du véhicule. Activé : à la valeur de remplacement du concessionnaire, 15 pour cent de plus - plus proche du prix pour racheter le même véhicule.",
+  "Wył.: szkody sprzętu są wypłacane według ceny sprzedaży pojazdu. Wł.: według wartości odtworzeniowej u dealera, o 15 procent więcej - bliżej kosztu ponownego zakupu tego samego pojazdu.",
+  "Desactivado: los siniestros de equipos se pagan al precio de venta del vehículo. Activado: al valor de reposición del concesionario, un 15 por ciento más - más cerca de lo que cuesta volver a comprar el mismo vehículo.",
+  "Disattivato: i sinistri dei mezzi sono pagati al prezzo di vendita del veicolo. Attivato: al valore di rimpiazzo del concessionario, il 15 per cento in più - più vicino al costo per ricomprare lo stesso veicolo.",
+  "Uit: schades aan materieel worden betaald tegen de verkoopprijs van het voertuig. Aan: tegen de vervangingswaarde bij de dealer, 15 procent meer - dichter bij wat hetzelfde voertuig opnieuw kopen kost.")
+t("tp_insurance_remove_totaled", "Equipment: remove total losses", "Geräte: Totalschäden entfernen", "Matériel : retirer les épaves",
+  "Sprzęt: usuwaj szkody całkowite", "Equipos: retirar siniestros totales", "Mezzi: rimuovi i danni totali", "Materieel: total loss verwijderen")
+t("tp_tip_insurance_remove_totaled",
+  "On: accepting a total loss pays the insured value and the insurer collects the wreck (the vehicle is removed). Off: nothing is ever removed - accepting works like a buy-back (salvage value kept back, Salvage title).",
+  "An: Wer einen Totalschaden annimmt, erhält den versicherten Wert und die Versicherung holt das Wrack ab (das Fahrzeug wird entfernt). Aus: Es wird nie etwas entfernt - Annehmen wirkt wie ein Rückkauf (Restwert wird abgezogen, Bergungstitel).",
+  "Activé : accepter une perte totale paie la valeur assurée et l'assureur récupère l'épave (le véhicule est retiré). Désactivé : rien n'est jamais retiré - accepter fonctionne comme un rachat (valeur d'épave retenue, titre Épave).",
+  "Wł.: przyjęcie szkody całkowitej wypłaca wartość ubezpieczenia, a ubezpieczyciel zabiera wrak (pojazd zostaje usunięty). Wył.: nic nie jest usuwane - przyjęcie działa jak odkup (wartość wraku potrącona, tytuł Wrak).",
+  "Activado: aceptar un siniestro total paga el valor asegurado y la aseguradora retira el vehículo siniestrado (se elimina). Desactivado: nunca se elimina nada - aceptar funciona como una recompra (se descuenta el valor de restos, título de Siniestro).",
+  "Attivato: accettare un danno totale paga il valore assicurato e l'assicuratore ritira il relitto (il veicolo viene rimosso). Disattivato: non viene mai rimosso nulla - accettare funziona come un riacquisto (valore di recupero trattenuto, titolo Relitto).",
+  "Aan: wie een total loss accepteert, krijgt de verzekerde waarde en de verzekeraar haalt het wrak op (het voertuig verdwijnt). Uit: er verdwijnt nooit iets - accepteren werkt als terugkopen (restwaarde ingehouden, titel Wrak).")
+t("tp_insurance_salvage", "Salvage title: sell price", "Bergungstitel: Verkaufspreis", "Titre Épave : prix de vente",
+  "Tytuł Wrak: cena sprzedaży", "Título Siniestro: precio de venta", "Titolo Relitto: prezzo di vendita", "Titel Wrak: verkoopprijs")
+t("tp_tip_insurance_salvage",
+  "How much lower the sell price of a vehicle is that you bought back after a total loss, until it is repaired. Real salvage vehicles sell for about half.",
+  "Um wie viel der Verkaufspreis eines nach einem Totalschaden zurückgekauften Fahrzeugs sinkt, bis es repariert ist. Echte Unfallfahrzeuge erzielen etwa die Hälfte.",
+  "De combien baisse le prix de vente d'un véhicule racheté après une perte totale, jusqu'à sa réparation. Les vraies épaves se vendent environ à moitié prix.",
+  "O ile niższa jest cena sprzedaży pojazdu odkupionego po szkodzie całkowitej, dopóki nie zostanie naprawiony. Prawdziwe wraki sprzedają się za około połowę.",
+  "Cuánto baja el precio de venta de un vehículo recomprado tras un siniestro total, hasta que se repara. Los vehículos siniestrados reales se venden por la mitad aproximadamente.",
+  "Di quanto si abbassa il prezzo di vendita di un veicolo riacquistato dopo un danno totale, finché non viene riparato. I veri relitti si vendono a circa metà prezzo.",
+  "Hoeveel lager de verkoopprijs is van een voertuig dat je na een total loss hebt teruggekocht, tot het gerepareerd is. Echte wrakken gaan voor ongeveer de helft weg.")
+t("tp_insurance_rebuilt", "Rebuilt title: sell price", "Wiederaufbau-Titel: Verkaufspreis", "Titre Reconstruit : prix de vente",
+  "Tytuł Odbudowany: cena sprzedaży", "Título Reconstruido: precio de venta", "Titolo Ricostruito: prezzo di vendita",
+  "Titel Herbouwd: verkoopprijs")
+t("tp_tip_insurance_rebuilt",
+  "A bought-back vehicle that has been repaired keeps a Rebuilt title for good: its sell price stays this much lower. Real rebuilt vehicles sell for 20 to 40 percent less.",
+  "Ein zurückgekauftes Fahrzeug, das repariert wurde, behält für immer einen Wiederaufbau-Titel: Sein Verkaufspreis bleibt um so viel niedriger. Echte wiederaufgebaute Fahrzeuge erzielen 20 bis 40 Prozent weniger.",
+  "Un véhicule racheté puis réparé garde pour toujours un titre Reconstruit : son prix de vente reste plus bas d'autant. Les vrais véhicules reconstruits se vendent 20 à 40 pour cent moins cher.",
+  "Odkupiony i naprawiony pojazd zachowuje na zawsze tytuł Odbudowany: jego cena sprzedaży pozostaje o tyle niższa. Prawdziwe odbudowane pojazdy sprzedają się o 20 do 40 procent taniej.",
+  "Un vehículo recomprado y ya reparado conserva para siempre un título de Reconstruido: su precio de venta sigue siendo así de bajo. Los vehículos reconstruidos reales se venden entre un 20 y un 40 por ciento más baratos.",
+  "Un veicolo riacquistato e riparato mantiene per sempre un titolo Ricostruito: il suo prezzo di vendita resta più basso di tanto. I veri veicoli ricostruiti si vendono dal 20 al 40 per cento in meno.",
+  "Een teruggekocht voertuig dat gerepareerd is, houdt voorgoed de titel Herbouwd: de verkoopprijs blijft zoveel lager. Echte herbouwde voertuigen gaan voor 20 tot 40 procent minder weg.")
+t("tp_insurance_title_penalty_option", "-%d %%", "-%d %%", "-%d %%", "-%d %%", "-%d %%", "-%d %%", "-%d %%")
+
+t("tp_insurance_equip", "Equipment insurance (your farm)", "Geräteversicherung (dein Hof)", "Assurance matériel (votre ferme)",
+  "Ubezpieczenie sprzętu (twoje gospodarstwo)", "Seguro de equipos (tu granja)", "Assicurazione mezzi (la tua fattoria)",
+  "Materieelverzekering (je boerderij)")
+t("tp_tip_insurance_equip",
+  "Insures every vehicle and tool your farm owns (not leased or mission vehicles) against tornado damage. Pick the deductible: the higher it is, the lower the monthly premium. Repairs are paid minus the deductible; a total loss pays the vehicle's value. Cover starts about a week (real-life time) after buying.",
+  "Versichert jedes Fahrzeug und Gerät deines Hofs (keine geleasten oder Auftragsfahrzeuge) gegen Tornadoschäden. Wähle die Selbstbeteiligung: Je höher sie ist, desto niedriger die Monatsprämie. Reparaturen werden abzüglich der Selbstbeteiligung bezahlt; ein Totalschaden zahlt den Wert des Fahrzeugs. Der Schutz beginnt etwa eine Woche (reale Zeit) nach dem Kauf.",
+  "Assure chaque véhicule et outil de votre ferme (hors véhicules loués ou de mission) contre les dégâts des tornades. Choisissez la franchise : plus elle est élevée, plus la prime mensuelle est basse. Les réparations sont payées moins la franchise ; une perte totale paie la valeur du véhicule. La couverture commence environ une semaine (temps réel) après l'achat.",
+  "Ubezpiecza każdy pojazd i maszynę twojego gospodarstwa (bez leasingowanych i z zleceń) od szkód po tornadzie. Wybierz udział własny: im wyższy, tym niższa miesięczna składka. Naprawy są opłacane po odjęciu udziału własnego; szkoda całkowita wypłaca wartość pojazdu. Ochrona zaczyna się ok. tydzień (czasu rzeczywistego) po zakupie.",
+  "Asegura cada vehículo y apero de tu granja (no los de alquiler ni de misiones) contra daños por tornado. Elige la franquicia: cuanto más alta, más baja la prima mensual. Las reparaciones se pagan menos la franquicia; un siniestro total paga el valor del vehículo. La cobertura empieza una semana (tiempo real) después de la compra.",
+  "Assicura ogni veicolo e attrezzo della tua fattoria (non quelli in leasing o delle missioni) contro i danni da tornado. Scegli la franchigia: più è alta, più basso è il premio mensile. Le riparazioni sono pagate meno la franchigia; un danno totale paga il valore del veicolo. La copertura inizia circa una settimana (tempo reale) dopo l'acquisto.",
+  "Verzekert elk voertuig en werktuig van je boerderij (geen geleasde of opdrachtvoertuigen) tegen tornadoschade. Kies het eigen risico: hoe hoger, hoe lager de maandpremie. Reparaties worden betaald min het eigen risico; een total loss betaalt de waarde van het voertuig. De dekking begint ongeveer een week (echte tijd) na aankoop.")
+t("tp_insurance_equip_none", "No equipment policy", "Keine Geräteversicherung", "Pas d'assurance matériel", "Brak ubezpieczenia sprzętu",
+  "Sin seguro de equipos", "Nessuna assicurazione mezzi", "Geen materieelverzekering")
+t("tp_insurance_equip_option", "%s deductible - about %s per month", "%s Selbstbeteiligung - etwa %s pro Monat",
+  "Franchise %s - environ %s par mois", "Udział własny %s - ok. %s miesięcznie", "Franquicia %s - unos %s al mes",
+  "Franchigia %s - circa %s al mese", "%s eigen risico - ongeveer %s per maand")
+t("tp_insurance_equip_status", "Equipment policy status", "Status der Geräteversicherung", "État de l'assurance matériel",
+  "Status ubezpieczenia sprzętu", "Estado del seguro de equipos", "Stato dell'assicurazione mezzi", "Status materieelverzekering")
+t("tp_tip_insurance_equip_status", "Shows your farm's equipment policy: deductible, insured vehicles, their value and the monthly premium.",
+  "Zeigt die Geräteversicherung deines Hofs: Selbstbeteiligung, versicherte Fahrzeuge, ihren Wert und die Monatsprämie.",
+  "Affiche l'assurance matériel de votre ferme : franchise, véhicules assurés, leur valeur et la prime mensuelle.",
+  "Pokazuje ubezpieczenie sprzętu twojego gospodarstwa: udział własny, ubezpieczone pojazdy, ich wartość i miesięczną składkę.",
+  "Muestra el seguro de equipos de tu granja: franquicia, vehículos asegurados, su valor y la prima mensual.",
+  "Mostra l'assicurazione mezzi della tua fattoria: franchigia, veicoli assicurati, il loro valore e il premio mensile.",
+  "Toont de materieelverzekering van je boerderij: eigen risico, verzekerde voertuigen, hun waarde en de maandpremie.")
+t("tp_insurance_equip_total", "Total loss to decide", "Zu entscheidender Totalschaden", "Perte totale à décider", "Szkoda całkowita do decyzji",
+  "Siniestro total por decidir", "Danno totale da decidere", "Total loss om te beslissen")
+t("tp_tip_insurance_equip_total",
+  "A vehicle the insurer has declared a total loss. Accept: the full payout and the insurer takes the wreck. Buy back: less money, you keep the vehicle with a Salvage title. Without a choice within a week (real-life time) it is accepted.",
+  "Ein Fahrzeug, das die Versicherung zum Totalschaden erklärt hat. Annehmen: die volle Auszahlung, die Versicherung nimmt das Wrack. Zurückkaufen: weniger Geld, du behältst das Fahrzeug mit Bergungstitel. Ohne Entscheidung innerhalb einer Woche (reale Zeit) gilt es als angenommen.",
+  "Un véhicule que l'assureur a déclaré en perte totale. Accepter : l'indemnité complète et l'assureur prend l'épave. Racheter : moins d'argent, vous gardez le véhicule avec un titre Épave. Sans choix dans la semaine (temps réel), c'est accepté.",
+  "Pojazd uznany przez ubezpieczyciela za szkodę całkowitą. Przyjmij: pełna wypłata, ubezpieczyciel zabiera wrak. Odkup: mniej pieniędzy, zatrzymujesz pojazd z tytułem Wrak. Bez wyboru w ciągu tygodnia (czasu rzeczywistego) zostaje przyjęte.",
+  "Un vehículo que la aseguradora ha declarado siniestro total. Aceptar: el pago completo y la aseguradora se lleva los restos. Recomprar: menos dinero, te quedas el vehículo con título de Siniestro. Sin elegir en una semana (tiempo real), se acepta.",
+  "Un veicolo che l'assicuratore ha dichiarato danno totale. Accetta: il risarcimento pieno e l'assicuratore prende il relitto. Riacquista: meno soldi, tieni il veicolo con titolo Relitto. Senza scelta entro una settimana (tempo reale) viene accettato.",
+  "Een voertuig dat de verzekeraar total loss heeft verklaard. Accepteren: de volle uitkering en de verzekeraar neemt het wrak mee. Terugkopen: minder geld, je houdt het voertuig met de titel Wrak. Zonder keuze binnen een week (echte tijd) wordt het geaccepteerd.")
+t("tp_insurance_equip_total_option", "%s: accept %s / buy back %s", "%s: annehmen %s / zurückkaufen %s",
+  "%s : accepter %s / racheter %s", "%s: przyjmij %s / odkup %s", "%s: aceptar %s / recomprar %s",
+  "%s: accetta %s / riacquista %s", "%s: accepteren %s / terugkopen %s")
+t("tp_insurance_equip_total_none", "No total loss to decide", "Kein Totalschaden zu entscheiden", "Aucune perte totale à décider",
+  "Brak szkody całkowitej do decyzji", "Ningún siniestro total por decidir", "Nessun danno totale da decidere", "Geen total loss om te beslissen")
+t("tp_insurance_equip_accept", "Accept the total loss", "Totalschaden annehmen", "Accepter la perte totale", "Przyjmij szkodę całkowitą",
+  "Aceptar el siniestro total", "Accetta il danno totale", "Total loss accepteren")
+t("tp_insurance_equip_buyback", "Buy the vehicle back", "Fahrzeug zurückkaufen", "Racheter le véhicule", "Odkup pojazd",
+  "Recomprar el vehículo", "Riacquista il veicolo", "Voertuig terugkopen")
+t("tp_btn_equip_accept", "Accept", "Annehmen", "Accepter", "Przyjmij", "Aceptar", "Accetta", "Accepteren")
+t("tp_btn_equip_buyback", "Buy back", "Zurückkaufen", "Racheter", "Odkup", "Recomprar", "Riacquista", "Terugkopen")
+t("tp_confirm_equip_accept", "Accept the total loss? The insurer pays the full amount and takes the vehicle.",
+  "Totalschaden annehmen? Die Versicherung zahlt den vollen Betrag und nimmt das Fahrzeug.",
+  "Accepter la perte totale ? L'assureur paie le montant complet et prend le véhicule.",
+  "Przyjąć szkodę całkowitą? Ubezpieczyciel wypłaca pełną kwotę i zabiera pojazd.",
+  "¿Aceptar el siniestro total? La aseguradora paga el importe completo y se lleva el vehículo.",
+  "Accettare il danno totale? L'assicuratore paga l'intero importo e prende il veicolo.",
+  "Total loss accepteren? De verzekeraar betaalt het volle bedrag en neemt het voertuig mee.")
+t("tp_confirm_equip_buyback", "Buy the vehicle back? You get less money and keep it with a Salvage title (lower sell price).",
+  "Fahrzeug zurückkaufen? Du bekommst weniger Geld und behältst es mit Bergungstitel (niedrigerer Verkaufspreis).",
+  "Racheter le véhicule ? Vous recevez moins d'argent et le gardez avec un titre Épave (prix de vente plus bas).",
+  "Odkupić pojazd? Dostajesz mniej pieniędzy i zatrzymujesz go z tytułem Wrak (niższa cena sprzedaży).",
+  "¿Recomprar el vehículo? Recibes menos dinero y te lo quedas con título de Siniestro (precio de venta más bajo).",
+  "Riacquistare il veicolo? Ricevi meno soldi e lo tieni con titolo Relitto (prezzo di vendita più basso).",
+  "Voertuig terugkopen? Je krijgt minder geld en houdt het met de titel Wrak (lagere verkoopprijs).")
+
+t("tp_msg_ins_eq_unknown_deductible", "That deductible is not offered.", "Diese Selbstbeteiligung wird nicht angeboten.",
+  "Cette franchise n'est pas proposée.", "Taki udział własny nie jest oferowany.", "Esa franquicia no se ofrece.",
+  "Questa franchigia non è offerta.", "Dat eigen risico wordt niet aangeboden.")
+t("tp_msg_ins_eq_bought", "Equipment insurance confirmed: %s deductible, %d vehicles, about %s per month. Cover starts in %d d %d h.",
+  "Geräteversicherung bestätigt: %s Selbstbeteiligung, %d Fahrzeuge, etwa %s pro Monat. Der Schutz beginnt in %d T %d h.",
+  "Assurance matériel confirmée : franchise %s, %d véhicules, environ %s par mois. La couverture commence dans %d j %d h.",
+  "Ubezpieczenie sprzętu potwierdzone: udział własny %s, %d pojazdów, ok. %s miesięcznie. Ochrona zaczyna się za %d d %d h.",
+  "Seguro de equipos confirmado: franquicia %s, %d vehículos, unos %s al mes. La cobertura empieza en %d d %d h.",
+  "Assicurazione mezzi confermata: franchigia %s, %d veicoli, circa %s al mese. La copertura inizia tra %d g %d h.",
+  "Materieelverzekering bevestigd: %s eigen risico, %d voertuigen, ongeveer %s per maand. De dekking begint over %d d %d u.")
+t("tp_msg_ins_eq_changed", "Equipment insurance changed: %s deductible, %d vehicles, about %s per month.",
+  "Geräteversicherung geändert: %s Selbstbeteiligung, %d Fahrzeuge, etwa %s pro Monat.",
+  "Assurance matériel modifiée : franchise %s, %d véhicules, environ %s par mois.",
+  "Ubezpieczenie sprzętu zmienione: udział własny %s, %d pojazdów, ok. %s miesięcznie.",
+  "Seguro de equipos cambiado: franquicia %s, %d vehículos, unos %s al mes.",
+  "Assicurazione mezzi modificata: franchigia %s, %d veicoli, circa %s al mese.",
+  "Materieelverzekering gewijzigd: %s eigen risico, %d voertuigen, ongeveer %s per maand.")
+t("tp_msg_ins_eq_none", "Your farm has no equipment policy.", "Dein Hof hat keine Geräteversicherung.",
+  "Votre ferme n'a pas d'assurance matériel.", "Twoje gospodarstwo nie ma ubezpieczenia sprzętu.",
+  "Tu granja no tiene seguro de equipos.", "La tua fattoria non ha un'assicurazione mezzi.", "Je boerderij heeft geen materieelverzekering.")
+t("tp_msg_ins_eq_cancelled", "Equipment insurance cancelled. Open claims are still handled.",
+  "Geräteversicherung gekündigt. Offene Schadensfälle werden noch bearbeitet.",
+  "Assurance matériel résiliée. Les sinistres en cours sont encore traités.",
+  "Ubezpieczenie sprzętu wypowiedziane. Otwarte szkody są nadal rozpatrywane.",
+  "Seguro de equipos cancelado. Los siniestros abiertos se siguen tramitando.",
+  "Assicurazione mezzi disdetta. I sinistri aperti vengono ancora gestiti.",
+  "Materieelverzekering opgezegd. Openstaande schades worden nog afgehandeld.")
+t("tp_msg_ins_eq_active", "Equipment insurance is now active (%s deductible).", "Die Geräteversicherung ist jetzt aktiv (%s Selbstbeteiligung).",
+  "L'assurance matériel est maintenant active (franchise %s).", "Ubezpieczenie sprzętu jest teraz aktywne (udział własny %s).",
+  "El seguro de equipos ya está activo (franquicia %s).", "L'assicurazione mezzi è ora attiva (franchigia %s).",
+  "De materieelverzekering is nu actief (%s eigen risico).")
+t("tp_msg_ins_eq_claim_received", "Insurance claim for %s received (repair estimate %s) - an adjuster will inspect it.",
+  "Schadensmeldung für %s eingegangen (Reparaturschätzung %s) - ein Gutachter sieht es sich an.",
+  "Déclaration de sinistre pour %s reçue (devis de réparation %s) - un expert va l'examiner.",
+  "Zgłoszenie szkody dla %s przyjęte (kosztorys naprawy %s) - rzeczoznawca obejrzy pojazd.",
+  "Parte de siniestro de %s recibido (presupuesto de reparación %s) - un perito lo revisará.",
+  "Denuncia di sinistro per %s ricevuta (preventivo di riparazione %s) - un perito la esaminerà.",
+  "Schademelding voor %s ontvangen (reparatieschatting %s) - een expert komt kijken.")
+t("tp_msg_ins_eq_claim_inspected", "The adjuster has inspected %s. A decision follows soon.",
+  "Der Gutachter hat %s begutachtet. Die Entscheidung folgt bald.",
+  "L'expert a examiné %s. Une décision suit bientôt.",
+  "Rzeczoznawca obejrzał %s. Decyzja wkrótce.",
+  "El perito ha revisado %s. La decisión llegará pronto.",
+  "Il perito ha esaminato %s. Una decisione arriverà presto.",
+  "De expert heeft %s bekeken. Een beslissing volgt binnenkort.")
+t("tp_msg_ins_eq_claim_approved", "Claim for %s approved: estimate %s minus %s deductible - %s will be paid.",
+  "Schadensfall %s anerkannt: Schätzung %s abzüglich %s Selbstbeteiligung - %s werden ausgezahlt.",
+  "Sinistre de %s accepté : devis %s moins la franchise de %s - %s seront versés.",
+  "Szkoda %s uznana: kosztorys %s minus udział własny %s - zostanie wypłacone %s.",
+  "Siniestro de %s aprobado: presupuesto %s menos franquicia de %s - se pagarán %s.",
+  "Sinistro di %s approvato: preventivo %s meno franchigia di %s - saranno pagati %s.",
+  "Schade aan %s goedgekeurd: schatting %s min %s eigen risico - %s wordt uitbetaald.")
+t("tp_msg_ins_eq_claim_paid", "Insurance paid for %s: %s.", "Versicherungsleistung für %s: %s.", "Indemnité versée pour %s : %s.",
+  "Wypłata ubezpieczenia za %s: %s.", "Indemnización pagada por %s: %s.", "Risarcimento pagato per %s: %s.", "Uitkering voor %s: %s.")
+t("tp_msg_ins_eq_claim_deductible", "Claim for %s closed: the repair estimate of %s is within your %s deductible.",
+  "Schadensfall %s geschlossen: Die Reparaturschätzung von %s liegt innerhalb deiner Selbstbeteiligung von %s.",
+  "Sinistre de %s clos : le devis de réparation de %s ne dépasse pas votre franchise de %s.",
+  "Szkoda %s zamknięta: kosztorys naprawy %s mieści się w twoim udziale własnym %s.",
+  "Siniestro de %s cerrado: el presupuesto de reparación de %s no supera tu franquicia de %s.",
+  "Sinistro di %s chiuso: il preventivo di riparazione di %s rientra nella tua franchigia di %s.",
+  "Schade aan %s gesloten: de reparatieschatting van %s valt binnen je eigen risico van %s.")
+t("tp_msg_ins_eq_total",
+  "%s is a total loss (value %s). Accept %s or buy back %s (Salvage title) - choose in the control panel, Modules, within %d d %d h.",
+  "%s ist ein Totalschaden (Wert %s). Annehmen %s oder zurückkaufen %s (Bergungstitel) - entscheide im Kontrollzentrum, Module, in %d T %d h.",
+  "%s est une perte totale (valeur %s). Accepter %s ou racheter %s (titre Épave) - choisissez dans le panneau, Modules, sous %d j %d h.",
+  "%s to szkoda całkowita (wartość %s). Przyjmij %s lub odkup %s (tytuł Wrak) - wybierz w panelu, Moduły, w ciągu %d d %d h.",
+  "%s es un siniestro total (valor %s). Aceptar %s o recomprar %s (título Siniestro) - elige en el panel, Módulos, en %d d %d h.",
+  "%s è un danno totale (valore %s). Accetta %s o riacquista %s (titolo Relitto) - scegli nel pannello, Moduli, entro %d g %d h.",
+  "%s is total loss (waarde %s). Accepteren %s of terugkopen %s (titel Wrak) - kies in het paneel, Modules, binnen %d d %d u.")
+t("tp_msg_ins_eq_total_burned",
+  "%s burned out - total loss (value %s). Accept %s or buy back %s (Salvage title) - choose in the control panel, Modules, within %d d %d h.",
+  "%s ist ausgebrannt - Totalschaden (Wert %s). Annehmen %s oder zurückkaufen %s (Bergungstitel) - entscheide im Kontrollzentrum, Module, in %d T %d h.",
+  "%s a brûlé - perte totale (valeur %s). Accepter %s ou racheter %s (titre Épave) - choisissez dans le panneau, Modules, sous %d j %d h.",
+  "%s spłonął - szkoda całkowita (wartość %s). Przyjmij %s lub odkup %s (tytuł Wrak) - wybierz w panelu, Moduły, w ciągu %d d %d h.",
+  "%s se ha quemado - siniestro total (valor %s). Aceptar %s o recomprar %s (título Siniestro) - elige en el panel, Módulos, en %d d %d h.",
+  "%s è bruciato - danno totale (valore %s). Accetta %s o riacquista %s (titolo Relitto) - scegli nel pannello, Moduli, entro %d g %d h.",
+  "%s is uitgebrand - total loss (waarde %s). Accepteren %s of terugkopen %s (titel Wrak) - kies in het paneel, Modules, binnen %d d %d u.")
+t("tp_msg_ins_eq_total_reminder", "Reminder: decide on the total loss of %s within %d d %d h (control panel, Modules), or it is accepted.",
+  "Erinnerung: Entscheide über den Totalschaden von %s innerhalb von %d T %d h (Kontrollzentrum, Module), sonst gilt er als angenommen.",
+  "Rappel : décidez de la perte totale de %s sous %d j %d h (panneau de contrôle, Modules), sinon elle est acceptée.",
+  "Przypomnienie: zdecyduj o szkodzie całkowitej %s w ciągu %d d %d h (panel sterowania, Moduły), inaczej zostanie przyjęta.",
+  "Recordatorio: decide sobre el siniestro total de %s en %d d %d h (panel de control, Módulos), o se aceptará.",
+  "Promemoria: decidi sul danno totale di %s entro %d g %d h (pannello di controllo, Moduli), altrimenti viene accettato.",
+  "Herinnering: beslis over de total loss van %s binnen %d d %d u (bedieningspaneel, Modules), anders wordt die geaccepteerd.")
+t("tp_msg_ins_eq_settled", "Total loss of %s settled: %s paid, the wreck has been collected.",
+  "Totalschaden %s abgeschlossen: %s ausgezahlt, das Wrack wurde abgeholt.",
+  "Perte totale de %s réglée : %s versés, l'épave a été enlevée.",
+  "Szkoda całkowita %s rozliczona: wypłacono %s, wrak został zabrany.",
+  "Siniestro total de %s liquidado: %s pagados, los restos se han retirado.",
+  "Danno totale di %s liquidato: %s pagati, il relitto è stato ritirato.",
+  "Total loss van %s afgehandeld: %s uitbetaald, het wrak is opgehaald.")
+t("tp_msg_ins_eq_settled_auto", "No decision in time: the total loss of %s was accepted, %s paid, the wreck has been collected.",
+  "Keine Entscheidung rechtzeitig: Der Totalschaden %s wurde angenommen, %s ausgezahlt, das Wrack wurde abgeholt.",
+  "Pas de décision à temps : la perte totale de %s a été acceptée, %s versés, l'épave a été enlevée.",
+  "Brak decyzji na czas: szkoda całkowita %s została przyjęta, wypłacono %s, wrak został zabrany.",
+  "Sin decisión a tiempo: se aceptó el siniestro total de %s, %s pagados, los restos se han retirado.",
+  "Nessuna decisione in tempo: il danno totale di %s è stato accettato, %s pagati, il relitto è stato ritirato.",
+  "Geen beslissing op tijd: de total loss van %s is geaccepteerd, %s uitbetaald, het wrak is opgehaald.")
+t("tp_msg_ins_eq_bought_back", "%s bought back: %s paid. It has a Salvage title (lower sell price) until it is repaired.",
+  "%s zurückgekauft: %s ausgezahlt. Es hat einen Bergungstitel (niedrigerer Verkaufspreis), bis es repariert ist.",
+  "%s racheté : %s versés. Il porte un titre Épave (prix de vente plus bas) jusqu'à sa réparation.",
+  "%s odkupiony: wypłacono %s. Ma tytuł Wrak (niższa cena sprzedaży), dopóki nie zostanie naprawiony.",
+  "%s recomprado: %s pagados. Tiene título de Siniestro (precio de venta más bajo) hasta que se repare.",
+  "%s riacquistato: %s pagati. Ha un titolo Relitto (prezzo di vendita più basso) finché non viene riparato.",
+  "%s teruggekocht: %s uitbetaald. Het heeft de titel Wrak (lagere verkoopprijs) tot het gerepareerd is.")
+t("tp_msg_ins_eq_kept", "Total loss of %s accepted: %s paid. Totalled vehicles are kept (setting), so it stays with a Salvage title.",
+  "Totalschaden %s angenommen: %s ausgezahlt. Totalschäden werden behalten (Einstellung), es bleibt mit Bergungstitel.",
+  "Perte totale de %s acceptée : %s versés. Les épaves sont conservées (réglage), il reste avec un titre Épave.",
+  "Szkoda całkowita %s przyjęta: wypłacono %s. Wraki są zachowywane (ustawienie), pojazd zostaje z tytułem Wrak.",
+  "Siniestro total de %s aceptado: %s pagados. Los siniestros totales se conservan (ajuste), se queda con título de Siniestro.",
+  "Danno totale di %s accettato: %s pagati. I relitti vengono tenuti (impostazione), resta con titolo Relitto.",
+  "Total loss van %s geaccepteerd: %s uitbetaald. Wrakken worden behouden (instelling), het blijft met de titel Wrak.")
+t("tp_msg_ins_eq_kept_auto", "No decision in time: the total loss of %s was accepted, %s paid. Totalled vehicles are kept (setting): Salvage title.",
+  "Keine Entscheidung rechtzeitig: Der Totalschaden %s wurde angenommen, %s ausgezahlt. Totalschäden werden behalten (Einstellung): Bergungstitel.",
+  "Pas de décision à temps : la perte totale de %s a été acceptée, %s versés. Les épaves sont conservées (réglage) : titre Épave.",
+  "Brak decyzji na czas: szkoda całkowita %s została przyjęta, wypłacono %s. Wraki są zachowywane (ustawienie): tytuł Wrak.",
+  "Sin decisión a tiempo: se aceptó el siniestro total de %s, %s pagados. Los siniestros totales se conservan (ajuste): título de Siniestro.",
+  "Nessuna decisione in tempo: il danno totale di %s è stato accettato, %s pagati. I relitti vengono tenuti (impostazione): titolo Relitto.",
+  "Geen beslissing op tijd: de total loss van %s is geaccepteerd, %s uitbetaald. Wrakken worden behouden (instelling): titel Wrak.")
+t("tp_msg_ins_eq_no_total", "There is no total loss waiting for a decision.", "Es wartet kein Totalschaden auf eine Entscheidung.",
+  "Aucune perte totale n'attend de décision.", "Żadna szkoda całkowita nie czeka na decyzję.",
+  "No hay ningún siniestro total pendiente de decisión.", "Nessun danno totale in attesa di decisione.",
+  "Er wacht geen total loss op een beslissing.")
+t("tp_msg_ins_eq_rebuilt", "%s is repaired: its title is now Rebuilt (the sell price stays lower).",
+  "%s ist repariert: Der Titel lautet jetzt Wiederaufbau (der Verkaufspreis bleibt niedriger).",
+  "%s est réparé : son titre est maintenant Reconstruit (le prix de vente reste plus bas).",
+  "%s jest naprawiony: jego tytuł to teraz Odbudowany (cena sprzedaży pozostaje niższa).",
+  "%s está reparado: su título ahora es Reconstruido (el precio de venta sigue siendo más bajo).",
+  "%s è riparato: il suo titolo è ora Ricostruito (il prezzo di vendita resta più basso).",
+  "%s is gerepareerd: de titel is nu Herbouwd (de verkoopprijs blijft lager).")
+t("tp_msg_ins_eq_none_status", "No equipment policy. Choose a deductible to insure every vehicle and tool your farm owns.",
+  "Keine Geräteversicherung. Wähle eine Selbstbeteiligung, um alle Fahrzeuge und Geräte deines Hofs zu versichern.",
+  "Pas d'assurance matériel. Choisissez une franchise pour assurer tous les véhicules et outils de votre ferme.",
+  "Brak ubezpieczenia sprzętu. Wybierz udział własny, aby ubezpieczyć wszystkie pojazdy i maszyny gospodarstwa.",
+  "Sin seguro de equipos. Elige una franquicia para asegurar todos los vehículos y aperos de tu granja.",
+  "Nessuna assicurazione mezzi. Scegli una franchigia per assicurare tutti i veicoli e gli attrezzi della tua fattoria.",
+  "Geen materieelverzekering. Kies een eigen risico om alle voertuigen en werktuigen van je boerderij te verzekeren.")
+t("tp_msg_ins_eq_status", "Equipment insurance: %s deductible (%s) - %d vehicles, value %s, about %s per month, %d total losses to decide.",
+  "Geräteversicherung: %s Selbstbeteiligung (%s) - %d Fahrzeuge, Wert %s, etwa %s pro Monat, %d Totalschäden zu entscheiden.",
+  "Assurance matériel : franchise %s (%s) - %d véhicules, valeur %s, environ %s par mois, %d pertes totales à décider.",
+  "Ubezpieczenie sprzętu: udział własny %s (%s) - %d pojazdów, wartość %s, ok. %s miesięcznie, %d szkód całkowitych do decyzji.",
+  "Seguro de equipos: franquicia %s (%s) - %d vehículos, valor %s, unos %s al mes, %d siniestros totales por decidir.",
+  "Assicurazione mezzi: franchigia %s (%s) - %d veicoli, valore %s, circa %s al mese, %d danni totali da decidere.",
+  "Materieelverzekering: %s eigen risico (%s) - %d voertuigen, waarde %s, ongeveer %s per maand, %d total losses om te beslissen.")
 
 # Compass directions (where the tornado is moving)
 for code, en, de, fr, pl, es, it, nl in [

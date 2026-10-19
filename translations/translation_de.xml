@@ -9,6 +9,22 @@
         <text name="tp_tab_tuning" text="Feinabstimmung"/>
         <text name="tp_tab_effects" text="Effekte"/>
         <text name="tp_tab_modules" text="Module"/>
+        <text name="tp_tab_messages" text="Nachrichten"/>
+        <text name="tp_sec_msg_recent" text="Neue Nachrichten (letzte 24 Std.)"/>
+        <text name="tp_sec_msg_saved" text="Gespeicherte Nachrichten"/>
+        <text name="tp_msg_message" text="Nachricht"/>
+        <text name="tp_msg_show" text="Ganze Nachricht lesen"/>
+        <text name="tp_msg_save" text="Diese Nachricht behalten"/>
+        <text name="tp_msg_remove" text="Gespeicherte Nachricht entfernen"/>
+        <text name="tp_tip_msg_recent" text="Die Nachrichten des Mods an deinen Hof (Versicherungsbriefe, Sturmberichte, Warnungen). Sie bleiben 24 Spielstunden, wenn du sie nicht speicherst."/>
+        <text name="tp_tip_msg_saved" text="Von dir gespeicherte Nachrichten. Sie bleiben, bis du sie entfernst."/>
+        <text name="tp_btn_save" text="Speichern"/>
+        <text name="tp_btn_remove" text="Entfernen"/>
+        <text name="tp_msg_none" text="Keine Nachrichten"/>
+        <text name="tp_msg_day" text="Tag"/>
+        <text name="tp_msg_saved_done" text="Nachricht gespeichert."/>
+        <text name="tp_msg_removed_done" text="Gespeicherte Nachricht entfernt."/>
+        <text name="tp_confirm_msg_remove" text="Diese gespeicherte Nachricht entfernen?"/>
         <text name="tp_tab_developer" text="Entwickler"/>
         <text name="tp_btn_close" text="Schließen"/>
         <text name="tp_btn_save_settings" text="Einstellungen speichern"/>
@@ -122,8 +138,8 @@
         <text name="tp_sec_visuals" text="Optik"/>
         <text name="tp_ring" text="Gefahrenzonen-Ring"/>
         <text name="tp_tip_ring" text="Zeichnet den roten Gefahrenzonen-Ring um den Tornado."/>
-        <text name="tp_fire" text="Zufälliges Feuer"/>
-        <text name="tp_tip_fire" text="An: Beschädigte Motoren fangen mit 50/50-Chance Feuer. Aus: Jeder beschädigte Motor brennt."/>
+        <text name="tp_fire" text="Fahrzeugbrände"/>
+        <text name="tp_tip_fire" text="An: Ein schwer beschädigter Motor kann Feuer fangen - je stärker der Tornado, desto wahrscheinlicher (5 Prozent bei EF0 bis 45 Prozent bei EF5, einmal pro Fahrzeug entschieden, bis es repariert ist). Ein ausgebranntes Fahrzeug ist für die Versicherung ein Totalschaden. Aus: keine Fahrzeugbrände."/>
         <text name="tp_sec_gameplay" text="Spielablauf"/>
         <text name="tp_destruction" text="Fahrzeugzerstörung"/>
         <text name="tp_tip_destruction" text="Fahrzeuge im Sturm verlieren Teile (automatische Reparatur nach 24 Spielstunden)."/>
@@ -202,6 +218,31 @@
         <text name="tp_plan_APH" text="Ertragsschutz Sonderkulturen (APH)"/>
         <text name="tp_plan_COST" text="Produktionskostenschutz (COST)"/>
         <text name="tp_plan_FULL" text="Voller Ertragsschutz (FULL)"/>
+        <text name="tp_plan_HAIL" text="Hagel"/>
+        <text name="tp_plan_HAIL_STORM" text="Hagel + Sturm + Starkregen"/>
+        <text name="tp_plan_HAIL_PLUS" text="Hagel plus (Sturm, Feuer)"/>
+        <text name="tp_plan_HAIL_ONLY" text="Nur Hagel (ohne Zuschuss)"/>
+        <text name="tp_plan_PACKAGE" text="Mehrgefahrenpaket"/>
+        <text name="tp_plan_PACKAGE_WIND" text="Mehrgefahrenpaket + Sturm"/>
+        <text name="tp_plan_NAMED" text="Benannte Gefahren"/>
+        <text name="tp_plan_MULTI" text="Mehrgefahren"/>
+        <text name="tp_plan_MRC" text="Mehrgefahrenversicherung"/>
+        <text name="tp_plan_MOD1" text="Modul 1 - ganzer Betrieb, Katastrophen"/>
+        <text name="tp_plan_MOD2" text="Modul 2 - alle Risiken je Feld"/>
+        <text name="tp_plan_MODP" text="Modul P - benannte Gefahren"/>
+        <text name="tp_plan_IT_A" text="Allgefahren (Typ A)"/>
+        <text name="tp_plan_IT_B" text="Katastrophen + Wetter (Typ B)"/>
+        <text name="tp_plan_IT_C" text="Wettergefahren (Typ C)"/>
+        <text name="tp_plan_IT_C2" text="Hagel + Sturm (Typ C)"/>
+        <text name="tp_plan_IT_D" text="Nur Katastrophen (Typ D)"/>
+        <text name="tp_plan_IT_F" text="Vereinfachte Police (SMART)"/>
+        <text name="tp_plan_STATE" text="Staatliches Reisprogramm"/>
+        <text name="tp_insurance_value" text="Versicherungssumme"/>
+        <text name="tp_tip_insurance_value" text="Spielwerte: die Ernte des Feldes zu den Preisen der Karte. Reale Werte: die Summen pro Hektar des Landes aus den Versicherungsdaten, in Spielgeld umgerechnet (Euro, ungefähre Kurse). USA, Kanada und Brasilien nutzen immer Spielwerte."/>
+        <text name="tp_insurance_value_game" text="Spielwerte"/>
+        <text name="tp_insurance_value_real" text="Reale Werte"/>
+        <text name="tp_msg_ins_claim_not_covered" text="Schadensfall Feld %d geschlossen: Deine Police deckt %s nicht ab."/>
+        <text name="tp_msg_ins_claim_threshold" text="Schadensfall Feld %d: %d %% Verlust liegen unter der Schadensschwelle von %d %% - noch keine Auszahlung."/>
         <text name="tp_insurance_crop_plan" text="Ernteversicherung (dein Hof)"/>
         <text name="tp_tip_insurance_crop_plan" text="Versichert jedes Feld deines Hofs mit einer versicherbaren Kultur gegen Schäden durch Tornado, Hagel, Dürre, Überschwemmung und Feuer. Ertragspläne zahlen zum für das Versicherungsjahr festgelegten Preis; der Ertragswertschutz zahlt zum höheren aus festgelegtem und aktuellem Preis. Der Schutz beginnt etwa eine Woche (reale Zeit) nach dem Kauf."/>
         <text name="tp_insurance_crop_coverage" text="Deckungsgrad"/>
@@ -294,6 +335,54 @@
         <text name="tp_supercell_lp" text="LP-Superzelle"/>
         <text name="tp_supercell_classic" text="Klassische Superzelle"/>
         <text name="tp_supercell_hp" text="HP-Superzelle"/>
+        <text name="tp_insurance_replacement" text="Geräte: Wiederbeschaffungswert"/>
+        <text name="tp_tip_insurance_replacement" text="Aus: Geräteschäden werden zum Verkaufspreis des Fahrzeugs bezahlt. An: zum Wiederbeschaffungswert beim Händler, 15 Prozent mehr - näher an dem, was der Neukauf desselben Fahrzeugs kostet."/>
+        <text name="tp_insurance_remove_totaled" text="Geräte: Totalschäden entfernen"/>
+        <text name="tp_tip_insurance_remove_totaled" text="An: Wer einen Totalschaden annimmt, erhält den versicherten Wert und die Versicherung holt das Wrack ab (das Fahrzeug wird entfernt). Aus: Es wird nie etwas entfernt - Annehmen wirkt wie ein Rückkauf (Restwert wird abgezogen, Bergungstitel)."/>
+        <text name="tp_insurance_salvage" text="Bergungstitel: Verkaufspreis"/>
+        <text name="tp_tip_insurance_salvage" text="Um wie viel der Verkaufspreis eines nach einem Totalschaden zurückgekauften Fahrzeugs sinkt, bis es repariert ist. Echte Unfallfahrzeuge erzielen etwa die Hälfte."/>
+        <text name="tp_insurance_rebuilt" text="Wiederaufbau-Titel: Verkaufspreis"/>
+        <text name="tp_tip_insurance_rebuilt" text="Ein zurückgekauftes Fahrzeug, das repariert wurde, behält für immer einen Wiederaufbau-Titel: Sein Verkaufspreis bleibt um so viel niedriger. Echte wiederaufgebaute Fahrzeuge erzielen 20 bis 40 Prozent weniger."/>
+        <text name="tp_insurance_title_penalty_option" text="-%d %%"/>
+        <text name="tp_insurance_equip" text="Geräteversicherung (dein Hof)"/>
+        <text name="tp_tip_insurance_equip" text="Versichert jedes Fahrzeug und Gerät deines Hofs (keine geleasten oder Auftragsfahrzeuge) gegen Tornadoschäden. Wähle die Selbstbeteiligung: Je höher sie ist, desto niedriger die Monatsprämie. Reparaturen werden abzüglich der Selbstbeteiligung bezahlt; ein Totalschaden zahlt den Wert des Fahrzeugs. Der Schutz beginnt etwa eine Woche (reale Zeit) nach dem Kauf."/>
+        <text name="tp_insurance_equip_none" text="Keine Geräteversicherung"/>
+        <text name="tp_insurance_equip_option" text="%s Selbstbeteiligung - etwa %s pro Monat"/>
+        <text name="tp_insurance_equip_status" text="Status der Geräteversicherung"/>
+        <text name="tp_tip_insurance_equip_status" text="Zeigt die Geräteversicherung deines Hofs: Selbstbeteiligung, versicherte Fahrzeuge, ihren Wert und die Monatsprämie."/>
+        <text name="tp_insurance_equip_total" text="Zu entscheidender Totalschaden"/>
+        <text name="tp_tip_insurance_equip_total" text="Ein Fahrzeug, das die Versicherung zum Totalschaden erklärt hat. Annehmen: die volle Auszahlung, die Versicherung nimmt das Wrack. Zurückkaufen: weniger Geld, du behältst das Fahrzeug mit Bergungstitel. Ohne Entscheidung innerhalb einer Woche (reale Zeit) gilt es als angenommen."/>
+        <text name="tp_insurance_equip_total_option" text="%s: annehmen %s / zurückkaufen %s"/>
+        <text name="tp_insurance_equip_total_none" text="Kein Totalschaden zu entscheiden"/>
+        <text name="tp_insurance_equip_accept" text="Totalschaden annehmen"/>
+        <text name="tp_insurance_equip_buyback" text="Fahrzeug zurückkaufen"/>
+        <text name="tp_btn_equip_accept" text="Annehmen"/>
+        <text name="tp_btn_equip_buyback" text="Zurückkaufen"/>
+        <text name="tp_confirm_equip_accept" text="Totalschaden annehmen? Die Versicherung zahlt den vollen Betrag und nimmt das Fahrzeug."/>
+        <text name="tp_confirm_equip_buyback" text="Fahrzeug zurückkaufen? Du bekommst weniger Geld und behältst es mit Bergungstitel (niedrigerer Verkaufspreis)."/>
+        <text name="tp_msg_ins_eq_unknown_deductible" text="Diese Selbstbeteiligung wird nicht angeboten."/>
+        <text name="tp_msg_ins_eq_bought" text="Geräteversicherung bestätigt: %s Selbstbeteiligung, %d Fahrzeuge, etwa %s pro Monat. Der Schutz beginnt in %d T %d h."/>
+        <text name="tp_msg_ins_eq_changed" text="Geräteversicherung geändert: %s Selbstbeteiligung, %d Fahrzeuge, etwa %s pro Monat."/>
+        <text name="tp_msg_ins_eq_none" text="Dein Hof hat keine Geräteversicherung."/>
+        <text name="tp_msg_ins_eq_cancelled" text="Geräteversicherung gekündigt. Offene Schadensfälle werden noch bearbeitet."/>
+        <text name="tp_msg_ins_eq_active" text="Die Geräteversicherung ist jetzt aktiv (%s Selbstbeteiligung)."/>
+        <text name="tp_msg_ins_eq_claim_received" text="Schadensmeldung für %s eingegangen (Reparaturschätzung %s) - ein Gutachter sieht es sich an."/>
+        <text name="tp_msg_ins_eq_claim_inspected" text="Der Gutachter hat %s begutachtet. Die Entscheidung folgt bald."/>
+        <text name="tp_msg_ins_eq_claim_approved" text="Schadensfall %s anerkannt: Schätzung %s abzüglich %s Selbstbeteiligung - %s werden ausgezahlt."/>
+        <text name="tp_msg_ins_eq_claim_paid" text="Versicherungsleistung für %s: %s."/>
+        <text name="tp_msg_ins_eq_claim_deductible" text="Schadensfall %s geschlossen: Die Reparaturschätzung von %s liegt innerhalb deiner Selbstbeteiligung von %s."/>
+        <text name="tp_msg_ins_eq_total" text="%s ist ein Totalschaden (Wert %s). Annehmen %s oder zurückkaufen %s (Bergungstitel) - entscheide im Kontrollzentrum, Module, in %d T %d h."/>
+        <text name="tp_msg_ins_eq_total_burned" text="%s ist ausgebrannt - Totalschaden (Wert %s). Annehmen %s oder zurückkaufen %s (Bergungstitel) - entscheide im Kontrollzentrum, Module, in %d T %d h."/>
+        <text name="tp_msg_ins_eq_total_reminder" text="Erinnerung: Entscheide über den Totalschaden von %s innerhalb von %d T %d h (Kontrollzentrum, Module), sonst gilt er als angenommen."/>
+        <text name="tp_msg_ins_eq_settled" text="Totalschaden %s abgeschlossen: %s ausgezahlt, das Wrack wurde abgeholt."/>
+        <text name="tp_msg_ins_eq_settled_auto" text="Keine Entscheidung rechtzeitig: Der Totalschaden %s wurde angenommen, %s ausgezahlt, das Wrack wurde abgeholt."/>
+        <text name="tp_msg_ins_eq_bought_back" text="%s zurückgekauft: %s ausgezahlt. Es hat einen Bergungstitel (niedrigerer Verkaufspreis), bis es repariert ist."/>
+        <text name="tp_msg_ins_eq_kept" text="Totalschaden %s angenommen: %s ausgezahlt. Totalschäden werden behalten (Einstellung), es bleibt mit Bergungstitel."/>
+        <text name="tp_msg_ins_eq_kept_auto" text="Keine Entscheidung rechtzeitig: Der Totalschaden %s wurde angenommen, %s ausgezahlt. Totalschäden werden behalten (Einstellung): Bergungstitel."/>
+        <text name="tp_msg_ins_eq_no_total" text="Es wartet kein Totalschaden auf eine Entscheidung."/>
+        <text name="tp_msg_ins_eq_rebuilt" text="%s ist repariert: Der Titel lautet jetzt Wiederaufbau (der Verkaufspreis bleibt niedriger)."/>
+        <text name="tp_msg_ins_eq_none_status" text="Keine Geräteversicherung. Wähle eine Selbstbeteiligung, um alle Fahrzeuge und Geräte deines Hofs zu versichern."/>
+        <text name="tp_msg_ins_eq_status" text="Geräteversicherung: %s Selbstbeteiligung (%s) - %d Fahrzeuge, Wert %s, etwa %s pro Monat, %d Totalschäden zu entscheiden."/>
         <text name="tp_dir_N" text="N"/>
         <text name="tp_dir_NE" text="NO"/>
         <text name="tp_dir_E" text="O"/>

@@ -1028,7 +1028,8 @@ last). Every phase is testable and committable on its own; the module stays OFF 
 
 0. **Foundation** – **implemented 2026-10-16** (see 18.1).
 1. **Storm damage report** – **implemented 2026-10-16** (see 18.2).
-2. **Crop insurance** – 2a (curve countries) **implemented 2026-10-17** (see 18.3); 2b open. Policy per farm (plan, coverage, all owned fields with an insurable crop); policy
+2. **Crop insurance** – 2a (curve countries) and 2b (all other programmes) **implemented 2026-10-17** (see
+   18.3, 18.4). Policy per farm (plan, coverage, all owned fields with an insurable crop); policy
    year with locked prices (average sell-point price, §16 q2), standard yield (§16 q3), planting cut-off,
    waiting period, refusal during an outbreak / active tornado; monthly premium (farmer rate × state factor
    × cost scale); claims from the damage log (tornado, hail, drought, flood, fire) → adjuster → decision →
@@ -1135,10 +1136,117 @@ yield guarantee); sales closing date with a setting **auto** (only with seasonal
   with a "later update" message), write-off, no-claims discount, harvest-history yields.
 - Offline test `tools/test/test_crop.lua` (56 checks, real US data).
 
-Related (2026-10-17): the twister's crop destruction areas are now sized to the tornado's physics radius and
-their strength scaled by EF (`TornadoPhysics:applyCropDamageScale`, ×0.6 EF-0 … ×1.45 EF-5, capped 5 – 98 %);
-the map-twister files in `FX/twister/` (a GIANTS mapAS copy) are not needed and should not ship.
-Offline test `tools/test/test_cropscale.lua` (10 checks).
+Related (2026-10-17, replaced 2026-10-18): the twister file's crop "areas" turned out to be seven thin slivers
+on one side of the funnel (`t_dev twister areas`), and resizing them was unreliable. Each twister object now gets
+runtime hooks instead (`TornadoPhysics:applyTwisterDestruction` / `installTwisterHooks`): `updateDestructionAreas`
+crushes three nested circles round the funnel (30 / 60 / 100 % of the physics radius) with the shares of
+`CROP_TARGETS_BY_EF` (EF-0 60/35/30 % … EF-5 98/90/85 %), converted by `PERLIN_SHARE_CURVE` (measured in game:
+4000 → 60 %, 5000 → 50 %, 6000 → 40 %, 7000 → 31 %); one zone per call, only after the funnel moved 2 m / 10 % of
+the zone. The game still decides when it runs (server, faded in, "Disaster destruction" on). The damage report
+gets the cause TORNADO through `setCause`. Object destruction: inner radius 30 %, outer 60 % of ours, and bales
+are filtered out of the game's `onFinishCallback` (it deleted them - tested). The map-twister files in
+`FX/twister/` (a GIANTS mapAS copy) are not needed and should not ship. Offline test
+`tools/test/test_cropscale.lua` (33 checks).
+
+### 18.4 Phase 2b – the other programme types (2026-10-17)
+
+Decisions 2026-10-17 (user: recommendations on all 4, plus a value toggle and Australia switched off):
+1. Sum insured = **game value** (yield × the map's price) by default; setting `insurance.valueBasis`
+   **game / real**: "real" uses the data's own sums per hectare (`sumPerHa`, Poland `maxSumPerHa`, the SEA scheme
+   sums) converted to game money at fixed approximate rates (game money taken as euros: USD 0.92, GBP 1.17,
+   AUD 0.60, CAD 0.68, BRL 0.17, CLF 38, IDR 0.000056, MYR 0.20). Curve countries (US, CA, BR) have no sums and
+   always use game values.
+2. State disaster funds (France ISN, Italy AgriCat), the Dutch pool cut, Poland's obligation fee, Spain's extra
+   subsidies, Chile's other bonuses and the Argentine provincial schemes: **not modelled yet** (phase 4 extras).
+3. South-East Asia: crops other than rice (no state scheme) are insurable as **unusual crops** on the rice terms.
+4. Deductibles the data does not give are estimates: Spain module 1 = 30 %, 2 = 20 %, P = 10 %; Italy = its
+   20 % damage threshold; GB / AU / AR / CL none.
+5. **Australia and Canada are loaded but not sold** (`TornadoInsuranceCrop.DISABLED_COUNTRIES`; user 2026-10-17:
+   Australia - permission email not sent yet; Canada - until SCIC answers `email_scic.txt`). `t_dev insurance
+   crop unlock` opens them for testing in one session; nothing is saved. A cause the policy does not cover is
+   declined at once with a letter (no claim, no adjuster).
+
+`scripts/insurance/TornadoInsurancePrograms.lua` turns each programme into **cover options** (plan ids
+`tp_plan_<ID>`) for every crop: rate per year of the sum insured (before subsidy), the causes it pays for, coverage
+levels = 100 % − deductible (with the deductible's rate factor), and the claim rule:
+
+| Programme | Options | Farmer rate | Causes / rule |
+|---|---|---|---|
+| namedPeril DE | HAIL, HAIL_STORM (hail + storm + heavy rain + severe frost add-ons), PACKAGE | no subsidy; + 0.03 % insurance tax of the sum | deductible 0 / 10 / 20 % (rate × 1 / 0.85 / 0.7) |
+| namedPeril PL | PACKAGE (mandatory perils), PACKAGE_WIND, HAIL | 65 % subsidy on the rate up to the group cap (field 9 %) | deductibles as DE |
+| namedPeril GB / AU / CL | NAMED (+ MULTI where the data has a multi-peril rate) | GB × 1.12 IPT; AU × (1 + GST + state stamp duty unless the state exempts crops); CL 40 % (+ 5 % cereals) | no deductible |
+| namedPeril AR | HAIL, HAIL_PLUS, MULTI (programme rate 8 %) | × province rate factor | no deductible |
+| multiRisk FR | MRC, HAIL_ONLY | MRC 70 % subsidy; hail-only none | franchise 20 / 25 / 30 / 40 % |
+| multiRisk NL | MRC, HAIL_ONLY | MRC: latest pool share (46.27 % for 2025); hail-only + 21 % tax | MRC pays above 20 % |
+| modules ES | MOD2, MOD1, MODP | per-crop base subsidy (module 1: 75 %), only on the rate up to 20 % | coverage 80 / 70 / 90 % (estimates); P = hail + fire |
+| perilGroups IT | IT_A, IT_B, IT_C, IT_C2, IT_D, IT_F | all-risk rate × type factor × (1 − type subsidy) | 20 % threshold as deductible; causes per group |
+| schemes SEA | STATE (region's scheme, Indonesia by default) | scheme rate × (1 − subsidy) | **threshold**: nothing below 75 % damage, then the whole loss |
+
+Peril → cause: hail → HAIL; windstorm / storm / whirlwind → TORNADO; heavy / torrential rain, flood, excess water →
+FLOOD; drought → DROUGHT; fire / lightning → FIRE; frost, snow, pests, landslide … have no game cause. Multi-risk
+without its own list (FR) = hail, storm, flood, drought; multi-peril (AU, AR) and Spain modules 1 / 2 = all five.
+
+`TornadoInsuranceCrop` uses the options for everything that is not a coverage curve: for non-curve programmes the
+**sum insured is the whole field value** (the deductible lowers the payout, not the premium base), a crop without
+the chosen option gets the first option it has, unusual crops keep +25 % / max 70 %. Claims for a cause the option
+does not cover are declined (`tp_msg_ins_claim_not_covered`); threshold schemes decline below the threshold
+(`tp_msg_ins_claim_threshold`) and then pay the whole loss up to the coverage.
+`TornadoInsuranceData` now also reads the programme element (deductibles, franchises, perils, packages, policy
+types, modules, rate caps, pool years, taxes, subsidy), region extras (rate factor, stamp duty, scheme) and crop
+extras (group, cap group, cereal bonus, no state scheme, sum per ha, rates, add-ons, modules).
+Offline tests `tools/test/test_programs.lua` (69 checks, every country with hand-computed rates) and phase-2b
+cases in `test_crop.lua` (85 checks).
+
+### 18.5 Messages tab (2026-10-17, user request)
+
+`scripts/TornadoMessageLog.lua` + `TornadoMessageLogEvent` + control panel tab **Messages**
+(`TornadoPageMessages`): every `TornadoSync:sendMessage` (insurer letters, storm / damage reports, hazard alerts)
+and the touchdown warning are kept per farm (messages to everybody for every farm) as key + parameters.
+Recent messages stay 24 in-game hours (`HOUR_CHANGED`), max 60; the player can **save** one (permanent, max 60)
+and **remove** saved ones; Show opens the full text in the game's info dialog. Server-owned
+(`TornadoMessages.xml`), each farm gets its list (state event to the farm, all farms to joining players),
+save / remove are client → server actions checked against the player's farm (admin always). Works with the
+insurance OFF. This is the first part of the phase 4 inbox. Offline test `tools/test/test_messagelog.lua`
+(22 checks).
+
+### 18.6 Phase 3 – equipment insurance (2026-10-17)
+
+`scripts/insurance/TornadoInsuranceEquipment.lua`, installed by `TornadoInsurance:loadMap` like the crop module.
+Decisions (user 2026-10-17, all five recommendations):
+
+- **Deductibles / rates:** 1,000 / 2,500 / 5,000 / 10,000 (x cost scale) at 1.5 / 1.2 / 1.0 / 0.8 % a year of the
+  farm's total sell value, billed monthly (premium source `equipment`). Covers every vehicle the farm owns
+  (`VehiclePropertyState.OWNED`; no leased / mission / shop-preview vehicles, pallets, big bags, trains). Cover
+  starts after 7 real-life days; not bought / changed while a tornado is on the ground.
+- **Titles:** Salvage −50 %, Rebuilt −30 % of the sell price (settings `salvagePenalty` / `rebuiltPenalty`).
+- **Total-loss choice:** accepted automatically after 7 real-life days, reminder after 3.5.
+- **Replacement value:** setting, off by default; on = +15 %.
+- **Sold before the decision:** the claim still pays.
+
+Flow: `TornadoPhysics` calls `onVehicleContact` before `destroyTarget` / the damage (first contact per storm:
+sell price, engine damage, ADS repair price). `TornadoInsuranceDamage:onTornadoEnded` → `onStormEnded` opens a
+claim per damaged insured vehicle. Estimate = `TornadoRecovery:estimateRepairCost` without its engine part + the
+engine work for the damage the storm **added** + the ADS repair price (`getServicePrice`, repair, dealer, OEM, all
+breakdowns) the storm **added**. A vehicle reset before the storm ended: `processRecovery` hands its estimate to
+`onVehicleRecovered` first. Adjuster 3 → decision 2 → payout 1 real-life days. Decision: estimate − deductible ≤ 0
+→ closed; repairable → paid (the tow bill is still charged on reset); **total loss** when the estimate reaches 75 %
+of the insured value **or the vehicle burned** (its fire roll came up - `TornadoEffects:willBurn`, not
+`tornadoIsOnFire`, which only means the ignite damage was reached; without ADS a tow bill is only ~15–20 % of the
+price, so the 75 % rule alone would almost never trigger). Vehicle fires (2026-10-17): rolled once per vehicle until
+it is repaired, chance by EF 5 / 10 / 15 / 25 / 35 / 45 %, the Effects switch off = no vehicle fires; offline test
+`tools/test/test_fire.lua` → accept (value − deductible, wreck removed — later if someone sits in it;
+with `removeTotaled` off it is kept like a buy-back) or buy back (value − deductible − 15 % salvage, Salvage
+title). Salvage → Rebuilt on the next reset repair or when the scan finds it repaired (no tornado parts missing,
+damage ≤ 5 %).
+
+Titles live per farm by vehicle `uniqueId` (kept across resets). Every vehicle's `getSellPrice` is wrapped once per
+instance (the type functions are copied into each vehicle) by a scan every in-game minute while the insurance is
+on, on every machine — the shop, selling and ADS see the lower price. The state event carries the policy
+summary, the titles and the total losses waiting for a choice. Modules tab rows: replacement value, remove total
+losses, Salvage / Rebuilt penalty, deductible (each option shows the monthly price), status, total loss to decide,
+Accept, Buy back. Console `t_set insurance replacement|totaled|salvage|rebuilt`,
+`t_dev insurance equip quote|buy|cancel|claims|accept|buyback|hit|end|title`.
+Offline test `tools/test/test_equipment.lua` (90 checks).
 
 ## 19. Rules for the implementation
 

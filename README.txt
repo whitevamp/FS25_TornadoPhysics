@@ -231,6 +231,7 @@ In multiplayer, gameplay commands only work for the host / server admin.
                                 : log channels
    - t_dev hotspotdump          : Hotspot / map overlay state
    - t_dev kill_test            : Husbandry kill test (kills animals!)
+   - t_dev twister              : Twister at your position now, any season (testing)
    - t_dev wildlife list        : Wildlife species on this map
    - t_dev wildlife spawn <species> [distance] [count]
                                 : Spawn wildlife in front of you (testing)

@@ -47,6 +47,9 @@
             <Button profile="fs25_subCategorySelectorTabbedTab" id="tabModules" text="$l10n_tp_tab_modules" onClick="onClickTab">
                 <ThreePartBitmap profile="fs25_subCategorySelectorTabbedTabBg" name="background"/>
             </Button>
+            <Button profile="fs25_subCategorySelectorTabbedTab" id="tabMessages" text="$l10n_tp_tab_messages" onClick="onClickTab">
+                <ThreePartBitmap profile="fs25_subCategorySelectorTabbedTabBg" name="background"/>
+            </Button>
             <Button profile="fs25_subCategorySelectorTabbedTab" id="tabDeveloper" text="$l10n_tp_tab_developer" onClick="onClickTab">
                 <ThreePartBitmap profile="fs25_subCategorySelectorTabbedTabBg" name="background"/>
             </Button>
@@ -567,6 +570,36 @@
                     <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_insurance_sales"/>
                 </Bitmap>
                 <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="modInsuranceValue" onClick="onClickChoice">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_insurance_value"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_insurance_value"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <BinaryOption profile="fs25_settingsBinaryOption" id="modInsuranceReplacement" onClick="onClickBinary">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_insurance_replacement"/>
+                    </BinaryOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_insurance_replacement"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <BinaryOption profile="fs25_settingsBinaryOption" id="modInsuranceRemoveTotaled" onClick="onClickBinary">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_insurance_remove_totaled"/>
+                    </BinaryOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_insurance_remove_totaled"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="modInsuranceSalvage" onClick="onClickChoice">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_insurance_salvage"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_insurance_salvage"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="modInsuranceRebuilt" onClick="onClickChoice">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_insurance_rebuilt"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_insurance_rebuilt"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
                     <MultiTextOption profile="fs25_settingsMultiTextOption" id="modInsuranceCropPlan" onClick="onClickChoice">
                         <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_insurance_crop_plan"/>
                     </MultiTextOption>
@@ -583,6 +616,85 @@
                         <ThreePartBitmap profile="tornado_actionButtonBg"/>
                     </Button>
                     <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_insurance_crop_status"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="modInsuranceEquipDeductible" onClick="onClickChoice">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_insurance_equip"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_insurance_equip"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <Button profile="tornado_actionButton" id="modInsuranceEquipStatus" text="$l10n_tp_btn_show" onClick="onClickAction">
+                        <ThreePartBitmap profile="tornado_actionButtonBg"/>
+                    </Button>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_insurance_equip_status"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="modInsuranceEquipTotal" onClick="onClickChoice">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_insurance_equip_total"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_insurance_equip_total"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <Button profile="tornado_actionButton" id="modInsuranceEquipAccept" text="$l10n_tp_btn_equip_accept" onClick="onClickAction">
+                        <ThreePartBitmap profile="tornado_actionButtonBg"/>
+                    </Button>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_insurance_equip_accept"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <Button profile="tornado_actionButton" id="modInsuranceEquipBuyBack" text="$l10n_tp_btn_equip_buyback" onClick="onClickAction">
+                        <ThreePartBitmap profile="tornado_actionButtonBg"/>
+                    </Button>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_insurance_equip_buyback"/>
+                </Bitmap>
+            </ScrollingLayout>
+            <Bitmap profile="fs25_settingsTooltipSeparator"/>
+        </GuiElement>
+
+        <!-- =====================================================================
+             MESSAGES TAB  (message history)   -> scripts/gui/pages/TornadoPageMessages.lua
+             ===================================================================== -->
+        <GuiElement profile="fs25_subCategorySelectorTabbedContainer" id="pageMessages">
+            <ScrollingLayout profile="fs25_settingsLayout" id="layoutMessages">
+
+                <Text profile="fs25_settingsSectionHeader" name="sectionHeader" text="$l10n_tp_sec_msg_recent"/>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="msgRecent" onClick="onClickChoice">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_msg_recent"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_msg_message"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <Button profile="tornado_actionButton" id="msgRecentShow" text="$l10n_tp_btn_show" onClick="onClickAction">
+                        <ThreePartBitmap profile="tornado_actionButtonBg"/>
+                    </Button>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_msg_show"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <Button profile="tornado_actionButton" id="msgRecentSave" text="$l10n_tp_btn_save" onClick="onClickAction">
+                        <ThreePartBitmap profile="tornado_actionButtonBg"/>
+                    </Button>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_msg_save"/>
+                </Bitmap>
+
+                <Text profile="fs25_settingsSectionHeader" name="sectionHeader" text="$l10n_tp_sec_msg_saved"/>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="msgSaved" onClick="onClickChoice">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_msg_saved"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_msg_message"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <Button profile="tornado_actionButton" id="msgSavedShow" text="$l10n_tp_btn_show" onClick="onClickAction">
+                        <ThreePartBitmap profile="tornado_actionButtonBg"/>
+                    </Button>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_msg_show"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
+                    <Button profile="tornado_actionButton" id="msgSavedRemove" text="$l10n_tp_btn_remove" onClick="onClickAction">
+                        <ThreePartBitmap profile="tornado_actionButtonBg"/>
+                    </Button>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_msg_remove"/>
                 </Bitmap>
             </ScrollingLayout>
             <Bitmap profile="fs25_settingsTooltipSeparator"/>
