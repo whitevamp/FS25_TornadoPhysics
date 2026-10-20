@@ -551,10 +551,45 @@
         <text name="tp_ins_info_total_keep" text="Total loss: totalled vehicles are kept on this server - you get the value minus the deductible and the salvage value and keep the vehicle with a Salvage title (sell price -%d percent; repaired Rebuilt, -%d percent). Wear from before the storm is not covered."/>
         <text name="tp_ins_info_livestock" text="Livestock: every animal in the farm's pastures, valued at its sell price. About %s percent a year of the herd value; %d percent excess on every claim."/>
         <text name="tp_ins_info_livestock_gov" text="On this map the USDA Livestock Indemnity Program pays %d percent of the market value for free (also without a policy); a policy pays the rest."/>
-        <text name="tp_ins_info_timing" text="Timing (counted in real-life days, 30 = one game month; here %d days per month): new cover starts after %s; after a claim the adjuster comes in %s, the decision follows %s later and the payment %s after that. A total loss not decided within %s is accepted for you."/>
+        <text name="tp_ins_info_timing" text="Timing (counted in real-life days, 30 = one game month; days per month here: %d): new cover starts after %s; after a claim the adjuster comes in %s, the decision follows %s later and the payment %s after that. A total loss not decided within %s is accepted for you."/>
         <text name="tp_ins_info_duration" text="%d d %d h"/>
         <text name="tp_ins_info_billing" text="Premiums are billed at every month change, from what the farm owns then."/>
         <text name="tp_ins_info_manage" text="Farm managers and the server admin can buy, change and cancel policies and decide total losses; everybody else can look."/>
+        <text name="tp_msg_ins_rating_down" text="New policy year - %s: no claim was paid last year. Price now: %d percent %s."/>
+        <text name="tp_msg_ins_rating_up" text="New policy year - %s: claims were paid last year. Price now: %d percent %s."/>
+        <text name="tp_ins_rating_discount" text="below the normal price"/>
+        <text name="tp_ins_rating_surcharge" text="above the normal price"/>
+        <text name="tp_ins_rating_none" text="- the normal price"/>
+        <text name="tp_msg_ins_renewal" text="New policy year: your crop insurance continued without a gap - renewal bonus of %d percent off the crop premium."/>
+        <text name="tp_ins_rating_line_discount" text="no-claims discount -%d percent"/>
+        <text name="tp_ins_rating_line_surcharge" text="claims surcharge +%d percent"/>
+        <text name="tp_ins_rating_line_renewal" text="renewal bonus -%d percent"/>
+        <text name="tp_ins_pol_price_factor" text="Price includes: %s."/>
+        <text name="tp_ins_info_noclaims" text="No-claims rule: each policy year without a paid claim lowers that policy's price by %d percent (down to -%d percent); a year with a paid claim raises it by %d percent (up to +%d percent). State programme payments do not count. Keeping crop insurance without a gap gives a %d percent renewal bonus."/>
+        <text name="tp_ins_info_noclaims_off" text="No-claims rule: off on this server - prices do not depend on past claims."/>
+        <text name="tp_ins_info_writeoff" text="Crop write-off: once %d percent of a field's crop is lost in a policy year, the decision offers the whole guarantee - write the field off (the rest of the crop withers, clear it and replant) or keep the crop and the normal payout."/>
+        <text name="tp_msg_ins_claim_writeoff" text="Field %s: the loss is big enough for a write-off. Write off: %s now and the rest of the crop withers (clear and replant). Keep the crop: %s now and harvest what survived. Choose on the Insurance tab within %d d %d h - otherwise you keep the crop."/>
+        <text name="tp_msg_ins_claim_written_off" text="Field %s written off: %s paid. The rest of the crop has withered - clear the field and replant."/>
+        <text name="tp_msg_ins_claim_kept" text="Field %s: you kept the crop - %s paid."/>
+        <text name="tp_msg_ins_claim_kept_auto" text="Field %s: no choice was made in time, so you kept the crop - %s paid."/>
+        <text name="tp_msg_ins_claim_kept_zero" text="Field %s: you kept the crop. The loss stays within the part you insure yourself, so nothing is paid."/>
+        <text name="tp_msg_ins_no_writeoff" text="No write-off offer is open for this claim."/>
+        <text name="tp_ins_cs_writeoff" text="Write-off?"/>
+        <text name="tp_ins_cs_written_off" text="Written off"/>
+        <text name="tp_ins_cl_writeoff_choice" text="Write off: %s now, and the rest of the crop on field %s withers (clear and replant). Keep the crop: %s now and harvest what survived."/>
+        <text name="tp_ins_cl_next_writeoff" text="Choose within %d days %d hours - after that you keep the crop."/>
+        <text name="tp_btn_ins_write_off" text="Write off the field"/>
+        <text name="tp_btn_ins_keep_crop" text="Keep the crop"/>
+        <text name="tp_confirm_crop_writeoff" text="Write the field off? You get the whole guarantee, and the rest of this crop withers - it cannot be harvested any more."/>
+        <text name="tp_confirm_crop_keep" text="Keep the crop? You get the normal payout and can harvest what survived; the write-off offer ends."/>
+        <text name="tp_insurance_noclaims" text="No-claims rule"/>
+        <text name="tp_tip_insurance_noclaims" text="Each policy year without a paid claim makes that policy cheaper, a year with a paid claim more expensive; keeping crop insurance without a gap gives a renewal bonus. Small: -3 / +5 percent per step, normal: -5 / +10 percent."/>
+        <text name="tp_insurance_noclaims_off" text="Off"/>
+        <text name="tp_insurance_noclaims_small" text="Small"/>
+        <text name="tp_insurance_noclaims_normal" text="Normal"/>
+        <text name="tp_ins_pay_chart" text="Last 12 months"/>
+        <text name="tp_ins_pay_chart_empty" text="No payments yet."/>
+        <text name="tp_msg_more_on_tab" text="(full letter on the Messages tab)"/>
         <text name="tp_ins_pol_change_hint" text="To change a policy, choose the new cover under Start here and get a quote."/>
         <text name="tp_dir_N" text="N"/>
         <text name="tp_dir_NE" text="NE"/>

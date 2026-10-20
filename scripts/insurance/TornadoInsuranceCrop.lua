@@ -48,11 +48,17 @@ TornadoInsuranceCrop.DISABLED_COUNTRIES = {
 TornadoInsuranceCrop.devUnlock = false
 TornadoInsuranceCrop.MAX_CLAIMS = 100
 TornadoInsuranceCrop.MIN_CLAIM_SHARE = 0.01    -- events below 1 % of a field open no claim (hail specks)
+-- Write-off (design §8 step 5, decided 2026-10-19): from this lost share in the policy year the decision offers the
+-- whole guarantee instead of the normal payout. Accepting withers the rest of that crop (the insurer "appraises and
+-- releases" the field: clear it and replant); keeping it pays the normal amount. No choice in time = keep.
+TornadoInsuranceCrop.WRITE_OFF_SHARE = 0.5
+TornadoInsuranceCrop.CHOICE_DAYS = 7
 
 TornadoInsuranceCrop.TIMER_ACTIVE = "CROP_ACTIVE"
 TornadoInsuranceCrop.TIMER_ADJUSTER = "CROP_ADJUSTER"
 TornadoInsuranceCrop.TIMER_DECISION = "CROP_DECISION"
 TornadoInsuranceCrop.TIMER_PAYOUT = "CROP_PAYOUT"
+TornadoInsuranceCrop.TIMER_CHOICE = "CROP_CHOICE"
 
 TornadoInsuranceCrop.STATUS_PENDING = "PENDING"
 TornadoInsuranceCrop.STATUS_ACTIVE = "ACTIVE"
@@ -89,6 +95,13 @@ function TornadoInsuranceCrop:install(insurance)
     insurance:registerTimerHandler(self.TIMER_ADJUSTER, function(_, timer) TornadoInsuranceCrop:onAdjuster(timer) end)
     insurance:registerTimerHandler(self.TIMER_DECISION, function(_, timer) TornadoInsuranceCrop:onDecision(timer) end)
     insurance:registerTimerHandler(self.TIMER_PAYOUT, function(_, timer) TornadoInsuranceCrop:onPayout(timer) end)
+    insurance:registerTimerHandler(self.TIMER_CHOICE, function(_, timer) TornadoInsuranceCrop:onChoiceTimeout(timer) end)
+    insurance:registerAction("cropWriteOff", true, function(_, farmId, args)
+        return TornadoInsuranceCrop:choose(farmId, tonumber(args), true, false)
+    end)
+    insurance:registerAction("cropKeep", true, function(_, farmId, args)
+        return TornadoInsuranceCrop:choose(farmId, tonumber(args), false, false)
+    end)
     insurance:registerClaimSource(function(_, farmId, farm, list) TornadoInsuranceCrop:addClaimSummaries(farmId, farm, list) end)
     insurance:registerAction("cropBuy", true, function(_, farmId, args) return TornadoInsuranceCrop:buy(farmId, args) end)
     insurance:registerAction("cropCancel", true, function(_, farmId) return TornadoInsuranceCrop:cancel(farmId) end)
@@ -397,6 +410,7 @@ function TornadoInsuranceCrop:getFarmQuote(farmId, planId, coverage, policy)
         end
     end
     quote.monthlyPremium = quote.monthlyPremium * (TornadoInsurance:getCostScale() or 1)
+        * (TornadoInsurance.getPremiumFactor ~= nil and TornadoInsurance:getPremiumFactor(farmId, "crop") or 1)
     return quote
 end
 
@@ -497,6 +511,7 @@ function TornadoInsuranceCrop:cancel(farmId)
         insurance:removeTimer(farm.crop.timerId)
     end
     farm.crop = nil
+    farm.cropRenewals = 0   -- the renewal bonus needs the cover without a gap
     insurance:addInbox(farmId, "tp_msg_ins_crop_cancelled", {}, MSG_INFO)   -- open claims carry on
     return nil
 end
@@ -607,9 +622,88 @@ function TornadoInsuranceCrop:onDecision(timer)
         self.insurance:addInbox(timer.farmId, "tp_msg_ins_claim_approved", { TornadoText.num(claim.fieldId),
             TornadoText.cash(result.payout) }, MSG_INFO)
         self.insurance:addTimer(timer.farmId, self.TIMER_PAYOUT, self.PAYOUT_DAYS, tostring(claim.id))
+    elseif result.status == "WRITEOFF" then
+        claim.writeOffPayout = math.floor(result.writeOffPayout + 0.5)
+        claim.writeOffShare = result.writeOffShare
+        claim.payout = math.floor(result.payout + 0.5)
+        self.insurance:addTimer(timer.farmId, self.TIMER_CHOICE, self.CHOICE_DAYS, tostring(claim.id))
+        local days, hours = self.insurance:getRemainingDaysHours(self.insurance.realDaysToMonths(self.CHOICE_DAYS))
+        self.insurance:addInbox(timer.farmId, "tp_msg_ins_claim_writeoff", { TornadoText.num(claim.fieldId),
+            TornadoText.cash(claim.writeOffPayout), TornadoText.cash(claim.payout), TornadoText.num(days), TornadoText.num(hours) }, MSG_INFO)
     else
         self.insurance:addInbox(timer.farmId, result.reasonKey, result.params or { TornadoText.num(claim.fieldId) }, MSG_INFO)
     end
+end
+
+--- May this field's crop be written off? Enough of it lost this policy year, not written off already, and the crop has a
+--- withered state to turn the rest into.
+function TornadoInsuranceCrop:canWriteOff(record, crop)
+    if record == nil or record.writtenOff or (record.lost or 0) + 0.0001 < self.WRITE_OFF_SHARE then
+        return false
+    end
+    local fruitType = crop ~= nil and crop.fruitType or nil
+    return fruitType ~= nil and fruitType.witheredState ~= nil
+end
+
+--- Accepted write-off: the rest of the claim's crop on the field withers (the game's own field update task).
+function TornadoInsuranceCrop:witherField(claim)
+    local crop = self:getClaimCrop(claim)
+    local field = g_fieldManager ~= nil and g_fieldManager:getFieldById(claim.fieldId) or nil
+    if crop == nil or field == nil or crop.fruitType == nil or crop.fruitType.witheredState == nil or FieldUpdateTask == nil then
+        return false
+    end
+    local task = FieldUpdateTask.new()
+    task:setField(field)
+    task:setFruit(crop.fruitType.index, crop.fruitType.witheredState)
+    g_fieldManager:addFieldUpdateTask(task)
+    return true
+end
+
+function TornadoInsuranceCrop:onChoiceTimeout(timer)
+    local claim = self:findClaim(timer.farmId, tonumber(timer.data))
+    if claim == nil or claim.status ~= "WRITEOFF" then
+        return
+    end
+    self:choose(timer.farmId, claim.id, false, true)
+end
+
+--- Write-off offer: writeOff = take the whole guarantee (the crop withers) or keep the crop and the normal payout.
+--- auto = no choice in time (kept). Returns a result text key or nil.
+function TornadoInsuranceCrop:choose(farmId, claimId, writeOff, auto)
+    local claim, farm = nil, nil
+    if claimId ~= nil then
+        claim, farm = self:findClaim(farmId, claimId)
+    end
+    if claim == nil or claim.status ~= "WRITEOFF" then
+        return "tp_msg_ins_no_writeoff"
+    end
+    local insurance = self.insurance
+    insurance:removeTimersFor(farmId, self.TIMER_CHOICE, tostring(claim.id))
+    local field = TornadoText.num(claim.fieldId)
+    if writeOff then
+        local policy = farm ~= nil and farm.crop or nil
+        local record = policy ~= nil and policy.fields ~= nil and policy.fields[claim.fieldId] or nil
+        if record ~= nil and record.crop == claim.crop then
+            record.paid = record.paid + (claim.writeOffShare or 0)
+            record.writtenOff = true
+        end
+        claim.status = "WRITTEN_OFF"
+        claim.payout = claim.writeOffPayout or claim.payout or 0
+        self:witherField(claim)
+        if not insurance:payOut(farmId, claim.payout, "tp_msg_ins_claim_written_off", { field, TornadoText.cash(claim.payout) }, "crop") then
+            insurance:syncFarm(farmId)
+        end
+        return nil
+    end
+    if (claim.payout or 0) > 0 then
+        claim.status = "PAID"
+        insurance:payOut(farmId, claim.payout, auto and "tp_msg_ins_claim_kept_auto" or "tp_msg_ins_claim_kept",
+            { field, TornadoText.cash(claim.payout) }, "crop")
+    else
+        claim.status = "DENIED"
+        insurance:addInbox(farmId, "tp_msg_ins_claim_kept_zero", { field }, MSG_INFO)
+    end
+    return nil
 end
 
 --- The claim's crop as a field crop (same shape as getFieldCrop), from its fill type name and the field's area.
@@ -668,10 +762,16 @@ function TornadoInsuranceCrop:decide(farmId, farm, claim)
     else
         insuredShare = math.max(0, record.lost - (1 - terms.coverage)) - record.paid
     end
-    if insuredShare <= 0.0001 then
+    -- Write-off: what the whole guarantee would still pay on top of the normal share.
+    local writeOffShare = 0
+    if self:canWriteOff(record, crop) then
+        writeOffShare = math.max(0, terms.coverage - record.paid - math.max(0, insuredShare))
+    end
+    if insuredShare <= 0.0001 and writeOffShare <= 0.0001 then
         return denied("tp_msg_ins_claim_deductible", { TornadoText.num(claim.fieldId),
             TornadoText.num(percent(record.lost)), TornadoText.num(percent(terms.coverage)) })
     end
+    insuredShare = math.max(0, insuredShare)
     local valuePerHa = terms.valuePerHa or (terms.yieldPerHa * terms.price)
     if terms.plan == "RP" then
         local current = self:getAveragePrice(crop.fillTypeIndex)
@@ -680,6 +780,10 @@ function TornadoInsuranceCrop:decide(farmId, farm, claim)
     end
     record.paid = record.paid + insuredShare
     local payout = insuredShare * crop.areaHa * valuePerHa
+    if writeOffShare > 0.0001 then
+        return { status = "WRITEOFF", payout = payout, writeOffShare = writeOffShare,
+            writeOffPayout = payout + writeOffShare * crop.areaHa * valuePerHa }
+    end
     return { status = "APPROVED", payout = payout }
 end
 
@@ -695,11 +799,12 @@ end
 
 --- Claim summaries for the Insurance tab (TornadoInsurance:registerClaimSource): values = { share lost, payout }.
 function TornadoInsuranceCrop:addClaimSummaries(farmId, farm, list)
-    local kinds = { [self.TIMER_ADJUSTER] = true, [self.TIMER_DECISION] = true, [self.TIMER_PAYOUT] = true }
+    local kinds = { [self.TIMER_ADJUSTER] = true, [self.TIMER_DECISION] = true, [self.TIMER_PAYOUT] = true,
+        [self.TIMER_CHOICE] = true }
     for _, claim in ipairs(farm ~= nil and farm.claims or {}) do
         table.insert(list, { kind = "CROP", id = claim.id, day = claim.day or 0, status = claim.status or "",
             subject = tostring(claim.fieldId or 0), info = claim.crop or "", cause = claim.cause or "",
-            values = { claim.share or 0, claim.payout or 0 }, flag = false,
+            values = { claim.share or 0, claim.payout or 0, claim.writeOffPayout or 0 }, flag = false,
             remaining = self.insurance:getTimerRemaining(farmId, kinds, tostring(claim.id)) })
     end
 end
@@ -707,7 +812,7 @@ end
 function TornadoInsuranceCrop:getOpenClaimCount(farm)
     local count = 0
     for _, claim in ipairs(farm ~= nil and farm.claims or {}) do
-        if claim.status == "RECEIVED" or claim.status == "INSPECTED" or claim.status == "APPROVED" then
+        if claim.status == "RECEIVED" or claim.status == "INSPECTED" or claim.status == "APPROVED" or claim.status == "WRITEOFF" then
             count = count + 1
         end
     end
@@ -754,6 +859,10 @@ function TornadoInsuranceCrop:saveFarm(xmlId, key, farm)
         setXMLInt(xmlId, claimKey .. "#day", claim.day or 0)
         setXMLString(xmlId, claimKey .. "#status", claim.status or "")
         setXMLFloat(xmlId, claimKey .. "#payout", claim.payout or 0)
+        if claim.writeOffPayout ~= nil then
+            setXMLFloat(xmlId, claimKey .. "#writeOffPayout", claim.writeOffPayout)
+            setXMLFloat(xmlId, claimKey .. "#writeOffShare", claim.writeOffShare or 0)
+        end
     end
 end
 
@@ -794,7 +903,8 @@ function TornadoInsuranceCrop:loadFarm(xmlId, key, farm)
         table.insert(farm.claims, { id = id, fieldId = getXMLInt(xmlId, claimKey .. "#field") or 0,
             cause = getXMLString(xmlId, claimKey .. "#cause"), crop = getXMLString(xmlId, claimKey .. "#crop"),
             share = getXMLFloat(xmlId, claimKey .. "#share") or 0, day = getXMLInt(xmlId, claimKey .. "#day") or 0,
-            status = getXMLString(xmlId, claimKey .. "#status") or "", payout = getXMLFloat(xmlId, claimKey .. "#payout") or 0 })
+            status = getXMLString(xmlId, claimKey .. "#status") or "", payout = getXMLFloat(xmlId, claimKey .. "#payout") or 0,
+            writeOffPayout = getXMLFloat(xmlId, claimKey .. "#writeOffPayout"), writeOffShare = getXMLFloat(xmlId, claimKey .. "#writeOffShare") })
         i = i + 1
     end
 end
@@ -853,6 +963,20 @@ function TornadoInsuranceCrop:consoleCommand(farmId, sub, value, extra)
     elseif sub == "cancel" then
         TornadoInsurance:requestAction(farmId, "cropCancel", "")
         return "Crop insurance: cancel request sent."
+    elseif sub == "writeoff" or sub == "keep" then
+        local claimId = tonumber(value)
+        if claimId == nil then
+            for _, claim in ipairs(farm.claims or {}) do
+                if claim.status == "WRITEOFF" then
+                    claimId = claim.id
+                end
+            end
+        end
+        if claimId == nil then
+            return "Crop insurance: no write-off offer open."
+        end
+        TornadoInsurance:requestAction(farmId, sub == "writeoff" and "cropWriteOff" or "cropKeep", tostring(claimId))
+        return string.format("Crop insurance: %s sent for claim #%d.", sub == "writeoff" and "write-off" or "keep the crop", claimId)
     elseif sub == "claims" then
         print(string.format("---------------- CROP CLAIMS farm %d ----------------", farmId))
         for _, claim in ipairs(farm.claims or {}) do
@@ -863,5 +987,5 @@ function TornadoInsuranceCrop:consoleCommand(farmId, sub, value, extra)
         return policy ~= nil and string.format("Crop policy: %s %d %% %s, %d claims (%d open).", policy.plan, percent(policy.coverage),
             policy.status, #(farm.claims or {}), self:getOpenClaimCount(farm)) or "Crop policy: none."
     end
-    return "Usage: t_dev insurance crop <plans | quote <PLAN> <coverage> | buy <PLAN> <coverage> | cancel | claims | unlock>"
+    return "Usage: t_dev insurance crop <plans | quote <PLAN> <coverage> | buy <PLAN> <coverage> | cancel | claims | writeoff [claim] | keep [claim] | unlock>"
 end

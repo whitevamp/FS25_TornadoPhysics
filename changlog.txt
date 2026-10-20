@@ -189,6 +189,22 @@
   deductible and the total-loss rules, livestock price and excess, the USDA
   programme on US maps, and every waiting time converted to your days per
   month.
+- Payments chart: premiums vs. payouts of the last 12 months as bars.
+- No-claims rule (Modules tab / t_set insurance noclaims, default small):
+  every policy year without a paid claim makes that policy cheaper (-3 %
+  per year, down to -12 %), a year with a paid claim more expensive (+10 %,
+  up to +15 %); "normal" doubles the steps (-5 / +10 %, up to -20 / +30 %).
+  State programme payments (USDA LIP) do not count. Crop insurance kept
+  without a gap earns a renewal bonus (-3 %, Spain -5 %). A letter at every
+  new policy year says what changed; My policies shows it in the price.
+- Crop write-off: once half of a field's crop is lost in a policy year, the
+  decision offers the whole guarantee. Write the field off (the rest of the
+  crop withers - clear it and replant) or keep the crop with the normal
+  payout and harvest what survived. Decided on the Claims section (asks
+  first); no choice within 7 real-life days keeps the crop.
+- Long letters no longer run across the screen: the pop-up shows only the
+  first sentence and "(full letter on the Messages tab)" (the game's side
+  notifications do not wrap); the Messages tab keeps the whole text.
 
 [UI] Messages Tab
 - New control panel tab with the mod's messages to your farm (insurance

@@ -551,10 +551,45 @@
         <text name="tp_ins_info_total_keep" text="Totalschaden: auf diesem Server bleiben Totalschäden beim Hof - du bekommst den Wert minus Selbstbehalt und Restwert und behältst das Fahrzeug mit Bergungstitel (Verkaufspreis -%d Prozent; repariert Wiederaufgebaut, -%d Prozent). Verschleiß von vor dem Sturm ist nicht versichert."/>
         <text name="tp_ins_info_livestock" text="Tiere: jedes Tier auf den Weiden des Hofs, bewertet mit seinem Verkaufspreis. Etwa %s Prozent des Herdenwerts pro Jahr; %d Prozent Selbstbehalt bei jedem Schaden."/>
         <text name="tp_ins_info_livestock_gov" text="Auf dieser Karte zahlt das USDA Livestock Indemnity Program kostenlos %d Prozent des Marktwerts (auch ohne Police); eine Police zahlt den Rest."/>
-        <text name="tp_ins_info_timing" text="Zeiten (in realen Tagen, 30 = ein Spielmonat; hier %d Tage pro Monat): neuer Schutz beginnt nach %s; nach einer Schadensmeldung kommt der Gutachter in %s, die Entscheidung folgt %s später und die Zahlung %s danach. Ein Totalschaden ohne Entscheidung innerhalb von %s wird für dich angenommen."/>
+        <text name="tp_ins_info_timing" text="Zeiten (in realen Tagen, 30 = ein Spielmonat; Tage pro Monat hier: %d): neuer Schutz beginnt nach %s; nach einer Schadensmeldung kommt der Gutachter in %s, die Entscheidung folgt %s später und die Zahlung %s danach. Ein Totalschaden ohne Entscheidung innerhalb von %s wird für dich angenommen."/>
         <text name="tp_ins_info_duration" text="%d T %d Std"/>
         <text name="tp_ins_info_billing" text="Beiträge werden bei jedem Monatswechsel berechnet, nach dem, was der Hof dann besitzt."/>
         <text name="tp_ins_info_manage" text="Hofmanager und der Server-Admin können Policen kaufen, ändern, kündigen und über Totalschäden entscheiden; alle anderen können zuschauen."/>
+        <text name="tp_msg_ins_rating_down" text="Neues Versicherungsjahr - %s: letztes Jahr wurde kein Schaden bezahlt. Preis jetzt: %d Prozent %s."/>
+        <text name="tp_msg_ins_rating_up" text="Neues Versicherungsjahr - %s: letztes Jahr wurden Schäden bezahlt. Preis jetzt: %d Prozent %s."/>
+        <text name="tp_ins_rating_discount" text="unter dem Normalpreis"/>
+        <text name="tp_ins_rating_surcharge" text="über dem Normalpreis"/>
+        <text name="tp_ins_rating_none" text="- der Normalpreis"/>
+        <text name="tp_msg_ins_renewal" text="Neues Versicherungsjahr: deine Ernteversicherung lief ohne Lücke weiter - Treuebonus von %d Prozent auf den Erntebeitrag."/>
+        <text name="tp_ins_rating_line_discount" text="Schadenfreiheitsrabatt -%d Prozent"/>
+        <text name="tp_ins_rating_line_surcharge" text="Schadenzuschlag +%d Prozent"/>
+        <text name="tp_ins_rating_line_renewal" text="Treuebonus -%d Prozent"/>
+        <text name="tp_ins_pol_price_factor" text="Im Preis enthalten: %s."/>
+        <text name="tp_ins_info_noclaims" text="Schadenfreiheitsregel: jedes Versicherungsjahr ohne bezahlten Schaden senkt den Preis dieser Police um %d Prozent (bis -%d Prozent); ein Jahr mit bezahltem Schaden erhöht ihn um %d Prozent (bis +%d Prozent). Zahlungen staatlicher Programme zählen nicht. Wer die Ernteversicherung ohne Lücke behält, bekommt %d Prozent Treuebonus."/>
+        <text name="tp_ins_info_noclaims_off" text="Schadenfreiheitsregel: auf diesem Server aus - die Preise hängen nicht von früheren Schäden ab."/>
+        <text name="tp_ins_info_writeoff" text="Abschreibung: sind in einem Versicherungsjahr %d Prozent der Ernte eines Felds verloren, bietet die Entscheidung die volle Garantie an - Feld abschreiben (der Rest der Frucht verdorrt, räumen und neu säen) oder die Frucht behalten und die normale Auszahlung bekommen."/>
+        <text name="tp_msg_ins_claim_writeoff" text="Feld %s: der Verlust reicht für eine Abschreibung. Abschreiben: jetzt %s und der Rest der Frucht verdorrt (räumen und neu säen). Frucht behalten: jetzt %s und ernten, was übrig ist. Entscheide im Reiter Versicherung innerhalb von %d T %d Std - sonst behältst du die Frucht."/>
+        <text name="tp_msg_ins_claim_written_off" text="Feld %s abgeschrieben: %s gezahlt. Der Rest der Frucht ist verdorrt - räume das Feld und säe neu."/>
+        <text name="tp_msg_ins_claim_kept" text="Feld %s: du behältst die Frucht - %s gezahlt."/>
+        <text name="tp_msg_ins_claim_kept_auto" text="Feld %s: keine rechtzeitige Entscheidung, du behältst die Frucht - %s gezahlt."/>
+        <text name="tp_msg_ins_claim_kept_zero" text="Feld %s: du behältst die Frucht. Der Verlust bleibt im selbst getragenen Teil, daher wird nichts gezahlt."/>
+        <text name="tp_msg_ins_no_writeoff" text="Für diesen Schadensfall gibt es kein offenes Abschreibungsangebot."/>
+        <text name="tp_ins_cs_writeoff" text="Abschreiben?"/>
+        <text name="tp_ins_cs_written_off" text="Abgeschrieben"/>
+        <text name="tp_ins_cl_writeoff_choice" text="Abschreiben: jetzt %s, und der Rest der Frucht auf Feld %s verdorrt (räumen und neu säen). Frucht behalten: jetzt %s und ernten, was übrig ist."/>
+        <text name="tp_ins_cl_next_writeoff" text="Entscheide innerhalb von %d Tagen %d Stunden - danach behältst du die Frucht."/>
+        <text name="tp_btn_ins_write_off" text="Feld abschreiben"/>
+        <text name="tp_btn_ins_keep_crop" text="Frucht behalten"/>
+        <text name="tp_confirm_crop_writeoff" text="Feld abschreiben? Du bekommst die volle Garantie, und der Rest dieser Frucht verdorrt - er kann nicht mehr geerntet werden."/>
+        <text name="tp_confirm_crop_keep" text="Frucht behalten? Du bekommst die normale Auszahlung und kannst ernten, was übrig ist; das Abschreibungsangebot endet."/>
+        <text name="tp_insurance_noclaims" text="Schadenfreiheitsregel"/>
+        <text name="tp_tip_insurance_noclaims" text="Jedes Versicherungsjahr ohne bezahlten Schaden macht die Police billiger, ein Jahr mit bezahltem Schaden teurer; Ernteversicherung ohne Lücke gibt einen Treuebonus. Klein: -3 / +5 Prozent pro Stufe, normal: -5 / +10 Prozent."/>
+        <text name="tp_insurance_noclaims_off" text="Aus"/>
+        <text name="tp_insurance_noclaims_small" text="Klein"/>
+        <text name="tp_insurance_noclaims_normal" text="Normal"/>
+        <text name="tp_ins_pay_chart" text="Letzte 12 Monate"/>
+        <text name="tp_ins_pay_chart_empty" text="Noch keine Zahlungen."/>
+        <text name="tp_msg_more_on_tab" text="(ganzer Brief im Reiter Nachrichten)"/>
         <text name="tp_ins_pol_change_hint" text="Um eine Police zu ändern, wähle unter Hier starten den neuen Schutz und hole ein Angebot."/>
         <text name="tp_dir_N" text="N"/>
         <text name="tp_dir_NE" text="NO"/>

@@ -77,6 +77,16 @@ function TornadoText.month(index)
     return name .. ", " .. TornadoText.format("tp_date_year", year)
 end
 
+--- Short month name of a history month index ("Aug"), for chart labels.
+function TornadoText.monthShort(index)
+    index = math.max(1, index or 1)
+    local period = (index - 1) % 12 + 1
+    if modI18n ~= nil and modI18n.formatPeriod ~= nil and g_currentMission ~= nil and g_currentMission.environment ~= nil then
+        return modI18n:formatPeriod(period, true) or tostring(period)
+    end
+    return "M" .. period
+end
+
 --- Compass code from TornadoClimate.directionToLabel ("N", "NE", ...) in the player's language.
 function TornadoText.direction(code)
     if code == nil then

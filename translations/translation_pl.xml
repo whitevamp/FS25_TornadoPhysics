@@ -551,10 +551,45 @@
         <text name="tp_ins_info_total_keep" text="Szkoda całkowita: na tym serwerze pojazdy zostają w gospodarstwie - dostajesz wartość minus udział własny i wartość wraku, a pojazd zostaje z tytułem wraku (cena sprzedaży -%d procent; po naprawie Odbudowany, -%d procent). Zużycie sprzed burzy nie jest objęte."/>
         <text name="tp_ins_info_livestock" text="Zwierzęta: każde zwierzę na pastwiskach gospodarstwa, wycenione wg ceny sprzedaży. Ok. %s procent wartości stada rocznie; %d procent udziału własnego przy każdej szkodzie."/>
         <text name="tp_ins_info_livestock_gov" text="Na tej mapie program USDA Livestock Indemnity Program bezpłatnie wypłaca %d procent wartości rynkowej (także bez polisy); polisa pokrywa resztę."/>
-        <text name="tp_ins_info_timing" text="Czas (w dniach rzeczywistych, 30 = jeden miesiąc gry; tutaj %d dni na miesiąc): nowa ochrona zaczyna się po %s; po zgłoszeniu rzeczoznawca przyjeżdża za %s, decyzja zapada %s później, a wypłata %s po niej. Szkoda całkowita bez decyzji w ciągu %s zostaje przyjęta za ciebie."/>
+        <text name="tp_ins_info_timing" text="Czas (w dniach rzeczywistych, 30 = jeden miesiąc gry; dni w miesiącu tutaj: %d): nowa ochrona zaczyna się po %s; po zgłoszeniu rzeczoznawca przyjeżdża za %s, decyzja zapada %s później, a wypłata %s po niej. Szkoda całkowita bez decyzji w ciągu %s zostaje przyjęta za ciebie."/>
         <text name="tp_ins_info_duration" text="%d d %d godz."/>
         <text name="tp_ins_info_billing" text="Składki są naliczane przy każdej zmianie miesiąca, według tego, co gospodarstwo wtedy posiada."/>
         <text name="tp_ins_info_manage" text="Zarządcy gospodarstwa i admin serwera mogą kupować, zmieniać, anulować polisy i decydować o szkodach całkowitych; pozostali mogą tylko patrzeć."/>
+        <text name="tp_msg_ins_rating_down" text="Nowy rok polisy - %s: w zeszłym roku nie wypłacono odszkodowania. Cena teraz: %d procent %s."/>
+        <text name="tp_msg_ins_rating_up" text="Nowy rok polisy - %s: w zeszłym roku wypłacono odszkodowania. Cena teraz: %d procent %s."/>
+        <text name="tp_ins_rating_discount" text="poniżej normalnej ceny"/>
+        <text name="tp_ins_rating_surcharge" text="powyżej normalnej ceny"/>
+        <text name="tp_ins_rating_none" text="- normalna cena"/>
+        <text name="tp_msg_ins_renewal" text="Nowy rok polisy: ubezpieczenie upraw trwało bez przerwy - bonus za kontynuację %d procent od składki."/>
+        <text name="tp_ins_rating_line_discount" text="zniżka za bezszkodowość -%d procent"/>
+        <text name="tp_ins_rating_line_surcharge" text="zwyżka za szkody +%d procent"/>
+        <text name="tp_ins_rating_line_renewal" text="bonus za kontynuację -%d procent"/>
+        <text name="tp_ins_pol_price_factor" text="Cena obejmuje: %s."/>
+        <text name="tp_ins_info_noclaims" text="Zasada bezszkodowości: każdy rok polisy bez wypłaty obniża cenę tej polisy o %d procent (do -%d procent); rok z wypłatą podnosi ją o %d procent (do +%d procent). Wypłaty programów państwowych się nie liczą. Ubezpieczenie upraw bez przerwy daje %d procent bonusu za kontynuację."/>
+        <text name="tp_ins_info_noclaims_off" text="Zasada bezszkodowości: wyłączona na tym serwerze - ceny nie zależą od wcześniejszych szkód."/>
+        <text name="tp_ins_info_writeoff" text="Spisanie uprawy: gdy w roku polisy utracono %d procent plonu pola, decyzja oferuje całą gwarancję - spisz pole (reszta uprawy usycha, wyczyść i zasiej ponownie) albo zatrzymaj uprawę i normalną wypłatę."/>
+        <text name="tp_msg_ins_claim_writeoff" text="Pole %s: strata pozwala na spisanie. Spisz: %s teraz, a reszta uprawy usycha (wyczyść i zasiej). Zatrzymaj uprawę: %s teraz i zbierz to, co przetrwało. Wybierz w zakładce Ubezpieczenie w ciągu %d d %d godz. - inaczej uprawa zostaje."/>
+        <text name="tp_msg_ins_claim_written_off" text="Pole %s spisane: wypłacono %s. Reszta uprawy uschła - wyczyść pole i zasiej ponownie."/>
+        <text name="tp_msg_ins_claim_kept" text="Pole %s: uprawa zostaje - wypłacono %s."/>
+        <text name="tp_msg_ins_claim_kept_auto" text="Pole %s: nie wybrano na czas, uprawa zostaje - wypłacono %s."/>
+        <text name="tp_msg_ins_claim_kept_zero" text="Pole %s: uprawa zostaje. Strata mieści się w części nieubezpieczonej, więc nic nie jest wypłacane."/>
+        <text name="tp_msg_ins_no_writeoff" text="Brak otwartej oferty spisania dla tej szkody."/>
+        <text name="tp_ins_cs_writeoff" text="Spisać?"/>
+        <text name="tp_ins_cs_written_off" text="Spisana"/>
+        <text name="tp_ins_cl_writeoff_choice" text="Spisz: %s teraz, a reszta uprawy na polu %s usycha (wyczyść i zasiej). Zatrzymaj uprawę: %s teraz i zbierz to, co przetrwało."/>
+        <text name="tp_ins_cl_next_writeoff" text="Zdecyduj w ciągu %d dni %d godz. - potem uprawa zostaje."/>
+        <text name="tp_btn_ins_write_off" text="Spisz pole"/>
+        <text name="tp_btn_ins_keep_crop" text="Zatrzymaj uprawę"/>
+        <text name="tp_confirm_crop_writeoff" text="Spisać pole? Dostajesz całą gwarancję, a reszta tej uprawy usycha - nie da się jej już zebrać."/>
+        <text name="tp_confirm_crop_keep" text="Zatrzymać uprawę? Dostajesz normalną wypłatę i możesz zebrać to, co przetrwało; oferta spisania wygasa."/>
+        <text name="tp_insurance_noclaims" text="Zasada bezszkodowości"/>
+        <text name="tp_tip_insurance_noclaims" text="Każdy rok bez wypłaty obniża cenę polisy, rok z wypłatą ją podnosi; ubezpieczenie upraw bez przerwy daje bonus za kontynuację. Mała: -3 / +5 procent na stopień, normalna: -5 / +10 procent."/>
+        <text name="tp_insurance_noclaims_off" text="Wyłączona"/>
+        <text name="tp_insurance_noclaims_small" text="Mała"/>
+        <text name="tp_insurance_noclaims_normal" text="Normalna"/>
+        <text name="tp_ins_pay_chart" text="Ostatnie 12 miesięcy"/>
+        <text name="tp_ins_pay_chart_empty" text="Brak płatności."/>
+        <text name="tp_msg_more_on_tab" text="(cały list w zakładce Wiadomości)"/>
         <text name="tp_ins_pol_change_hint" text="Aby zmienić polisę, wybierz nową ochronę w Zacznij tutaj i poproś o wycenę."/>
         <text name="tp_dir_N" text="Pn"/>
         <text name="tp_dir_NE" text="Pn-Wsch"/>

@@ -173,6 +173,7 @@ function TornadoSettings:resetToDefaults(category)
             TornadoInsurance.removeTotaled = true
             TornadoInsurance.salvagePenalty = 0.5
             TornadoInsurance.rebuiltPenalty = 0.3
+            TornadoInsurance.noClaims = "small"
             TornadoInsurance.resolved = nil
             print("TORNADO RESET: Insurance defaults restored.")
         end
@@ -290,6 +291,7 @@ function TornadoSettings:createDefaultXML()
     setXMLBool(xmlId, "TornadoPhysics.insurance.removeTotaled", true)
     setXMLFloat(xmlId, "TornadoPhysics.insurance.salvagePenalty", 0.5)
     setXMLFloat(xmlId, "TornadoPhysics.insurance.rebuiltPenalty", 0.3)
+    setXMLString(xmlId, "TornadoPhysics.insurance.noClaims", "small")
 
     -- 14. REAL-LIFE CLIMATE MODE
     setXMLBool(xmlId, "TornadoPhysics.climate.enabled", false)
@@ -453,6 +455,7 @@ function TornadoSettings:loadFromXML()
         if removeTotaled ~= nil then TornadoInsurance.removeTotaled = removeTotaled end
         TornadoInsurance.salvagePenalty = getXMLFloat(xmlId, "TornadoPhysics.insurance.salvagePenalty") or TornadoInsurance.salvagePenalty
         TornadoInsurance.rebuiltPenalty = getXMLFloat(xmlId, "TornadoPhysics.insurance.rebuiltPenalty") or TornadoInsurance.rebuiltPenalty
+        TornadoInsurance.noClaims = getXMLString(xmlId, "TornadoPhysics.insurance.noClaims") or TornadoInsurance.noClaims
         TornadoInsurance.resolved = nil
     end
 
@@ -602,6 +605,7 @@ function TornadoSettings:saveToXML()
         setXMLBool(xmlId, "TornadoPhysics.insurance.removeTotaled", TornadoInsurance.removeTotaled ~= false)
         setXMLFloat(xmlId, "TornadoPhysics.insurance.salvagePenalty", TornadoInsurance.salvagePenalty or 0.5)
         setXMLFloat(xmlId, "TornadoPhysics.insurance.rebuiltPenalty", TornadoInsurance.rebuiltPenalty or 0.3)
+        setXMLString(xmlId, "TornadoPhysics.insurance.noClaims", TornadoInsurance.noClaims or "small")
     end
 
     if TornadoClimate then

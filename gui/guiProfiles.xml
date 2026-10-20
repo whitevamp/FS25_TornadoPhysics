@@ -219,6 +219,48 @@
         <size value="1240px 640px"/>
         <textMaxNumLines value="30"/>
     </Profile>
+    <!-- Payments chart: premiums vs. payouts per month. Bars stand on the area's bottom (baseReference = plain
+         colour image); their XML height is the full height, the page scales them. -->
+    <Profile name="tornado_chartArea" extends="emptyPanel" with="anchorTopLeft">
+        <size value="540px 176px"/>
+    </Profile>
+    <Profile name="tornado_chartBarPremium" extends="baseReference" with="anchorBottomLeft">
+        <size value="16px 132px"/>
+        <imageColor value="0.85 0.42 0.12 1"/>
+    </Profile>
+    <Profile name="tornado_chartBarPayout" extends="tornado_chartBarPremium">
+        <imageColor value="$preset_fs25_colorMainHighlight"/>
+    </Profile>
+    <Profile name="tornado_chartKeyPremium" extends="baseReference" with="anchorTopLeft">
+        <size value="14px 14px"/>
+        <imageColor value="0.85 0.42 0.12 1"/>
+    </Profile>
+    <Profile name="tornado_chartKeyPayout" extends="tornado_chartKeyPremium">
+        <imageColor value="$preset_fs25_colorMainHighlight"/>
+    </Profile>
+    <Profile name="tornado_chartKeyText" extends="fs25_textDefault" with="anchorTopLeft">
+        <size value="100px 22px"/>
+        <textSize value="14px"/>
+        <textColor value="$preset_fs25_colorMainLight"/>
+    </Profile>
+    <Profile name="tornado_chartLabel" extends="fs25_textDefault" with="anchorBottomLeft">
+        <size value="45px 20px"/>
+        <textSize value="12px"/>
+        <textAlignment value="center"/>
+        <textColor value="$preset_colorWhite_50"/>
+    </Profile>
+    <Profile name="tornado_chartMaxText" extends="fs25_textDefault" with="anchorTopRight">
+        <size value="200px 20px"/>
+        <textSize value="12px"/>
+        <textAlignment value="right"/>
+        <textColor value="$preset_colorWhite_50"/>
+    </Profile>
+    <Profile name="tornado_chartEmptyText" extends="fs25_textDefault" with="anchorMiddleCenter">
+        <size value="500px 24px"/>
+        <textSize value="15px"/>
+        <textAlignment value="center"/>
+        <textColor value="$preset_colorWhite_50"/>
+    </Profile>
     <!-- Note that may need two lines (long translations). -->
     <Profile name="tornado_noteLine2" extends="tornado_noteLine">
         <size value="1220px 48px"/>

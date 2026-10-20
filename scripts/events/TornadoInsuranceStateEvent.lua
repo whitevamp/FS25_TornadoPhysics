@@ -3,7 +3,7 @@
 --- control panel can show it. The server owns the state; clients only display it.
 ---   farm id, premiums paid, payouts received, crop policy (plan, coverage, status, open claims),
 ---   equipment policy (deductible, status), vehicle titles, total losses waiting for the farm's choice,
----   monthly history (premiums / payouts, per policy type) for the Payments section,
+---   monthly history (premiums / payouts, per policy type) for the Payments section, no-claims levels + renewals,
 ---   claim list for the Insurance tab (the newest MAX_CLAIM_LIST, TornadoInsurance:getClaimList),
 ---   inbox (key + parameters, day, read) - the newest MAX_INBOX
 
@@ -111,6 +111,9 @@ function TornadoInsuranceStateEvent:writeStream(streamId, connection)
         streamWriteFloat32(streamId, claim.remaining or -1)
     end
 
+    streamWriteString(streamId, TornadoInsurance.encodeParts(state.rating))
+    streamWriteUIntN(streamId, math.min(state.cropRenewals or 0, 255), 8)
+
     local history = state.history or {}
     local firstMonth = math.max(1, #history - TornadoInsuranceStateEvent.MAX_HISTORY + 1)
     streamWriteUIntN(streamId, #history - firstMonth + 1, 5)
@@ -188,6 +191,8 @@ function TornadoInsuranceStateEvent:readStream(streamId, connection)
         claim.remaining = streamReadFloat32(streamId)
         table.insert(state.claimList, claim)
     end
+    state.rating = TornadoInsurance.decodeParts(streamReadString(streamId))
+    state.cropRenewals = streamReadUIntN(streamId, 8)
     state.history = {}
     local numMonths = streamReadUIntN(streamId, 5)
     for _ = 1, numMonths do

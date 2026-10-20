@@ -551,10 +551,45 @@
         <text name="tp_ins_info_total_keep" text="Perte totale : sur ce serveur les véhicules restent à la ferme - vous recevez la valeur moins la franchise et la valeur d'épave et gardez le véhicule avec un titre d'épave (prix de vente -%d pour cent ; réparé Reconstruit, -%d pour cent). L'usure d'avant la tempête n'est pas couverte."/>
         <text name="tp_ins_info_livestock" text="Bétail : chaque animal des pâtures de la ferme, évalué à son prix de vente. Environ %s pour cent par an de la valeur du troupeau ; %d pour cent de franchise sur chaque sinistre."/>
         <text name="tp_ins_info_livestock_gov" text="Sur cette carte le USDA Livestock Indemnity Program paie gratuitement %d pour cent de la valeur marchande (même sans contrat) ; un contrat paie le reste."/>
-        <text name="tp_ins_info_timing" text="Délais (en jours réels, 30 = un mois de jeu ; ici %d jours par mois) : une nouvelle couverture commence après %s ; après un sinistre l'expert vient dans %s, la décision suit %s plus tard et le paiement %s après. Une perte totale non décidée dans les %s est acceptée pour vous."/>
+        <text name="tp_ins_info_timing" text="Délais (en jours réels, 30 = un mois de jeu ; jours par mois ici : %d) : une nouvelle couverture commence après %s ; après un sinistre l'expert vient dans %s, la décision suit %s plus tard et le paiement %s après. Une perte totale non décidée dans les %s est acceptée pour vous."/>
         <text name="tp_ins_info_duration" text="%d j %d h"/>
         <text name="tp_ins_info_billing" text="Les primes sont facturées à chaque changement de mois, selon ce que la ferme possède alors."/>
         <text name="tp_ins_info_manage" text="Les gérants de ferme et l'admin du serveur peuvent souscrire, modifier, résilier les contrats et décider des pertes totales ; les autres peuvent consulter."/>
+        <text name="tp_msg_ins_rating_down" text="Nouvelle année d'assurance - %s : aucun sinistre payé l'an dernier. Prix maintenant : %d pour cent %s."/>
+        <text name="tp_msg_ins_rating_up" text="Nouvelle année d'assurance - %s : des sinistres ont été payés l'an dernier. Prix maintenant : %d pour cent %s."/>
+        <text name="tp_ins_rating_discount" text="sous le prix normal"/>
+        <text name="tp_ins_rating_surcharge" text="au-dessus du prix normal"/>
+        <text name="tp_ins_rating_none" text="- le prix normal"/>
+        <text name="tp_msg_ins_renewal" text="Nouvelle année d'assurance : votre assurance récolte a continué sans interruption - bonus de fidélité de %d pour cent sur la prime récolte."/>
+        <text name="tp_ins_rating_line_discount" text="bonus sans sinistre -%d pour cent"/>
+        <text name="tp_ins_rating_line_surcharge" text="malus sinistres +%d pour cent"/>
+        <text name="tp_ins_rating_line_renewal" text="bonus de fidélité -%d pour cent"/>
+        <text name="tp_ins_pol_price_factor" text="Le prix inclut : %s."/>
+        <text name="tp_ins_info_noclaims" text="Règle sans sinistre : chaque année d'assurance sans sinistre payé baisse le prix de ce contrat de %d pour cent (jusqu'à -%d pour cent) ; une année avec un sinistre payé le hausse de %d pour cent (jusqu'à +%d pour cent). Les paiements des programmes publics ne comptent pas. Garder l'assurance récolte sans interruption donne un bonus de fidélité de %d pour cent."/>
+        <text name="tp_ins_info_noclaims_off" text="Règle sans sinistre : désactivée sur ce serveur - les prix ne dépendent pas des sinistres passés."/>
+        <text name="tp_ins_info_writeoff" text="Abandon de culture : dès que %d pour cent de la récolte d'un champ sont perdus dans l'année d'assurance, la décision propose toute la garantie - abandonner le champ (le reste de la culture se flétrit, nettoyez et ressemez) ou garder la culture et l'indemnité normale."/>
+        <text name="tp_msg_ins_claim_writeoff" text="Champ %s : la perte permet un abandon. Abandonner : %s maintenant et le reste de la culture se flétrit (nettoyez et ressemez). Garder la culture : %s maintenant et récoltez ce qui reste. Choisissez dans l'onglet Assurance sous %d j %d h - sinon vous gardez la culture."/>
+        <text name="tp_msg_ins_claim_written_off" text="Champ %s abandonné : %s payés. Le reste de la culture s'est flétri - nettoyez le champ et ressemez."/>
+        <text name="tp_msg_ins_claim_kept" text="Champ %s : vous gardez la culture - %s payés."/>
+        <text name="tp_msg_ins_claim_kept_auto" text="Champ %s : pas de choix à temps, vous gardez la culture - %s payés."/>
+        <text name="tp_msg_ins_claim_kept_zero" text="Champ %s : vous gardez la culture. La perte reste dans la part non assurée, rien n'est payé."/>
+        <text name="tp_msg_ins_no_writeoff" text="Aucune offre d'abandon n'est ouverte pour ce sinistre."/>
+        <text name="tp_ins_cs_writeoff" text="Abandon ?"/>
+        <text name="tp_ins_cs_written_off" text="Abandonné"/>
+        <text name="tp_ins_cl_writeoff_choice" text="Abandonner : %s maintenant, et le reste de la culture du champ %s se flétrit (nettoyez et ressemez). Garder la culture : %s maintenant et récoltez ce qui reste."/>
+        <text name="tp_ins_cl_next_writeoff" text="Choisissez dans les %d jours %d heures - ensuite vous gardez la culture."/>
+        <text name="tp_btn_ins_write_off" text="Abandonner le champ"/>
+        <text name="tp_btn_ins_keep_crop" text="Garder la culture"/>
+        <text name="tp_confirm_crop_writeoff" text="Abandonner le champ ? Vous recevez toute la garantie, et le reste de cette culture se flétrit - il ne peut plus être récolté."/>
+        <text name="tp_confirm_crop_keep" text="Garder la culture ? Vous recevez l'indemnité normale et pouvez récolter ce qui reste ; l'offre d'abandon prend fin."/>
+        <text name="tp_insurance_noclaims" text="Règle sans sinistre"/>
+        <text name="tp_tip_insurance_noclaims" text="Chaque année sans sinistre payé rend le contrat moins cher, une année avec sinistre payé plus cher ; garder l'assurance récolte sans interruption donne un bonus de fidélité. Faible : -3 / +5 pour cent par palier, normal : -5 / +10 pour cent."/>
+        <text name="tp_insurance_noclaims_off" text="Désactivée"/>
+        <text name="tp_insurance_noclaims_small" text="Faible"/>
+        <text name="tp_insurance_noclaims_normal" text="Normale"/>
+        <text name="tp_ins_pay_chart" text="12 derniers mois"/>
+        <text name="tp_ins_pay_chart_empty" text="Aucun paiement pour l'instant."/>
+        <text name="tp_msg_more_on_tab" text="(lettre complète dans l'onglet Messages)"/>
         <text name="tp_ins_pol_change_hint" text="Pour modifier un contrat, choisissez la nouvelle couverture dans Commencer ici et demandez un devis."/>
         <text name="tp_dir_N" text="N"/>
         <text name="tp_dir_NE" text="NE"/>

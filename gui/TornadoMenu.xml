@@ -597,6 +597,12 @@
                     <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_insurance_remove_totaled"/>
                 </Bitmap>
                 <Bitmap profile="fs25_multiTextOptionContainer">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="modInsuranceNoClaims" onClick="onClickChoice">
+                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_insurance_noclaims"/>
+                    </MultiTextOption>
+                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_insurance_noclaims"/>
+                </Bitmap>
+                <Bitmap profile="fs25_multiTextOptionContainer">
                     <MultiTextOption profile="fs25_settingsMultiTextOption" id="modInsuranceSalvage" onClick="onClickChoice">
                         <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_insurance_salvage"/>
                     </MultiTextOption>
@@ -884,10 +890,55 @@
                 <Text profile="tornado_tableInfoText" id="insPayInfo" position="610px -588px" width="330px" text=""/>
 
                 <Text profile="tornado_detailTitle" position="960px -14px" width="540px" text="$l10n_tp_ins_pay_totals"/>
-                <Text profile="tornado_detailBody" id="insPayTotals" position="960px -56px" width="540px" height="230px" text=""/>
-                <Text profile="tornado_detailTitle" position="960px -300px" width="540px" text="$l10n_tp_ins_pay_selected"/>
-                <Text profile="tornado_detailLine" id="insPayMonthHead" position="960px -346px" width="540px" text=""/>
-                <Text profile="tornado_detailBody" id="insPayMonthText" position="960px -380px" width="540px" height="240px" text=""/>
+                <Text profile="tornado_detailBody" id="insPayTotals" position="960px -52px" width="540px" height="150px" text=""/>
+                <Text profile="tornado_detailTitle" position="960px -212px" width="300px" text="$l10n_tp_ins_pay_chart"/>
+                <Bitmap profile="tornado_chartKeyPremium" position="1270px -222px"/>
+                <Text profile="tornado_chartKeyText" position="1290px -218px" text="$l10n_tp_ins_pay_col_premiums"/>
+                <Bitmap profile="tornado_chartKeyPayout" position="1390px -222px"/>
+                <Text profile="tornado_chartKeyText" position="1410px -218px" text="$l10n_tp_ins_pay_col_payouts"/>
+                <GuiElement profile="tornado_chartArea" id="insChart" position="960px -248px">
+                    <Bitmap profile="tornado_chartBarPremium" id="insChartP1" position="6px 22px"/>
+                    <Bitmap profile="tornado_chartBarPayout" id="insChartO1" position="23px 22px"/>
+                    <Text profile="tornado_chartLabel" id="insChartL1" position="0px 0px" text=""/>
+                    <Bitmap profile="tornado_chartBarPremium" id="insChartP2" position="51px 22px"/>
+                    <Bitmap profile="tornado_chartBarPayout" id="insChartO2" position="68px 22px"/>
+                    <Text profile="tornado_chartLabel" id="insChartL2" position="45px 0px" text=""/>
+                    <Bitmap profile="tornado_chartBarPremium" id="insChartP3" position="96px 22px"/>
+                    <Bitmap profile="tornado_chartBarPayout" id="insChartO3" position="113px 22px"/>
+                    <Text profile="tornado_chartLabel" id="insChartL3" position="90px 0px" text=""/>
+                    <Bitmap profile="tornado_chartBarPremium" id="insChartP4" position="141px 22px"/>
+                    <Bitmap profile="tornado_chartBarPayout" id="insChartO4" position="158px 22px"/>
+                    <Text profile="tornado_chartLabel" id="insChartL4" position="135px 0px" text=""/>
+                    <Bitmap profile="tornado_chartBarPremium" id="insChartP5" position="186px 22px"/>
+                    <Bitmap profile="tornado_chartBarPayout" id="insChartO5" position="203px 22px"/>
+                    <Text profile="tornado_chartLabel" id="insChartL5" position="180px 0px" text=""/>
+                    <Bitmap profile="tornado_chartBarPremium" id="insChartP6" position="231px 22px"/>
+                    <Bitmap profile="tornado_chartBarPayout" id="insChartO6" position="248px 22px"/>
+                    <Text profile="tornado_chartLabel" id="insChartL6" position="225px 0px" text=""/>
+                    <Bitmap profile="tornado_chartBarPremium" id="insChartP7" position="276px 22px"/>
+                    <Bitmap profile="tornado_chartBarPayout" id="insChartO7" position="293px 22px"/>
+                    <Text profile="tornado_chartLabel" id="insChartL7" position="270px 0px" text=""/>
+                    <Bitmap profile="tornado_chartBarPremium" id="insChartP8" position="321px 22px"/>
+                    <Bitmap profile="tornado_chartBarPayout" id="insChartO8" position="338px 22px"/>
+                    <Text profile="tornado_chartLabel" id="insChartL8" position="315px 0px" text=""/>
+                    <Bitmap profile="tornado_chartBarPremium" id="insChartP9" position="366px 22px"/>
+                    <Bitmap profile="tornado_chartBarPayout" id="insChartO9" position="383px 22px"/>
+                    <Text profile="tornado_chartLabel" id="insChartL9" position="360px 0px" text=""/>
+                    <Bitmap profile="tornado_chartBarPremium" id="insChartP10" position="411px 22px"/>
+                    <Bitmap profile="tornado_chartBarPayout" id="insChartO10" position="428px 22px"/>
+                    <Text profile="tornado_chartLabel" id="insChartL10" position="405px 0px" text=""/>
+                    <Bitmap profile="tornado_chartBarPremium" id="insChartP11" position="456px 22px"/>
+                    <Bitmap profile="tornado_chartBarPayout" id="insChartO11" position="473px 22px"/>
+                    <Text profile="tornado_chartLabel" id="insChartL11" position="450px 0px" text=""/>
+                    <Bitmap profile="tornado_chartBarPremium" id="insChartP12" position="501px 22px"/>
+                    <Bitmap profile="tornado_chartBarPayout" id="insChartO12" position="518px 22px"/>
+                    <Text profile="tornado_chartLabel" id="insChartL12" position="495px 0px" text=""/>
+                    <Text profile="tornado_chartMaxText" id="insChartMax" position="0px 0px" text=""/>
+                    <Text profile="tornado_chartEmptyText" id="insChartEmpty" position="0px 0px" text=""/>
+                </GuiElement>
+                <Text profile="tornado_detailTitle" position="960px -436px" width="540px" text="$l10n_tp_ins_pay_selected"/>
+                <Text profile="tornado_detailLine" id="insPayMonthHead" position="960px -476px" width="540px" text=""/>
+                <Text profile="tornado_detailBody" id="insPayMonthText" position="960px -506px" width="540px" height="130px" text=""/>
             </GuiElement>
 
             <GuiElement profile="tornado_section" id="insInfo">

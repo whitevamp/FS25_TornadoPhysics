@@ -334,6 +334,62 @@ check("field record restored", farm.crop.fields[1] ~= nil and farm.crop.fields[1
 check("claims restored", #farm.claims, 4)
 check("claim ids continue", farm.nextClaimId, 4)
 
+-- ---------------------------------------------------------------- write-off (50 % lost in the policy year)
+publish(MessageType.MINUTE_CHANGED)   -- clock baseline after the reload above
+fruits[1].witheredState = 9
+local tasks = {}
+FieldUpdateTask = { new = function()
+    local task = {}
+    function task:setField(f) self.field = f end
+    function task:setFruit(index, state) self.fruit, self.state = index, state end
+    return task
+end }
+g_fieldManager.addFieldUpdateTask = function(_, task) table.insert(tasks, task) end
+farm.crop.fields = {}
+damage(1, 0.55)
+realDays(3) realDays(2)
+local wo = farm.claims[#farm.claims]
+local valuePerHa = 9000 * 0.35
+check("55 % lost: write-off offered", wo.status, "WRITEOFF")
+check("normal payout = (55 - 25) % x 10 ha", wo.payout, near(0.30 * 10 * valuePerHa, 0.5))
+check("write-off = whole guarantee (75 %)", wo.writeOffPayout, near(0.75 * 10 * valuePerHa, 0.5))
+check("letter: write-off offer", lastMessage(), "tp_msg_ins_claim_writeoff")
+check("write-off counts as open", C:getOpenClaimCount(farm) >= 1, true)
+local summary = nil
+for _, c in ipairs(I:getClaimList(1)) do if c.kind == "CROP" and c.id == wo.id then summary = c end end
+check("summary: write-off amount + countdown", summary.values[3] == wo.writeOffPayout and summary.remaining > 0, true)
+local before = balance
+check("write off accepted", I:handleAction(nil, 1, "cropWriteOff", tostring(wo.id)), nil)
+check("written off", wo.status, "WRITTEN_OFF")
+check("whole guarantee paid", balance - before, near(math.floor(0.75 * 10 * valuePerHa + 0.5), 0.5))
+check("rest of the crop withers (field task)", #tasks == 1 and tasks[1].fruit == 1 and tasks[1].state == 9, true)
+check("field record: written off, all paid", farm.crop.fields[1].writtenOff == true and math.abs(farm.crop.fields[1].paid - 0.75) < 1e-6, true)
+check("second choice refused", I:handleAction(nil, 1, "cropKeep", tostring(wo.id)), "tp_msg_ins_no_writeoff")
+damage(1, 0.20)
+realDays(3) realDays(2)
+check("after a write-off: nothing more this year", farm.claims[#farm.claims].status, "DENIED")
+-- No choice in time: the crop is kept, the normal payout paid
+farm.crop.fields = {}
+damage(1, 0.60)
+realDays(3) realDays(2)
+local kept = farm.claims[#farm.claims]
+check("second field year: write-off offered", kept.status, "WRITEOFF")
+before = balance
+realDays(7)
+check("no choice in 7 days: kept + paid", kept.status, "PAID")
+check("normal payout paid", balance - before, near(math.floor(0.35 * 10 * valuePerHa + 0.5), 0.5))
+check("letter: kept automatically", lastMessage(), "tp_msg_ins_claim_kept_auto")
+check("no field task for a kept crop", #tasks, 1)
+-- Keep chosen by hand
+farm.crop.fields = {}
+damage(1, 0.60)
+realDays(3) realDays(2)
+local keep = farm.claims[#farm.claims]
+check("keep the crop", I:handleAction(nil, 1, "cropKeep", tostring(keep.id)), nil)
+check("kept by hand: paid at once", keep.status == "PAID" and lastMessage() == "tp_msg_ins_claim_kept", true)
+fruits[1].witheredState = nil
+
+
 -- ---------------------------------------------------------------- new year, change, cancel
 publish(MessageType.YEAR_CHANGED)
 check("new policy year: prices + field totals reset", next(farm.crop.prices) == nil and next(farm.crop.fields) == nil, true)

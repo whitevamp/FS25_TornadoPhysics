@@ -132,6 +132,8 @@ t_set insurance totaled remove|keep - An accepted equipment total loss removes t
                                   (default) or keeps it like a buy-back.
 t_set insurance salvage <0-90>  - Sell price -% with a Salvage title (default 50).
 t_set insurance rebuilt <0-90>  - Sell price -% with a Rebuilt title (default 30).
+t_set insurance noclaims off|small|normal - No-claims discount / claims surcharge per policy
+                                  year + crop renewal bonus (default small: -3 / +5 % per step).
 t_set insurance status          - Region, data, settings, records.
 
 ------------------------------------------------------------------------------
@@ -196,6 +198,8 @@ t_dev insurance crop quote <PLAN> <coverage %> - Price for your farm, field by f
 t_dev insurance crop buy <PLAN> <coverage %> - Buys / changes your farm's crop policy.
 t_dev insurance crop cancel     - Cancels it (open claims carry on).
 t_dev insurance crop claims     - Your crop policy and claims.
+t_dev insurance crop writeoff [claim] - Accepts an open write-off offer (the crop withers).
+t_dev insurance crop keep [claim] - Declines it: normal payout, the crop stays.
 t_dev insurance crop unlock     - Opens switched-off countries for testing (this session only).
 
 -- INSURANCE: LIVESTOCK --

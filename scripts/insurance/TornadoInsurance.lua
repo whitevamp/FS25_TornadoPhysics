@@ -26,6 +26,7 @@ TornadoInsurance.replacementValue = false     -- equipment: pay the dealer's rep
 TornadoInsurance.removeTotaled = true         -- equipment: an accepted total loss removes the wreck (off: kept like a buy-back)
 TornadoInsurance.salvagePenalty = 0.5         -- equipment: sell price -50 % with a Salvage title
 TornadoInsurance.rebuiltPenalty = 0.3         -- equipment: sell price -30 % with a Rebuilt title
+TornadoInsurance.noClaims = "small"           -- no-claims discount / claims surcharge + crop renewal bonus: "off", "small", "normal"
 
 TornadoInsurance.REGION_AUTO = "auto"
 TornadoInsurance.FILE = "TornadoInsurance.xml"
@@ -36,6 +37,17 @@ TornadoInsurance.MAX_PARAMS = 15
 TornadoInsurance.MS_PER_DAY = 24 * 60 * 60 * 1000
 
 TornadoInsurance.TIMER_TEST = "TEST"
+
+-- No-claims rule (design §9.4): every policy type of a farm has a rating level. A policy year without a paid claim
+-- moves it one step down (discount), a year with a paid claim CLAIM_STEPS up (surcharge). Percent per step by strength.
+TornadoInsurance.RATING_KINDS = { "crop", "equipment", "livestock" }
+TornadoInsurance.RATING_MIN = -4
+TornadoInsurance.RATING_MAX = 3
+TornadoInsurance.RATING_CLAIM_STEPS = 2
+TornadoInsurance.NO_CLAIMS_STEPS = { off = { 0, 0 }, small = { 3, 5 }, normal = { 5, 10 } }   -- { discount, surcharge } percent
+-- Crop renewal (continuity) bonus: the same cover kept over a policy year without a gap. Spain: +5 points (real).
+TornadoInsurance.CONTINUITY = { ES = 0.05 }
+TornadoInsurance.CONTINUITY_DEFAULT = 0.03
 
 -- Message kind (same value as TornadoSync.MSG_INFO; TornadoSync may not exist in offline tests)
 local MSG_INFO = 3
@@ -340,6 +352,97 @@ function TornadoInsurance:addHistory(farm, premiums, payouts, premiumParts, payo
     end
 end
 
+-- =========================================================================
+-- NO-CLAIMS RATING + RENEWAL BONUS
+-- =========================================================================
+
+--- Percent per rating step: discount, surcharge (0, 0 with the rule off).
+function TornadoInsurance:getRatingSteps()
+    local steps = self.NO_CLAIMS_STEPS[self.noClaims or "small"] or self.NO_CLAIMS_STEPS.small
+    return steps[1], steps[2]
+end
+
+--- Percent change of one rating level (-12, +10 ...).
+function TornadoInsurance:getRatingPercent(level)
+    local discount, surcharge = self:getRatingSteps()
+    level = level or 0
+    if level < 0 then
+        return level * discount
+    end
+    return level * surcharge
+end
+
+--- Renewal bonus of the farm's crop policy (share, 0 when none).
+function TornadoInsurance:getRenewalBonus(farmId)
+    local farm = self.farms ~= nil and self.farms[farmId] or nil
+    if farm == nil or farm.crop == nil or (farm.cropRenewals or 0) <= 0 or self.noClaims == "off" then
+        return 0
+    end
+    local country = self.resolveRegion ~= nil and self:resolveRegion().country or nil
+    return self.CONTINUITY[country or ""] or self.CONTINUITY_DEFAULT
+end
+
+--- Premium factor of one policy type for a farm: no-claims level (and for crop the renewal bonus).
+--- Returns factor, level, renewal share.
+function TornadoInsurance:getPremiumFactor(farmId, kind)
+    local farm = self.farms ~= nil and self.farms[farmId] or nil
+    local level = farm ~= nil and farm.rating ~= nil and farm.rating[kind] or 0
+    local factor = 1 + self:getRatingPercent(level) / 100
+    local renewal = kind == "crop" and self:getRenewalBonus(farmId) or 0
+    return math.max(0, factor - renewal), level, renewal
+end
+
+--- Server, at the first month of a new game year (before that month's bill): every policy type the farm paid
+--- premiums for in the year that ended moves its level - down after a year without a paid claim (state programme
+--- payments do not count), up after one with. A crop policy kept over the year earns the renewal bonus.
+function TornadoInsurance:updateRatings(endedYear)
+    local first, last = (endedYear - 1) * 12 + 1, endedYear * 12
+    for farmId, farm in pairs(self.farms) do
+        farm.rating = farm.rating or {}
+        local premiums, payouts = {}, {}
+        for _, month in ipairs(farm.history or {}) do
+            if month.month >= first and month.month <= last then
+                for name, amount in pairs(month.premiumBy or {}) do
+                    premiums[name] = (premiums[name] or 0) + amount
+                end
+                for name, amount in pairs(month.payoutBy or {}) do
+                    payouts[name] = (payouts[name] or 0) + amount
+                end
+            end
+        end
+        for _, kind in ipairs(self.RATING_KINDS) do
+            if (premiums[kind] or 0) > 0 and self.noClaims ~= "off" then
+                local old = farm.rating[kind] or 0
+                local new
+                if (payouts[kind] or 0) > 0 then
+                    new = math.min(self.RATING_MAX, old + self.RATING_CLAIM_STEPS)
+                else
+                    new = math.max(self.RATING_MIN, old - 1)
+                end
+                farm.rating[kind] = new
+                if new ~= old then
+                    local percentNow = self:getRatingPercent(new)
+                    self:addInbox(farmId, (payouts[kind] or 0) > 0 and "tp_msg_ins_rating_up" or "tp_msg_ins_rating_down",
+                        { TornadoText.key(self.RATING_KEYS[kind]), TornadoText.num(math.abs(percentNow)),
+                        TornadoText.key(percentNow < 0 and "tp_ins_rating_discount" or (percentNow > 0 and "tp_ins_rating_surcharge" or "tp_ins_rating_none")) },
+                        MSG_INFO)
+                end
+            end
+        end
+        -- Renewal bonus: crop premiums paid in the ended year and the policy is still there now.
+        if farm.crop ~= nil and (premiums.crop or 0) > 0 and self.noClaims ~= "off" then
+            farm.cropRenewals = (farm.cropRenewals or 0) + 1
+            if farm.cropRenewals == 1 then
+                self:addInbox(farmId, "tp_msg_ins_renewal", { TornadoText.num(math.floor(self:getRenewalBonus(farmId) * 100 + 0.5)) }, MSG_INFO)
+            end
+        elseif farm.crop == nil then
+            farm.cropRenewals = 0
+        end
+    end
+end
+
+TornadoInsurance.RATING_KEYS = { crop = "tp_ins_cl_type_crop", equipment = "tp_ins_cl_type_equip", livestock = "tp_ins_cl_type_livestock" }
+
 --- Server: takes a premium from the farm. amount is final (cost scale already applied). Returns true when charged.
 --- parts = { source name = amount } (the monthly bill's policy types, for the Payments history).
 function TornadoInsurance:chargePremium(farmId, amount, messageKey, params, parts)
@@ -396,6 +499,15 @@ function TornadoInsurance:onPeriodChanged()
     if not self:isActive() or g_farmManager == nil then
         return
     end
+    -- A new game year: the policy year that ended sets the no-claims levels first (this month's bill uses them).
+    local environment = getEnvironment()
+    local year = environment ~= nil and environment.currentYear or nil
+    if year ~= nil then
+        if self.ratedYear ~= nil and year > self.ratedYear then
+            self:updateRatings(year - 1)
+        end
+        self.ratedYear = year
+    end
     local scale = self:getCostScale()
     for _, farm in ipairs(g_farmManager:getFarms()) do
         local farmId = farm.farmId
@@ -449,6 +561,19 @@ function TornadoInsurance:addTimer(farmId, kind, realDays, data)
     self.nextTimerId = self.nextTimerId + 1
     table.insert(self.timers, timer)
     return timer.id
+end
+
+--- Removes the farm's timers of one kind for this data (a claim id). Returns how many.
+function TornadoInsurance:removeTimersFor(farmId, kind, data)
+    local removed = 0
+    for i = #self.timers, 1, -1 do
+        local timer = self.timers[i]
+        if timer.farmId == farmId and timer.kind == kind and timer.data == data then
+            table.remove(self.timers, i)
+            removed = removed + 1
+        end
+    end
+    return removed
 end
 
 function TornadoInsurance:removeTimer(id)
@@ -665,6 +790,8 @@ function TornadoInsurance:applyFarmState(farmId, state)
     farm.livestock = (state.livestockStatus ~= nil and state.livestockStatus ~= "") and { status = state.livestockStatus } or nil
     farm.claimList = state.claimList or {}
     farm.history = state.history or {}
+    farm.rating = state.rating or {}
+    farm.cropRenewals = state.cropRenewals or 0
     farm.claimListMs = self:getAbsoluteMs()
     if TornadoMenu ~= nil and TornadoMenu.INSTANCE ~= nil and TornadoMenu.INSTANCE.isOpen then
         TornadoMenu.INSTANCE:refreshAllPages()
@@ -873,6 +1000,7 @@ function TornadoInsurance:loadState()
         return
     end
     self.nextTimerId = getXMLInt(xmlId, "TornadoInsurance#nextTimerId") or 1
+    self.ratedYear = getXMLInt(xmlId, "TornadoInsurance#ratedYear")
     local f = 0
     while true do
         local farmKey = string.format("TornadoInsurance.farms.farm(%d)", f)
@@ -881,6 +1009,8 @@ function TornadoInsurance:loadState()
         local farm = self:getFarm(farmId)
         farm.premiumsTotal = getXMLFloat(xmlId, farmKey .. "#premiums") or 0
         farm.payoutsTotal = getXMLFloat(xmlId, farmKey .. "#payouts") or 0
+        farm.rating = self.decodeParts(getXMLString(xmlId, farmKey .. "#rating"))
+        farm.cropRenewals = getXMLInt(xmlId, farmKey .. "#cropRenewals") or 0
         local h = 0
         while true do
             local monthKey = string.format("%s.history.month(%d)", farmKey, h)
@@ -938,6 +1068,9 @@ function TornadoInsurance:save()
     end
     setXMLInt(xmlId, "TornadoInsurance#version", 1)
     setXMLInt(xmlId, "TornadoInsurance#nextTimerId", self.nextTimerId or 1)
+    if self.ratedYear ~= nil then
+        setXMLInt(xmlId, "TornadoInsurance#ratedYear", self.ratedYear)
+    end
     local farmIds = {}
     for farmId in pairs(self.farms or {}) do
         table.insert(farmIds, farmId)
@@ -949,6 +1082,8 @@ function TornadoInsurance:save()
         setXMLInt(xmlId, farmKey .. "#id", farmId)
         setXMLFloat(xmlId, farmKey .. "#premiums", farm.premiumsTotal or 0)
         setXMLFloat(xmlId, farmKey .. "#payouts", farm.payoutsTotal or 0)
+        setXMLString(xmlId, farmKey .. "#rating", self.encodeParts(farm.rating))
+        setXMLInt(xmlId, farmKey .. "#cropRenewals", farm.cropRenewals or 0)
         for h, month in ipairs(farm.history) do
             local monthKey = string.format("%s.history.month(%d)", farmKey, h - 1)
             setXMLInt(xmlId, monthKey .. "#index", month.month)

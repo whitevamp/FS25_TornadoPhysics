@@ -8,6 +8,7 @@ TornadoText = { money = function(v) return string.format("$%d", math.floor((v or
     get = function(k) return k end,
     date = function(day) return "tp_msg_day " .. tostring(day) end,
     month = function(index) return "month " .. tostring(index) end,
+    monthShort = function(index) return "m" .. tostring(index) end,
     format = function(k, ...) local parts = { k } for _, v in ipairs({ ... }) do table.insert(parts, tostring(v)) end return table.concat(parts, "|") end }
 local multiplayer, isServer, isMaster, isManager = false, true, false, false
 TornadoSync = { isMultiplayer = function() return multiplayer end, isClient = function() return not isServer end,
@@ -17,6 +18,7 @@ g_farmManager = { getFarmById = function() return { isUserFarmManager = function
 
 local requests = {}
 local claimList = {}
+renewal = 0
 TornadoInsurance = { isEnabled = true, adminOnly = false, removeTotaled = true, farms = { [1] = {} },
     getCostScale = function() return 1 end,
     getClaimList = function() return claimList end,
@@ -24,10 +26,15 @@ TornadoInsurance = { isEnabled = true, adminOnly = false, removeTotaled = true, 
     getDaysPerMonth = function() return 1 end,
     realDaysToMonths = function(days) return days / 30 end,
     salvagePenalty = 0.5, rebuiltPenalty = 0.3,
+    RATING_MIN = -4, RATING_MAX = 3, RATING_CLAIM_STEPS = 2, CONTINUITY = {}, CONTINUITY_DEFAULT = 0.03,
+    getRatingSteps = function() return 3, 5 end,
+    getRatingPercent = function(_, level) return level < 0 and level * 3 or level * 5 end,
+    getRenewalBonus = function() return renewal end,
+    getMonthIndex = function() return 6 end,
     getRemainingDaysHours = function(_, months) local hours = months * 24 * 24 return math.floor(hours / 24), math.floor(hours % 24 + 0.5) end,
     requestAction = function(_, farmId, name, args) table.insert(requests, name .. " " .. args) end }
 local salesOpen = true
-TornadoInsuranceCrop = { STATUS_ACTIVE = "ACTIVE", SALES_PERIODS = { [12] = true, [1] = true }, PLAN_KEYS = setmetatable({}, { __index = function(_, k) return "plan_" .. k end }),
+TornadoInsuranceCrop = { STATUS_ACTIVE = "ACTIVE", SALES_PERIODS = { [12] = true, [1] = true }, WRITE_OFF_SHARE = 0.5, PLAN_KEYS = setmetatable({}, { __index = function(_, k) return "plan_" .. k end }),
     isAvailable = function() return true end, getDisabledReason = function() return nil end,
     getOfferedPlans = function() return { "RP", "YP" } end,
     getCoverageLevels = function(_, plan) return plan == "YP" and { 0.5, 0.6, 0.7 } or { 0.5, 0.75, 0.85 } end,
@@ -96,6 +103,16 @@ for slot = 1, 10 do
     end
     menu["insPayRow" .. slot] = payRow
 end
+for slot = 1, 12 do
+    for _, prefix in ipairs({ "insChartP", "insChartO" }) do
+        local bar = element(prefix .. slot)
+        bar.size = { 0.01, 0.2 }
+        function bar:setSize(x, y) self.size = { x or self.size[1], y or self.size[2] } end
+        menu[prefix .. slot] = bar
+    end
+    menu["insChartL" .. slot] = element("insChartL" .. slot)
+end
+menu.insChartEmpty, menu.insChartMax = element("insChartEmpty"), element("insChartMax")
 menu.pages = { P }
 
 local failures, total = 0, 0
@@ -313,6 +330,46 @@ salesOpen = false
 P:refresh()
 check("info: sales closed", has(menu.insInfoText.text, "tp_ins_info_sales_closed"), true)
 salesOpen = true
+
+-- Phase 4a: chart (Payments: months 5 + 6 of the history above, current month 6)
+click("insNavPayments")
+check("chart: newest month on the right (payout = biggest = full)", menu.insChartO12.visible and math.abs(menu.insChartO12.size[2] - 0.2) < 1e-9, true)
+check("chart: premium bar scaled 185 / 8100", math.abs(menu.insChartP12.size[2] - 0.2 * math.max(0.02, 185 / 8100)) < 1e-9, true)
+check("chart: month 5 premium shown, no payout bar", menu.insChartP11.visible and not menu.insChartO11.visible, true)
+check("chart: months without data hidden", menu.insChartP1.visible or menu.insChartO1.visible, false)
+check("chart: labels", menu.insChartL12.text == "m6" and menu.insChartL7.text == "m1" and menu.insChartL6.text == "", true)
+check("chart: scale label", menu.insChartMax.text, "$8100")
+-- My policies: price factor
+TornadoInsurance.farms[1].rating = { equipment = -2, crop = 1 }
+renewal = 0.03
+click("insNavPolicies")
+check("equipment: no-claims discount line", has(menu.insPolEquipText.text, "tp_ins_pol_price_factor|tp_ins_rating_line_discount|6"), true)
+check("crop: surcharge + renewal", has(menu.insPolCropText.text, "tp_ins_rating_line_surcharge|5, tp_ins_rating_line_renewal|3"), true)
+check("livestock: nothing applies, no line", has(menu.insPolLivestockText.text, "tp_ins_pol_price_factor"), false)
+-- Coverage info: write-off + no-claims rule
+click("insNavInfo")
+check("info: write-off rule", has(menu.insInfoText.text, "tp_ins_info_writeoff|50"), true)
+check("info: no-claims rule (3 / 12 / 10 / 15 / 3)", has(menu.insInfoText.text, "tp_ins_info_noclaims|3|12|10|15|3"), true)
+-- Claims: crop write-off offer
+table.insert(claimList, 1, { kind = "CROP", id = 9, day = 13, status = "WRITEOFF", subject = "5", info = "WHEAT", cause = "TORNADO",
+    values = { 0.55, 9450, 23625 }, remaining = 0.2 })
+click("insNavClaims")
+P.claimTable:reset(claimList)
+P:refresh()
+check("write-off row amount = write-off payout", menu.insClaimRow1.cells.amount.text, "$23625")
+check("write-off status text", menu.insClaimRow1.cells.status.text, "tp_ins_cs_writeoff")
+check("write-off detail", has(menu.insClaimDetailText.text, "tp_ins_cl_writeoff_choice|$23625|5|$9450")
+    and has(menu.insClaimDetailText.text, "tp_ins_cl_next_writeoff"), true)
+check("buttons: write off / keep", menu.insClaimAccept.text == "tp_btn_ins_write_off" and menu.insClaimBuyBack.text == "tp_btn_ins_keep_crop"
+    and menu.insClaimAccept.visible and menu.insClaimBuyBack.visible, true)
+requests = {}
+click("insClaimAccept")
+click("insClaimBuyBack")
+check("write-off requests", requests[1] == "cropWriteOff 9" and requests[2] == "cropKeep 9", true)
+check("write-off confirm text", menu.controls[menu.insClaimAccept].def.confirm, "tp_confirm_crop_writeoff")
+click("insClaimRow2")
+check("equipment total loss: buttons back to accept / buy back", menu.insClaimAccept.text == "tp_btn_ins_accept_total"
+    and menu.controls[menu.insClaimAccept].def.confirm == "tp_confirm_equip_accept", true)
 
 -- Insurance off
 TornadoInsurance.isEnabled = false

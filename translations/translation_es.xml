@@ -551,10 +551,45 @@
         <text name="tp_ins_info_total_keep" text="Siniestro total: en este servidor los vehículos se quedan en la granja; recibes el valor menos la franquicia y el valor de salvamento y te quedas el vehículo con título de salvamento (precio de venta -%d por ciento; reparado Reconstruido, -%d por ciento). El desgaste anterior a la tormenta no está cubierto."/>
         <text name="tp_ins_info_livestock" text="Ganado: cada animal de los pastos de la granja, valorado a su precio de venta. Alrededor del %s por ciento al año del valor del rebaño; %d por ciento de franquicia en cada siniestro."/>
         <text name="tp_ins_info_livestock_gov" text="En este mapa el USDA Livestock Indemnity Program paga gratis el %d por ciento del valor de mercado (también sin póliza); una póliza paga el resto."/>
-        <text name="tp_ins_info_timing" text="Plazos (en días reales, 30 = un mes de juego; aquí %d días por mes): la nueva cobertura empieza tras %s; tras un siniestro el perito llega en %s, la decisión %s después y el pago %s más tarde. Un siniestro total no decidido en %s se acepta por ti."/>
+        <text name="tp_ins_info_timing" text="Plazos (en días reales, 30 = un mes de juego; días por mes aquí: %d): la nueva cobertura empieza tras %s; tras un siniestro el perito llega en %s, la decisión %s después y el pago %s más tarde. Un siniestro total no decidido en %s se acepta por ti."/>
         <text name="tp_ins_info_duration" text="%d d %d h"/>
         <text name="tp_ins_info_billing" text="Las primas se facturan en cada cambio de mes, según lo que la granja posea entonces."/>
         <text name="tp_ins_info_manage" text="Los gerentes de la granja y el admin del servidor pueden contratar, cambiar y cancelar pólizas y decidir siniestros totales; los demás pueden mirar."/>
+        <text name="tp_msg_ins_rating_down" text="Nuevo año de póliza - %s: el año pasado no se pagó ningún siniestro. Precio ahora: %d por ciento %s."/>
+        <text name="tp_msg_ins_rating_up" text="Nuevo año de póliza - %s: el año pasado se pagaron siniestros. Precio ahora: %d por ciento %s."/>
+        <text name="tp_ins_rating_discount" text="por debajo del precio normal"/>
+        <text name="tp_ins_rating_surcharge" text="por encima del precio normal"/>
+        <text name="tp_ins_rating_none" text="- el precio normal"/>
+        <text name="tp_msg_ins_renewal" text="Nuevo año de póliza: tu seguro de cosecha siguió sin interrupción - bonificación por renovación del %d por ciento en la prima."/>
+        <text name="tp_ins_rating_line_discount" text="descuento sin siniestros -%d por ciento"/>
+        <text name="tp_ins_rating_line_surcharge" text="recargo por siniestros +%d por ciento"/>
+        <text name="tp_ins_rating_line_renewal" text="bonificación por renovación -%d por ciento"/>
+        <text name="tp_ins_pol_price_factor" text="El precio incluye: %s."/>
+        <text name="tp_ins_info_noclaims" text="Regla sin siniestros: cada año de póliza sin siniestro pagado baja el precio de esa póliza un %d por ciento (hasta -%d por ciento); un año con un siniestro pagado lo sube un %d por ciento (hasta +%d por ciento). Los pagos de programas estatales no cuentan. Mantener el seguro de cosecha sin interrupción da una bonificación del %d por ciento."/>
+        <text name="tp_ins_info_noclaims_off" text="Regla sin siniestros: desactivada en este servidor; los precios no dependen de siniestros pasados."/>
+        <text name="tp_ins_info_writeoff" text="Baja del cultivo: cuando en un año de póliza se pierde el %d por ciento de la cosecha de un campo, la decisión ofrece toda la garantía - dar de baja el campo (el resto del cultivo se marchita; limpia y vuelve a sembrar) o quedarte el cultivo y el pago normal."/>
+        <text name="tp_msg_ins_claim_writeoff" text="Campo %s: la pérdida permite dar de baja el cultivo. Dar de baja: %s ahora y el resto se marchita (limpia y vuelve a sembrar). Quedarte el cultivo: %s ahora y cosecha lo que quede. Elige en la pestaña Seguro en %d d %d h; si no, te quedas el cultivo."/>
+        <text name="tp_msg_ins_claim_written_off" text="Campo %s dado de baja: pagados %s. El resto del cultivo se ha marchitado; limpia el campo y vuelve a sembrar."/>
+        <text name="tp_msg_ins_claim_kept" text="Campo %s: te quedas el cultivo; pagados %s."/>
+        <text name="tp_msg_ins_claim_kept_auto" text="Campo %s: no se eligió a tiempo, te quedas el cultivo; pagados %s."/>
+        <text name="tp_msg_ins_claim_kept_zero" text="Campo %s: te quedas el cultivo. La pérdida queda en la parte no asegurada, así que no se paga nada."/>
+        <text name="tp_msg_ins_no_writeoff" text="No hay ninguna oferta de baja abierta para este siniestro."/>
+        <text name="tp_ins_cs_writeoff" text="¿Dar de baja?"/>
+        <text name="tp_ins_cs_written_off" text="Dado de baja"/>
+        <text name="tp_ins_cl_writeoff_choice" text="Dar de baja: %s ahora y el resto del cultivo del campo %s se marchita (limpia y vuelve a sembrar). Quedarte el cultivo: %s ahora y cosecha lo que quede."/>
+        <text name="tp_ins_cl_next_writeoff" text="Elige en %d días %d horas; después te quedas el cultivo."/>
+        <text name="tp_btn_ins_write_off" text="Dar de baja el campo"/>
+        <text name="tp_btn_ins_keep_crop" text="Quedarme el cultivo"/>
+        <text name="tp_confirm_crop_writeoff" text="¿Dar de baja el campo? Recibes toda la garantía y el resto de este cultivo se marchita; ya no se podrá cosechar."/>
+        <text name="tp_confirm_crop_keep" text="¿Quedarte el cultivo? Recibes el pago normal y puedes cosechar lo que quede; la oferta de baja termina."/>
+        <text name="tp_insurance_noclaims" text="Regla sin siniestros"/>
+        <text name="tp_tip_insurance_noclaims" text="Cada año sin siniestro pagado abarata la póliza, un año con siniestro pagado la encarece; mantener el seguro de cosecha sin interrupción da una bonificación. Pequeña: -3 / +5 por ciento por nivel, normal: -5 / +10 por ciento."/>
+        <text name="tp_insurance_noclaims_off" text="Desactivada"/>
+        <text name="tp_insurance_noclaims_small" text="Pequeña"/>
+        <text name="tp_insurance_noclaims_normal" text="Normal"/>
+        <text name="tp_ins_pay_chart" text="Últimos 12 meses"/>
+        <text name="tp_ins_pay_chart_empty" text="Aún no hay pagos."/>
+        <text name="tp_msg_more_on_tab" text="(carta completa en la pestaña Mensajes)"/>
         <text name="tp_ins_pol_change_hint" text="Para cambiar una póliza, elige la nueva cobertura en Empieza aquí y pide un presupuesto."/>
         <text name="tp_dir_N" text="N"/>
         <text name="tp_dir_NE" text="NE"/>

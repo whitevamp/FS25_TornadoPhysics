@@ -409,6 +409,24 @@ TornadoPageModules = TornadoMenuPage.new("Modules", "Modules", {
             return console("cmdSet", "insurance", "totaled", value and "remove" or "keep")
         end,
     },
+    {
+        id = "modInsuranceNoClaims",
+        kind = Page.KIND_CHOICE,
+        requires = hasInsurance,
+        options = function()
+            return {
+                { value = "off", text = TornadoText.get("tp_insurance_noclaims_off") },
+                { value = "small", text = TornadoText.get("tp_insurance_noclaims_small") },
+                { value = "normal", text = TornadoText.get("tp_insurance_noclaims_normal") },
+            }
+        end,
+        get = function()
+            return TornadoInsurance.noClaims or "small"
+        end,
+        set = function(value)
+            return console("cmdSet", "insurance", "noclaims", value)
+        end,
+    },
     penaltyRow("modInsuranceSalvage", "salvagePenalty", "salvage"),
     penaltyRow("modInsuranceRebuilt", "rebuiltPenalty", "rebuilt"),
     -- Buying / changing / cancelling policies and total-loss choices: Insurance tab.

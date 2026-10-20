@@ -121,6 +121,7 @@ TornadoSync.SETTINGS = {
     fieldSetting(function() return TornadoInsurance end, "removeTotaled", "b"),
     fieldSetting(function() return TornadoInsurance end, "salvagePenalty", "f"),
     fieldSetting(function() return TornadoInsurance end, "rebuiltPenalty", "f"),
+    fieldSetting(function() return TornadoInsurance end, "noClaims", "s"),
     -- t_set climate
     fieldSetting(function() return TornadoClimate end, "isEnabled", "b"),
     fieldSetting(function() return TornadoClimate end, "regionSetting", "s"),

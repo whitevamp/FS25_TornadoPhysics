@@ -189,6 +189,7 @@ function TornadoInsuranceLivestock:getFarmQuote(farmId)
         yearly = yearly + self:getInsuredValue(animalType, entry.count, entry.value) * self:getRate(animalType)
     end
     quote.monthlyPremium = yearly / 12 * getCostScale()
+        * (TornadoInsurance.getPremiumFactor ~= nil and TornadoInsurance:getPremiumFactor(farmId, "livestock") or 1)
     return quote
 end
 

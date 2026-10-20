@@ -138,6 +138,8 @@ TornadoSync = { MSG_INFO = 3, isMultiplayer = function() return false end,
     sendMessage = function(_, key, params, kind, farmId) table.insert(messages, { key = key, farmId = farmId, params = params }) end }
 TornadoText = { PARAM_STRING = 0, PARAM_NUMBER = 1, PARAM_KEY = 2, PARAM_MONEY = 3,
     cash = function(v) return { type = 3, value = v } end,
+    num = function(v) return { type = 1, value = v } end,
+    key = function(v) return { type = 2, value = v } end,
     formatMessage = function(key) return key end }
 TornadoSettings = { getCostScale = function() return 0.7 end }
 TornadoDestruction = { _resolveSavegamePath = function() return "savegame1/" end }
@@ -357,6 +359,54 @@ for i = 1, I.MAX_INBOX + 5 do I:addInbox(2, "tp_msg_ins_payout", { TornadoText.c
 check("inbox capped", #I:getFarm(2).inbox, I.MAX_INBOX)
 check("oldest dropped", I:getFarm(2).inbox[I.MAX_INBOX].params[1].value, I.MAX_INBOX + 5)
 
+-- ---------------------------------------------------------------- no-claims rating + renewal bonus
+local f1 = I:getFarm(1)
+local savedHistory = f1.history
+f1.history = {
+    { month = 1, premiums = 100, payouts = 0, premiumBy = { equipment = 60, crop = 40 }, payoutBy = {} },
+    { month = 5, premiums = 110, payouts = 950, premiumBy = { equipment = 60, crop = 40, livestock = 10 }, payoutBy = { crop = 900, state = 50 } },
+    { month = 13, premiums = 100, payouts = 0, premiumBy = { equipment = 100 }, payoutBy = { equipment = 5000 } },   -- next year: ignored
+}
+f1.crop = { plan = "RP", coverage = 0.75, status = "ACTIVE" }
+I.noClaims = "small"
+local messagesBefore = #messages
+I:updateRatings(1)
+check("no claim paid: equipment one step down", f1.rating.equipment, -1)
+check("crop claim paid: two steps up", f1.rating.crop, 2)
+check("state programme payout does not count: livestock down", f1.rating.livestock, -1)
+check("not insured: farm 2 unchanged", next(I:getFarm(2).rating or {}), nil)
+check("small: equipment -3 %", (I:getPremiumFactor(1, "equipment")), near(0.97))
+check("crop kept over the year: renewal", f1.cropRenewals, 1)
+check("small: crop +10 % - 3 % renewal", (I:getPremiumFactor(1, "crop")), near(1.07))
+check("letters: 3 rating changes + renewal", #messages - messagesBefore, 4)
+check("letter: surcharge", (function() for i = messagesBefore + 1, #messages do if messages[i].key == "tp_msg_ins_rating_up" then return true end end return false end)(), true)
+I.noClaims = "normal"
+check("normal: equipment -5 %", (I:getPremiumFactor(1, "equipment")), near(0.95))
+check("normal: crop +20 % - 3 %", (I:getPremiumFactor(1, "crop")), near(1.17))
+I.noClaims = "off"
+check("off: no change, no renewal bonus", I:getPremiumFactor(1, "crop") == 1 and I:getPremiumFactor(1, "equipment") == 1, true)
+I:updateRatings(1)
+check("off: levels not moved", f1.rating.equipment, -1)
+I.noClaims = "small"
+for _ = 1, 5 do I:updateRatings(1) end
+check("discount capped at -4 steps (-12 %)", f1.rating.equipment == -4 and math.abs(I:getPremiumFactor(1, "equipment") - 0.88) < 1e-9, true)
+check("surcharge capped at +3 steps (+15 %)", f1.rating.crop, 3)
+f1.crop = nil
+I:updateRatings(1)
+check("no crop policy any more: renewal bonus gone", f1.cropRenewals == 0 and I:getRenewalBonus(1) == 0, true)
+-- The first month of a new year rates the year that ended, before its bill.
+f1.rating = {}
+I.ratedYear = 1
+environment.currentYear = 2
+subscriptions[MessageType.PERIOD_CHANGED].fn(subscriptions[MessageType.PERIOD_CHANGED].target)
+check("year change: rated before billing", I.ratedYear == 2 and f1.rating.equipment == -1, true)
+subscriptions[MessageType.PERIOD_CHANGED].fn(subscriptions[MessageType.PERIOD_CHANGED].target)
+check("same year again: no second rating", f1.rating.equipment, -1)
+environment.currentYear = 1
+f1.history = savedHistory
+f1.rating = { equipment = -2, crop = 1 }
+f1.cropRenewals = 2
+
 -- ---------------------------------------------------------------- save / load
 I:addTimer(1, I.TIMER_TEST, 15, "data")
 I:save()
@@ -370,6 +420,8 @@ check("payouts restored", I:getFarm(1).payoutsTotal, 500)
 check("inbox restored", #I:getFarm(1).inbox, inboxBefore)
 check("money param restored as number", I:getFarm(1).inbox[2].params[1].value, 70)
 check("history restored", #I:getFarm(1).history, 2)
+check("rating restored", I:getFarm(1).rating.equipment == -2 and I:getFarm(1).rating.crop == 1 and I:getFarm(1).cropRenewals == 2, true)
+check("rated year restored", I.ratedYear, 2)
 check("history parts restored", I:getFarm(1).history[1].premiumBy.test == 70 and I:getFarm(1).history[1].payoutBy.other == 500, true)
 check("timer restored", #I.timers == 1 and I.timers[1].data == "data" and I.timers[1].remaining == 0.5, true)
 check("next timer id restored", I.nextTimerId, 4)

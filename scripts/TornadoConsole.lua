@@ -722,6 +722,13 @@ end
                 TornadoInsurance.rebuiltPenalty = percent / 100
             end
             return string.format("Insurance: %s title = sell price -%d %%", subCmd == "salvage" and "Salvage" or "Rebuilt", math.floor(percent + 0.5))
+        elseif subCmd == "noclaims" then
+            if value ~= "off" and value ~= "small" and value ~= "normal" then
+                return "Usage: t_set insurance noclaims <off | small | normal>  (no-claims discount / claims surcharge + crop renewal bonus)"
+            end
+            TornadoInsurance.noClaims = value
+            local discount, surcharge = TornadoInsurance:getRatingSteps()
+            return string.format("Insurance: No-claims rule = %s (-%d %% per claim-free year, +%d %% per claims year)", value, discount, surcharge)
         elseif subCmd == "list" then
             return TornadoInsurance:consoleCommand("regions")
         elseif subCmd == "status" then
@@ -729,7 +736,7 @@ end
         elseif subCmd == nil or subCmd == "toggle" then
             TornadoInsurance.isEnabled = not TornadoInsurance.isEnabled
         else
-            return "Unknown Insurance CMD. Try: on, off, managers, region, sales, value, replacement, totaled, salvage, rebuilt, list, status"
+            return "Unknown Insurance CMD. Try: on, off, managers, region, sales, value, replacement, totaled, salvage, rebuilt, noclaims, list, status"
         end
         return "Insurance: Insurance = " .. tostring(TornadoInsurance.isEnabled)
     end

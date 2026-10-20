@@ -551,10 +551,45 @@
         <text name="tp_ins_info_total_keep" text="Total loss: op deze server blijven voertuigen op de boerderij - je krijgt de waarde min het eigen risico en de restwaarde en houdt het voertuig met een Salvage-titel (verkoopprijs -%d procent; gerepareerd Rebuilt, -%d procent). Slijtage van voor de storm is niet gedekt."/>
         <text name="tp_ins_info_livestock" text="Vee: elk dier in de weides van de boerderij, gewaardeerd op de verkoopprijs. Ongeveer %s procent per jaar van de waarde van de kudde; %d procent eigen risico per claim."/>
         <text name="tp_ins_info_livestock_gov" text="Op deze kaart betaalt het USDA Livestock Indemnity Program gratis %d procent van de marktwaarde (ook zonder polis); een polis betaalt de rest."/>
-        <text name="tp_ins_info_timing" text="Tijden (in echte dagen, 30 = één spelmaand; hier %d dagen per maand): nieuwe dekking begint na %s; na een claim komt de expert binnen %s, de beslissing volgt %s later en de betaling %s daarna. Een total loss zonder beslissing binnen %s wordt voor je geaccepteerd."/>
+        <text name="tp_ins_info_timing" text="Tijden (in echte dagen, 30 = één spelmaand; dagen per maand hier: %d): nieuwe dekking begint na %s; na een claim komt de expert binnen %s, de beslissing volgt %s later en de betaling %s daarna. Een total loss zonder beslissing binnen %s wordt voor je geaccepteerd."/>
         <text name="tp_ins_info_duration" text="%d d %d u"/>
         <text name="tp_ins_info_billing" text="Premies worden bij elke maandwissel gerekend, naar wat de boerderij dan bezit."/>
         <text name="tp_ins_info_manage" text="Boerderijbeheerders en de serverbeheerder kunnen polissen afsluiten, wijzigen, opzeggen en over total loss beslissen; de rest kan meekijken."/>
+        <text name="tp_msg_ins_rating_down" text="Nieuw polisjaar - %s: vorig jaar is er geen claim uitbetaald. Prijs nu: %d procent %s."/>
+        <text name="tp_msg_ins_rating_up" text="Nieuw polisjaar - %s: vorig jaar zijn er claims uitbetaald. Prijs nu: %d procent %s."/>
+        <text name="tp_ins_rating_discount" text="onder de normale prijs"/>
+        <text name="tp_ins_rating_surcharge" text="boven de normale prijs"/>
+        <text name="tp_ins_rating_none" text="- de normale prijs"/>
+        <text name="tp_msg_ins_renewal" text="Nieuw polisjaar: je oogstverzekering liep zonder onderbreking door - verlengingsbonus van %d procent op de oogstpremie."/>
+        <text name="tp_ins_rating_line_discount" text="no-claimkorting -%d procent"/>
+        <text name="tp_ins_rating_line_surcharge" text="schadetoeslag +%d procent"/>
+        <text name="tp_ins_rating_line_renewal" text="verlengingsbonus -%d procent"/>
+        <text name="tp_ins_pol_price_factor" text="In de prijs: %s."/>
+        <text name="tp_ins_info_noclaims" text="No-claimregel: elk polisjaar zonder uitbetaalde claim verlaagt de prijs van die polis met %d procent (tot -%d procent); een jaar met een uitbetaalde claim verhoogt hem met %d procent (tot +%d procent). Betalingen van overheidsprogramma's tellen niet. Wie de oogstverzekering zonder onderbreking houdt, krijgt %d procent verlengingsbonus."/>
+        <text name="tp_ins_info_noclaims_off" text="No-claimregel: uit op deze server - prijzen hangen niet af van eerdere claims."/>
+        <text name="tp_ins_info_writeoff" text="Afschrijving: zodra in een polisjaar %d procent van de oogst van een veld verloren is, biedt de beslissing de volledige garantie - het veld afschrijven (de rest van het gewas verdort, ruim op en zaai opnieuw) of het gewas houden met de normale uitkering."/>
+        <text name="tp_msg_ins_claim_writeoff" text="Veld %s: het verlies is groot genoeg voor afschrijving. Afschrijven: nu %s en de rest van het gewas verdort (opruimen en opnieuw zaaien). Gewas houden: nu %s en oogst wat over is. Kies op het tabblad Verzekering binnen %d d %d u - anders houd je het gewas."/>
+        <text name="tp_msg_ins_claim_written_off" text="Veld %s afgeschreven: %s betaald. De rest van het gewas is verdord - ruim het veld op en zaai opnieuw."/>
+        <text name="tp_msg_ins_claim_kept" text="Veld %s: je houdt het gewas - %s betaald."/>
+        <text name="tp_msg_ins_claim_kept_auto" text="Veld %s: niet op tijd gekozen, je houdt het gewas - %s betaald."/>
+        <text name="tp_msg_ins_claim_kept_zero" text="Veld %s: je houdt het gewas. Het verlies valt binnen het eigen deel, dus er wordt niets betaald."/>
+        <text name="tp_msg_ins_no_writeoff" text="Er staat geen afschrijvingsaanbod open voor deze claim."/>
+        <text name="tp_ins_cs_writeoff" text="Afschrijven?"/>
+        <text name="tp_ins_cs_written_off" text="Afgeschreven"/>
+        <text name="tp_ins_cl_writeoff_choice" text="Afschrijven: nu %s, en de rest van het gewas op veld %s verdort (opruimen en opnieuw zaaien). Gewas houden: nu %s en oogst wat over is."/>
+        <text name="tp_ins_cl_next_writeoff" text="Kies binnen %d dagen %d uur - daarna houd je het gewas."/>
+        <text name="tp_btn_ins_write_off" text="Veld afschrijven"/>
+        <text name="tp_btn_ins_keep_crop" text="Gewas houden"/>
+        <text name="tp_confirm_crop_writeoff" text="Het veld afschrijven? Je krijgt de volledige garantie en de rest van dit gewas verdort - het kan niet meer geoogst worden."/>
+        <text name="tp_confirm_crop_keep" text="Het gewas houden? Je krijgt de normale uitkering en kunt oogsten wat over is; het afschrijvingsaanbod vervalt."/>
+        <text name="tp_insurance_noclaims" text="No-claimregel"/>
+        <text name="tp_tip_insurance_noclaims" text="Elk polisjaar zonder uitbetaalde claim maakt de polis goedkoper, een jaar met een uitbetaalde claim duurder; de oogstverzekering zonder onderbreking houden geeft een verlengingsbonus. Klein: -3 / +5 procent per stap, normaal: -5 / +10 procent."/>
+        <text name="tp_insurance_noclaims_off" text="Uit"/>
+        <text name="tp_insurance_noclaims_small" text="Klein"/>
+        <text name="tp_insurance_noclaims_normal" text="Normaal"/>
+        <text name="tp_ins_pay_chart" text="Laatste 12 maanden"/>
+        <text name="tp_ins_pay_chart_empty" text="Nog geen betalingen."/>
+        <text name="tp_msg_more_on_tab" text="(volledige brief op het tabblad Berichten)"/>
         <text name="tp_ins_pol_change_hint" text="Om een polis te wijzigen, kies je de nieuwe dekking onder Begin hier en vraag je een offerte."/>
         <text name="tp_dir_N" text="N"/>
         <text name="tp_dir_NE" text="NO"/>

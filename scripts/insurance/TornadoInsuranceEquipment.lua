@@ -238,6 +238,7 @@ function TornadoInsuranceEquipment:getFarmQuote(farmId, deductible)
     end
     local rate = self.RATES[deductible or self.DEFAULT_DEDUCTIBLE] or self.RATES[self.DEFAULT_DEDUCTIBLE]
     quote.monthlyPremium = quote.value * rate / 12 * getCostScale()
+        * (TornadoInsurance.getPremiumFactor ~= nil and TornadoInsurance:getPremiumFactor(farmId, "equipment") or 1)
     return quote
 end
 

@@ -1,5 +1,5 @@
 ---@class TornadoPageInsurance
----@version 1.2 (step 3: Payments + Coverage info)
+---@version 1.3 (phase 4a: chart, no-claims / renewal, crop write-off)
 ---@description Insurance tab (full width, decided 2026-10-19): side buttons on the left choose a section.
 ---   Start here  - choose crop (plan + coverage), equipment (deductible) and livestock cover -> Get quote shows each
 ---                 line (what is insured, its value, the monthly price, old -> new for a change) and the total ->
@@ -20,7 +20,8 @@ local Page = TornadoMenuPage
 
 local CLAIM_ROWS = 10
 local SUBJECT_CHARS = 28
-local OPEN_STATUS = { RECEIVED = true, INSPECTED = true, APPROVED = true, TOTAL = true }
+local OPEN_STATUS = { RECEIVED = true, INSPECTED = true, APPROVED = true, TOTAL = true, WRITEOFF = true }
+local CHART_MONTHS = 12
 local CLAIM_FILTERS = { "ALL", "OPEN", "CROP", "EQUIP", "LIVESTOCK" }
 local CLAIM_FILTER_KEYS = { ALL = "tp_ins_cl_f_all", OPEN = "tp_ins_cl_f_open", CROP = "tp_ins_cl_type_crop",
     EQUIP = "tp_ins_cl_type_equip", LIVESTOCK = "tp_ins_cl_type_livestock" }
@@ -245,6 +246,30 @@ local function statusText(policy, activeStatus)
     return TornadoText.get(policy.status == activeStatus and "tp_ins_status_active" or "tp_ins_status_pending")
 end
 
+--- "No-claims discount -6 percent, renewal bonus -3 percent" for one policy type ("" when nothing applies).
+local function ratingText(kind)
+    if TornadoInsurance.getRatingPercent == nil then
+        return ""
+    end
+    local farm = getFarm()
+    local level = farm ~= nil and farm.rating ~= nil and farm.rating[kind] or 0
+    local items = {}
+    local change = TornadoInsurance:getRatingPercent(level)
+    if change < 0 then
+        table.insert(items, TornadoText.format("tp_ins_rating_line_discount", -change))
+    elseif change > 0 then
+        table.insert(items, TornadoText.format("tp_ins_rating_line_surcharge", change))
+    end
+    local renewal = kind == "crop" and TornadoInsurance:getRenewalBonus(getFarmId()) or 0
+    if renewal > 0 then
+        table.insert(items, TornadoText.format("tp_ins_rating_line_renewal", math.floor(renewal * 100 + 0.5)))
+    end
+    if #items == 0 then
+        return ""
+    end
+    return "\n" .. TornadoText.format("tp_ins_pol_price_factor", table.concat(items, ", "))
+end
+
 local function policyTexts()
     local farmId = getFarmId()
     local farm = getFarm()
@@ -254,7 +279,7 @@ local function policyTexts()
         local quote = TornadoInsuranceCrop:getFarmQuote(farmId, crop.plan, crop.coverage, crop)
         texts.crop = TornadoText.format("tp_ins_pol_crop", TornadoText.get(TornadoInsuranceCrop.PLAN_KEYS[crop.plan] or crop.plan),
             percent(crop.coverage), statusText(crop, TornadoInsuranceCrop.STATUS_ACTIVE), quote.fields, TornadoText.money(quote.liability),
-            TornadoText.money(quote.monthlyPremium))
+            TornadoText.money(quote.monthlyPremium)) .. ratingText("crop")
     else
         texts.crop = TornadoText.get("tp_ins_pol_crop_none")
     end
@@ -263,7 +288,7 @@ local function policyTexts()
         local quote = TornadoInsuranceEquipment:getFarmQuote(farmId, equip.deductible)
         texts.equip = TornadoText.format("tp_ins_pol_equip", TornadoText.money(equip.deductible * (TornadoInsurance:getCostScale() or 1)),
             statusText(equip, TornadoInsuranceEquipment.STATUS_ACTIVE), quote.vehicles, TornadoText.money(quote.value),
-            TornadoText.money(quote.monthlyPremium))
+            TornadoText.money(quote.monthlyPremium)) .. ratingText("equipment")
     else
         texts.equip = TornadoText.get("tp_ins_pol_equip_none")
     end
@@ -271,7 +296,7 @@ local function policyTexts()
     if livestock ~= nil and TornadoInsuranceLivestock ~= nil then
         local quote = TornadoInsuranceLivestock:getFarmQuote(farmId)
         texts.livestock = TornadoText.format("tp_ins_pol_livestock", statusText(livestock, TornadoInsuranceLivestock.STATUS_ACTIVE),
-            quote.animals, TornadoText.money(quote.value), TornadoText.money(quote.monthlyPremium))
+            quote.animals, TornadoText.money(quote.value), TornadoText.money(quote.monthlyPremium)) .. ratingText("livestock")
     else
         texts.livestock = TornadoText.get("tp_ins_pol_livestock_none")
     end
@@ -326,6 +351,9 @@ end
 --- What the claim paid / pays (nil = not known yet).
 local function claimAmount(claim)
     if claim.kind == "CROP" then
+        if claim.status == "WRITEOFF" then
+            return claimValue(claim, 3)
+        end
         return claimValue(claim, 2) > 0 and claimValue(claim, 2) or nil
     elseif claim.kind == "EQUIP" then
         if claim.status == "TOTAL" then
@@ -363,7 +391,10 @@ local function claimDetail(claim)
             or claim.cause
         table.insert(lines, TornadoText.format("tp_ins_cl_crop_body", claim.subject or "?", cropTitle(claim.info),
             TornadoText.get(causeKey or ""), math.max(1, percent(claimValue(claim, 1)))))
-        if claimValue(claim, 2) > 0 then
+        if claim.status == "WRITEOFF" then
+            table.insert(lines, TornadoText.format("tp_ins_cl_writeoff_choice", money(claimValue(claim, 3)), claim.subject or "?",
+                money(claimValue(claim, 2))))
+        elseif claimValue(claim, 2) > 0 then
             table.insert(lines, TornadoText.format("tp_ins_cl_payout", money(claimValue(claim, 2))))
         end
     elseif claim.kind == "EQUIP" then
@@ -398,7 +429,7 @@ local function claimDetail(claim)
         table.insert(lines, TornadoText.format("tp_ins_cl_next_" .. string.lower(status), days, hours))
     elseif status == "DENIED" then
         table.insert(lines, TornadoText.get("tp_ins_cl_denied"))
-    elseif status == "PAID" or status == "SETTLED" or status == "BOUGHT_BACK" then
+    elseif status == "PAID" or status == "SETTLED" or status == "BOUGHT_BACK" or status == "WRITTEN_OFF" then
         table.insert(lines, TornadoText.get("tp_ins_cl_done"))
     end
     return table.concat(lines, "\n")
@@ -601,6 +632,20 @@ local function coverageText()
             table.insert(lines, TornadoText.format("tp_ins_info_livestock_gov", percent(TornadoInsuranceLivestock.GOV_SHARE)))
         end
     end
+    if cropAvailable() and TornadoInsuranceCrop.WRITE_OFF_SHARE ~= nil then
+        table.insert(lines, TornadoText.format("tp_ins_info_writeoff", percent(TornadoInsuranceCrop.WRITE_OFF_SHARE)))
+    end
+    if TornadoInsurance.getRatingSteps ~= nil then
+        local discount, surcharge = TornadoInsurance:getRatingSteps()
+        if discount > 0 or surcharge > 0 then
+            table.insert(lines, TornadoText.format("tp_ins_info_noclaims", discount, -TornadoInsurance:getRatingPercent(TornadoInsurance.RATING_MIN),
+                surcharge * TornadoInsurance.RATING_CLAIM_STEPS, TornadoInsurance:getRatingPercent(TornadoInsurance.RATING_MAX),
+                math.floor(((TornadoInsurance.CONTINUITY ~= nil and TornadoInsurance.resolveRegion ~= nil
+                    and TornadoInsurance.CONTINUITY[TornadoInsurance:resolveRegion().country or ""]) or TornadoInsurance.CONTINUITY_DEFAULT or 0) * 100 + 0.5)))
+        else
+            table.insert(lines, TornadoText.get("tp_ins_info_noclaims_off"))
+        end
+    end
     table.insert(lines, "")
 
     -- Timing (the same durations for every policy type)
@@ -613,9 +658,10 @@ local function coverageText()
     return table.concat(lines, "\n")
 end
 
-local function getSelectedTotal()
+--- The selected claim when it waits for the farm's choice: an equipment total loss or a crop write-off offer.
+local function getSelectedChoice()
     local claim = claimTable:getSelected()
-    if claim ~= nil and claim.kind == "EQUIP" and claim.status == "TOTAL" then
+    if claim ~= nil and ((claim.kind == "EQUIP" and claim.status == "TOTAL") or (claim.kind == "CROP" and claim.status == "WRITEOFF")) then
         return claim
     end
     return nil
@@ -723,20 +769,21 @@ local defs = {
     end, hasInsurance),
     action("insClaimScrollUp", function() claimTable:scroll(-CLAIM_ROWS) return nil end),
     action("insClaimScrollDown", function() claimTable:scroll(CLAIM_ROWS) return nil end),
+    -- First / second choice of the selected claim: total loss accept / buy back, write-off / keep the crop.
     action("insClaimAccept", function()
-        local claim = getSelectedTotal()
+        local claim = getSelectedChoice()
         if claim == nil then
             return TornadoText.get("tp_insurance_equip_total_none")
         end
-        TornadoInsurance:requestAction(getFarmId(), "equipAccept", tostring(claim.id))
+        TornadoInsurance:requestAction(getFarmId(), claim.kind == "CROP" and "cropWriteOff" or "equipAccept", tostring(claim.id))
         return TornadoText.get("tp_ins_choice_sent")
     end, { requires = isOn, confirm = "tp_confirm_equip_accept" }),
     action("insClaimBuyBack", function()
-        local claim = getSelectedTotal()
+        local claim = getSelectedChoice()
         if claim == nil then
             return TornadoText.get("tp_insurance_equip_total_none")
         end
-        TornadoInsurance:requestAction(getFarmId(), "equipBuyBack", tostring(claim.id))
+        TornadoInsurance:requestAction(getFarmId(), claim.kind == "CROP" and "cropKeep" or "equipBuyBack", tostring(claim.id))
         return TornadoText.get("tp_ins_choice_sent")
     end, { requires = isOn, confirm = "tp_confirm_equip_buyback" }),
 }
@@ -756,6 +803,15 @@ defs[#defs + 1] = action("insPayScrollUp", function() payTable:scroll(-PAY_ROWS)
 defs[#defs + 1] = action("insPayScrollDown", function() payTable:scroll(PAY_ROWS) return nil end)
 
 TornadoPageInsurance = TornadoMenuPage.new("Insurance", "Insurance", defs)
+
+local function findDef(id)
+    for _, def in ipairs(defs) do
+        if def.id == id then
+            return def
+        end
+    end
+    return nil
+end
 TornadoPageInsurance.noLayout = true
 TornadoPageInsurance.state = state
 TornadoPageInsurance.buildQuote = buildQuote       -- offline tests
@@ -874,13 +930,21 @@ function TornadoPageInsurance:drawClaims(manage)
     setText(menu.insClaimDetailHead, claim ~= nil and string.format("%s #%d - %s", claimTypeText(claim), claim.id or 0, dayText(claim.day, true)) or "")
     setText(menu.insClaimDetailStatus, claim ~= nil and string.format("%s - %s", claimSubject(claim), claimStatusText(claim)) or "")
     setText(menu.insClaimDetailText, claim ~= nil and claimDetail(claim) or info)
-    local totalLoss = getSelectedTotal()
-    if menu.insClaimAccept ~= nil then menu.insClaimAccept:setVisible(totalLoss ~= nil) end
-    if menu.insClaimBuyBack ~= nil then menu.insClaimBuyBack:setVisible(totalLoss ~= nil and TornadoInsurance.removeTotaled ~= false) end
-    setDisabled(menu.insClaimAccept, not (isOn() and manage and totalLoss ~= nil))
-    setDisabled(menu.insClaimBuyBack, not (isOn() and manage and totalLoss ~= nil))
+    local choiceClaim = getSelectedChoice()
+    local isCrop = choiceClaim ~= nil and choiceClaim.kind == "CROP"
+    local acceptDef, secondDef = findDef("insClaimAccept"), findDef("insClaimBuyBack")
+    if acceptDef ~= nil then acceptDef.confirm = isCrop and "tp_confirm_crop_writeoff" or "tp_confirm_equip_accept" end
+    if secondDef ~= nil then secondDef.confirm = isCrop and "tp_confirm_crop_keep" or "tp_confirm_equip_buyback" end
+    setText(menu.insClaimAccept, TornadoText.get(isCrop and "tp_btn_ins_write_off" or "tp_btn_ins_accept_total"))
+    setText(menu.insClaimBuyBack, TornadoText.get(isCrop and "tp_btn_ins_keep_crop" or "tp_btn_ins_buy_back"))
+    if menu.insClaimAccept ~= nil then menu.insClaimAccept:setVisible(choiceClaim ~= nil) end
+    if menu.insClaimBuyBack ~= nil then
+        menu.insClaimBuyBack:setVisible(choiceClaim ~= nil and (isCrop or TornadoInsurance.removeTotaled ~= false))
+    end
+    setDisabled(menu.insClaimAccept, not (isOn() and manage and choiceClaim ~= nil))
+    setDisabled(menu.insClaimBuyBack, not (isOn() and manage and choiceClaim ~= nil))
     local note = nil
-    if totalLoss ~= nil and not manage then
+    if choiceClaim ~= nil and not manage then
         note = TornadoText.get(TornadoInsurance.adminOnly and "tp_ins_note_admin" or "tp_ins_note_manager")
     end
     setText(menu.insClaimNote, note)
@@ -909,9 +973,49 @@ function TornadoPageInsurance:drawPayments()
     local first, last, total = payTable:getRange()
     setText(menu.insPayInfo, total > 0 and TornadoText.format("tp_msg_showing", first, last, total) or TornadoText.get("tp_ins_pay_none"))
     setText(menu.insPayTotals, totalsText())
+    self:drawChart()
     local month = payTable:getSelected()
     setText(menu.insPayMonthHead, month ~= nil and TornadoText.month(month.month) or "")
     setText(menu.insPayMonthText, month ~= nil and monthText(month) or "")
+end
+
+--- Premiums vs. payouts of the last CHART_MONTHS months (oldest left), bars scaled to the biggest amount.
+function TornadoPageInsurance:drawChart()
+    local menu = self.menu
+    local farm = getFarm()
+    local byMonth = {}
+    for _, month in ipairs(farm ~= nil and farm.history or {}) do
+        byMonth[month.month] = month
+    end
+    local current = TornadoInsurance.getMonthIndex ~= nil and TornadoInsurance:getMonthIndex() or 0
+    local biggest = 0
+    for i = 0, CHART_MONTHS - 1 do
+        local month = byMonth[current - i]
+        if month ~= nil then
+            biggest = math.max(biggest, month.premiums or 0, month.payouts or 0)
+        end
+    end
+    local function setBar(bar, value)
+        if bar == nil then
+            return
+        end
+        local full = bar.tornadoFullHeight
+        if biggest <= 0 or (value or 0) <= 0 or full == nil then
+            bar:setVisible(false)
+            return
+        end
+        bar:setVisible(true)
+        bar:setSize(nil, math.max(full * 0.02, full * value / biggest))
+    end
+    for slot = 1, CHART_MONTHS do
+        local index = current - (CHART_MONTHS - slot)
+        local month = byMonth[index]
+        setBar(menu["insChartP" .. slot], month ~= nil and month.premiums or 0)
+        setBar(menu["insChartO" .. slot], month ~= nil and month.payouts or 0)
+        setText(menu["insChartL" .. slot], index >= 1 and TornadoText.monthShort(index) or "")
+    end
+    setText(menu.insChartEmpty, biggest > 0 and "" or TornadoText.get("tp_ins_pay_chart_empty"))
+    setText(menu.insChartMax, biggest > 0 and TornadoText.money(biggest) or "")
 end
 
 local TABLES = { claims = claimTable, payments = payTable }
@@ -923,6 +1027,15 @@ local baseBind = TornadoMenuPage.bind
 function TornadoPageInsurance:bind(menu)
     baseBind(self, menu)
     self.tableElements = { claims = menu.insClaimTable, payments = menu.insPayTable }
+    -- Chart bars: their XML height is the full height; drawChart scales them.
+    for slot = 1, CHART_MONTHS do
+        for _, prefix in ipairs({ "insChartP", "insChartO" }) do
+            local bar = menu[prefix .. slot]
+            if bar ~= nil and bar.size ~= nil then
+                bar.tornadoFullHeight = bar.size[2]
+            end
+        end
+    end
     for name, tbl in pairs(TABLES) do
         for slot = 1, NUM_ROWS[name] do
             local row = menu[ROW_PREFIX[name] .. slot]

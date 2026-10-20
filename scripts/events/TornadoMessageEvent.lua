@@ -69,10 +69,48 @@ function TornadoMessageEvent:run(connection)
     end
 end
 
+-- The game's side notifications do not wrap: a long letter would run across the screen (over the key help).
+-- On screen only its first sentence shows (half a list of choices would mislead); the Messages tab keeps the whole letter.
+TornadoMessageEvent.MAX_SCREEN_CHARS = 140
+
+--- Text for the side notification: as is when short, else the first sentence + "(full letter on the Messages tab)".
+function TornadoMessageEvent.shortenForScreen(text)
+    if text == nil or string.len(text) <= TornadoMessageEvent.MAX_SCREEN_CHARS then
+        return text
+    end
+    local limit = TornadoMessageEvent.MAX_SCREEN_CHARS
+    local cut = string.find(text, "[%.!?] ")
+    if cut ~= nil and cut > limit then
+        cut = nil
+    end
+    local short
+    local start
+    if cut ~= nil then
+        short = string.sub(text, 1, cut)
+    else
+        -- No sentence end in reach: cut at the last space (never inside a multi-byte character).
+        local space = nil
+        start = 1
+        while true do
+            local pos = string.find(text, " ", start, true)
+            if pos == nil or pos > limit then
+                break
+            end
+            space = pos
+            start = pos + 1
+        end
+        short = string.sub(text, 1, (space or limit) - 1) .. " ..."
+    end
+    return short .. " " .. TornadoText.get("tp_msg_more_on_tab")
+end
+
 --- Shows a message on this machine (no-op on a dedicated server, which has no screen).
 function TornadoMessageEvent.show(text, kind)
     if g_currentMission == nil or text == nil or text == "" or g_dedicatedServer ~= nil then
         return
+    end
+    if kind ~= TornadoSync.MSG_BLINKING then
+        text = TornadoMessageEvent.shortenForScreen(text)
     end
     if kind == TornadoSync.MSG_BLINKING then
         g_currentMission:showBlinkingWarning(text, TornadoMessageEvent.BLINK_DURATION)

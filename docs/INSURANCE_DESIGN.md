@@ -1326,6 +1326,31 @@ penalties (or the "kept" rule), the farm's effective livestock rate (quote premi
 farm has no animals), excess, USDA share, and every duration through `getRemainingDaysHours` at the current days per
 month. Month labels: `TornadoText.month(index)`. Tests: test_inspage 93, test_insurance 150, test_date 14.
 
+### 18.11 Phase 4a – chart, no-claims rule, renewal bonus, crop write-off (2026-10-19)
+
+User's decisions (all recommendations): 4a = chart + no-claims + renewal + write-off; 4b = price volatility factor;
+4c = co-op groups. Write-off: the mod withers the rest of the crop itself (real "appraised and released"), so
+accepting is not strictly better than keeping (§16 q5 answered).
+
+- **Chart** (Payments, right column): 12 months, oldest left, premium (orange) and payout (green) bars per month,
+  scaled to the biggest amount (`baseReference` bitmaps; XML height = full height, `setSize` scales them).
+- **No-claims rule** (`TornadoInsurance.noClaims` off / small / normal, default small; Modules tab, `t_set insurance
+  noclaims`): `farm.rating[kind]` for crop / equipment / livestock in -4 .. +3. At the first month change of a new game
+  year (`onPeriodChanged`, `ratedYear` saved; before that month's bill) `updateRatings(endedYear)` reads the ended
+  year's history: a type the farm paid premiums for moves -1 without a paid payout of its kind, +2 with one ("state"
+  payouts do not count). Percent per step: small -3 / +5, normal -5 / +10. `getPremiumFactor(farmId, kind)` is
+  applied inside every module's `getFarmQuote`, so quotes, My policies and the bill agree.
+- **Renewal bonus** (crop): `farm.cropRenewals` + 1 when crop premiums were paid in the ended year and the policy is
+  still there; reset by a cancel or a year without the policy. -3 % (`CONTINUITY`: ES -5 %), off with the rule.
+- **Write-off**: `decide` offers status `WRITEOFF` when the policy year's lost share is >= `WRITE_OFF_SHARE` (0.5), the
+  field was not written off yet and the fruit has a withered state: normal payout (as before) and `writeOffPayout`
+  = the whole guarantee not yet paid (coverage - paid before). `cropWriteOff` -> `WRITTEN_OFF`, record fully paid +
+  `writtenOff`, `FieldUpdateTask:setFruit(fruit, witheredState)` on the field, paid at once; `cropKeep` -> `PAID`
+  (or `DENIED` when the normal payout is 0); no choice within `CHOICE_DAYS` (7) keeps the crop. Claims section shows
+  Write off the field / Keep the crop with their own confirms.
+- Synced: rating + renewals and the history in the state event. Tests: test_crop 106, test_insurance 170,
+  test_inspage 111.
+
 ## 19. Rules for the implementation
 
 - No `pcall` / `xpcall` (GIANTS ModHub rule) – explicit nil checks only.
