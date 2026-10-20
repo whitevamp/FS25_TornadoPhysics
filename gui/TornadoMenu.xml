@@ -608,24 +608,6 @@
                     </MultiTextOption>
                     <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_insurance_rebuilt"/>
                 </Bitmap>
-                <Bitmap profile="fs25_multiTextOptionContainer">
-                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="modInsuranceEquipTotal" onClick="onClickChoice">
-                        <Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_tp_tip_insurance_equip_total"/>
-                    </MultiTextOption>
-                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_insurance_equip_total"/>
-                </Bitmap>
-                <Bitmap profile="fs25_multiTextOptionContainer">
-                    <Button profile="tornado_actionButton" id="modInsuranceEquipAccept" text="$l10n_tp_btn_equip_accept" onClick="onClickAction">
-                        <ThreePartBitmap profile="tornado_actionButtonBg"/>
-                    </Button>
-                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_insurance_equip_accept"/>
-                </Bitmap>
-                <Bitmap profile="fs25_multiTextOptionContainer">
-                    <Button profile="tornado_actionButton" id="modInsuranceEquipBuyBack" text="$l10n_tp_btn_equip_buyback" onClick="onClickAction">
-                        <ThreePartBitmap profile="tornado_actionButtonBg"/>
-                    </Button>
-                    <Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_tp_insurance_equip_buyback"/>
-                </Bitmap>
             </ScrollingLayout>
             <Bitmap profile="fs25_settingsTooltipSeparator"/>
         </GuiElement>
@@ -640,6 +622,9 @@
                 <ThreePartBitmap profile="tornado_actionButtonBg"/>
             </Button>
             <Button profile="tornado_navButton" id="insNavPolicies" position="0px -62px" text="$l10n_tp_ins_nav_policies" onClick="onClickAction">
+                <ThreePartBitmap profile="tornado_actionButtonBg"/>
+            </Button>
+            <Button profile="tornado_navButton" id="insNavClaims" position="0px -114px" text="$l10n_tp_ins_nav_claims" onClick="onClickAction">
                 <ThreePartBitmap profile="tornado_actionButtonBg"/>
             </Button>
 
@@ -690,6 +675,120 @@
                 <Text profile="tornado_noteLine" id="insPolClaims" position="260px -560px" text=""/>
                 <Text profile="tornado_noteLine" position="260px -592px" text="$l10n_tp_ins_pol_change_hint"/>
                 <Text profile="tornado_noteLine2" position="260px -624px" text="$l10n_tp_ins_grows"/>
+            </GuiElement>
+
+            <GuiElement profile="tornado_section" id="insClaims">
+                <Text profile="tornado_detailTitle" position="260px -14px" width="290px" text="$l10n_tp_ins_cl_title"/>
+                <GuiElement profile="tornado_tableFilterBox" position="580px -6px">
+                    <MultiTextOption profile="fs25_settingsMultiTextOption" id="insClaimFilter" onClick="onClickChoice"/>
+                    <Text profile="tornado_tableFilterTitle" text="$l10n_tp_ins_cl_filter"/>
+                </GuiElement>
+                <GuiElement profile="tornado_claimTableArea" id="insClaimTable" position="260px -62px">
+                    <Text profile="tornado_tableHeaderText" position="12px 0px" width="80px" text="$l10n_tp_ins_cl_col_day"/>
+                    <Text profile="tornado_tableHeaderText" position="96px 0px" width="110px" text="$l10n_tp_ins_cl_col_type"/>
+                    <Text profile="tornado_tableHeaderText" position="210px 0px" width="215px" text="$l10n_tp_ins_cl_col_subject"/>
+                    <Text profile="tornado_tableHeaderText" position="430px 0px" width="135px" text="$l10n_tp_ins_cl_col_status"/>
+                    <Text profile="tornado_tableHeaderText" position="570px 0px" width="105px" text="$l10n_tp_ins_cl_col_amount"/>
+                    <Button profile="tornado_claimRow" id="insClaimRow1" position="0px -30px" onClick="onClickAction" onFocus="onFocusRow">
+                        <ThreePartBitmap profile="tornado_tableRowBg" name="background"/>
+                        <Text profile="tornado_tableCell" name="day" position="12px 0px" width="80px" text=""/>
+                        <Text profile="tornado_tableCell" name="type" position="96px 0px" width="110px" text=""/>
+                        <Text profile="tornado_tableCell" name="subject" position="210px 0px" width="215px" text=""/>
+                        <Text profile="tornado_tableCell" name="status" position="430px 0px" width="135px" text=""/>
+                        <Text profile="tornado_tableCell" name="amount" position="570px 0px" width="105px" text=""/>
+                    </Button>
+                    <Button profile="tornado_claimRow" id="insClaimRow2" position="0px -78px" onClick="onClickAction" onFocus="onFocusRow">
+                        <ThreePartBitmap profile="tornado_tableRowBg" name="background"/>
+                        <Text profile="tornado_tableCell" name="day" position="12px 0px" width="80px" text=""/>
+                        <Text profile="tornado_tableCell" name="type" position="96px 0px" width="110px" text=""/>
+                        <Text profile="tornado_tableCell" name="subject" position="210px 0px" width="215px" text=""/>
+                        <Text profile="tornado_tableCell" name="status" position="430px 0px" width="135px" text=""/>
+                        <Text profile="tornado_tableCell" name="amount" position="570px 0px" width="105px" text=""/>
+                    </Button>
+                    <Button profile="tornado_claimRow" id="insClaimRow3" position="0px -126px" onClick="onClickAction" onFocus="onFocusRow">
+                        <ThreePartBitmap profile="tornado_tableRowBg" name="background"/>
+                        <Text profile="tornado_tableCell" name="day" position="12px 0px" width="80px" text=""/>
+                        <Text profile="tornado_tableCell" name="type" position="96px 0px" width="110px" text=""/>
+                        <Text profile="tornado_tableCell" name="subject" position="210px 0px" width="215px" text=""/>
+                        <Text profile="tornado_tableCell" name="status" position="430px 0px" width="135px" text=""/>
+                        <Text profile="tornado_tableCell" name="amount" position="570px 0px" width="105px" text=""/>
+                    </Button>
+                    <Button profile="tornado_claimRow" id="insClaimRow4" position="0px -174px" onClick="onClickAction" onFocus="onFocusRow">
+                        <ThreePartBitmap profile="tornado_tableRowBg" name="background"/>
+                        <Text profile="tornado_tableCell" name="day" position="12px 0px" width="80px" text=""/>
+                        <Text profile="tornado_tableCell" name="type" position="96px 0px" width="110px" text=""/>
+                        <Text profile="tornado_tableCell" name="subject" position="210px 0px" width="215px" text=""/>
+                        <Text profile="tornado_tableCell" name="status" position="430px 0px" width="135px" text=""/>
+                        <Text profile="tornado_tableCell" name="amount" position="570px 0px" width="105px" text=""/>
+                    </Button>
+                    <Button profile="tornado_claimRow" id="insClaimRow5" position="0px -222px" onClick="onClickAction" onFocus="onFocusRow">
+                        <ThreePartBitmap profile="tornado_tableRowBg" name="background"/>
+                        <Text profile="tornado_tableCell" name="day" position="12px 0px" width="80px" text=""/>
+                        <Text profile="tornado_tableCell" name="type" position="96px 0px" width="110px" text=""/>
+                        <Text profile="tornado_tableCell" name="subject" position="210px 0px" width="215px" text=""/>
+                        <Text profile="tornado_tableCell" name="status" position="430px 0px" width="135px" text=""/>
+                        <Text profile="tornado_tableCell" name="amount" position="570px 0px" width="105px" text=""/>
+                    </Button>
+                    <Button profile="tornado_claimRow" id="insClaimRow6" position="0px -270px" onClick="onClickAction" onFocus="onFocusRow">
+                        <ThreePartBitmap profile="tornado_tableRowBg" name="background"/>
+                        <Text profile="tornado_tableCell" name="day" position="12px 0px" width="80px" text=""/>
+                        <Text profile="tornado_tableCell" name="type" position="96px 0px" width="110px" text=""/>
+                        <Text profile="tornado_tableCell" name="subject" position="210px 0px" width="215px" text=""/>
+                        <Text profile="tornado_tableCell" name="status" position="430px 0px" width="135px" text=""/>
+                        <Text profile="tornado_tableCell" name="amount" position="570px 0px" width="105px" text=""/>
+                    </Button>
+                    <Button profile="tornado_claimRow" id="insClaimRow7" position="0px -318px" onClick="onClickAction" onFocus="onFocusRow">
+                        <ThreePartBitmap profile="tornado_tableRowBg" name="background"/>
+                        <Text profile="tornado_tableCell" name="day" position="12px 0px" width="80px" text=""/>
+                        <Text profile="tornado_tableCell" name="type" position="96px 0px" width="110px" text=""/>
+                        <Text profile="tornado_tableCell" name="subject" position="210px 0px" width="215px" text=""/>
+                        <Text profile="tornado_tableCell" name="status" position="430px 0px" width="135px" text=""/>
+                        <Text profile="tornado_tableCell" name="amount" position="570px 0px" width="105px" text=""/>
+                    </Button>
+                    <Button profile="tornado_claimRow" id="insClaimRow8" position="0px -366px" onClick="onClickAction" onFocus="onFocusRow">
+                        <ThreePartBitmap profile="tornado_tableRowBg" name="background"/>
+                        <Text profile="tornado_tableCell" name="day" position="12px 0px" width="80px" text=""/>
+                        <Text profile="tornado_tableCell" name="type" position="96px 0px" width="110px" text=""/>
+                        <Text profile="tornado_tableCell" name="subject" position="210px 0px" width="215px" text=""/>
+                        <Text profile="tornado_tableCell" name="status" position="430px 0px" width="135px" text=""/>
+                        <Text profile="tornado_tableCell" name="amount" position="570px 0px" width="105px" text=""/>
+                    </Button>
+                    <Button profile="tornado_claimRow" id="insClaimRow9" position="0px -414px" onClick="onClickAction" onFocus="onFocusRow">
+                        <ThreePartBitmap profile="tornado_tableRowBg" name="background"/>
+                        <Text profile="tornado_tableCell" name="day" position="12px 0px" width="80px" text=""/>
+                        <Text profile="tornado_tableCell" name="type" position="96px 0px" width="110px" text=""/>
+                        <Text profile="tornado_tableCell" name="subject" position="210px 0px" width="215px" text=""/>
+                        <Text profile="tornado_tableCell" name="status" position="430px 0px" width="135px" text=""/>
+                        <Text profile="tornado_tableCell" name="amount" position="570px 0px" width="105px" text=""/>
+                    </Button>
+                    <Button profile="tornado_claimRow" id="insClaimRow10" position="0px -462px" onClick="onClickAction" onFocus="onFocusRow">
+                        <ThreePartBitmap profile="tornado_tableRowBg" name="background"/>
+                        <Text profile="tornado_tableCell" name="day" position="12px 0px" width="80px" text=""/>
+                        <Text profile="tornado_tableCell" name="type" position="96px 0px" width="110px" text=""/>
+                        <Text profile="tornado_tableCell" name="subject" position="210px 0px" width="215px" text=""/>
+                        <Text profile="tornado_tableCell" name="status" position="430px 0px" width="135px" text=""/>
+                        <Text profile="tornado_tableCell" name="amount" position="570px 0px" width="105px" text=""/>
+                    </Button>
+                </GuiElement>
+                <Button profile="tornado_tableButton" id="insClaimScrollUp" position="260px -580px" width="160px" text="$l10n_tp_btn_scroll_up" onClick="onClickAction">
+                    <ThreePartBitmap profile="tornado_actionButtonBg"/>
+                </Button>
+                <Button profile="tornado_tableButton" id="insClaimScrollDown" position="435px -580px" width="160px" text="$l10n_tp_btn_scroll_down" onClick="onClickAction">
+                    <ThreePartBitmap profile="tornado_actionButtonBg"/>
+                </Button>
+                <Text profile="tornado_tableInfoText" id="insClaimInfo" position="610px -588px" width="330px" text=""/>
+
+                <Text profile="tornado_detailTitle" position="960px -14px" width="540px" text="$l10n_tp_ins_cl_selected"/>
+                <Text profile="tornado_detailLine" id="insClaimDetailHead" position="960px -60px" width="540px" text=""/>
+                <Text profile="tornado_detailLine" id="insClaimDetailStatus" position="960px -88px" width="540px" text=""/>
+                <Text profile="tornado_detailBody" id="insClaimDetailText" position="960px -128px" width="540px" height="380px" text=""/>
+                <Button profile="tornado_tableButton" id="insClaimAccept" position="960px -528px" width="300px" text="$l10n_tp_btn_ins_accept_total" onClick="onClickAction">
+                    <ThreePartBitmap profile="tornado_actionButtonBg"/>
+                </Button>
+                <Button profile="tornado_tableButton" id="insClaimBuyBack" position="960px -580px" width="300px" text="$l10n_tp_btn_ins_buy_back" onClick="onClickAction">
+                    <ThreePartBitmap profile="tornado_actionButtonBg"/>
+                </Button>
+                <Text profile="tornado_noteLine" id="insClaimNote" position="960px -632px" width="540px" text=""/>
             </GuiElement>
         </GuiElement>
 

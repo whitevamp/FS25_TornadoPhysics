@@ -318,8 +318,8 @@
         <text name="tp_pen_pasture" text="Pastwisko"/>
         <text name="tp_pen_meadow" text="Łąka"/>
         <text name="tp_pen_fence" text="Zagroda"/>
-        <text name="tp_msg_tow_bill" text="HOLOWANIE AWARYJNE: naliczono %s (holowanie %s, %d zniszczonych części, wartość pojazdu %s)"/>
-        <text name="tp_msg_tow_bill_engine" text="HOLOWANIE AWARYJNE: naliczono %s (holowanie %s, %d zniszczonych części, wartość pojazdu %s, naprawa silnika %s)"/>
+        <text name="tp_msg_tow_bill" text="HOLOWANIE AWARYJNE: naliczono %s (holowanie %s, %d zniszczonych części, cena nowego %s)"/>
+        <text name="tp_msg_tow_bill_engine" text="HOLOWANIE AWARYJNE: naliczono %s (holowanie %s, %d zniszczonych części, cena nowego %s, naprawa silnika %s)"/>
         <text name="tp_map_line" text="EF:%d  Wiatr:%d-%d mph  Promień:%d m  Odległość:%s"/>
         <text name="tp_hotspot_title" text="EF:%d  Wiatr:%s  Promień:%s  Odległość:%s"/>
         <text name="tp_map_storm" text="Burza: %s"/>
@@ -473,6 +473,50 @@
         <text name="tp_ins_pol_livestock_none" text="Brak ubezpieczenia zwierząt."/>
         <text name="tp_ins_pol_claims" text="Otwarte szkody: %d (listy są w karcie Wiadomości)."/>
         <text name="tp_ins_grows" text="Twoje polisy rosną razem z gospodarstwem: pola, pojazdy i zwierzęta kupione później są objęte ochroną automatycznie, a miesięczna cena zależy od tego, co posiadasz - nie trzeba kupować ponownie."/>
+        <text name="tp_ins_nav_claims" text="Szkody"/>
+        <text name="tp_ins_cl_title" text="Twoje szkody"/>
+        <text name="tp_ins_cl_filter" text="Pokaż"/>
+        <text name="tp_ins_cl_f_all" text="Wszystkie"/>
+        <text name="tp_ins_cl_f_open" text="Otwarte"/>
+        <text name="tp_ins_cl_type_crop" text="Uprawy"/>
+        <text name="tp_ins_cl_type_equip" text="Sprzęt"/>
+        <text name="tp_ins_cl_type_livestock" text="Zwierzęta"/>
+        <text name="tp_ins_cl_col_day" text="Dzień"/>
+        <text name="tp_ins_cl_col_type" text="Rodzaj"/>
+        <text name="tp_ins_cl_col_subject" text="Co"/>
+        <text name="tp_ins_cl_col_status" text="Status"/>
+        <text name="tp_ins_cl_col_amount" text="Wypłata"/>
+        <text name="tp_ins_cl_field" text="Pole %s"/>
+        <text name="tp_ins_cs_received" text="Zgłoszona"/>
+        <text name="tp_ins_cs_inspected" text="Oceniona"/>
+        <text name="tp_ins_cs_approved" text="Uznana"/>
+        <text name="tp_ins_cs_paid" text="Wypłacona"/>
+        <text name="tp_ins_cs_denied" text="Odrzucona"/>
+        <text name="tp_ins_cs_total" text="Szkoda całkowita"/>
+        <text name="tp_ins_cs_settled" text="Rozliczona"/>
+        <text name="tp_ins_cs_bought_back" text="Odkupiona"/>
+        <text name="tp_ins_cl_selected" text="Wybrana szkoda"/>
+        <text name="tp_ins_cl_crop_body" text="Pole %s, %s. Przyczyna: %s. Utracone plony w tym zdarzeniu: %d procent."/>
+        <text name="tp_date_year" text="rok %d"/>
+        <text name="tp_ins_cl_payout" text="Wypłata: %s"/>
+        <text name="tp_ins_cl_equip_body" text="Wartość ubezpieczenia (obecna cena sprzedaży): %s. Szacunek szkód od burzy: %s (zużycie sprzed burzy nie jest objęte). Udział własny: %s."/>
+        <text name="tp_ins_cl_equip_burned" text="Pojazd spłonął - to zawsze szkoda całkowita."/>
+        <text name="tp_ins_cl_total_choice" text="Przyjmij: ubezpieczyciel płaci %s i zabiera wrak. Odkup: dostajesz %s i zatrzymujesz go z tytułem wraku (niższa cena sprzedaży)."/>
+        <text name="tp_ins_cl_total_keep" text="Na tym serwerze pojazdy po szkodzie całkowitej zostają: przyjęcie wypłaca %s, a pojazd zostaje z tytułem wraku (niższa cena sprzedaży)."/>
+        <text name="tp_ins_cl_lv_body" text="%d zwierząt zabitych w %s. Wartość rynkowa: %s."/>
+        <text name="tp_ins_cl_lv_gov" text="Program państwowy (USDA LIP) wypłaca: %s."/>
+        <text name="tp_ins_cl_lv_policy" text="Wartość ubezpieczenia: %s. Twoja polisa wypłaca: %s."/>
+        <text name="tp_ins_cl_next_received" text="Rzeczoznawca przyjedzie za ok. %d dni %d godz."/>
+        <text name="tp_ins_cl_next_inspected" text="Decyzja za ok. %d dni %d godz."/>
+        <text name="tp_ins_cl_next_approved" text="Wypłata za ok. %d dni %d godz."/>
+        <text name="tp_ins_cl_next_total" text="Zdecyduj w ciągu %d dni %d godz. - potem szkoda całkowita zostanie przyjęta za ciebie."/>
+        <text name="tp_ins_cl_denied" text="Odrzucona - list w zakładce Wiadomości podaje powód."/>
+        <text name="tp_ins_cl_done" text="Zamknięta - pieniądze wpłacono gospodarstwu."/>
+        <text name="tp_ins_cl_hidden" text="Brak szkód dla tego filtra (%d ukrytych)."/>
+        <text name="tp_ins_cl_none" text="Brak szkód. Gdy burza uszkodzi coś ubezpieczonego, szkoda pojawi się tutaj."/>
+        <text name="tp_ins_choice_sent" text="Wybór wysłany - list pojawi się w zakładce Wiadomości."/>
+        <text name="tp_btn_ins_accept_total" text="Przyjmij szkodę całkowitą"/>
+        <text name="tp_btn_ins_buy_back" text="Odkup"/>
         <text name="tp_ins_pol_change_hint" text="Aby zmienić polisę, wybierz nową ochronę w Zacznij tutaj i poproś o wycenę."/>
         <text name="tp_dir_N" text="Pn"/>
         <text name="tp_dir_NE" text="Pn-Wsch"/>

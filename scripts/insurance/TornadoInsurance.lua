@@ -68,6 +68,7 @@ function TornadoInsurance:loadMap(modDir, modName)
     self.actions = {}             -- name -> { managerOnly, run = fn(self, farmId, args, connection) -> resultKey }
     self.farmData = {}            -- { save = fn(xmlId, farmKey, farm), load = fn(xmlId, farmKey, farm) } per policy type
     self.damageListeners = {}     -- fn(self, entry) for every closed storm damage event
+    self.claimSources = {}        -- fn(self, farmId, farm, list) adds the farm's claims of one policy type (Claims section)
 
     self:registerMoneyTypes()
     self:registerBuiltIns()
@@ -152,6 +153,69 @@ end
 --- fn(self, entry) for every closed storm damage event (TornadoInsuranceDamage log entry) - claims.
 function TornadoInsurance:registerDamageListener(fn)
     table.insert(self.damageListeners, fn)
+end
+
+--- fn(self, farmId, farm, list): appends the farm's claims of one policy type as claim summaries
+--- { kind = "CROP" | "EQUIP" | "LIVESTOCK", id, day, status, subject, info, cause, values = { up to 6 numbers },
+---   flag, remaining (months until the next step, -1 = none) } - the Insurance tab's Claims section shows them.
+function TornadoInsurance:registerClaimSource(fn)
+    table.insert(self.claimSources, fn)
+end
+
+--- Months left on the farm's timer of one of these kinds for this data (a claim id), or on the timer with this id.
+--- -1 when there is none.
+function TornadoInsurance:getTimerRemaining(farmId, kinds, data, timerId)
+    for _, timer in ipairs(self.timers or {}) do
+        if timer.farmId == farmId then
+            if timerId ~= nil then
+                if timer.id == timerId then
+                    return timer.remaining
+                end
+            elseif kinds[timer.kind] and timer.data == data then
+                return timer.remaining
+            end
+        end
+    end
+    return -1
+end
+
+--- The farm's claims, newest first. Server: built from the policy types now; client: the list the server sent.
+function TornadoInsurance:getClaimList(farmId)
+    local farm = self.farms ~= nil and self.farms[farmId] or nil
+    if farm == nil then
+        return {}
+    end
+    if not isServer() then
+        -- Countdowns as sent, minus the in-game time passed since (the server only re-sends on changes).
+        local now, since = self:getAbsoluteMs(), farm.claimListMs
+        local elapsed = (now ~= nil and since ~= nil and now > since) and (now - since) / self.MS_PER_DAY / self:getDaysPerMonth() or 0
+        local list = {}
+        for _, claim in ipairs(farm.claimList or {}) do
+            local copy = {}
+            for k, v in pairs(claim) do
+                copy[k] = v
+            end
+            if (copy.remaining or -1) >= 0 then
+                copy.remaining = math.max(0, copy.remaining - elapsed)
+            end
+            table.insert(list, copy)
+        end
+        return list
+    end
+    local list = {}
+    for _, fn in ipairs(self.claimSources or {}) do
+        fn(self, farmId, farm, list)
+    end
+    table.sort(list, function(a, b)
+        if (a.day or 0) ~= (b.day or 0) then
+            return (a.day or 0) > (b.day or 0)
+        end
+        if a.kind ~= b.kind then
+            return a.kind < b.kind
+        end
+        return (a.id or 0) > (b.id or 0)
+    end)
+    return list
 end
 
 --- Server: called by TornadoInsuranceDamage when an event is closed and logged.
@@ -557,6 +621,8 @@ function TornadoInsurance:applyFarmState(farmId, state)
     farm.titles = state.titles or {}
     farm.equipClaims = state.equipTotals or {}
     farm.livestock = (state.livestockStatus ~= nil and state.livestockStatus ~= "") and { status = state.livestockStatus } or nil
+    farm.claimList = state.claimList or {}
+    farm.claimListMs = self:getAbsoluteMs()
     if TornadoMenu ~= nil and TornadoMenu.INSTANCE ~= nil and TornadoMenu.INSTANCE.isOpen then
         TornadoMenu.INSTANCE:refreshAllPages()
     end

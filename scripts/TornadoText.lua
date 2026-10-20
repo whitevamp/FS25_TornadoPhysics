@@ -40,6 +40,30 @@ function TornadoText.money(amount)
     return string.format("$%d", math.floor((amount or 0) + 0.5))
 end
 
+--- A day of the save (environment.currentMonotonicDay counting) as the game's calendar shows it: "Aug" at one
+--- day per month, else "Aug 3"; withYear adds ", year 2". Without an environment (offline tests): "Day 12".
+function TornadoText.date(day, withYear)
+    local mission = g_currentMission
+    local environment = mission ~= nil and mission.environment or nil
+    if environment == nil or environment.getPeriodFromDay == nil or modI18n == nil or modI18n.formatPeriod == nil
+        or environment.currentDay == nil or environment.currentMonotonicDay == nil then
+        return string.format("%s %d", TornadoText.get("tp_msg_day"), day or 0)
+    end
+    day = day or environment.currentMonotonicDay
+    local period = environment:getPeriodFromDay(day)
+    local text = modI18n:formatPeriod(period, true) or "?"
+    local daysPerPeriod = math.max(1, environment.daysPerPeriod or 1)
+    if daysPerPeriod > 1 then
+        text = string.format("%s %d", text, environment:getDayInPeriodFromDay(day))
+    end
+    if withYear then
+        local seasonalDay = environment.currentDay + (day - environment.currentMonotonicDay)
+        local year = math.floor((seasonalDay - 1) / (daysPerPeriod * 12)) + 1
+        text = text .. ", " .. TornadoText.format("tp_date_year", math.max(1, year))
+    end
+    return text
+end
+
 --- Compass code from TornadoClimate.directionToLabel ("N", "NE", ...) in the player's language.
 function TornadoText.direction(code)
     if code == nil then

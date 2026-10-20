@@ -288,8 +288,8 @@ function TornadoMessageLog.getTimeText(entry)
     local time = entry ~= nil and entry.time or 0
     local day = math.floor(time / TornadoMessageLog.MS_PER_DAY)
     local minutes = math.floor((time - day * TornadoMessageLog.MS_PER_DAY) / 60000)
-    return string.format("%s %d, %02d:%02d", TornadoText ~= nil and TornadoText.get("tp_msg_day") or "Day", day,
-        math.floor(minutes / 60), minutes % 60)
+    local dateText = TornadoText ~= nil and TornadoText.date ~= nil and TornadoText.date(day) or string.format("Day %d", day)
+    return string.format("%s, %02d:%02d", dateText, math.floor(minutes / 60), minutes % 60)
 end
 
 -- =========================================================================

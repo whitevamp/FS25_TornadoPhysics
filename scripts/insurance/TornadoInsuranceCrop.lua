@@ -89,6 +89,7 @@ function TornadoInsuranceCrop:install(insurance)
     insurance:registerTimerHandler(self.TIMER_ADJUSTER, function(_, timer) TornadoInsuranceCrop:onAdjuster(timer) end)
     insurance:registerTimerHandler(self.TIMER_DECISION, function(_, timer) TornadoInsuranceCrop:onDecision(timer) end)
     insurance:registerTimerHandler(self.TIMER_PAYOUT, function(_, timer) TornadoInsuranceCrop:onPayout(timer) end)
+    insurance:registerClaimSource(function(_, farmId, farm, list) TornadoInsuranceCrop:addClaimSummaries(farmId, farm, list) end)
     insurance:registerAction("cropBuy", true, function(_, farmId, args) return TornadoInsuranceCrop:buy(farmId, args) end)
     insurance:registerAction("cropCancel", true, function(_, farmId) return TornadoInsuranceCrop:cancel(farmId) end)
     insurance:registerFarmData(function(xmlId, key, farm) TornadoInsuranceCrop:saveFarm(xmlId, key, farm) end,
@@ -690,6 +691,17 @@ function TornadoInsuranceCrop:onPayout(timer)
     claim.status = "PAID"
     self.insurance:payOut(timer.farmId, claim.payout, "tp_msg_ins_claim_paid",
         { TornadoText.num(claim.fieldId), TornadoText.cash(claim.payout) })
+end
+
+--- Claim summaries for the Insurance tab (TornadoInsurance:registerClaimSource): values = { share lost, payout }.
+function TornadoInsuranceCrop:addClaimSummaries(farmId, farm, list)
+    local kinds = { [self.TIMER_ADJUSTER] = true, [self.TIMER_DECISION] = true, [self.TIMER_PAYOUT] = true }
+    for _, claim in ipairs(farm ~= nil and farm.claims or {}) do
+        table.insert(list, { kind = "CROP", id = claim.id, day = claim.day or 0, status = claim.status or "",
+            subject = tostring(claim.fieldId or 0), info = claim.crop or "", cause = claim.cause or "",
+            values = { claim.share or 0, claim.payout or 0 }, flag = false,
+            remaining = self.insurance:getTimerRemaining(farmId, kinds, tostring(claim.id)) })
+    end
 end
 
 function TornadoInsuranceCrop:getOpenClaimCount(farm)

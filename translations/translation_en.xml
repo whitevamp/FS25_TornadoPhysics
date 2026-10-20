@@ -318,8 +318,8 @@
         <text name="tp_pen_pasture" text="Pasture"/>
         <text name="tp_pen_meadow" text="Meadow"/>
         <text name="tp_pen_fence" text="Fenced pen"/>
-        <text name="tp_msg_tow_bill" text="EMERGENCY TOW: billed %s (tow %s, %d broken parts, vehicle value %s)"/>
-        <text name="tp_msg_tow_bill_engine" text="EMERGENCY TOW: billed %s (tow %s, %d broken parts, vehicle value %s, engine work %s)"/>
+        <text name="tp_msg_tow_bill" text="EMERGENCY TOW: billed %s (tow %s, %d broken parts, new price %s)"/>
+        <text name="tp_msg_tow_bill_engine" text="EMERGENCY TOW: billed %s (tow %s, %d broken parts, new price %s, engine work %s)"/>
         <text name="tp_map_line" text="EF:%d  Wind:%d-%d mph  Radius:%d m  Distance:%s"/>
         <text name="tp_hotspot_title" text="EF:%d  Wind:%s  Radius:%s  Distance:%s"/>
         <text name="tp_map_storm" text="Storm: %s"/>
@@ -473,6 +473,50 @@
         <text name="tp_ins_pol_livestock_none" text="No livestock policy."/>
         <text name="tp_ins_pol_claims" text="Open claims: %d (their letters are on the Messages tab)."/>
         <text name="tp_ins_grows" text="Your policies grow with your farm: fields, vehicles and animals you buy later are covered automatically, and the monthly price follows what you own - no need to buy again."/>
+        <text name="tp_ins_nav_claims" text="Claims"/>
+        <text name="tp_ins_cl_title" text="Your claims"/>
+        <text name="tp_ins_cl_filter" text="Show"/>
+        <text name="tp_ins_cl_f_all" text="All"/>
+        <text name="tp_ins_cl_f_open" text="Open"/>
+        <text name="tp_ins_cl_type_crop" text="Crop"/>
+        <text name="tp_ins_cl_type_equip" text="Equipment"/>
+        <text name="tp_ins_cl_type_livestock" text="Livestock"/>
+        <text name="tp_ins_cl_col_day" text="Day"/>
+        <text name="tp_ins_cl_col_type" text="Type"/>
+        <text name="tp_ins_cl_col_subject" text="What"/>
+        <text name="tp_ins_cl_col_status" text="Status"/>
+        <text name="tp_ins_cl_col_amount" text="Payout"/>
+        <text name="tp_ins_cl_field" text="Field %s"/>
+        <text name="tp_ins_cs_received" text="Filed"/>
+        <text name="tp_ins_cs_inspected" text="Inspected"/>
+        <text name="tp_ins_cs_approved" text="Approved"/>
+        <text name="tp_ins_cs_paid" text="Paid"/>
+        <text name="tp_ins_cs_denied" text="Declined"/>
+        <text name="tp_ins_cs_total" text="Total loss"/>
+        <text name="tp_ins_cs_settled" text="Settled"/>
+        <text name="tp_ins_cs_bought_back" text="Bought back"/>
+        <text name="tp_ins_cl_selected" text="Selected claim"/>
+        <text name="tp_ins_cl_crop_body" text="Field %s, %s. Cause: %s. Crop lost in this event: %d percent."/>
+        <text name="tp_date_year" text="year %d"/>
+        <text name="tp_ins_cl_payout" text="Payout: %s"/>
+        <text name="tp_ins_cl_equip_body" text="Insured value (what it sells for now): %s. Storm damage estimate: %s (wear from before the storm is not covered). Deductible: %s."/>
+        <text name="tp_ins_cl_equip_burned" text="The vehicle burned - that is always a total loss."/>
+        <text name="tp_ins_cl_total_choice" text="Accept: the insurer pays %s and takes the wreck. Buy back: you get %s and keep it with a Salvage title (lower sell price)."/>
+        <text name="tp_ins_cl_total_keep" text="Totalled vehicles are kept on this server: accepting pays %s and you keep the vehicle with a Salvage title (lower sell price)."/>
+        <text name="tp_ins_cl_lv_body" text="%d animals killed at %s. Market value: %s."/>
+        <text name="tp_ins_cl_lv_gov" text="State programme (USDA LIP) pays: %s."/>
+        <text name="tp_ins_cl_lv_policy" text="Insured value: %s. Your policy pays: %s."/>
+        <text name="tp_ins_cl_next_received" text="The adjuster visits in about %d days %d hours."/>
+        <text name="tp_ins_cl_next_inspected" text="Decision in about %d days %d hours."/>
+        <text name="tp_ins_cl_next_approved" text="Payment in about %d days %d hours."/>
+        <text name="tp_ins_cl_next_total" text="Choose within %d days %d hours - after that the total loss is accepted for you."/>
+        <text name="tp_ins_cl_denied" text="Declined - the letter on the Messages tab says why."/>
+        <text name="tp_ins_cl_done" text="Closed - the money was paid to the farm."/>
+        <text name="tp_ins_cl_hidden" text="No claims match this filter (%d hidden)."/>
+        <text name="tp_ins_cl_none" text="No claims yet. When a storm damages something insured, the claim shows up here."/>
+        <text name="tp_ins_choice_sent" text="Choice sent - the letter follows on the Messages tab."/>
+        <text name="tp_btn_ins_accept_total" text="Accept total loss"/>
+        <text name="tp_btn_ins_buy_back" text="Buy back"/>
         <text name="tp_ins_pol_change_hint" text="To change a policy, choose the new cover under Start here and get a quote."/>
         <text name="tp_dir_N" text="N"/>
         <text name="tp_dir_NE" text="NE"/>

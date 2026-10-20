@@ -100,6 +100,7 @@ function TornadoInsuranceEquipment:install(insurance)
     for kind, fn in pairs(handlers) do
         insurance:registerTimerHandler(kind, function(_, timer) fn(TornadoInsuranceEquipment, timer) end)
     end
+    insurance:registerClaimSource(function(_, farmId, farm, list) TornadoInsuranceEquipment:addClaimSummaries(farmId, farm, list) end)
     insurance:registerAction("equipBuy", true, function(_, farmId, args) return TornadoInsuranceEquipment:buy(farmId, args) end)
     insurance:registerAction("equipCancel", true, function(_, farmId) return TornadoInsuranceEquipment:cancel(farmId) end)
     insurance:registerAction("equipAccept", true, function(_, farmId, args)
@@ -623,6 +624,25 @@ function TornadoInsuranceEquipment:getOpenClaimCount(farm)
         end
     end
     return count
+end
+
+--- Claim summaries for the Insurance tab (TornadoInsurance:registerClaimSource): values = { insured value,
+--- repair estimate, deductible, payout, total loss: accept payout, buy-back payout }; flag = burned. A total loss
+--- counts down to the automatic accept.
+function TornadoInsuranceEquipment:addClaimSummaries(farmId, farm, list)
+    local kinds = { [self.TIMER_ADJUSTER] = true, [self.TIMER_DECISION] = true, [self.TIMER_PAYOUT] = true }
+    for _, claim in ipairs(farm ~= nil and farm.equipClaims or {}) do
+        local remaining
+        if claim.status == "TOTAL" then
+            remaining = claim.choiceTimer ~= nil and self.insurance:getTimerRemaining(farmId, kinds, nil, claim.choiceTimer) or -1
+        else
+            remaining = self.insurance:getTimerRemaining(farmId, kinds, tostring(claim.id))
+        end
+        table.insert(list, { kind = "EQUIP", id = claim.id, day = claim.day or 0, status = claim.status or "",
+            subject = claim.name or "?", info = "", cause = "",
+            values = { self:getInsuredValue(claim), claim.estimate or 0, claim.deductible or 0, claim.payout or 0,
+                claim.lossPayout or 0, claim.buyBackPayout or 0 }, flag = claim.burned == true, remaining = remaining })
+    end
 end
 
 --- Total losses waiting for the farm's choice (the panel's Accept / Buy back rows).

@@ -1297,6 +1297,21 @@ covers every field the farm owns at the time of the event, equipment every owned
 is recomputed from the current assets at each billing. Only the first purchase has the waiting period. The
 quote and My policies show the note `tp_ins_grows`.
 
+### 18.9 Insurance tab – step 2: Claims (2026-10-19)
+
+Third section `insClaims`: a TornadoTable of 10 rows (Day | Type | What | Status | Payout) with a filter (All / Open /
+Crop / Equipment / Livestock, back to All on every visit), the selected claim on the right, Accept total loss /
+Buy back for an equipment total loss (`equipAccept` / `equipBuyBack`, confirm, manager / admin only; with
+"totalled vehicles kept" both give the same result, so only Accept is shown). Data: each policy module registers a
+claim source (`TornadoInsurance:registerClaimSource`) that turns its claims into summaries { kind, id, day, status,
+subject, info, cause, values[6], flag, remaining }; `TornadoInsurance:getClaimList(farmId)` builds them on the
+server (newest first) and returns the synced copy on clients. `remaining` is the next step's timer in months
+(`getTimerRemaining`; a total loss counts down to the automatic accept), shown as in-game days + hours; clients
+subtract the in-game time passed since the last state event. The state event sends the newest 50 summaries.
+Livestock claims show the expected payouts before the decision (`decide` is pure). The Modules tab lost the
+total-loss rows (old text keys `tp_insurance_equip_total*` / `tp_btn_equip_*` are left for the later cleanup).
+Tests: test_inspage 70, test_equipment 103, test_livestock 47.
+
 ## 19. Rules for the implementation
 
 - No `pcall` / `xpcall` (GIANTS ModHub rule) – explicit nil checks only.

@@ -318,8 +318,8 @@
         <text name="tp_pen_pasture" text="Pasto"/>
         <text name="tp_pen_meadow" text="Prado"/>
         <text name="tp_pen_fence" text="Cercado"/>
-        <text name="tp_msg_tow_bill" text="REMOLQUE DE EMERGENCIA: facturado %s (remolque %s, %d piezas rotas, valor del vehículo %s)"/>
-        <text name="tp_msg_tow_bill_engine" text="REMOLQUE DE EMERGENCIA: facturado %s (remolque %s, %d piezas rotas, valor del vehículo %s, trabajo de motor %s)"/>
+        <text name="tp_msg_tow_bill" text="REMOLQUE DE EMERGENCIA: facturado %s (remolque %s, %d piezas rotas, precio nuevo %s)"/>
+        <text name="tp_msg_tow_bill_engine" text="REMOLQUE DE EMERGENCIA: facturado %s (remolque %s, %d piezas rotas, precio nuevo %s, trabajo de motor %s)"/>
         <text name="tp_map_line" text="EF:%d  Viento:%d-%d mph  Radio:%d m  Distancia:%s"/>
         <text name="tp_hotspot_title" text="EF:%d  Viento:%s  Radio:%s  Distancia:%s"/>
         <text name="tp_map_storm" text="Tormenta: %s"/>
@@ -473,6 +473,50 @@
         <text name="tp_ins_pol_livestock_none" text="Sin seguro de ganado."/>
         <text name="tp_ins_pol_claims" text="Siniestros abiertos: %d (sus cartas están en la pestaña Mensajes)."/>
         <text name="tp_ins_grows" text="Tus pólizas crecen con tu granja: los campos, vehículos y animales que compres después quedan cubiertos automáticamente, y el precio mensual sigue lo que posees - no hace falta volver a contratar."/>
+        <text name="tp_ins_nav_claims" text="Siniestros"/>
+        <text name="tp_ins_cl_title" text="Tus siniestros"/>
+        <text name="tp_ins_cl_filter" text="Mostrar"/>
+        <text name="tp_ins_cl_f_all" text="Todos"/>
+        <text name="tp_ins_cl_f_open" text="Abiertos"/>
+        <text name="tp_ins_cl_type_crop" text="Cosecha"/>
+        <text name="tp_ins_cl_type_equip" text="Equipos"/>
+        <text name="tp_ins_cl_type_livestock" text="Ganado"/>
+        <text name="tp_ins_cl_col_day" text="Día"/>
+        <text name="tp_ins_cl_col_type" text="Tipo"/>
+        <text name="tp_ins_cl_col_subject" text="Qué"/>
+        <text name="tp_ins_cl_col_status" text="Estado"/>
+        <text name="tp_ins_cl_col_amount" text="Pago"/>
+        <text name="tp_ins_cl_field" text="Campo %s"/>
+        <text name="tp_ins_cs_received" text="Presentado"/>
+        <text name="tp_ins_cs_inspected" text="Peritado"/>
+        <text name="tp_ins_cs_approved" text="Aprobado"/>
+        <text name="tp_ins_cs_paid" text="Pagado"/>
+        <text name="tp_ins_cs_denied" text="Rechazado"/>
+        <text name="tp_ins_cs_total" text="Siniestro total"/>
+        <text name="tp_ins_cs_settled" text="Liquidado"/>
+        <text name="tp_ins_cs_bought_back" text="Recomprado"/>
+        <text name="tp_ins_cl_selected" text="Siniestro seleccionado"/>
+        <text name="tp_ins_cl_crop_body" text="Campo %s, %s. Causa: %s. Cosecha perdida en este evento: %d por ciento."/>
+        <text name="tp_date_year" text="año %d"/>
+        <text name="tp_ins_cl_payout" text="Pago: %s"/>
+        <text name="tp_ins_cl_equip_body" text="Valor asegurado (precio de venta actual): %s. Estimación de daños por tormenta: %s (el desgaste anterior a la tormenta no está cubierto). Franquicia: %s."/>
+        <text name="tp_ins_cl_equip_burned" text="El vehículo se quemó: siempre es siniestro total."/>
+        <text name="tp_ins_cl_total_choice" text="Aceptar: la aseguradora paga %s y se lleva el siniestro. Recomprar: recibes %s y lo conservas con título de salvamento (precio de venta menor)."/>
+        <text name="tp_ins_cl_total_keep" text="En este servidor los vehículos siniestrados se conservan: aceptar paga %s y te quedas el vehículo con título de salvamento (precio de venta menor)."/>
+        <text name="tp_ins_cl_lv_body" text="%d animales muertos en %s. Valor de mercado: %s."/>
+        <text name="tp_ins_cl_lv_gov" text="Programa estatal (USDA LIP) paga: %s."/>
+        <text name="tp_ins_cl_lv_policy" text="Valor asegurado: %s. Tu póliza paga: %s."/>
+        <text name="tp_ins_cl_next_received" text="El perito llega en unos %d días %d horas."/>
+        <text name="tp_ins_cl_next_inspected" text="Decisión en unos %d días %d horas."/>
+        <text name="tp_ins_cl_next_approved" text="Pago en unos %d días %d horas."/>
+        <text name="tp_ins_cl_next_total" text="Elige en %d días %d horas; después se acepta el siniestro total por ti."/>
+        <text name="tp_ins_cl_denied" text="Rechazado: la carta de la pestaña Mensajes explica el motivo."/>
+        <text name="tp_ins_cl_done" text="Cerrado: el dinero se pagó a la granja."/>
+        <text name="tp_ins_cl_hidden" text="Ningún siniestro con este filtro (%d ocultos)."/>
+        <text name="tp_ins_cl_none" text="Aún no hay siniestros. Cuando una tormenta dañe algo asegurado, el siniestro aparecerá aquí."/>
+        <text name="tp_ins_choice_sent" text="Elección enviada: la carta llegará a la pestaña Mensajes."/>
+        <text name="tp_btn_ins_accept_total" text="Aceptar siniestro total"/>
+        <text name="tp_btn_ins_buy_back" text="Recomprar"/>
         <text name="tp_ins_pol_change_hint" text="Para cambiar una póliza, elige la nueva cobertura en Empieza aquí y pide un presupuesto."/>
         <text name="tp_dir_N" text="N"/>
         <text name="tp_dir_NE" text="NE"/>

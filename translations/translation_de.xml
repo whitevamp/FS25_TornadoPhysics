@@ -318,8 +318,8 @@
         <text name="tp_pen_pasture" text="Weide"/>
         <text name="tp_pen_meadow" text="Wiese"/>
         <text name="tp_pen_fence" text="Gehege"/>
-        <text name="tp_msg_tow_bill" text="NOTFALL-ABSCHLEPPDIENST: %s berechnet (Abschleppen %s, %d kaputte Teile, Fahrzeugwert %s)"/>
-        <text name="tp_msg_tow_bill_engine" text="NOTFALL-ABSCHLEPPDIENST: %s berechnet (Abschleppen %s, %d kaputte Teile, Fahrzeugwert %s, Motorarbeiten %s)"/>
+        <text name="tp_msg_tow_bill" text="NOTFALL-ABSCHLEPPDIENST: %s berechnet (Abschleppen %s, %d kaputte Teile, Neupreis %s)"/>
+        <text name="tp_msg_tow_bill_engine" text="NOTFALL-ABSCHLEPPDIENST: %s berechnet (Abschleppen %s, %d kaputte Teile, Neupreis %s, Motorarbeiten %s)"/>
         <text name="tp_map_line" text="EF:%d  Wind:%d-%d mph  Radius:%d m  Entfernung:%s"/>
         <text name="tp_hotspot_title" text="EF:%d  Wind:%s  Radius:%s  Entfernung:%s"/>
         <text name="tp_map_storm" text="Unwetter: %s"/>
@@ -473,6 +473,50 @@
         <text name="tp_ins_pol_livestock_none" text="Keine Tierversicherung."/>
         <text name="tp_ins_pol_claims" text="Offene Schadensfälle: %d (die Briefe stehen im Reiter Nachrichten)."/>
         <text name="tp_ins_grows" text="Deine Policen wachsen mit deinem Hof: später gekaufte Felder, Fahrzeuge und Tiere sind automatisch versichert, und der Monatspreis richtet sich nach deinem Besitz - kein erneuter Kauf nötig."/>
+        <text name="tp_ins_nav_claims" text="Schadensfälle"/>
+        <text name="tp_ins_cl_title" text="Deine Schadensfälle"/>
+        <text name="tp_ins_cl_filter" text="Anzeigen"/>
+        <text name="tp_ins_cl_f_all" text="Alle"/>
+        <text name="tp_ins_cl_f_open" text="Offen"/>
+        <text name="tp_ins_cl_type_crop" text="Ernte"/>
+        <text name="tp_ins_cl_type_equip" text="Geräte"/>
+        <text name="tp_ins_cl_type_livestock" text="Tiere"/>
+        <text name="tp_ins_cl_col_day" text="Tag"/>
+        <text name="tp_ins_cl_col_type" text="Art"/>
+        <text name="tp_ins_cl_col_subject" text="Was"/>
+        <text name="tp_ins_cl_col_status" text="Status"/>
+        <text name="tp_ins_cl_col_amount" text="Auszahlung"/>
+        <text name="tp_ins_cl_field" text="Feld %s"/>
+        <text name="tp_ins_cs_received" text="Gemeldet"/>
+        <text name="tp_ins_cs_inspected" text="Begutachtet"/>
+        <text name="tp_ins_cs_approved" text="Genehmigt"/>
+        <text name="tp_ins_cs_paid" text="Bezahlt"/>
+        <text name="tp_ins_cs_denied" text="Abgelehnt"/>
+        <text name="tp_ins_cs_total" text="Totalschaden"/>
+        <text name="tp_ins_cs_settled" text="Abgewickelt"/>
+        <text name="tp_ins_cs_bought_back" text="Zurückgekauft"/>
+        <text name="tp_ins_cl_selected" text="Ausgewählter Schadensfall"/>
+        <text name="tp_ins_cl_crop_body" text="Feld %s, %s. Ursache: %s. Ernteverlust bei diesem Ereignis: %d Prozent."/>
+        <text name="tp_date_year" text="Jahr %d"/>
+        <text name="tp_ins_cl_payout" text="Auszahlung: %s"/>
+        <text name="tp_ins_cl_equip_body" text="Versicherungswert (aktueller Verkaufswert): %s. Schätzung Sturmschaden: %s (Verschleiß von vor dem Sturm ist nicht versichert). Selbstbehalt: %s."/>
+        <text name="tp_ins_cl_equip_burned" text="Das Fahrzeug ist ausgebrannt - das ist immer ein Totalschaden."/>
+        <text name="tp_ins_cl_total_choice" text="Annehmen: die Versicherung zahlt %s und nimmt das Wrack. Zurückkaufen: du bekommst %s und behältst es mit Bergungstitel (niedrigerer Verkaufspreis)."/>
+        <text name="tp_ins_cl_total_keep" text="Totalschäden bleiben auf diesem Server: Annehmen zahlt %s und du behältst das Fahrzeug mit Bergungstitel (niedrigerer Verkaufspreis)."/>
+        <text name="tp_ins_cl_lv_body" text="%d Tiere getötet bei %s. Marktwert: %s."/>
+        <text name="tp_ins_cl_lv_gov" text="Staatliches Programm (USDA LIP) zahlt: %s."/>
+        <text name="tp_ins_cl_lv_policy" text="Versicherungswert: %s. Deine Police zahlt: %s."/>
+        <text name="tp_ins_cl_next_received" text="Der Gutachter kommt in etwa %d Tagen %d Stunden."/>
+        <text name="tp_ins_cl_next_inspected" text="Entscheidung in etwa %d Tagen %d Stunden."/>
+        <text name="tp_ins_cl_next_approved" text="Zahlung in etwa %d Tagen %d Stunden."/>
+        <text name="tp_ins_cl_next_total" text="Entscheide innerhalb von %d Tagen %d Stunden - danach wird der Totalschaden für dich angenommen."/>
+        <text name="tp_ins_cl_denied" text="Abgelehnt - der Brief im Reiter Nachrichten nennt den Grund."/>
+        <text name="tp_ins_cl_done" text="Abgeschlossen - das Geld wurde an den Hof gezahlt."/>
+        <text name="tp_ins_cl_hidden" text="Keine Schadensfälle für diesen Filter (%d ausgeblendet)."/>
+        <text name="tp_ins_cl_none" text="Noch keine Schadensfälle. Wenn ein Sturm etwas Versichertes beschädigt, erscheint der Fall hier."/>
+        <text name="tp_ins_choice_sent" text="Entscheidung gesendet - der Brief folgt im Reiter Nachrichten."/>
+        <text name="tp_btn_ins_accept_total" text="Totalschaden annehmen"/>
+        <text name="tp_btn_ins_buy_back" text="Zurückkaufen"/>
         <text name="tp_ins_pol_change_hint" text="Um eine Police zu ändern, wähle unter Hier starten den neuen Schutz und hole ein Angebot."/>
         <text name="tp_dir_N" text="N"/>
         <text name="tp_dir_NE" text="NO"/>

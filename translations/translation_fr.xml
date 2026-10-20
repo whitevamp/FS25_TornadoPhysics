@@ -318,8 +318,8 @@
         <text name="tp_pen_pasture" text="Pâturage"/>
         <text name="tp_pen_meadow" text="Prairie"/>
         <text name="tp_pen_fence" text="Enclos"/>
-        <text name="tp_msg_tow_bill" text="REMORQUAGE D'URGENCE : %s facturés (remorquage %s, %d pièces cassées, valeur du véhicule %s)"/>
-        <text name="tp_msg_tow_bill_engine" text="REMORQUAGE D'URGENCE : %s facturés (remorquage %s, %d pièces cassées, valeur du véhicule %s, travaux moteur %s)"/>
+        <text name="tp_msg_tow_bill" text="REMORQUAGE D'URGENCE : %s facturés (remorquage %s, %d pièces cassées, prix neuf %s)"/>
+        <text name="tp_msg_tow_bill_engine" text="REMORQUAGE D'URGENCE : %s facturés (remorquage %s, %d pièces cassées, prix neuf %s, travaux moteur %s)"/>
         <text name="tp_map_line" text="EF:%d  Vent:%d-%d mph  Rayon:%d m  Distance:%s"/>
         <text name="tp_hotspot_title" text="EF:%d  Vent:%s  Rayon:%s  Distance:%s"/>
         <text name="tp_map_storm" text="Orage : %s"/>
@@ -473,6 +473,50 @@
         <text name="tp_ins_pol_livestock_none" text="Pas d'assurance bétail."/>
         <text name="tp_ins_pol_claims" text="Sinistres en cours : %d (leurs lettres sont dans l'onglet Messages)."/>
         <text name="tp_ins_grows" text="Vos contrats grandissent avec votre ferme : les champs, véhicules et animaux achetés plus tard sont couverts automatiquement, et le prix mensuel suit ce que vous possédez - inutile de racheter."/>
+        <text name="tp_ins_nav_claims" text="Sinistres"/>
+        <text name="tp_ins_cl_title" text="Vos sinistres"/>
+        <text name="tp_ins_cl_filter" text="Afficher"/>
+        <text name="tp_ins_cl_f_all" text="Tous"/>
+        <text name="tp_ins_cl_f_open" text="En cours"/>
+        <text name="tp_ins_cl_type_crop" text="Récolte"/>
+        <text name="tp_ins_cl_type_equip" text="Matériel"/>
+        <text name="tp_ins_cl_type_livestock" text="Bétail"/>
+        <text name="tp_ins_cl_col_day" text="Jour"/>
+        <text name="tp_ins_cl_col_type" text="Type"/>
+        <text name="tp_ins_cl_col_subject" text="Quoi"/>
+        <text name="tp_ins_cl_col_status" text="État"/>
+        <text name="tp_ins_cl_col_amount" text="Indemnité"/>
+        <text name="tp_ins_cl_field" text="Champ %s"/>
+        <text name="tp_ins_cs_received" text="Déclaré"/>
+        <text name="tp_ins_cs_inspected" text="Expertisé"/>
+        <text name="tp_ins_cs_approved" text="Accepté"/>
+        <text name="tp_ins_cs_paid" text="Payé"/>
+        <text name="tp_ins_cs_denied" text="Refusé"/>
+        <text name="tp_ins_cs_total" text="Perte totale"/>
+        <text name="tp_ins_cs_settled" text="Réglé"/>
+        <text name="tp_ins_cs_bought_back" text="Racheté"/>
+        <text name="tp_ins_cl_selected" text="Sinistre sélectionné"/>
+        <text name="tp_ins_cl_crop_body" text="Champ %s, %s. Cause : %s. Récolte perdue lors de cet événement : %d pour cent."/>
+        <text name="tp_date_year" text="année %d"/>
+        <text name="tp_ins_cl_payout" text="Indemnité : %s"/>
+        <text name="tp_ins_cl_equip_body" text="Valeur assurée (prix de vente actuel) : %s. Estimation des dégâts de tempête : %s (l'usure d'avant la tempête n'est pas couverte). Franchise : %s."/>
+        <text name="tp_ins_cl_equip_burned" text="Le véhicule a brûlé - c'est toujours une perte totale."/>
+        <text name="tp_ins_cl_total_choice" text="Accepter : l'assureur paie %s et prend l'épave. Racheter : vous recevez %s et la gardez avec un titre d'épave (prix de vente plus bas)."/>
+        <text name="tp_ins_cl_total_keep" text="Les véhicules en perte totale sont conservés sur ce serveur : accepter paie %s et vous gardez le véhicule avec un titre d'épave (prix de vente plus bas)."/>
+        <text name="tp_ins_cl_lv_body" text="%d animaux tués à %s. Valeur marchande : %s."/>
+        <text name="tp_ins_cl_lv_gov" text="Programme public (USDA LIP) : %s."/>
+        <text name="tp_ins_cl_lv_policy" text="Valeur assurée : %s. Votre contrat paie : %s."/>
+        <text name="tp_ins_cl_next_received" text="L'expert passe dans environ %d jours %d heures."/>
+        <text name="tp_ins_cl_next_inspected" text="Décision dans environ %d jours %d heures."/>
+        <text name="tp_ins_cl_next_approved" text="Paiement dans environ %d jours %d heures."/>
+        <text name="tp_ins_cl_next_total" text="Choisissez dans les %d jours %d heures - ensuite la perte totale est acceptée pour vous."/>
+        <text name="tp_ins_cl_denied" text="Refusé - la lettre dans l'onglet Messages en donne la raison."/>
+        <text name="tp_ins_cl_done" text="Clos - l'argent a été versé à la ferme."/>
+        <text name="tp_ins_cl_hidden" text="Aucun sinistre pour ce filtre (%d masqués)."/>
+        <text name="tp_ins_cl_none" text="Aucun sinistre pour l'instant. Quand une tempête endommage un bien assuré, le sinistre apparaît ici."/>
+        <text name="tp_ins_choice_sent" text="Choix envoyé - la lettre suit dans l'onglet Messages."/>
+        <text name="tp_btn_ins_accept_total" text="Accepter la perte totale"/>
+        <text name="tp_btn_ins_buy_back" text="Racheter"/>
         <text name="tp_ins_pol_change_hint" text="Pour modifier un contrat, choisissez la nouvelle couverture dans Commencer ici et demandez un devis."/>
         <text name="tp_dir_N" text="N"/>
         <text name="tp_dir_NE" text="NE"/>

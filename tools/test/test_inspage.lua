@@ -1,4 +1,4 @@
--- Offline smoke test for scripts/gui/pages/TornadoPageInsurance.lua (Insurance tab: Start here + My policies)
+-- Offline smoke test for scripts/gui/pages/TornadoPageInsurance.lua (Insurance tab: Start here, My policies, Claims)
 -- - Lua 5.1. Run from the mod root:
 --     lua-5.1.5_Win64_bin/lua5.1.exe tools/test/test_inspage.lua
 -- Real: TornadoMenuPage, the page. Stubs: the insurance modules (quotes), TornadoText, fake GUI elements.
@@ -6,6 +6,7 @@
 
 TornadoText = { money = function(v) return string.format("$%d", math.floor((v or 0) + 0.5)) end,
     get = function(k) return k end,
+    date = function(day) return "tp_msg_day " .. tostring(day) end,
     format = function(k, ...) local parts = { k } for _, v in ipairs({ ... }) do table.insert(parts, tostring(v)) end return table.concat(parts, "|") end }
 local multiplayer, isServer, isMaster, isManager = false, true, false, false
 TornadoSync = { isMultiplayer = function() return multiplayer end, isClient = function() return not isServer end,
@@ -14,8 +15,11 @@ g_currentMission = { getFarmId = function() return 1 end, getIsServer = function
 g_farmManager = { getFarmById = function() return { isUserFarmManager = function() return isManager end } end }
 
 local requests = {}
-TornadoInsurance = { isEnabled = true, adminOnly = false, farms = { [1] = {} },
+local claimList = {}
+TornadoInsurance = { isEnabled = true, adminOnly = false, removeTotaled = true, farms = { [1] = {} },
     getCostScale = function() return 1 end,
+    getClaimList = function() return claimList end,
+    getRemainingDaysHours = function(_, months) local hours = months * 24 * 24 return math.floor(hours / 24), math.floor(hours % 24 + 0.5) end,
     requestAction = function(_, farmId, name, args) table.insert(requests, name .. " " .. args) end }
 local salesOpen = true
 TornadoInsuranceCrop = { STATUS_ACTIVE = "ACTIVE", PLAN_KEYS = setmetatable({}, { __index = function(_, k) return "plan_" .. k end }),
@@ -34,7 +38,9 @@ TornadoInsuranceLivestock = { STATUS_ACTIVE = "ACTIVE",
     hasGovProgram = function() return true end, isHusbandryOn = function() return true end,
     getOpenClaimCount = function() return 0 end }
 
+TornadoInsuranceDamage = { CAUSE_KEYS = { TORNADO = "tp_cause_tornado" } }
 dofile("scripts/gui/TornadoMenuPage.lua")
+dofile("scripts/gui/TornadoTable.lua")
 dofile("scripts/gui/pages/TornadoPageInsurance.lua")
 local P = TornadoPageInsurance
 
@@ -49,6 +55,7 @@ local function element(name)
     function e:setState(s) self.state = s end
     function e:getState() return self.state end
     function e:setIsChecked(v) self.checked = v end
+    function e:getDescendantByName(n) return self.cells ~= nil and self.cells[n] or nil end
     return e
 end
 local menu = { controls = {}, pages = {}, activePageIndex = 1 }
@@ -59,8 +66,19 @@ function menu:refreshAllPages() P:refresh() end
 function menu:confirm(_, callback) self.confirms = (self.confirms or 0) + 1 callback() end
 for _, id in ipairs({ "tabInsurance", "pageInsurance", "insNavStart", "insNavPolicies", "insStart", "insPolicies", "insCrop",
     "insCropCoverage", "insEquip", "insLivestock", "insQuote", "insConfirm", "insStartNote", "insQuoteText", "insPolCropText",
-    "insPolCropCancel", "insPolEquipText", "insPolEquipCancel", "insPolLivestockText", "insPolLivestockCancel", "insPolClaims" }) do
+    "insPolCropCancel", "insPolEquipText", "insPolEquipCancel", "insPolLivestockText", "insPolLivestockCancel", "insPolClaims",
+    "insNavClaims", "insClaims", "insClaimFilter", "insClaimTable", "insClaimScrollUp", "insClaimScrollDown", "insClaimInfo",
+    "insClaimDetailHead", "insClaimDetailStatus", "insClaimDetailText", "insClaimAccept", "insClaimBuyBack", "insClaimNote" }) do
     menu[id] = element(id)
+end
+for slot = 1, 10 do
+    local row = element("insClaimRow" .. slot)
+    row.cells = {}
+    for _, name in ipairs({ "day", "type", "subject", "status", "amount" }) do
+        row.cells[name] = element(name)
+        table.insert(row.elements, row.cells[name])
+    end
+    menu["insClaimRow" .. slot] = row
 end
 menu.pages = { P }
 
@@ -167,6 +185,78 @@ check("non-manager: note says why", menu.insStartNote.text, "tp_ins_note_manager
 isManager = true
 P:refresh()
 check("farm manager: Confirm enabled", menu.insConfirm.disabled, false)
+
+-- Claims section
+multiplayer, isServer, isManager = false, true, false
+TornadoInsurance.isEnabled = true
+click("insNavClaims")
+check("Claims visible, others hidden", menu.insClaims.visible and not menu.insStart.visible and not menu.insPolicies.visible, true)
+check("no claims: info says so", menu.insClaimInfo.text, "tp_ins_cl_none")
+check("no claims: row 1 hidden", menu.insClaimRow1.visible, false)
+check("no claims: no total-loss buttons", menu.insClaimAccept.visible, false)
+claimList = {
+    { kind = "EQUIP", id = 3, day = 12, status = "TOTAL", subject = "Fendt 942", values = { 230000, 200000, 2500, 0, 227500, 112500 },
+        flag = true, remaining = 0.25 },
+    { kind = "CROP", id = 7, day = 11, status = "APPROVED", subject = "14", info = "WHEAT", cause = "TORNADO", values = { 0.42, 8100 },
+        remaining = 1 / 24 },
+    { kind = "LIVESTOCK", id = 1, day = 10, status = "PAID", subject = "Cow barn", values = { 6, 9000, 10350, 6750, 3082 }, flag = true,
+        remaining = -1 },
+    { kind = "CROP", id = 2, day = 4, status = "DENIED", subject = "3", info = "BARLEY", cause = "TORNADO", values = { 0.05, 0 },
+        remaining = -1 },
+}
+P:refresh()
+check("4 claims: info", menu.insClaimInfo.text, "tp_msg_showing|1|4|4")
+check("row 1 day", menu.insClaimRow1.cells.day.text, "tp_msg_day 12")
+check("row 1 type", menu.insClaimRow1.cells.type.text, "tp_ins_cl_type_equip")
+check("row 1 status", menu.insClaimRow1.cells.status.text, "tp_ins_cs_total")
+check("row 1 amount = accept payout", menu.insClaimRow1.cells.amount.text, "$227500")
+check("row 2 subject = field", menu.insClaimRow2.cells.subject.text, "tp_ins_cl_field|14")
+check("row 3 livestock amount = state + policy", menu.insClaimRow3.cells.amount.text, "$9832")
+check("row 4 declined: no amount", menu.insClaimRow4.cells.amount.text, "-")
+check("row 5 hidden", menu.insClaimRow5.visible, false)
+check("first claim selected", P.claimTable:getSelected().id, 3)
+check("detail: burned + choice", has(menu.insClaimDetailText.text, "tp_ins_cl_equip_burned") and
+    has(menu.insClaimDetailText.text, "tp_ins_cl_total_choice|$227500|$112500"), true)
+check("detail: choose within (0.25 month x 24 days = 6 days)", has(menu.insClaimDetailText.text, "tp_ins_cl_next_total|6|0"), true)
+check("total loss: both buttons shown + enabled", menu.insClaimAccept.visible and menu.insClaimBuyBack.visible
+    and not menu.insClaimAccept.disabled and not menu.insClaimBuyBack.disabled, true)
+requests = {}
+local confirmsBefore = menu.confirms
+click("insClaimBuyBack")
+check("buy back asks first + sends claim id", menu.confirms == confirmsBefore + 1 and requests[1] == "equipBuyBack 3", true)
+click("insClaimAccept")
+check("accept sends claim id", requests[2], "equipAccept 3")
+-- Select the crop claim
+click("insClaimRow2")
+check("row 2 selected", P.claimTable:getSelected().id, 7)
+check("crop detail", has(menu.insClaimDetailText.text, "tp_ins_cl_crop_body|14|WHEAT|tp_cause_tornado|42"), true)
+check("crop detail: payout + payment in 1 day", has(menu.insClaimDetailText.text, "tp_ins_cl_payout|$8100")
+    and has(menu.insClaimDetailText.text, "tp_ins_cl_next_approved|1|0"), true)
+check("not a total loss: buttons hidden", menu.insClaimAccept.visible or menu.insClaimBuyBack.visible, false)
+click("insClaimRow3")
+check("livestock detail", has(menu.insClaimDetailText.text, "tp_ins_cl_lv_body|6|Cow barn|$9000")
+    and has(menu.insClaimDetailText.text, "tp_ins_cl_lv_gov|$6750") and has(menu.insClaimDetailText.text, "tp_ins_cl_lv_policy|$10350|$3082")
+    and has(menu.insClaimDetailText.text, "tp_ins_cl_done"), true)
+click("insClaimRow4")
+check("declined detail", has(menu.insClaimDetailText.text, "tp_ins_cl_denied"), true)
+-- Filters
+choose("insClaimFilter", "OPEN")
+check("open filter: 2 claims, 2 hidden", menu.insClaimInfo.text, "tp_msg_showing|1|2|2 tp_msg_hidden_short|2")
+choose("insClaimFilter", "LIVESTOCK")
+check("livestock filter: 1 claim", P.claimTable:getSelected().kind, "LIVESTOCK")
+P:onShow()
+check("new visit: filter back to All", P.state.claimFilter == "ALL" and #P.claimTable.entries == 4, true)
+-- Totalled vehicles kept on this server: one choice only
+TornadoInsurance.removeTotaled = false
+click("insClaimRow1")
+check("kept setting: keep text", has(menu.insClaimDetailText.text, "tp_ins_cl_total_keep|$112500"), true)
+check("kept setting: buy back hidden", menu.insClaimAccept.visible and not menu.insClaimBuyBack.visible, true)
+TornadoInsurance.removeTotaled = true
+-- Non-manager in multiplayer: may look, not choose
+multiplayer, isServer = true, false
+P:refresh()
+check("non-manager: accept disabled + note", menu.insClaimAccept.disabled and menu.insClaimNote.text == "tp_ins_note_manager", true)
+multiplayer, isServer = false, true
 
 -- Insurance off
 TornadoInsurance.isEnabled = false

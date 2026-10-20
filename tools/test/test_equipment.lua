@@ -438,6 +438,18 @@ check("state: status", received.state.equipStatus, E.STATUS_ACTIVE)
 check("state: titles", received.state.titles.combine, E.TITLE_REBUILT)
 check("state: total loss to choose", #received.state.equipTotals, 1)
 check("state: buy-back amount", received.state.equipTotals[1].buyBackPayout, 50)
+-- Claims section list (TornadoInsurance:getClaimList -> state event)
+local list = I:getClaimList(1)
+check("claim list: every equipment claim", #list, #I.farms[1].equipClaims)
+local pressSummary = nil
+for _, c in ipairs(received.state.claimList) do if c.subject == "press" or c.status == "TOTAL" then pressSummary = c end end
+check("claim list sent: the total loss", pressSummary ~= nil and pressSummary.kind, "EQUIP")
+check("claim list sent: buy-back amount", pressSummary.values[6], 50)
+check("claim list sent: auto-accept countdown running", pressSummary.remaining > 0, true)
+check("claim list sent: as many as the server has", #received.state.claimList, math.min(#list, 50))
+local newestFirst = true
+for i = 2, #list do if list[i].day > list[i - 1].day then newestFirst = false end end
+check("claim list newest first", newestFirst, true)
 check("stream fully read", #stream, 0)
 
 -- 15. Save / load (also a storm still running: its recorded values survive the reload)

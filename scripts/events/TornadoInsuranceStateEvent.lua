@@ -3,6 +3,7 @@
 --- control panel can show it. The server owns the state; clients only display it.
 ---   farm id, premiums paid, payouts received, crop policy (plan, coverage, status, open claims),
 ---   equipment policy (deductible, status), vehicle titles, total losses waiting for the farm's choice,
+---   claim list for the Insurance tab (the newest MAX_CLAIM_LIST, TornadoInsurance:getClaimList),
 ---   inbox (key + parameters, day, read) - the newest MAX_INBOX
 
 -- Events may only be registered while no mission exists (when the mod's scripts load). If this file is
@@ -18,6 +19,9 @@ TornadoInsuranceStateEvent.MAX_INBOX = 50   -- 6 bits
 TornadoInsuranceStateEvent.MAX_PARAMS = 15  -- 4 bits
 TornadoInsuranceStateEvent.MAX_TITLES = 255 -- 8 bits
 TornadoInsuranceStateEvent.MAX_TOTALS = 15  -- 4 bits
+TornadoInsuranceStateEvent.MAX_CLAIM_LIST = 50  -- 6 bits
+TornadoInsuranceStateEvent.CLAIM_VALUES = 6     -- numbers per claim summary
+TornadoInsuranceStateEvent.CLAIM_KINDS = { "CROP", "EQUIP", "LIVESTOCK" }   -- 2 bits (index - 1)
 
 function TornadoInsuranceStateEvent.emptyNew()
     return Event.new(TornadoInsuranceStateEvent_mt)
@@ -80,6 +84,31 @@ function TornadoInsuranceStateEvent:writeStream(streamId, connection)
 
     streamWriteString(streamId, state.livestock ~= nil and state.livestock.status or "")
 
+    local claims = TornadoInsurance ~= nil and TornadoInsurance.getClaimList ~= nil and TornadoInsurance:getClaimList(self.farmId) or {}
+    local numClaims = math.min(#claims, TornadoInsuranceStateEvent.MAX_CLAIM_LIST)
+    streamWriteUIntN(streamId, numClaims, 6)
+    for i = 1, numClaims do
+        local claim = claims[i]
+        local kindIndex = 1
+        for k, kind in ipairs(TornadoInsuranceStateEvent.CLAIM_KINDS) do
+            if kind == claim.kind then
+                kindIndex = k
+            end
+        end
+        streamWriteUIntN(streamId, kindIndex - 1, 2)
+        streamWriteInt32(streamId, claim.id or 0)
+        streamWriteInt32(streamId, claim.day or 0)
+        streamWriteString(streamId, claim.status or "")
+        streamWriteString(streamId, claim.subject or "")
+        streamWriteString(streamId, claim.info or "")
+        streamWriteString(streamId, claim.cause or "")
+        for v = 1, TornadoInsuranceStateEvent.CLAIM_VALUES do
+            streamWriteFloat32(streamId, claim.values ~= nil and claim.values[v] or 0)
+        end
+        streamWriteBool(streamId, claim.flag == true)
+        streamWriteFloat32(streamId, claim.remaining or -1)
+    end
+
     local inbox = state.inbox or {}
     local first = math.max(1, #inbox - TornadoInsuranceStateEvent.MAX_INBOX + 1)
     streamWriteUIntN(streamId, #inbox - first + 1, 6)
@@ -127,6 +156,24 @@ function TornadoInsuranceStateEvent:readStream(streamId, connection)
             lossPayout = streamReadFloat32(streamId), buyBackPayout = streamReadFloat32(streamId), status = "TOTAL" })
     end
     state.livestockStatus = streamReadString(streamId)
+    state.claimList = {}
+    local numClaims = streamReadUIntN(streamId, 6)
+    for _ = 1, numClaims do
+        local claim = { values = {} }
+        claim.kind = TornadoInsuranceStateEvent.CLAIM_KINDS[streamReadUIntN(streamId, 2) + 1] or "CROP"
+        claim.id = streamReadInt32(streamId)
+        claim.day = streamReadInt32(streamId)
+        claim.status = streamReadString(streamId)
+        claim.subject = streamReadString(streamId)
+        claim.info = streamReadString(streamId)
+        claim.cause = streamReadString(streamId)
+        for v = 1, TornadoInsuranceStateEvent.CLAIM_VALUES do
+            claim.values[v] = streamReadFloat32(streamId)
+        end
+        claim.flag = streamReadBool(streamId)
+        claim.remaining = streamReadFloat32(streamId)
+        table.insert(state.claimList, claim)
+    end
     local count = streamReadUIntN(streamId, 6)
     for _ = 1, count do
         local message = { params = {} }

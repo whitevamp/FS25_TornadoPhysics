@@ -38,39 +38,6 @@ local function hasInsurance()
     return TornadoInsurance ~= nil
 end
 
-local function getPlayerFarmId()
-    local farmId = g_currentMission ~= nil and g_currentMission.getFarmId ~= nil and g_currentMission:getFarmId() or 0
-    return farmId or 0
-end
-
--- Equipment total-loss rows act for the player's own farm (the server checks the permission).
-local function equipPolicyAvailable()
-    return TornadoInsurance ~= nil and TornadoInsuranceEquipment ~= nil and TornadoInsurance.isEnabled
-end
-
-local function getPlayerEquipPolicy()
-    local farm = TornadoInsurance.farms ~= nil and TornadoInsurance.farms[getPlayerFarmId()] or nil
-    return farm ~= nil and farm.equipment or nil, farm
-end
-
--- Total loss picked in the panel (claim id, this machine only).
-local equipChoice = { claimId = nil }
-
-local function getPendingTotals()
-    local _, farm = getPlayerEquipPolicy()
-    return TornadoInsuranceEquipment:getPendingTotals(farm)
-end
-
-local function getChosenTotal()
-    local totals = getPendingTotals()
-    for _, claim in ipairs(totals) do
-        if claim.id == equipChoice.claimId then
-            return claim
-        end
-    end
-    return totals[1]
-end
-
 local function penaltyRow(id, field, sub)
     return {
         id = id,
@@ -444,68 +411,7 @@ TornadoPageModules = TornadoMenuPage.new("Modules", "Modules", {
     },
     penaltyRow("modInsuranceSalvage", "salvagePenalty", "salvage"),
     penaltyRow("modInsuranceRebuilt", "rebuiltPenalty", "rebuilt"),
-    -- Equipment total losses waiting for a choice (moves to the Insurance tab's Claims section later).
-    -- Buying / changing / cancelling policies: Insurance tab.
-    {
-        id = "modInsuranceEquipTotal",
-        kind = Page.KIND_CHOICE,
-        requires = equipPolicyAvailable,
-        localOnly = true,
-        keepClean = true,
-        options = function()
-            local options = {}
-            for _, claim in ipairs(getPendingTotals()) do
-                options[#options + 1] = { value = claim.id, text = TornadoText.format("tp_insurance_equip_total_option",
-                    claim.name or "?", TornadoText.money(claim.lossPayout or 0), TornadoText.money(claim.buyBackPayout or 0)) }
-            end
-            if #options == 0 then
-                options[1] = { value = 0, text = TornadoText.get("tp_insurance_equip_total_none") }
-            end
-            return options
-        end,
-        get = function()
-            local claim = getChosenTotal()
-            return claim ~= nil and claim.id or 0
-        end,
-        set = function(value)
-            equipChoice.claimId = value
-            return nil
-        end,
-    },
-    {
-        id = "modInsuranceEquipAccept",
-        kind = Page.KIND_ACTION,
-        requires = equipPolicyAvailable,
-        localOnly = true,
-        keepClean = true,
-        confirm = "tp_confirm_equip_accept",
-        run = function()
-            local claim = getChosenTotal()
-            if claim == nil then
-                return TornadoText.get("tp_insurance_equip_total_none")
-            end
-            TornadoInsurance:requestAction(getPlayerFarmId(), "equipAccept", tostring(claim.id))
-            equipChoice.claimId = nil
-            return nil
-        end,
-    },
-    {
-        id = "modInsuranceEquipBuyBack",
-        kind = Page.KIND_ACTION,
-        requires = equipPolicyAvailable,
-        localOnly = true,
-        keepClean = true,
-        confirm = "tp_confirm_equip_buyback",
-        run = function()
-            local claim = getChosenTotal()
-            if claim == nil then
-                return TornadoText.get("tp_insurance_equip_total_none")
-            end
-            TornadoInsurance:requestAction(getPlayerFarmId(), "equipBuyBack", tostring(claim.id))
-            equipChoice.claimId = nil
-            return nil
-        end,
-    },
+    -- Buying / changing / cancelling policies and total-loss choices: Insurance tab.
     {
         id = "modInsuranceRegion",
         kind = Page.KIND_CHOICE,

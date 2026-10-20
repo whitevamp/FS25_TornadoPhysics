@@ -180,6 +180,10 @@ before = balance
 realDays(1)
 check("paid", claim.status, "PAID")
 check("money in", balance - before, 5700)
+local summary = I:getClaimList(1)[1]
+check("claim list: livestock summary", summary ~= nil and summary.kind == "LIVESTOCK" and summary.status == "PAID", true)
+check("claim list: animals, value, policy payout", summary.values[1] == 3 and summary.values[2] == 6000 and summary.values[5] == 5700, true)
+check("claim list: no countdown when paid", summary.remaining, -1)
 
 -- 4. United States: the state pays 75 %, the policy the rest (minus the excess)
 country = "US"

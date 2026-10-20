@@ -318,8 +318,8 @@
         <text name="tp_pen_pasture" text="Weide"/>
         <text name="tp_pen_meadow" text="Weiland"/>
         <text name="tp_pen_fence" text="Omheining"/>
-        <text name="tp_msg_tow_bill" text="NOODSLEEPDIENST: %s in rekening gebracht (slepen %s, %d kapotte onderdelen, voertuigwaarde %s)"/>
-        <text name="tp_msg_tow_bill_engine" text="NOODSLEEPDIENST: %s in rekening gebracht (slepen %s, %d kapotte onderdelen, voertuigwaarde %s, motorwerk %s)"/>
+        <text name="tp_msg_tow_bill" text="NOODSLEEPDIENST: %s in rekening gebracht (slepen %s, %d kapotte onderdelen, nieuwprijs %s)"/>
+        <text name="tp_msg_tow_bill_engine" text="NOODSLEEPDIENST: %s in rekening gebracht (slepen %s, %d kapotte onderdelen, nieuwprijs %s, motorwerk %s)"/>
         <text name="tp_map_line" text="EF:%d  Wind:%d-%d mph  Straal:%d m  Afstand:%s"/>
         <text name="tp_hotspot_title" text="EF:%d  Wind:%s  Straal:%s  Afstand:%s"/>
         <text name="tp_map_storm" text="Onweer: %s"/>
@@ -473,6 +473,50 @@
         <text name="tp_ins_pol_livestock_none" text="Geen veeverzekering."/>
         <text name="tp_ins_pol_claims" text="Openstaande schades: %d (de brieven staan op het tabblad Berichten)."/>
         <text name="tp_ins_grows" text="Je polissen groeien mee met je boerderij: velden, voertuigen en dieren die je later koopt zijn automatisch gedekt, en de maandprijs volgt wat je bezit - opnieuw afsluiten is niet nodig."/>
+        <text name="tp_ins_nav_claims" text="Claims"/>
+        <text name="tp_ins_cl_title" text="Je claims"/>
+        <text name="tp_ins_cl_filter" text="Toon"/>
+        <text name="tp_ins_cl_f_all" text="Alle"/>
+        <text name="tp_ins_cl_f_open" text="Open"/>
+        <text name="tp_ins_cl_type_crop" text="Oogst"/>
+        <text name="tp_ins_cl_type_equip" text="Materieel"/>
+        <text name="tp_ins_cl_type_livestock" text="Vee"/>
+        <text name="tp_ins_cl_col_day" text="Dag"/>
+        <text name="tp_ins_cl_col_type" text="Soort"/>
+        <text name="tp_ins_cl_col_subject" text="Wat"/>
+        <text name="tp_ins_cl_col_status" text="Status"/>
+        <text name="tp_ins_cl_col_amount" text="Uitkering"/>
+        <text name="tp_ins_cl_field" text="Veld %s"/>
+        <text name="tp_ins_cs_received" text="Gemeld"/>
+        <text name="tp_ins_cs_inspected" text="Beoordeeld"/>
+        <text name="tp_ins_cs_approved" text="Goedgekeurd"/>
+        <text name="tp_ins_cs_paid" text="Uitbetaald"/>
+        <text name="tp_ins_cs_denied" text="Afgewezen"/>
+        <text name="tp_ins_cs_total" text="Total loss"/>
+        <text name="tp_ins_cs_settled" text="Afgehandeld"/>
+        <text name="tp_ins_cs_bought_back" text="Teruggekocht"/>
+        <text name="tp_ins_cl_selected" text="Gekozen claim"/>
+        <text name="tp_ins_cl_crop_body" text="Veld %s, %s. Oorzaak: %s. Oogst verloren bij deze gebeurtenis: %d procent."/>
+        <text name="tp_date_year" text="jaar %d"/>
+        <text name="tp_ins_cl_payout" text="Uitkering: %s"/>
+        <text name="tp_ins_cl_equip_body" text="Verzekerde waarde (huidige verkoopprijs): %s. Schatting stormschade: %s (slijtage van voor de storm is niet gedekt). Eigen risico: %s."/>
+        <text name="tp_ins_cl_equip_burned" text="Het voertuig is uitgebrand - dat is altijd total loss."/>
+        <text name="tp_ins_cl_total_choice" text="Accepteren: de verzekeraar betaalt %s en neemt het wrak. Terugkopen: je krijgt %s en houdt het met een Salvage-titel (lagere verkoopprijs)."/>
+        <text name="tp_ins_cl_total_keep" text="Op deze server blijven total-loss-voertuigen: accepteren betaalt %s en je houdt het voertuig met een Salvage-titel (lagere verkoopprijs)."/>
+        <text name="tp_ins_cl_lv_body" text="%d dieren gedood bij %s. Marktwaarde: %s."/>
+        <text name="tp_ins_cl_lv_gov" text="Overheidsprogramma (USDA LIP) betaalt: %s."/>
+        <text name="tp_ins_cl_lv_policy" text="Verzekerde waarde: %s. Je polis betaalt: %s."/>
+        <text name="tp_ins_cl_next_received" text="De expert komt over ongeveer %d dagen %d uur."/>
+        <text name="tp_ins_cl_next_inspected" text="Beslissing over ongeveer %d dagen %d uur."/>
+        <text name="tp_ins_cl_next_approved" text="Betaling over ongeveer %d dagen %d uur."/>
+        <text name="tp_ins_cl_next_total" text="Kies binnen %d dagen %d uur - daarna wordt de total loss voor je geaccepteerd."/>
+        <text name="tp_ins_cl_denied" text="Afgewezen - de brief op het tabblad Berichten zegt waarom."/>
+        <text name="tp_ins_cl_done" text="Gesloten - het geld is aan de boerderij betaald."/>
+        <text name="tp_ins_cl_hidden" text="Geen claims voor dit filter (%d verborgen)."/>
+        <text name="tp_ins_cl_none" text="Nog geen claims. Als een storm iets verzekerds beschadigt, verschijnt de claim hier."/>
+        <text name="tp_ins_choice_sent" text="Keuze verzonden - de brief volgt op het tabblad Berichten."/>
+        <text name="tp_btn_ins_accept_total" text="Total loss accepteren"/>
+        <text name="tp_btn_ins_buy_back" text="Terugkopen"/>
         <text name="tp_ins_pol_change_hint" text="Om een polis te wijzigen, kies je de nieuwe dekking onder Begin hier en vraag je een offerte."/>
         <text name="tp_dir_N" text="N"/>
         <text name="tp_dir_NE" text="NO"/>

@@ -164,6 +164,21 @@
   policy started are covered automatically, and the monthly premium is
   recalculated each month from what the farm owns. No need to buy again;
   the quote and My policies say so.
+- "Claims": every claim of the farm (crop, equipment, livestock) in a table
+  - day, type, what (field / vehicle / pasture), status and payout - with a
+  filter (All / Open / one type), mouse wheel and scroll buttons. The
+  selected claim shows its amounts (repair estimate, deductible, insured
+  value, state programme share ...) and what happens next and when ("the
+  adjuster visits in about 2 days 4 hours"). A total loss is decided here:
+  Accept total loss / Buy back (asks first; only farm managers and the
+  admin). The total-loss rows left the Modules tab.
+- Dates on the Insurance and Messages tabs are shown like the game's
+  calendar ("Aug" at 1 day per month, "Aug 3" otherwise, "Aug 3, year 2" in
+  the claim details) instead of the save's day counter ("Day 6").
+- Equipment claims say what the numbers are: the insured value is what the
+  vehicle sells for now, and the storm damage estimate leaves out wear from
+  before the storm. The tow bill now says "new price" (the price it is
+  scaled by) instead of "vehicle value".
 
 [UI] Messages Tab
 - New control panel tab with the mod's messages to your farm (insurance

@@ -74,6 +74,7 @@ function TornadoInsuranceLivestock:install(insurance)
     for kind, fn in pairs(handlers) do
         insurance:registerTimerHandler(kind, function(_, timer) fn(TornadoInsuranceLivestock, timer) end)
     end
+    insurance:registerClaimSource(function(_, farmId, farm, list) TornadoInsuranceLivestock:addClaimSummaries(farmId, farm, list) end)
     insurance:registerAction("livestockBuy", true, function(_, farmId) return TornadoInsuranceLivestock:buy(farmId) end)
     insurance:registerAction("livestockCancel", true, function(_, farmId) return TornadoInsuranceLivestock:cancel(farmId) end)
     insurance:registerFarmData(function(xmlId, key, farm) TornadoInsuranceLivestock:saveFarm(xmlId, key, farm) end,
@@ -391,6 +392,22 @@ function TornadoInsuranceLivestock:onPayout(timer)
     if (claim.payout or 0) > 0 then
         self.insurance:payOut(timer.farmId, claim.payout, "tp_msg_ins_lv_claim_paid",
             { TornadoText.str(claim.place), TornadoText.cash(claim.payout) })
+    end
+end
+
+--- Claim summaries for the Insurance tab (TornadoInsurance:registerClaimSource): values = { animals, market value,
+--- insured value (0 = no policy), state payout, policy payout }; flag = state programme (USDA LIP) pays too.
+function TornadoInsuranceLivestock:addClaimSummaries(farmId, farm, list)
+    local kinds = { [self.TIMER_ADJUSTER] = true, [self.TIMER_DECISION] = true, [self.TIMER_PAYOUT] = true }
+    for _, claim in ipairs(farm ~= nil and farm.livestockClaims or {}) do
+        local govPayout, payout = claim.govPayout or 0, claim.payout or 0
+        if claim.status == "RECEIVED" or claim.status == "INSPECTED" then
+            govPayout, payout = self:decide(claim)   -- what the decision will pay (shown as expected)
+        end
+        table.insert(list, { kind = "LIVESTOCK", id = claim.id, day = claim.day or 0, status = claim.status or "",
+            subject = claim.place or "?", info = "", cause = "",
+            values = { claim.count or 0, claim.value or 0, claim.insured or 0, govPayout, payout }, flag = claim.gov == true,
+            remaining = self.insurance:getTimerRemaining(farmId, kinds, tostring(claim.id)) })
     end
 end
 
