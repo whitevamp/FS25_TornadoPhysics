@@ -690,7 +690,7 @@ function TornadoInsuranceCrop:onPayout(timer)
     end
     claim.status = "PAID"
     self.insurance:payOut(timer.farmId, claim.payout, "tp_msg_ins_claim_paid",
-        { TornadoText.num(claim.fieldId), TornadoText.cash(claim.payout) })
+        { TornadoText.num(claim.fieldId), TornadoText.cash(claim.payout) }, "crop")
 end
 
 --- Claim summaries for the Insurance tab (TornadoInsurance:registerClaimSource): values = { share lost, payout }.

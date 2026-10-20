@@ -517,6 +517,44 @@
         <text name="tp_ins_choice_sent" text="Choix envoyé - la lettre suit dans l'onglet Messages."/>
         <text name="tp_btn_ins_accept_total" text="Accepter la perte totale"/>
         <text name="tp_btn_ins_buy_back" text="Racheter"/>
+        <text name="tp_ins_nav_payments" text="Paiements"/>
+        <text name="tp_ins_nav_info" text="Infos couverture"/>
+        <text name="tp_ins_pay_title" text="Historique mensuel"/>
+        <text name="tp_ins_pay_col_month" text="Mois"/>
+        <text name="tp_ins_pay_col_premiums" text="Primes"/>
+        <text name="tp_ins_pay_col_payouts" text="Indemnités"/>
+        <text name="tp_ins_pay_col_net" text="Solde"/>
+        <text name="tp_ins_pay_totals" text="Totaux"/>
+        <text name="tp_ins_pay_selected" text="Mois sélectionné"/>
+        <text name="tp_ins_pay_state" text="Programme public"/>
+        <text name="tp_ins_pay_other" text="Autre"/>
+        <text name="tp_ins_pay_premiums_total" text="Primes payées jusqu'ici : %s"/>
+        <text name="tp_ins_pay_payouts_total" text="Indemnités reçues jusqu'ici : %s"/>
+        <text name="tp_ins_pay_balance_plus" text="L'assurance vous a versé %s de plus qu'elle n'a coûté."/>
+        <text name="tp_ins_pay_balance_minus" text="Jusqu'ici l'assurance a coûté %s de plus qu'elle n'a versé."/>
+        <text name="tp_ins_pay_next" text="Prochaine facture au changement de mois : environ %s (%s)."/>
+        <text name="tp_ins_pay_next_none" text="Prochaine facture : rien - aucun contrat n'est actif."/>
+        <text name="tp_ins_pay_pending" text="Les contrats encore en délai d'attente sont facturés dès qu'ils commencent."/>
+        <text name="tp_ins_pay_month_premiums" text="Primes : %s"/>
+        <text name="tp_ins_pay_month_payouts" text="Indemnités : %s"/>
+        <text name="tp_ins_pay_none" text="Aucun paiement pour l'instant."/>
+        <text name="tp_ins_info_title" text="Comment fonctionne votre assurance"/>
+        <text name="tp_ins_info_region" text="Règles et prix de : %s."/>
+        <text name="tp_ins_info_crop" text="Récolte : couvre chaque champ de la ferme avec une culture assurable. Formules ici : %s. Couverture %d - %d pour cent de la valeur de récolte attendue. Souscrire ou modifier un contrat récolte : %s."/>
+        <text name="tp_ins_info_sales_open" text="possible maintenant"/>
+        <text name="tp_ins_info_sales_closed" text="seulement en %s (fermé maintenant)"/>
+        <text name="tp_ins_info_equip" text="Matériel : chaque véhicule de la ferme, évalué à %s. Prix par an, en part de cette valeur, selon la franchise : %s. %d pour cent de dégâts ou un véhicule brûlé, c'est une perte totale."/>
+        <text name="tp_ins_info_value_sell" text="son prix de vente actuel"/>
+        <text name="tp_ins_info_value_replacement" text="son prix de vente actuel plus 15 pour cent (valeur de remplacement)"/>
+        <text name="tp_ins_info_rate" text="%s : %s pour cent"/>
+        <text name="tp_ins_info_total" text="Perte totale : accepter (l'assureur paie la valeur moins la franchise et prend le véhicule) ou racheter (vous le gardez avec un titre d'épave, prix de vente -%d pour cent ; réparé il devient Reconstruit, -%d pour cent). L'usure d'avant la tempête n'est pas couverte."/>
+        <text name="tp_ins_info_total_keep" text="Perte totale : sur ce serveur les véhicules restent à la ferme - vous recevez la valeur moins la franchise et la valeur d'épave et gardez le véhicule avec un titre d'épave (prix de vente -%d pour cent ; réparé Reconstruit, -%d pour cent). L'usure d'avant la tempête n'est pas couverte."/>
+        <text name="tp_ins_info_livestock" text="Bétail : chaque animal des pâtures de la ferme, évalué à son prix de vente. Environ %s pour cent par an de la valeur du troupeau ; %d pour cent de franchise sur chaque sinistre."/>
+        <text name="tp_ins_info_livestock_gov" text="Sur cette carte le USDA Livestock Indemnity Program paie gratuitement %d pour cent de la valeur marchande (même sans contrat) ; un contrat paie le reste."/>
+        <text name="tp_ins_info_timing" text="Délais (en jours réels, 30 = un mois de jeu ; ici %d jours par mois) : une nouvelle couverture commence après %s ; après un sinistre l'expert vient dans %s, la décision suit %s plus tard et le paiement %s après. Une perte totale non décidée dans les %s est acceptée pour vous."/>
+        <text name="tp_ins_info_duration" text="%d j %d h"/>
+        <text name="tp_ins_info_billing" text="Les primes sont facturées à chaque changement de mois, selon ce que la ferme possède alors."/>
+        <text name="tp_ins_info_manage" text="Les gérants de ferme et l'admin du serveur peuvent souscrire, modifier, résilier les contrats et décider des pertes totales ; les autres peuvent consulter."/>
         <text name="tp_ins_pol_change_hint" text="Pour modifier un contrat, choisissez la nouvelle couverture dans Commencer ici et demandez un devis."/>
         <text name="tp_dir_N" text="N"/>
         <text name="tp_dir_NE" text="NE"/>

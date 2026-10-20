@@ -517,6 +517,44 @@
         <text name="tp_ins_choice_sent" text="Wybór wysłany - list pojawi się w zakładce Wiadomości."/>
         <text name="tp_btn_ins_accept_total" text="Przyjmij szkodę całkowitą"/>
         <text name="tp_btn_ins_buy_back" text="Odkup"/>
+        <text name="tp_ins_nav_payments" text="Płatności"/>
+        <text name="tp_ins_nav_info" text="Informacje o ochronie"/>
+        <text name="tp_ins_pay_title" text="Historia miesięczna"/>
+        <text name="tp_ins_pay_col_month" text="Miesiąc"/>
+        <text name="tp_ins_pay_col_premiums" text="Składki"/>
+        <text name="tp_ins_pay_col_payouts" text="Wypłaty"/>
+        <text name="tp_ins_pay_col_net" text="Saldo"/>
+        <text name="tp_ins_pay_totals" text="Podsumowanie"/>
+        <text name="tp_ins_pay_selected" text="Wybrany miesiąc"/>
+        <text name="tp_ins_pay_state" text="Program państwowy"/>
+        <text name="tp_ins_pay_other" text="Inne"/>
+        <text name="tp_ins_pay_premiums_total" text="Dotychczas zapłacone składki: %s"/>
+        <text name="tp_ins_pay_payouts_total" text="Dotychczas otrzymane wypłaty: %s"/>
+        <text name="tp_ins_pay_balance_plus" text="Ubezpieczenie wypłaciło ci o %s więcej, niż kosztowało."/>
+        <text name="tp_ins_pay_balance_minus" text="Jak dotąd ubezpieczenie kosztowało o %s więcej, niż wypłaciło."/>
+        <text name="tp_ins_pay_next" text="Następny rachunek przy zmianie miesiąca: ok. %s (%s)."/>
+        <text name="tp_ins_pay_next_none" text="Następny rachunek: brak - żadna polisa nie jest aktywna."/>
+        <text name="tp_ins_pay_pending" text="Polisy w okresie karencji są naliczane dopiero od ich rozpoczęcia."/>
+        <text name="tp_ins_pay_month_premiums" text="Składki: %s"/>
+        <text name="tp_ins_pay_month_payouts" text="Wypłaty: %s"/>
+        <text name="tp_ins_pay_none" text="Brak płatności."/>
+        <text name="tp_ins_info_title" text="Jak działa twoje ubezpieczenie"/>
+        <text name="tp_ins_info_region" text="Zasady i ceny: %s."/>
+        <text name="tp_ins_info_crop" text="Uprawy: obejmuje każde pole gospodarstwa z ubezpieczalną uprawą. Plany tutaj: %s. Ochrona %d - %d procent oczekiwanej wartości zbiorów. Zakup lub zmiana polisy: %s."/>
+        <text name="tp_ins_info_sales_open" text="możliwe teraz"/>
+        <text name="tp_ins_info_sales_closed" text="tylko w: %s (teraz zamknięte)"/>
+        <text name="tp_ins_info_equip" text="Sprzęt: każdy pojazd gospodarstwa, wyceniony jako %s. Cena za rok jako część tej wartości, wg udziału własnego: %s. %d procent uszkodzeń lub spalony pojazd to szkoda całkowita."/>
+        <text name="tp_ins_info_value_sell" text="obecna cena sprzedaży"/>
+        <text name="tp_ins_info_value_replacement" text="obecna cena sprzedaży plus 15 procent (wartość odtworzeniowa)"/>
+        <text name="tp_ins_info_rate" text="%s: %s procent"/>
+        <text name="tp_ins_info_total" text="Szkoda całkowita: przyjmij (ubezpieczyciel płaci wartość minus udział własny i zabiera pojazd) albo odkup (zatrzymujesz go z tytułem wraku, cena sprzedaży -%d procent; po naprawie staje się Odbudowany, -%d procent). Zużycie sprzed burzy nie jest objęte."/>
+        <text name="tp_ins_info_total_keep" text="Szkoda całkowita: na tym serwerze pojazdy zostają w gospodarstwie - dostajesz wartość minus udział własny i wartość wraku, a pojazd zostaje z tytułem wraku (cena sprzedaży -%d procent; po naprawie Odbudowany, -%d procent). Zużycie sprzed burzy nie jest objęte."/>
+        <text name="tp_ins_info_livestock" text="Zwierzęta: każde zwierzę na pastwiskach gospodarstwa, wycenione wg ceny sprzedaży. Ok. %s procent wartości stada rocznie; %d procent udziału własnego przy każdej szkodzie."/>
+        <text name="tp_ins_info_livestock_gov" text="Na tej mapie program USDA Livestock Indemnity Program bezpłatnie wypłaca %d procent wartości rynkowej (także bez polisy); polisa pokrywa resztę."/>
+        <text name="tp_ins_info_timing" text="Czas (w dniach rzeczywistych, 30 = jeden miesiąc gry; tutaj %d dni na miesiąc): nowa ochrona zaczyna się po %s; po zgłoszeniu rzeczoznawca przyjeżdża za %s, decyzja zapada %s później, a wypłata %s po niej. Szkoda całkowita bez decyzji w ciągu %s zostaje przyjęta za ciebie."/>
+        <text name="tp_ins_info_duration" text="%d d %d godz."/>
+        <text name="tp_ins_info_billing" text="Składki są naliczane przy każdej zmianie miesiąca, według tego, co gospodarstwo wtedy posiada."/>
+        <text name="tp_ins_info_manage" text="Zarządcy gospodarstwa i admin serwera mogą kupować, zmieniać, anulować polisy i decydować o szkodach całkowitych; pozostali mogą tylko patrzeć."/>
         <text name="tp_ins_pol_change_hint" text="Aby zmienić polisę, wybierz nową ochronę w Zacznij tutaj i poproś o wycenę."/>
         <text name="tp_dir_N" text="Pn"/>
         <text name="tp_dir_NE" text="Pn-Wsch"/>

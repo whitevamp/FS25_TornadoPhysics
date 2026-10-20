@@ -517,6 +517,44 @@
         <text name="tp_ins_choice_sent" text="Keuze verzonden - de brief volgt op het tabblad Berichten."/>
         <text name="tp_btn_ins_accept_total" text="Total loss accepteren"/>
         <text name="tp_btn_ins_buy_back" text="Terugkopen"/>
+        <text name="tp_ins_nav_payments" text="Betalingen"/>
+        <text name="tp_ins_nav_info" text="Dekkingsinfo"/>
+        <text name="tp_ins_pay_title" text="Maandoverzicht"/>
+        <text name="tp_ins_pay_col_month" text="Maand"/>
+        <text name="tp_ins_pay_col_premiums" text="Premies"/>
+        <text name="tp_ins_pay_col_payouts" text="Uitkeringen"/>
+        <text name="tp_ins_pay_col_net" text="Saldo"/>
+        <text name="tp_ins_pay_totals" text="Totalen"/>
+        <text name="tp_ins_pay_selected" text="Gekozen maand"/>
+        <text name="tp_ins_pay_state" text="Overheidsprogramma"/>
+        <text name="tp_ins_pay_other" text="Overig"/>
+        <text name="tp_ins_pay_premiums_total" text="Tot nu toe betaalde premies: %s"/>
+        <text name="tp_ins_pay_payouts_total" text="Tot nu toe ontvangen uitkeringen: %s"/>
+        <text name="tp_ins_pay_balance_plus" text="De verzekering heeft je %s meer uitgekeerd dan ze kostte."/>
+        <text name="tp_ins_pay_balance_minus" text="Tot nu toe kostte de verzekering %s meer dan ze uitkeerde."/>
+        <text name="tp_ins_pay_next" text="Volgende rekening bij de maandwissel: ongeveer %s (%s)."/>
+        <text name="tp_ins_pay_next_none" text="Volgende rekening: niets - geen polis is actief."/>
+        <text name="tp_ins_pay_pending" text="Polissen in hun wachttijd worden pas gerekend zodra ze ingaan."/>
+        <text name="tp_ins_pay_month_premiums" text="Premies: %s"/>
+        <text name="tp_ins_pay_month_payouts" text="Uitkeringen: %s"/>
+        <text name="tp_ins_pay_none" text="Nog geen betalingen."/>
+        <text name="tp_ins_info_title" text="Zo werkt je verzekering"/>
+        <text name="tp_ins_info_region" text="Regels en prijzen van: %s."/>
+        <text name="tp_ins_info_crop" text="Oogst: dekt elk veld van de boerderij met een verzekerbaar gewas. Plannen hier: %s. Dekking %d - %d procent van de verwachte oogstwaarde. Een oogstpolis afsluiten of wijzigen: %s."/>
+        <text name="tp_ins_info_sales_open" text="nu mogelijk"/>
+        <text name="tp_ins_info_sales_closed" text="alleen in %s (nu gesloten)"/>
+        <text name="tp_ins_info_equip" text="Materieel: elk voertuig van de boerderij, gewaardeerd op %s. Prijs per jaar als deel van die waarde, per eigen risico: %s. %d procent schade of een uitgebrand voertuig is total loss."/>
+        <text name="tp_ins_info_value_sell" text="wat het nu opbrengt"/>
+        <text name="tp_ins_info_value_replacement" text="wat het nu opbrengt plus 15 procent (vervangingswaarde)"/>
+        <text name="tp_ins_info_rate" text="%s: %s procent"/>
+        <text name="tp_ins_info_total" text="Total loss: accepteren (de verzekeraar betaalt de waarde min het eigen risico en neemt het voertuig) of terugkopen (je houdt het met een Salvage-titel, verkoopprijs -%d procent; gerepareerd wordt het Rebuilt, -%d procent). Slijtage van voor de storm is niet gedekt."/>
+        <text name="tp_ins_info_total_keep" text="Total loss: op deze server blijven voertuigen op de boerderij - je krijgt de waarde min het eigen risico en de restwaarde en houdt het voertuig met een Salvage-titel (verkoopprijs -%d procent; gerepareerd Rebuilt, -%d procent). Slijtage van voor de storm is niet gedekt."/>
+        <text name="tp_ins_info_livestock" text="Vee: elk dier in de weides van de boerderij, gewaardeerd op de verkoopprijs. Ongeveer %s procent per jaar van de waarde van de kudde; %d procent eigen risico per claim."/>
+        <text name="tp_ins_info_livestock_gov" text="Op deze kaart betaalt het USDA Livestock Indemnity Program gratis %d procent van de marktwaarde (ook zonder polis); een polis betaalt de rest."/>
+        <text name="tp_ins_info_timing" text="Tijden (in echte dagen, 30 = één spelmaand; hier %d dagen per maand): nieuwe dekking begint na %s; na een claim komt de expert binnen %s, de beslissing volgt %s later en de betaling %s daarna. Een total loss zonder beslissing binnen %s wordt voor je geaccepteerd."/>
+        <text name="tp_ins_info_duration" text="%d d %d u"/>
+        <text name="tp_ins_info_billing" text="Premies worden bij elke maandwissel gerekend, naar wat de boerderij dan bezit."/>
+        <text name="tp_ins_info_manage" text="Boerderijbeheerders en de serverbeheerder kunnen polissen afsluiten, wijzigen, opzeggen en over total loss beslissen; de rest kan meekijken."/>
         <text name="tp_ins_pol_change_hint" text="Om een polis te wijzigen, kies je de nieuwe dekking onder Begin hier en vraag je een offerte."/>
         <text name="tp_dir_N" text="N"/>
         <text name="tp_dir_NE" text="NO"/>

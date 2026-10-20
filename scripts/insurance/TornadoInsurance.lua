@@ -290,11 +290,38 @@ function TornadoInsurance:getMonthIndex()
     return ((environment.currentYear or 1) - 1) * periods + (environment.currentPeriod or 1)
 end
 
-function TornadoInsurance:addHistory(farm, premiums, payouts)
+--- Amounts per policy type as one string for the savegame / network: { crop = 125, equipment = 59 } ->
+--- "crop=125;equipment=59" (sorted, so the same table always gives the same string).
+function TornadoInsurance.encodeParts(parts)
+    local names = {}
+    for name, amount in pairs(parts or {}) do
+        if (amount or 0) ~= 0 then
+            table.insert(names, name)
+        end
+    end
+    table.sort(names)
+    local items = {}
+    for _, name in ipairs(names) do
+        table.insert(items, string.format("%s=%.0f", name, parts[name]))
+    end
+    return table.concat(items, ";")
+end
+
+function TornadoInsurance.decodeParts(text)
+    local parts = {}
+    for name, amount in string.gmatch(text or "", "([%w_]+)=(%-?[%d%.]+)") do
+        parts[name] = tonumber(amount) or 0
+    end
+    return parts
+end
+
+--- Adds to the current month of the farm's history. premiumParts = { source name = amount } of this charge,
+--- payoutKind = the policy type of this payout ("crop", "equipment", "livestock", "state"; nil = other).
+function TornadoInsurance:addHistory(farm, premiums, payouts, premiumParts, payoutKind)
     local index = self:getMonthIndex()
     local last = farm.history[#farm.history]
     if last == nil or last.month ~= index then
-        last = { month = index, premiums = 0, payouts = 0 }
+        last = { month = index, premiums = 0, payouts = 0, premiumBy = {}, payoutBy = {} }
         table.insert(farm.history, last)
         while #farm.history > self.HISTORY_MONTHS do
             table.remove(farm.history, 1)
@@ -302,10 +329,20 @@ function TornadoInsurance:addHistory(farm, premiums, payouts)
     end
     last.premiums = last.premiums + (premiums or 0)
     last.payouts = last.payouts + (payouts or 0)
+    last.premiumBy = last.premiumBy or {}
+    last.payoutBy = last.payoutBy or {}
+    for name, amount in pairs(premiumParts or {}) do
+        last.premiumBy[name] = (last.premiumBy[name] or 0) + amount
+    end
+    if (payouts or 0) > 0 then
+        local kind = payoutKind or "other"
+        last.payoutBy[kind] = (last.payoutBy[kind] or 0) + payouts
+    end
 end
 
 --- Server: takes a premium from the farm. amount is final (cost scale already applied). Returns true when charged.
-function TornadoInsurance:chargePremium(farmId, amount, messageKey, params)
+--- parts = { source name = amount } (the monthly bill's policy types, for the Payments history).
+function TornadoInsurance:chargePremium(farmId, amount, messageKey, params, parts)
     if not isServer() or farmId == nil or farmId == 0 or amount == nil or amount <= 0 then
         return false
     end
@@ -319,7 +356,7 @@ function TornadoInsurance:chargePremium(farmId, amount, messageKey, params)
     g_currentMission:addMoney(-amount, farmId, self.moneyTypePremium or MoneyType.OTHER, true, true)
     local farm = self:getFarm(farmId)
     farm.premiumsTotal = farm.premiumsTotal + amount
-    self:addHistory(farm, amount, 0)
+    self:addHistory(farm, amount, 0, parts)
     if messageKey ~= nil then
         local messageParams = params or { TornadoText.cash(amount) }
         self:addInbox(farmId, messageKey, messageParams, MSG_INFO)
@@ -330,7 +367,8 @@ function TornadoInsurance:chargePremium(farmId, amount, messageKey, params)
 end
 
 --- Server: pays money to the farm (claims). amount comes from in-game values - no cost scale.
-function TornadoInsurance:payOut(farmId, amount, messageKey, params)
+--- kind = the policy type that pays ("crop", "equipment", "livestock", "state") - for the Payments history.
+function TornadoInsurance:payOut(farmId, amount, messageKey, params, kind)
     if not isServer() or farmId == nil or farmId == 0 or amount == nil or amount <= 0 then
         return false
     end
@@ -344,7 +382,7 @@ function TornadoInsurance:payOut(farmId, amount, messageKey, params)
     g_currentMission:addMoney(amount, farmId, self.moneyTypePayout or MoneyType.OTHER, true, true)
     local farm = self:getFarm(farmId)
     farm.payoutsTotal = farm.payoutsTotal + amount
-    self:addHistory(farm, 0, amount)
+    self:addHistory(farm, 0, amount, nil, kind)
     if messageKey ~= nil then
         self:addInbox(farmId, messageKey, params or { TornadoText.cash(amount) }, MSG_INFO)
     else
@@ -362,12 +400,16 @@ function TornadoInsurance:onPeriodChanged()
     for _, farm in ipairs(g_farmManager:getFarms()) do
         local farmId = farm.farmId
         if farmId ~= nil and farmId ~= 0 and (FarmManager == nil or farmId ~= FarmManager.SPECTATOR_FARM_ID) then
-            local total = 0
+            local total, parts = 0, {}
             for _, source in ipairs(self.premiumSources) do
-                total = total + math.max(0, tonumber(source.fn(self, farmId)) or 0)
+                local amount = math.max(0, tonumber(source.fn(self, farmId)) or 0)
+                total = total + amount
+                if amount > 0 then
+                    parts[source.name] = math.floor(amount * scale + 0.5)
+                end
             end
             if total > 0 then
-                self:chargePremium(farmId, total * scale, "tp_msg_ins_premium_charged")
+                self:chargePremium(farmId, total * scale, "tp_msg_ins_premium_charged", nil, parts)
             end
         end
     end
@@ -622,6 +664,7 @@ function TornadoInsurance:applyFarmState(farmId, state)
     farm.equipClaims = state.equipTotals or {}
     farm.livestock = (state.livestockStatus ~= nil and state.livestockStatus ~= "") and { status = state.livestockStatus } or nil
     farm.claimList = state.claimList or {}
+    farm.history = state.history or {}
     farm.claimListMs = self:getAbsoluteMs()
     if TornadoMenu ~= nil and TornadoMenu.INSTANCE ~= nil and TornadoMenu.INSTANCE.isOpen then
         TornadoMenu.INSTANCE:refreshAllPages()
@@ -844,7 +887,9 @@ function TornadoInsurance:loadState()
             local month = getXMLInt(xmlId, monthKey .. "#index")
             if month == nil then break end
             table.insert(farm.history, { month = month, premiums = getXMLFloat(xmlId, monthKey .. "#premiums") or 0,
-                payouts = getXMLFloat(xmlId, monthKey .. "#payouts") or 0 })
+                payouts = getXMLFloat(xmlId, monthKey .. "#payouts") or 0,
+                premiumBy = self.decodeParts(getXMLString(xmlId, monthKey .. "#premiumBy")),
+                payoutBy = self.decodeParts(getXMLString(xmlId, monthKey .. "#payoutBy")) })
             h = h + 1
         end
         for _, data in ipairs(self.farmData) do
@@ -909,6 +954,8 @@ function TornadoInsurance:save()
             setXMLInt(xmlId, monthKey .. "#index", month.month)
             setXMLFloat(xmlId, monthKey .. "#premiums", month.premiums)
             setXMLFloat(xmlId, monthKey .. "#payouts", month.payouts)
+            setXMLString(xmlId, monthKey .. "#premiumBy", self.encodeParts(month.premiumBy))
+            setXMLString(xmlId, monthKey .. "#payoutBy", self.encodeParts(month.payoutBy))
         end
         for _, data in ipairs(self.farmData) do
             data.save(xmlId, farmKey, farm)

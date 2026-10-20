@@ -529,7 +529,7 @@ function TornadoInsuranceEquipment:onPayout(timer)
     end
     claim.status = "PAID"
     self.insurance:payOut(timer.farmId, claim.payout, "tp_msg_ins_eq_claim_paid",
-        { TornadoText.str(claim.name), TornadoText.cash(claim.payout) })
+        { TornadoText.str(claim.name), TornadoText.cash(claim.payout) }, "equipment")
 end
 
 function TornadoInsuranceEquipment:onReminder(timer)
@@ -578,7 +578,7 @@ function TornadoInsuranceEquipment:choose(farmId, claimId, accept, auto)
             self:tryRemove(claim)
         end
         insurance:payOut(farmId, claim.payout, auto and "tp_msg_ins_eq_settled_auto" or "tp_msg_ins_eq_settled",
-            { TornadoText.str(claim.name), TornadoText.cash(claim.payout) })
+            { TornadoText.str(claim.name), TornadoText.cash(claim.payout) }, "equipment")
     else
         -- Bought back (or accepted while totalled vehicles are kept): the farm keeps the wreck.
         claim.status = "BOUGHT_BACK"
@@ -592,7 +592,7 @@ function TornadoInsuranceEquipment:choose(farmId, claimId, accept, auto)
         elseif accept then
             key = "tp_msg_ins_eq_kept"
         end
-        insurance:payOut(farmId, claim.payout, key, { TornadoText.str(claim.name), TornadoText.cash(claim.payout) })
+        insurance:payOut(farmId, claim.payout, key, { TornadoText.str(claim.name), TornadoText.cash(claim.payout) }, "equipment")
     end
     return nil
 end

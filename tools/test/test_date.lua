@@ -57,9 +57,15 @@ check("3 days/month: next year", TornadoText.date(37, true), "Mar 1, year 2")
 -- Southern map: months shifted by 6
 environment.daylight.latitude = -30
 check("southern map", TornadoText.date(20), "Mar 2")
+-- History months ((year - 1) * 12 + period), southern map still set: period 6 = Feb
+check("history month 6 (southern)", TornadoText.month(6), "Feb, year 1")
+environment.daylight.latitude = 40
+check("history month 6", TornadoText.month(6), "Aug, year 1")
+check("history month 13", TornadoText.month(13), "Mar, year 2")
 -- No environment: the old "Day N"
 g_currentMission = nil
 check("no environment: Day N", TornadoText.date(12), "Day 12")
+check("no environment: month fallback", TornadoText.month(13), "M1, year 2")
 
 print(string.format("\n%d / %d checks passed", total - failures, total))
 os.exit(failures == 0 and 0 or 1)

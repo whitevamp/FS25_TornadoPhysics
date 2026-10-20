@@ -627,6 +627,12 @@
             <Button profile="tornado_navButton" id="insNavClaims" position="0px -114px" text="$l10n_tp_ins_nav_claims" onClick="onClickAction">
                 <ThreePartBitmap profile="tornado_actionButtonBg"/>
             </Button>
+            <Button profile="tornado_navButton" id="insNavPayments" position="0px -166px" text="$l10n_tp_ins_nav_payments" onClick="onClickAction">
+                <ThreePartBitmap profile="tornado_actionButtonBg"/>
+            </Button>
+            <Button profile="tornado_navButton" id="insNavInfo" position="0px -218px" text="$l10n_tp_ins_nav_info" onClick="onClickAction">
+                <ThreePartBitmap profile="tornado_actionButtonBg"/>
+            </Button>
 
             <GuiElement profile="tornado_section" id="insStart">
                 <Text profile="tornado_detailTitle" position="260px -14px" text="$l10n_tp_ins_start_title"/>
@@ -789,6 +795,104 @@
                     <ThreePartBitmap profile="tornado_actionButtonBg"/>
                 </Button>
                 <Text profile="tornado_noteLine" id="insClaimNote" position="960px -632px" width="540px" text=""/>
+            </GuiElement>
+
+            <GuiElement profile="tornado_section" id="insPayments">
+                <Text profile="tornado_detailTitle" position="260px -14px" width="660px" text="$l10n_tp_ins_pay_title"/>
+                <GuiElement profile="tornado_claimTableArea" id="insPayTable" position="260px -62px">
+                    <Text profile="tornado_tableHeaderText" position="12px 0px" width="180px" text="$l10n_tp_ins_pay_col_month"/>
+                    <Text profile="tornado_tableHeaderText" position="200px 0px" width="150px" text="$l10n_tp_ins_pay_col_premiums"/>
+                    <Text profile="tornado_tableHeaderText" position="360px 0px" width="150px" text="$l10n_tp_ins_pay_col_payouts"/>
+                    <Text profile="tornado_tableHeaderText" position="520px 0px" width="150px" text="$l10n_tp_ins_pay_col_net"/>
+                    <Button profile="tornado_claimRow" id="insPayRow1" position="0px -30px" onClick="onClickAction" onFocus="onFocusRow">
+                        <ThreePartBitmap profile="tornado_tableRowBg" name="background"/>
+                        <Text profile="tornado_tableCell" name="month" position="12px 0px" width="180px" text=""/>
+                        <Text profile="tornado_tableCell" name="premiums" position="200px 0px" width="150px" text=""/>
+                        <Text profile="tornado_tableCell" name="payouts" position="360px 0px" width="150px" text=""/>
+                        <Text profile="tornado_tableCell" name="net" position="520px 0px" width="150px" text=""/>
+                    </Button>
+                    <Button profile="tornado_claimRow" id="insPayRow2" position="0px -78px" onClick="onClickAction" onFocus="onFocusRow">
+                        <ThreePartBitmap profile="tornado_tableRowBg" name="background"/>
+                        <Text profile="tornado_tableCell" name="month" position="12px 0px" width="180px" text=""/>
+                        <Text profile="tornado_tableCell" name="premiums" position="200px 0px" width="150px" text=""/>
+                        <Text profile="tornado_tableCell" name="payouts" position="360px 0px" width="150px" text=""/>
+                        <Text profile="tornado_tableCell" name="net" position="520px 0px" width="150px" text=""/>
+                    </Button>
+                    <Button profile="tornado_claimRow" id="insPayRow3" position="0px -126px" onClick="onClickAction" onFocus="onFocusRow">
+                        <ThreePartBitmap profile="tornado_tableRowBg" name="background"/>
+                        <Text profile="tornado_tableCell" name="month" position="12px 0px" width="180px" text=""/>
+                        <Text profile="tornado_tableCell" name="premiums" position="200px 0px" width="150px" text=""/>
+                        <Text profile="tornado_tableCell" name="payouts" position="360px 0px" width="150px" text=""/>
+                        <Text profile="tornado_tableCell" name="net" position="520px 0px" width="150px" text=""/>
+                    </Button>
+                    <Button profile="tornado_claimRow" id="insPayRow4" position="0px -174px" onClick="onClickAction" onFocus="onFocusRow">
+                        <ThreePartBitmap profile="tornado_tableRowBg" name="background"/>
+                        <Text profile="tornado_tableCell" name="month" position="12px 0px" width="180px" text=""/>
+                        <Text profile="tornado_tableCell" name="premiums" position="200px 0px" width="150px" text=""/>
+                        <Text profile="tornado_tableCell" name="payouts" position="360px 0px" width="150px" text=""/>
+                        <Text profile="tornado_tableCell" name="net" position="520px 0px" width="150px" text=""/>
+                    </Button>
+                    <Button profile="tornado_claimRow" id="insPayRow5" position="0px -222px" onClick="onClickAction" onFocus="onFocusRow">
+                        <ThreePartBitmap profile="tornado_tableRowBg" name="background"/>
+                        <Text profile="tornado_tableCell" name="month" position="12px 0px" width="180px" text=""/>
+                        <Text profile="tornado_tableCell" name="premiums" position="200px 0px" width="150px" text=""/>
+                        <Text profile="tornado_tableCell" name="payouts" position="360px 0px" width="150px" text=""/>
+                        <Text profile="tornado_tableCell" name="net" position="520px 0px" width="150px" text=""/>
+                    </Button>
+                    <Button profile="tornado_claimRow" id="insPayRow6" position="0px -270px" onClick="onClickAction" onFocus="onFocusRow">
+                        <ThreePartBitmap profile="tornado_tableRowBg" name="background"/>
+                        <Text profile="tornado_tableCell" name="month" position="12px 0px" width="180px" text=""/>
+                        <Text profile="tornado_tableCell" name="premiums" position="200px 0px" width="150px" text=""/>
+                        <Text profile="tornado_tableCell" name="payouts" position="360px 0px" width="150px" text=""/>
+                        <Text profile="tornado_tableCell" name="net" position="520px 0px" width="150px" text=""/>
+                    </Button>
+                    <Button profile="tornado_claimRow" id="insPayRow7" position="0px -318px" onClick="onClickAction" onFocus="onFocusRow">
+                        <ThreePartBitmap profile="tornado_tableRowBg" name="background"/>
+                        <Text profile="tornado_tableCell" name="month" position="12px 0px" width="180px" text=""/>
+                        <Text profile="tornado_tableCell" name="premiums" position="200px 0px" width="150px" text=""/>
+                        <Text profile="tornado_tableCell" name="payouts" position="360px 0px" width="150px" text=""/>
+                        <Text profile="tornado_tableCell" name="net" position="520px 0px" width="150px" text=""/>
+                    </Button>
+                    <Button profile="tornado_claimRow" id="insPayRow8" position="0px -366px" onClick="onClickAction" onFocus="onFocusRow">
+                        <ThreePartBitmap profile="tornado_tableRowBg" name="background"/>
+                        <Text profile="tornado_tableCell" name="month" position="12px 0px" width="180px" text=""/>
+                        <Text profile="tornado_tableCell" name="premiums" position="200px 0px" width="150px" text=""/>
+                        <Text profile="tornado_tableCell" name="payouts" position="360px 0px" width="150px" text=""/>
+                        <Text profile="tornado_tableCell" name="net" position="520px 0px" width="150px" text=""/>
+                    </Button>
+                    <Button profile="tornado_claimRow" id="insPayRow9" position="0px -414px" onClick="onClickAction" onFocus="onFocusRow">
+                        <ThreePartBitmap profile="tornado_tableRowBg" name="background"/>
+                        <Text profile="tornado_tableCell" name="month" position="12px 0px" width="180px" text=""/>
+                        <Text profile="tornado_tableCell" name="premiums" position="200px 0px" width="150px" text=""/>
+                        <Text profile="tornado_tableCell" name="payouts" position="360px 0px" width="150px" text=""/>
+                        <Text profile="tornado_tableCell" name="net" position="520px 0px" width="150px" text=""/>
+                    </Button>
+                    <Button profile="tornado_claimRow" id="insPayRow10" position="0px -462px" onClick="onClickAction" onFocus="onFocusRow">
+                        <ThreePartBitmap profile="tornado_tableRowBg" name="background"/>
+                        <Text profile="tornado_tableCell" name="month" position="12px 0px" width="180px" text=""/>
+                        <Text profile="tornado_tableCell" name="premiums" position="200px 0px" width="150px" text=""/>
+                        <Text profile="tornado_tableCell" name="payouts" position="360px 0px" width="150px" text=""/>
+                        <Text profile="tornado_tableCell" name="net" position="520px 0px" width="150px" text=""/>
+                    </Button>
+                </GuiElement>
+                <Button profile="tornado_tableButton" id="insPayScrollUp" position="260px -580px" width="160px" text="$l10n_tp_btn_scroll_up" onClick="onClickAction">
+                    <ThreePartBitmap profile="tornado_actionButtonBg"/>
+                </Button>
+                <Button profile="tornado_tableButton" id="insPayScrollDown" position="435px -580px" width="160px" text="$l10n_tp_btn_scroll_down" onClick="onClickAction">
+                    <ThreePartBitmap profile="tornado_actionButtonBg"/>
+                </Button>
+                <Text profile="tornado_tableInfoText" id="insPayInfo" position="610px -588px" width="330px" text=""/>
+
+                <Text profile="tornado_detailTitle" position="960px -14px" width="540px" text="$l10n_tp_ins_pay_totals"/>
+                <Text profile="tornado_detailBody" id="insPayTotals" position="960px -56px" width="540px" height="230px" text=""/>
+                <Text profile="tornado_detailTitle" position="960px -300px" width="540px" text="$l10n_tp_ins_pay_selected"/>
+                <Text profile="tornado_detailLine" id="insPayMonthHead" position="960px -346px" width="540px" text=""/>
+                <Text profile="tornado_detailBody" id="insPayMonthText" position="960px -380px" width="540px" height="240px" text=""/>
+            </GuiElement>
+
+            <GuiElement profile="tornado_section" id="insInfo">
+                <Text profile="tornado_detailTitle" position="260px -14px" width="1240px" text="$l10n_tp_ins_info_title"/>
+                <Text profile="tornado_infoBody" id="insInfoText" position="260px -56px" text=""/>
             </GuiElement>
         </GuiElement>
 

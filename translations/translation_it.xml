@@ -517,6 +517,44 @@
         <text name="tp_ins_choice_sent" text="Scelta inviata - la lettera segue nella scheda Messaggi."/>
         <text name="tp_btn_ins_accept_total" text="Accetta danno totale"/>
         <text name="tp_btn_ins_buy_back" text="Riacquista"/>
+        <text name="tp_ins_nav_payments" text="Pagamenti"/>
+        <text name="tp_ins_nav_info" text="Info copertura"/>
+        <text name="tp_ins_pay_title" text="Storico mensile"/>
+        <text name="tp_ins_pay_col_month" text="Mese"/>
+        <text name="tp_ins_pay_col_premiums" text="Premi"/>
+        <text name="tp_ins_pay_col_payouts" text="Rimborsi"/>
+        <text name="tp_ins_pay_col_net" text="Saldo"/>
+        <text name="tp_ins_pay_totals" text="Totali"/>
+        <text name="tp_ins_pay_selected" text="Mese selezionato"/>
+        <text name="tp_ins_pay_state" text="Programma statale"/>
+        <text name="tp_ins_pay_other" text="Altro"/>
+        <text name="tp_ins_pay_premiums_total" text="Premi pagati finora: %s"/>
+        <text name="tp_ins_pay_payouts_total" text="Rimborsi ricevuti finora: %s"/>
+        <text name="tp_ins_pay_balance_plus" text="L'assicurazione ti ha pagato %s più di quanto è costata."/>
+        <text name="tp_ins_pay_balance_minus" text="Finora l'assicurazione è costata %s più di quanto ha pagato."/>
+        <text name="tp_ins_pay_next" text="Prossima fattura al cambio di mese: circa %s (%s)."/>
+        <text name="tp_ins_pay_next_none" text="Prossima fattura: niente - nessuna polizza è attiva."/>
+        <text name="tp_ins_pay_pending" text="Le polizze ancora in periodo di attesa si pagano da quando iniziano."/>
+        <text name="tp_ins_pay_month_premiums" text="Premi: %s"/>
+        <text name="tp_ins_pay_month_payouts" text="Rimborsi: %s"/>
+        <text name="tp_ins_pay_none" text="Ancora nessun pagamento."/>
+        <text name="tp_ins_info_title" text="Come funziona la tua assicurazione"/>
+        <text name="tp_ins_info_region" text="Regole e prezzi di: %s."/>
+        <text name="tp_ins_info_crop" text="Raccolto: copre ogni campo della fattoria con una coltura assicurabile. Piani qui: %s. Copertura %d - %d per cento del valore atteso del raccolto. Acquisto o modifica di una polizza raccolto: %s."/>
+        <text name="tp_ins_info_sales_open" text="possibile ora"/>
+        <text name="tp_ins_info_sales_closed" text="solo a %s (ora chiuso)"/>
+        <text name="tp_ins_info_equip" text="Mezzi: ogni veicolo della fattoria, valutato %s. Prezzo all'anno, come quota di quel valore, per franchigia: %s. Il %d per cento di danno o un veicolo bruciato è un danno totale."/>
+        <text name="tp_ins_info_value_sell" text="il suo prezzo di vendita attuale"/>
+        <text name="tp_ins_info_value_replacement" text="il suo prezzo di vendita attuale più il 15 per cento (valore di rimpiazzo)"/>
+        <text name="tp_ins_info_rate" text="%s: %s per cento"/>
+        <text name="tp_ins_info_total" text="Danno totale: accetta (l'assicurazione paga il valore meno la franchigia e prende il veicolo) o riacquista (lo tieni con titolo di recupero, prezzo di vendita -%d per cento; riparato diventa Ricostruito, -%d per cento). L'usura precedente alla tempesta non è coperta."/>
+        <text name="tp_ins_info_total_keep" text="Danno totale: su questo server i veicoli restano alla fattoria - ricevi il valore meno la franchigia e il valore di recupero e tieni il veicolo con titolo di recupero (prezzo di vendita -%d per cento; riparato Ricostruito, -%d per cento). L'usura precedente alla tempesta non è coperta."/>
+        <text name="tp_ins_info_livestock" text="Bestiame: ogni animale nei pascoli della fattoria, valutato al prezzo di vendita. Circa il %s per cento all'anno del valore della mandria; %d per cento di franchigia su ogni sinistro."/>
+        <text name="tp_ins_info_livestock_gov" text="Su questa mappa lo USDA Livestock Indemnity Program paga gratis il %d per cento del valore di mercato (anche senza polizza); una polizza paga il resto."/>
+        <text name="tp_ins_info_timing" text="Tempi (in giorni reali, 30 = un mese di gioco; qui %d giorni al mese): la nuova copertura inizia dopo %s; dopo un sinistro il perito arriva in %s, la decisione segue %s dopo e il pagamento %s più tardi. Un danno totale non deciso entro %s viene accettato per te."/>
+        <text name="tp_ins_info_duration" text="%d g %d h"/>
+        <text name="tp_ins_info_billing" text="I premi si pagano a ogni cambio di mese, in base a ciò che la fattoria possiede allora."/>
+        <text name="tp_ins_info_manage" text="I gestori della fattoria e l'admin del server possono acquistare, modificare e annullare polizze e decidere i danni totali; gli altri possono guardare."/>
         <text name="tp_ins_pol_change_hint" text="Per modificare una polizza, scegli la nuova copertura in Inizia qui e chiedi un preventivo."/>
         <text name="tp_dir_N" text="N"/>
         <text name="tp_dir_NE" text="NE"/>

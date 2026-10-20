@@ -179,6 +179,16 @@
   vehicle sells for now, and the storm damage estimate leaves out wear from
   before the storm. The tow bill now says "new price" (the price it is
   scaled by) instead of "vehicle value".
+- "Payments": the farm's last 24 months (premiums, payouts, net) as a
+  table; on the right the totals so far, whether the insurance paid more
+  than it cost, the next bill at the month change (split by policy type,
+  active policies only) and the selected month split by policy type (crop,
+  equipment, livestock, state programme).
+- "Coverage info": how the insurance works on this map - region, crop plans
+  and coverage levels and when they can be bought, equipment prices by
+  deductible and the total-loss rules, livestock price and excess, the USDA
+  programme on US maps, and every waiting time converted to your days per
+  month.
 
 [UI] Messages Tab
 - New control panel tab with the mod's messages to your farm (insurance

@@ -3,6 +3,7 @@
 --- control panel can show it. The server owns the state; clients only display it.
 ---   farm id, premiums paid, payouts received, crop policy (plan, coverage, status, open claims),
 ---   equipment policy (deductible, status), vehicle titles, total losses waiting for the farm's choice,
+---   monthly history (premiums / payouts, per policy type) for the Payments section,
 ---   claim list for the Insurance tab (the newest MAX_CLAIM_LIST, TornadoInsurance:getClaimList),
 ---   inbox (key + parameters, day, read) - the newest MAX_INBOX
 
@@ -20,6 +21,7 @@ TornadoInsuranceStateEvent.MAX_PARAMS = 15  -- 4 bits
 TornadoInsuranceStateEvent.MAX_TITLES = 255 -- 8 bits
 TornadoInsuranceStateEvent.MAX_TOTALS = 15  -- 4 bits
 TornadoInsuranceStateEvent.MAX_CLAIM_LIST = 50  -- 6 bits
+TornadoInsuranceStateEvent.MAX_HISTORY = 31     -- 5 bits (the farm keeps 24 months)
 TornadoInsuranceStateEvent.CLAIM_VALUES = 6     -- numbers per claim summary
 TornadoInsuranceStateEvent.CLAIM_KINDS = { "CROP", "EQUIP", "LIVESTOCK" }   -- 2 bits (index - 1)
 
@@ -109,6 +111,18 @@ function TornadoInsuranceStateEvent:writeStream(streamId, connection)
         streamWriteFloat32(streamId, claim.remaining or -1)
     end
 
+    local history = state.history or {}
+    local firstMonth = math.max(1, #history - TornadoInsuranceStateEvent.MAX_HISTORY + 1)
+    streamWriteUIntN(streamId, #history - firstMonth + 1, 5)
+    for i = firstMonth, #history do
+        local month = history[i]
+        streamWriteInt32(streamId, month.month or 0)
+        streamWriteFloat32(streamId, month.premiums or 0)
+        streamWriteFloat32(streamId, month.payouts or 0)
+        streamWriteString(streamId, TornadoInsurance.encodeParts(month.premiumBy))
+        streamWriteString(streamId, TornadoInsurance.encodeParts(month.payoutBy))
+    end
+
     local inbox = state.inbox or {}
     local first = math.max(1, #inbox - TornadoInsuranceStateEvent.MAX_INBOX + 1)
     streamWriteUIntN(streamId, #inbox - first + 1, 6)
@@ -173,6 +187,13 @@ function TornadoInsuranceStateEvent:readStream(streamId, connection)
         claim.flag = streamReadBool(streamId)
         claim.remaining = streamReadFloat32(streamId)
         table.insert(state.claimList, claim)
+    end
+    state.history = {}
+    local numMonths = streamReadUIntN(streamId, 5)
+    for _ = 1, numMonths do
+        table.insert(state.history, { month = streamReadInt32(streamId), premiums = streamReadFloat32(streamId),
+            payouts = streamReadFloat32(streamId), premiumBy = TornadoInsurance.decodeParts(streamReadString(streamId)),
+            payoutBy = TornadoInsurance.decodeParts(streamReadString(streamId)) })
     end
     local count = streamReadUIntN(streamId, 6)
     for _ = 1, count do

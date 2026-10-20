@@ -1312,6 +1312,20 @@ Livestock claims show the expected payouts before the decision (`decide` is pure
 total-loss rows (old text keys `tp_insurance_equip_total*` / `tp_btn_equip_*` are left for the later cleanup).
 Tests: test_inspage 70, test_equipment 103, test_livestock 47.
 
+### 18.10 Insurance tab – step 3: Payments + Coverage info (2026-10-19)
+
+History months now record their policy types: `premiumBy` (the monthly bill per premium source name, from
+`onPeriodChanged` -> `chargePremium(..., parts)`) and `payoutBy` (`payOut(..., kind)`: crop / equipment / livestock /
+state = USDA LIP; no kind = other). Saved as `#premiumBy` / `#payoutBy` strings ("crop=125;equipment=59",
+`encodeParts` / `decodeParts`); older saves load with empty parts. The state event now carries the history (up to
+31 months, 5 bits), so clients see it too. Payments section (`insPayments`): TornadoTable of 10 months newest first
+(Month | Premiums | Payouts | Net), totals + balance, next bill = the quotes of the ACTIVE policies (billing skips
+pending ones), the selected month by type. Coverage info (`insInfo`): one text built from the region, the offered
+crop plans / coverage range / sales window, equipment RATES by deductible, TOTAL_LOSS_SHARE, salvage / rebuilt
+penalties (or the "kept" rule), the farm's effective livestock rate (quote premium x 12 / herd value; RATE when the
+farm has no animals), excess, USDA share, and every duration through `getRemainingDaysHours` at the current days per
+month. Month labels: `TornadoText.month(index)`. Tests: test_inspage 93, test_insurance 150, test_date 14.
+
 ## 19. Rules for the implementation
 
 - No `pcall` / `xpcall` (GIANTS ModHub rule) – explicit nil checks only.

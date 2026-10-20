@@ -7,6 +7,7 @@
 TornadoText = { money = function(v) return string.format("$%d", math.floor((v or 0) + 0.5)) end,
     get = function(k) return k end,
     date = function(day) return "tp_msg_day " .. tostring(day) end,
+    month = function(index) return "month " .. tostring(index) end,
     format = function(k, ...) local parts = { k } for _, v in ipairs({ ... }) do table.insert(parts, tostring(v)) end return table.concat(parts, "|") end }
 local multiplayer, isServer, isMaster, isManager = false, true, false, false
 TornadoSync = { isMultiplayer = function() return multiplayer end, isClient = function() return not isServer end,
@@ -19,10 +20,14 @@ local claimList = {}
 TornadoInsurance = { isEnabled = true, adminOnly = false, removeTotaled = true, farms = { [1] = {} },
     getCostScale = function() return 1 end,
     getClaimList = function() return claimList end,
+    getRegionName = function() return "United States - Kansas" end,
+    getDaysPerMonth = function() return 1 end,
+    realDaysToMonths = function(days) return days / 30 end,
+    salvagePenalty = 0.5, rebuiltPenalty = 0.3,
     getRemainingDaysHours = function(_, months) local hours = months * 24 * 24 return math.floor(hours / 24), math.floor(hours % 24 + 0.5) end,
     requestAction = function(_, farmId, name, args) table.insert(requests, name .. " " .. args) end }
 local salesOpen = true
-TornadoInsuranceCrop = { STATUS_ACTIVE = "ACTIVE", PLAN_KEYS = setmetatable({}, { __index = function(_, k) return "plan_" .. k end }),
+TornadoInsuranceCrop = { STATUS_ACTIVE = "ACTIVE", SALES_PERIODS = { [12] = true, [1] = true }, PLAN_KEYS = setmetatable({}, { __index = function(_, k) return "plan_" .. k end }),
     isAvailable = function() return true end, getDisabledReason = function() return nil end,
     getOfferedPlans = function() return { "RP", "YP" } end,
     getCoverageLevels = function(_, plan) return plan == "YP" and { 0.5, 0.6, 0.7 } or { 0.5, 0.75, 0.85 } end,
@@ -31,9 +36,11 @@ TornadoInsuranceCrop = { STATUS_ACTIVE = "ACTIVE", PLAN_KEYS = setmetatable({}, 
         monthlyPremium = (plan == "RP" and 100 or 60) * coverage } end,
     getOpenClaimCount = function() return 1 end }
 TornadoInsuranceEquipment = { STATUS_ACTIVE = "ACTIVE", DEDUCTIBLES = { 1000, 2500, 5000, 10000 },
+    RATES = { [1000] = 0.015, [2500] = 0.012, [5000] = 0.010, [10000] = 0.008 }, TOTAL_LOSS_SHARE = 0.75,
+    WAIT_DAYS = 7, ADJUSTER_DAYS = 3, DECISION_DAYS = 2, PAYOUT_DAYS = 1, CHOICE_DAYS = 7,
     getFarmQuote = function(_, _, deductible) return { vehicles = 8, value = 200000, monthlyPremium = 2000000 / deductible } end,
     getOpenClaimCount = function() return 0 end }
-TornadoInsuranceLivestock = { STATUS_ACTIVE = "ACTIVE",
+TornadoInsuranceLivestock = { STATUS_ACTIVE = "ACTIVE", RATE = 0.008, EXCESS_SHARE = 0.05, GOV_SHARE = 0.75,
     getFarmQuote = function() return { animals = 25, value = 13730, monthlyPremium = 9 } end,
     hasGovProgram = function() return true end, isHusbandryOn = function() return true end,
     getOpenClaimCount = function() return 0 end }
@@ -68,7 +75,9 @@ for _, id in ipairs({ "tabInsurance", "pageInsurance", "insNavStart", "insNavPol
     "insCropCoverage", "insEquip", "insLivestock", "insQuote", "insConfirm", "insStartNote", "insQuoteText", "insPolCropText",
     "insPolCropCancel", "insPolEquipText", "insPolEquipCancel", "insPolLivestockText", "insPolLivestockCancel", "insPolClaims",
     "insNavClaims", "insClaims", "insClaimFilter", "insClaimTable", "insClaimScrollUp", "insClaimScrollDown", "insClaimInfo",
-    "insClaimDetailHead", "insClaimDetailStatus", "insClaimDetailText", "insClaimAccept", "insClaimBuyBack", "insClaimNote" }) do
+    "insClaimDetailHead", "insClaimDetailStatus", "insClaimDetailText", "insClaimAccept", "insClaimBuyBack", "insClaimNote",
+    "insNavPayments", "insNavInfo", "insPayments", "insInfo", "insPayTable", "insPayScrollUp", "insPayScrollDown", "insPayInfo",
+    "insPayTotals", "insPayMonthHead", "insPayMonthText", "insInfoText" }) do
     menu[id] = element(id)
 end
 for slot = 1, 10 do
@@ -79,6 +88,13 @@ for slot = 1, 10 do
         table.insert(row.elements, row.cells[name])
     end
     menu["insClaimRow" .. slot] = row
+    local payRow = element("insPayRow" .. slot)
+    payRow.cells = {}
+    for _, name in ipairs({ "month", "premiums", "payouts", "net" }) do
+        payRow.cells[name] = element(name)
+        table.insert(payRow.elements, payRow.cells[name])
+    end
+    menu["insPayRow" .. slot] = payRow
 end
 menu.pages = { P }
 
@@ -257,6 +273,46 @@ multiplayer, isServer = true, false
 P:refresh()
 check("non-manager: accept disabled + note", menu.insClaimAccept.disabled and menu.insClaimNote.text == "tp_ins_note_manager", true)
 multiplayer, isServer = false, true
+
+-- Payments section
+click("insNavPayments")
+check("Payments visible, Claims hidden", menu.insPayments.visible and not menu.insClaims.visible, true)
+check("no history: info", menu.insPayInfo.text, "tp_ins_pay_none")
+TornadoInsurance.farms[1].premiumsTotal, TornadoInsurance.farms[1].payoutsTotal = 370, 8100
+TornadoInsurance.farms[1].crop.status = "ACTIVE"
+TornadoInsurance.farms[1].history = {
+    { month = 5, premiums = 185, payouts = 0, premiumBy = { crop = 125, equipment = 59, livestock = 1 }, payoutBy = {} },
+    { month = 6, premiums = 185, payouts = 8100, premiumBy = { crop = 125, equipment = 59, livestock = 1 }, payoutBy = { crop = 8100 } },
+}
+P:refresh()
+check("2 months, newest first", menu.insPayRow1.cells.month.text, "month 6")
+check("row 1 net = payouts - premiums", menu.insPayRow1.cells.net.text, "+$7915")
+check("row 2 net negative", menu.insPayRow2.cells.net.text, "-$185")
+check("row 3 hidden", menu.insPayRow3.visible, false)
+check("totals: balance plus", has(menu.insPayTotals.text, "tp_ins_pay_balance_plus|$7730"), true)
+check("next bill: active policies only (crop 75 + equipment 400)", has(menu.insPayTotals.text, "tp_ins_pay_next|$475|"), true)
+check("next bill split by type", has(menu.insPayTotals.text, "tp_ins_cl_type_crop $75, tp_ins_cl_type_equip $400"), true)
+check("pending policy noted", has(menu.insPayTotals.text, "tp_ins_pay_pending"), true)
+check("selected month split", has(menu.insPayMonthText.text, "tp_ins_cl_type_crop $8100"), true)
+click("insPayRow2")
+check("row 2 selected: premiums split", has(menu.insPayMonthText.text, "tp_ins_cl_type_crop $125, tp_ins_cl_type_equip $59, tp_ins_cl_type_livestock $1"), true)
+check("month head", menu.insPayMonthHead.text, "month 5")
+-- Coverage info
+click("insNavInfo")
+check("Coverage info visible", menu.insInfo.visible and not menu.insPayments.visible, true)
+local info = menu.insInfoText.text
+check("info: region", has(info, "tp_ins_info_region|United States - Kansas"), true)
+check("info: crop plans + levels 50 - 85", has(info, "tp_ins_info_crop|plan_RP, plan_YP|50|85|tp_ins_info_sales_open"), true)
+check("info: equipment rates", has(info, "tp_ins_info_rate|$1000|1.5") and has(info, "tp_ins_info_rate|$10000|0.8"), true)
+check("info: total loss 75", has(info, "|75"), true)
+check("info: salvage / rebuilt", has(info, "tp_ins_info_total|50|30"), true)
+check("info: livestock rate from the herd (9 x 12 / 13730)", has(info, "tp_ins_info_livestock|0.8|5"), true)
+check("info: USDA", has(info, "tp_ins_info_livestock_gov|75"), true)
+check("info: timing (stub: 24 days per month, 7 real days = 5 d 14 h)", has(info, "tp_ins_info_timing|1|tp_ins_info_duration|5|14"), true)
+salesOpen = false
+P:refresh()
+check("info: sales closed", has(menu.insInfoText.text, "tp_ins_info_sales_closed"), true)
+salesOpen = true
 
 -- Insurance off
 TornadoInsurance.isEnabled = false

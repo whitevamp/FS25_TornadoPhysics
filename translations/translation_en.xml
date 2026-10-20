@@ -517,6 +517,44 @@
         <text name="tp_ins_choice_sent" text="Choice sent - the letter follows on the Messages tab."/>
         <text name="tp_btn_ins_accept_total" text="Accept total loss"/>
         <text name="tp_btn_ins_buy_back" text="Buy back"/>
+        <text name="tp_ins_nav_payments" text="Payments"/>
+        <text name="tp_ins_nav_info" text="Coverage info"/>
+        <text name="tp_ins_pay_title" text="Monthly history"/>
+        <text name="tp_ins_pay_col_month" text="Month"/>
+        <text name="tp_ins_pay_col_premiums" text="Premiums"/>
+        <text name="tp_ins_pay_col_payouts" text="Payouts"/>
+        <text name="tp_ins_pay_col_net" text="Net"/>
+        <text name="tp_ins_pay_totals" text="Totals"/>
+        <text name="tp_ins_pay_selected" text="Selected month"/>
+        <text name="tp_ins_pay_state" text="State programme"/>
+        <text name="tp_ins_pay_other" text="Other"/>
+        <text name="tp_ins_pay_premiums_total" text="Premiums paid so far: %s"/>
+        <text name="tp_ins_pay_payouts_total" text="Payouts received so far: %s"/>
+        <text name="tp_ins_pay_balance_plus" text="The insurance has paid you %s more than it cost."/>
+        <text name="tp_ins_pay_balance_minus" text="So far the insurance has cost %s more than it paid out."/>
+        <text name="tp_ins_pay_next" text="Next bill at the month change: about %s (%s)."/>
+        <text name="tp_ins_pay_next_none" text="Next bill: nothing - no policy is active."/>
+        <text name="tp_ins_pay_pending" text="Policies still in their waiting time are billed once they start."/>
+        <text name="tp_ins_pay_month_premiums" text="Premiums: %s"/>
+        <text name="tp_ins_pay_month_payouts" text="Payouts: %s"/>
+        <text name="tp_ins_pay_none" text="No payments yet."/>
+        <text name="tp_ins_info_title" text="How your insurance works"/>
+        <text name="tp_ins_info_region" text="Rules and prices of: %s."/>
+        <text name="tp_ins_info_crop" text="Crop: covers every field the farm owns with an insurable crop. Plans here: %s. Coverage %d - %d percent of the expected harvest value. Buying or changing a crop policy: %s."/>
+        <text name="tp_ins_info_sales_open" text="possible now"/>
+        <text name="tp_ins_info_sales_closed" text="only in %s (closed now)"/>
+        <text name="tp_ins_info_equip" text="Equipment: every vehicle the farm owns, valued at %s. Price a year, as a share of that value, by deductible: %s. %d percent damage or a burned vehicle is a total loss."/>
+        <text name="tp_ins_info_value_sell" text="what it sells for now"/>
+        <text name="tp_ins_info_value_replacement" text="what it sells for now plus 15 percent (replacement value)"/>
+        <text name="tp_ins_info_rate" text="%s: %s percent"/>
+        <text name="tp_ins_info_total" text="Total loss: accept (the insurer pays the value minus the deductible and takes the vehicle) or buy back (you keep it with a Salvage title, sell price -%d percent; repaired it becomes Rebuilt, -%d percent). Wear from before the storm is not covered."/>
+        <text name="tp_ins_info_total_keep" text="Total loss: totalled vehicles are kept on this server - you get the value minus the deductible and the salvage value and keep the vehicle with a Salvage title (sell price -%d percent; repaired Rebuilt, -%d percent). Wear from before the storm is not covered."/>
+        <text name="tp_ins_info_livestock" text="Livestock: every animal in the farm's pastures, valued at its sell price. About %s percent a year of the herd value; %d percent excess on every claim."/>
+        <text name="tp_ins_info_livestock_gov" text="On this map the USDA Livestock Indemnity Program pays %d percent of the market value for free (also without a policy); a policy pays the rest."/>
+        <text name="tp_ins_info_timing" text="Timing (counted in real-life days, 30 = one game month; here %d days per month): new cover starts after %s; after a claim the adjuster comes in %s, the decision follows %s later and the payment %s after that. A total loss not decided within %s is accepted for you."/>
+        <text name="tp_ins_info_duration" text="%d d %d h"/>
+        <text name="tp_ins_info_billing" text="Premiums are billed at every month change, from what the farm owns then."/>
+        <text name="tp_ins_info_manage" text="Farm managers and the server admin can buy, change and cancel policies and decide total losses; everybody else can look."/>
         <text name="tp_ins_pol_change_hint" text="To change a policy, choose the new cover under Start here and get a quote."/>
         <text name="tp_dir_N" text="N"/>
         <text name="tp_dir_NE" text="NE"/>

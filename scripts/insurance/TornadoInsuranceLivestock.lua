@@ -387,11 +387,11 @@ function TornadoInsuranceLivestock:onPayout(timer)
     end
     claim.status = "PAID"
     if (claim.govPayout or 0) > 0 then
-        self.insurance:payOut(timer.farmId, claim.govPayout, "tp_msg_ins_lv_gov_paid", { TornadoText.cash(claim.govPayout) })
+        self.insurance:payOut(timer.farmId, claim.govPayout, "tp_msg_ins_lv_gov_paid", { TornadoText.cash(claim.govPayout) }, "state")
     end
     if (claim.payout or 0) > 0 then
         self.insurance:payOut(timer.farmId, claim.payout, "tp_msg_ins_lv_claim_paid",
-            { TornadoText.str(claim.place), TornadoText.cash(claim.payout) })
+            { TornadoText.str(claim.place), TornadoText.cash(claim.payout) }, "livestock")
     end
 end
 

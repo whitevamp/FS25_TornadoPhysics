@@ -214,6 +214,11 @@
     <Profile name="tornado_claimRow" extends="tornado_tableRow">
         <size value="680px 44px"/>
     </Profile>
+    <!-- Coverage info: one long text over the whole section. -->
+    <Profile name="tornado_infoBody" extends="tornado_detailBody">
+        <size value="1240px 640px"/>
+        <textMaxNumLines value="30"/>
+    </Profile>
     <!-- Note that may need two lines (long translations). -->
     <Profile name="tornado_noteLine2" extends="tornado_noteLine">
         <size value="1220px 48px"/>

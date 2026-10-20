@@ -64,6 +64,19 @@ function TornadoText.date(day, withYear)
     return text
 end
 
+--- A month of the insurance history (TornadoInsurance:getMonthIndex: (year - 1) * 12 + period) as "Aug, year 2".
+function TornadoText.month(index)
+    index = math.max(1, index or 1)
+    local period = (index - 1) % 12 + 1
+    local year = math.floor((index - 1) / 12) + 1
+    local name = modI18n ~= nil and modI18n.formatPeriod ~= nil and g_currentMission ~= nil and g_currentMission.environment ~= nil
+        and modI18n:formatPeriod(period, true) or nil
+    if name == nil then
+        return string.format("M%d, %s", period, TornadoText.format("tp_date_year", year))
+    end
+    return name .. ", " .. TornadoText.format("tp_date_year", year)
+end
+
 --- Compass code from TornadoClimate.directionToLabel ("N", "NE", ...) in the player's language.
 function TornadoText.direction(code)
     if code == nil then
